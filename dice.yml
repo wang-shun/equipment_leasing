@@ -1,0 +1,71 @@
+name: yankuang-equipmen-new
+description: yankuang-equipmen-new
+repository: http://gittar.app.terminus.io/dcos-terminus/yankuang-equipmen-new
+
+endpoints:
+#  dubbo-api:
+#    module_path: dubbo-api
+#    context: .
+#    ports:
+#      - 20880
+#    resources:
+#      cpu: 0.1
+#      mem: 512
+#    buildpack:
+#      bp_repo: http://git.terminus.io/buildpacks/dice-bpack-termjava.git
+#      bp_ver: master
+#      bp_args:
+#        - USE_AGENT=true
+
+  equipment-web:
+    module_path: equipment-web
+    context: .
+    ports:
+      - 12300
+    resources:
+      cpu: 0.1
+      mem: 512
+    buildpack:
+      bp_repo: http://git.terminus.io/buildpacks/dice-bpack-termjava.git
+      bp_ver: master
+      bp_args:
+        - USE_AGENT=true
+    depends:
+      - equipment-authority-provider
+
+services:
+  equipment-authority-provider:
+    module_path: equipment-authority-provider/equipment-authority-provider-impl
+    context: .
+    ports:
+      - 20880
+    resources:
+      cpu: 0.1
+      mem: 512
+    buildpack:
+      bp_repo: http://git.terminus.io/buildpacks/dice-bpack-termjava.git
+      bp_ver: master
+      bp_args:
+        - USE_AGENT=true
+
+addons:
+  mysql:
+    plan: mysql:small
+    options:
+      version: 5.7
+#      create_db: db_test
+    image: dnhsoft/mysql-utf8
+  zk:
+    plan: zookeeper:small
+    as: ZK
+
+global_env:
+  MYSQL_PORT: 3306
+  MYSQL_DATABASE: yankuang_equipment
+  MYSQL_USERNAME: root
+  MYSQL_PASSWORD: uAiqwVwjJ8-i
+  MYSQL_HOST: 47.94.211.172
+#  REDIS_HOST: 47.94.211.172
+#  REDIS_PORT: 6379
+#  REDIS_PASSWORD: 738788
+
