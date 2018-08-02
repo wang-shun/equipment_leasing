@@ -30,11 +30,12 @@
     </sql>
 
     <sql id="vals">
+        #{id},
         #{nickName},
         #{userName},
         #{password},
-        now(),
-        now()
+        unix_timestamp(now()),
+        unix_timestamp(now())
     </sql>
 
     <sql id="criteria">
@@ -43,9 +44,15 @@
         <if test="userName != null">AND user_name = #{userName}</if>
     </sql>
 
+    <!--<insert id="create" parameterType="User" keyProperty="id" useGeneratedKeys="true">-->
+        <!--INSERT INTO <include refid="tb" />-->
+        <!--(<include refid="cols_all" />)-->
+        <!--VALUES-->
+        <!--(<include refid="vals" />)-->
+    <!--</insert>-->
     <insert id="create" parameterType="User" keyProperty="id" useGeneratedKeys="true">
-        INSERT INTO <include refid="tb" />
-        (<include refid="cols_exclude_id" />)
+        INSERT INTO user
+        (<include refid="cols_all" />)
         VALUES
         (<include refid="vals" />)
     </insert>

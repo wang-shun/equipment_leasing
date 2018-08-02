@@ -14,8 +14,8 @@
     <packaging>pom</packaging>
 
     <properties>
-        <boot.version>1.5.2.RELEASE</boot.version>
-        <!--<boot.version>2.0.3RELEASE</boot.version>-->
+        <!--<boot.version>1.5.2.RELEASE</boot.version>-->
+        <spring.boot.version>2.0.3.RELEASE</spring.boot.version>
     </properties>
 
     <build>
@@ -23,7 +23,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${boot.version}</version>
+                <version>${spring.boot.version}</version>
                 <configuration>
                     <skip>true</skip>
                 </configuration>

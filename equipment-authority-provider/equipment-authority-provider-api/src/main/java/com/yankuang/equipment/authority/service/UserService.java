@@ -8,5 +8,7 @@ public interface UserService {
 
     User getById(Long id);
 
+    boolean create(User user);
+
     String healthCheck();
 }

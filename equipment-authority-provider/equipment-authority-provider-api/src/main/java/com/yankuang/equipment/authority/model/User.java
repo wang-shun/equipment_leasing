@@ -10,11 +10,11 @@ import java.util.Date;
 
 //@Data
 //@Entity
-//@Table(name = "user")
+@Table(name = "user")
 public class User implements Serializable {
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
 
