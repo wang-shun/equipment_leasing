@@ -24,10 +24,10 @@ public class User implements Serializable {
 
 
 //    @CreationTimestamp
-    private Date createdAt;
+    private Long createdAt;
 
 //    @UpdateTimestamp
-    private Date updatedAt;
+    private Long updatedAt;
 
     public Long getId() {
         return id;
@@ -61,19 +61,19 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public Date getCreatedAt() {
+    public Long getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(Long createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public Long getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(Long updatedAt) {
         this.updatedAt = updatedAt;
     }
 }
