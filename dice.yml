@@ -1,6 +1,6 @@
 name: yankuang-equipmen-new
 description: yankuang-equipmen-new
-repository: http://gittar.app.terminus.io/dcos-terminus/yankuang-equipmen-new
+repository: http://gittar.app.terminus.io/dcos-terminus/yankuang-equipment
 
 endpoints:
 #  dubbo-api:
