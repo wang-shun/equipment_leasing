@@ -66,7 +66,11 @@
             <artifactId>equipment-authority-provider-api</artifactId>
             <version>${project.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.yankuang.equipment</groupId>
+            <artifactId>equipment-leasing-provider-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>io.swagger</groupId>
@@ -79,6 +83,11 @@
                     <artifactId>jsr311-api</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.yankuang.equipment</groupId>
+            <artifactId>equipment-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: equipment-authority-provider
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://47.94.211.172:3306/yankuang_equipment?useUnicode=true&characterEncoding=UTF8
+    username: root
+    password: uAiqwVwjJ8-i
+
+rpc:
+  mode: true
+  dubbo:
+    module: equipment-authority-provider
+    registryAddress: localhost:2181
+    port: 20880
+
+mybatis:
+  mapper-locations: classpath*:mapper/*Mapper.xml
+  type-aliases-package: >
+    com.yankuang.equipment.authority.model
+
+mapper:
+  basePackage: com.yankuang.equipment.authority.mapper
