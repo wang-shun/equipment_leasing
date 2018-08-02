@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Authority">
+    <resultMap id="BaseResultMap" type="Authority" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="code" property="code" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="url" property="url" jdbcType="VARCHAR" />
+        <result column="type" property="type" jdbcType="BIGINT" />
+        <result column="status" property="status" jdbcType="TINYINT" />
+        <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="sorting" property="sorting" jdbcType="BIGINT" />
+        <result column="update_at" property="updateAt" jdbcType="BIGINT" />
+        <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+        <result column="version" property="version" jdbcType="BIGINT" />
+        <result column="create_at" property="createAt" jdbcType="BIGINT" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+    id, code, name, url, type, status, create_by, remark, sorting, update_at, update_by,
+    version, create_at
+    </sql>
+
+    <select id="findById" parameterType="long" resultMap="BaseResultMap" >
+        SELECT <include refid="Base_Column_List" />
+        FROM yankuang_equipment.el_authority
+        WHERE id = #{id}
+    </select>
+</mapper>
