@@ -1,4 +1,3 @@
-/*
 package com.yankuang.equipment.web.restful;
 
 import com.yankuang.equipment.common.util.StringUtils;
@@ -11,11 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
-*/
 /**
  * Created by zhouy on 2018/7/31.
- *//*
-
+ */
 @RestController
 @RequestMapping("/v1/elplan")
 public class ElPlanController {
@@ -23,13 +20,11 @@ public class ElPlanController {
     @RpcConsumer(version = "0.0.1", check = "false")
     private ElPlanService elPlanService;
 
-    */
-/**
+    /**
      * 创建通用设备月度租赁计划
      * @param elPlan
      * @return
-     *//*
-
+     */
     @CrossOrigin(maxAge = 3600)
     @RequestMapping(value = "/{equipmentType}/{planType}", method = RequestMethod.POST)
     public CommonResponse create (@PathVariable(value = "equipmentType") String equipmentType,
@@ -90,13 +85,11 @@ public class ElPlanController {
         }
     }
 
-    */
-/**
+    /**
      * 更新设备租赁计划
      * @param elPlan
      * @return
-     *//*
-
+     */
     @CrossOrigin(maxAge = 3600)
     @RequestMapping(value = "/", method = RequestMethod.PUT)
     public CommonResponse update (@RequestBody ElPlan elPlan) {
@@ -118,13 +111,11 @@ public class ElPlanController {
 
     }
 
-    */
-/**
+    /**
      * 删除设备租赁计划
      * @param planId
      * @return
-     *//*
-
+     */
     @CrossOrigin(maxAge = 3600)
     @RequestMapping(value = "/{planId}", method = RequestMethod.DELETE)
     public CommonResponse delete(@PathVariable(value = "planId") String planId) {
@@ -146,13 +137,11 @@ public class ElPlanController {
 
     }
 
-    */
-/**
+    /**
      * 通过主键查询设备租赁计划
      * @param planId
      * @return
-     *//*
-
+     */
     @CrossOrigin(maxAge = 3600)
     @RequestMapping(value = "/{planId}",  method = RequestMethod.GET)
     public CommonResponse getElPlan (@PathVariable(value = "planId") String planId) {
@@ -172,8 +161,7 @@ public class ElPlanController {
         }
     }
 
-    */
-/**
+    /**
      * 分页条件查询设备租赁计划
      * @param elPlan
      * @param pageSize
@@ -181,8 +169,7 @@ public class ElPlanController {
      * @param equipmentType
      * @param planType
      * @return
-     *//*
-
+     */
     @CrossOrigin(maxAge = 3600)
     @RequestMapping(value = "/{equipmentType}/{planType}", method = RequestMethod.POST)
     public CommonResponse getElPlans(@RequestBody ElPlan elPlan,
@@ -234,14 +221,12 @@ public class ElPlanController {
         }
     }
 
-    */
-/**
+    /**
      * 审批、提交操作
      * @param approvalType
      * @param elPlan
      * @return
-     *//*
-
+     */
     @RequestMapping(value = "/approve/{approvalType}", method = RequestMethod.POST)
     public CommonResponse approval(@PathVariable(value = "approvalType") String approvalType,
                                    @RequestBody ElPlan elPlan) {
@@ -289,4 +274,3 @@ public class ElPlanController {
         }
     }
 }
-*/
