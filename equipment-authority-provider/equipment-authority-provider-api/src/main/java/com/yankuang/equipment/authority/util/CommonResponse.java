@@ -1,4 +1,4 @@
-package com.yankuang.equipment.web.util;
+package com.yankuang.equipment.authority.util;
 
 import java.util.List;
 

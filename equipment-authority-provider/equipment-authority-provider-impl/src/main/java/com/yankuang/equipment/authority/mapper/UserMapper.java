@@ -6,9 +6,12 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class UserMapper extends MyBatisDao<User> {
-    public User login(String userName) {
-        return getSqlSession().selectOne("login", userName);
+    public User login(String name) {
+        return getSqlSession().selectOne("login", name);
     }
 
+    public User findByCode(String code){
+        return getSqlSession().selectOne("findByCode", code);
+    }
 
 }

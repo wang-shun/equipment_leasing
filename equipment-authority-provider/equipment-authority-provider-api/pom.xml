@@ -13,7 +13,8 @@
     <packaging>jar</packaging>
 
     <properties>
-        <spring.boot.version>1.5.2.RELEASE</spring.boot.version>
+        <!--<spring.boot.version>1.5.2.RELEASE</spring.boot.version>-->
+        <spring.boot.version>2.0.3.RELEASE</spring.boot.version>
     </properties>
 
     <dependencies>
@@ -22,6 +23,11 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
             <version>${spring.boot.version}</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.terminus</groupId>
+            <artifactId>terminus-common</artifactId>
+            <version>2.0.3.RELEASE</version>
         </dependency>
 
     </dependencies>

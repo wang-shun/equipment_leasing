@@ -1,6 +1,6 @@
 name: yankuang-equipmen-new
 description: yankuang-equipmen-new
-repository: http://gittar.app.terminus.io/dcos-terminus/yankuang-equipmen-new
+repository: http://gittar.app.terminus.io/dcos-terminus/yankuang-equipment
 
 endpoints:
 #  dubbo-api:
@@ -65,7 +65,7 @@ global_env:
   MYSQL_USERNAME: root
   MYSQL_PASSWORD: uAiqwVwjJ8-i
   MYSQL_HOST: 47.94.211.172
-#  REDIS_HOST: 47.94.211.172
-#  REDIS_PORT: 6379
-#  REDIS_PASSWORD: 738788
+  REDIS_HOST: 47.94.211.172
+  REDIS_PORT: 6379
+  REDIS_PASSWORD: 738788
 
