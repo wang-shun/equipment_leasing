@@ -1,4 +1,4 @@
-package com.yankuang.equipment.leasing.serviceImpl;
+package com.yankuang.equipment.leasing.service.impl;
 
 import com.yankuang.equipment.common.util.StringUtils;
 import com.yankuang.equipment.common.util.UuidUtils;
@@ -48,7 +48,7 @@ public class ElPlanServiceImpl extends BaseService implements ElPlanService {
         } catch (Exception e) {
             e.printStackTrace();
             logger.debug("create ElPlan exception:"+JSON.toJSONString(elPlan));
-            rollback();
+            //rollback();
             return res;
         }
     }
@@ -83,7 +83,7 @@ public class ElPlanServiceImpl extends BaseService implements ElPlanService {
             res = elPlanMapper.update(elPlan);
             return res;
         } catch (Exception e) {
-            rollback();
+           // rollback();
             e.printStackTrace();
             logger.debug("update elPlan exception: "+JSON.toJSONString(elPlan));
             return res;
@@ -98,12 +98,12 @@ public class ElPlanServiceImpl extends BaseService implements ElPlanService {
             if (res <= 0) {
                 return false;
             }
-            //logger.debug("delete elPlan byID: "+planId);
+            logger.debug("delete elPlan byID: "+planId);
             return true;
         } catch (Exception e) {
             //rollback();
             e.printStackTrace();
-            //logger.debug("delete elPlan exception: "+planId);
+            logger.debug("delete elPlan exception: "+planId);
             return false;
         }
     }
@@ -113,11 +113,11 @@ public class ElPlanServiceImpl extends BaseService implements ElPlanService {
         try {
             int maxResult = (pageNum - 1) * pageSize;
             Paging page = elPlanMapper.paging(maxResult, pageNum, elPlan);
-            //logger.debug("pageSize: "+pageSize+"pageNum: "+pageNum+";findElPlanByCondition: "+JSON.toJSONString(elPlan));
+            logger.debug("pageSize: "+pageSize+"pageNum: "+pageNum+";findElPlanByCondition: "+JSON.toJSONString(elPlan));
             return page;
         } catch (Exception e) {
             e.printStackTrace();
-            //logger.debug("exception: pageSize: "+pageSize+"pageNum: "+pageNum+";findElPlanByCondition: "+JSON.toJSONString(elPlan));
+            logger.debug("exception: pageSize: "+pageSize+"pageNum: "+pageNum+";findElPlanByCondition: "+JSON.toJSONString(elPlan));
             return null;
         }
     }
