@@ -1,6 +1,6 @@
 spring:
   application:
-    name: equipment-authority-provider
+    name: equipment-leasing-provider
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://47.94.211.172:3306/yankuang_equipment?useUnicode=true&characterEncoding=UTF8
@@ -10,14 +10,15 @@ spring:
 rpc:
   mode: true
   dubbo:
-    module: equipment-authority-provider
-    registryAddress: localhost:2181
-    port: 20880
+    module: equipment-leasing-provider
+#    registryAddress: 127.0.0.1:2181
+    registryAddress: ${ZK_HOST:127.0.0.1}:${ZK_PORT:2181}
+    port: 20881
 
 mybatis:
   mapper-locations: classpath*:mapper/*Mapper.xml
   type-aliases-package: >
-    com.yankuang.equipment.authority.model
+    com.yankuang.equipment.leasing.model
 
 mapper:
-  basePackage: com.yankuang.equipment.authority.mapper
+  basePackage: com.yankuang.equipment.leasing.mapper

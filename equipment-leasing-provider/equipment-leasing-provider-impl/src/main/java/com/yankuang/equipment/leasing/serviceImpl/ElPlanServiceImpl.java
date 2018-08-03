@@ -1,10 +1,10 @@
 package com.yankuang.equipment.leasing.serviceImpl;
 
-import com.alibaba.dubbo.config.annotation.Service;
 import com.yankuang.equipment.common.util.StringUtils;
 import com.yankuang.equipment.common.util.UuidUtils;
 import com.yankuang.equipment.leasing.model.ElPlanItem;
 import io.terminus.boot.rpc.common.annotation.RpcProvider;
+import io.terminus.common.model.Paging;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.alibaba.fastjson.JSON;
@@ -12,6 +12,7 @@ import com.yankuang.equipment.common.base.BaseService;
 import com.yankuang.equipment.leasing.mapper.ElPlanMapper;
 import com.yankuang.equipment.leasing.model.ElPlan;
 import com.yankuang.equipment.leasing.service.ElPlanService;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
@@ -20,7 +21,7 @@ import java.util.Date;
  */
 @Service
 @RpcProvider(version = "0.0.1")
-public class ElPlanServiceImpl extends BaseService implements ElPlanService{
+public class ElPlanServiceImpl extends BaseService implements ElPlanService {
 
     @Autowired
     private ElPlanMapper elPlanMapper;
@@ -60,6 +61,7 @@ public class ElPlanServiceImpl extends BaseService implements ElPlanService{
             return elPlan;
         } catch (Exception e) {
             e.printStackTrace();
+            logger.debug("planId: "+planId+";findElPlanById exception");
             return null;
         }
 
@@ -77,12 +79,50 @@ public class ElPlanServiceImpl extends BaseService implements ElPlanService{
             elPlanMapper.deletePlanItemByPlanId(planId);
             elPlan.setPlanUpdateTime(new Date().getTime());
             elPlanMapper.savePlanItemByPlanId(elPlan);
+            logger.debug("update elPlan: "+JSON.toJSONString(elPlan));
             res = elPlanMapper.update(elPlan);
             return res;
         } catch (Exception e) {
+            rollback();
             e.printStackTrace();
+            logger.debug("update elPlan exception: "+JSON.toJSONString(elPlan));
             return res;
         }
 
+    }
+
+    public Boolean deletePlan(String planId) {
+
+        try {
+            int res = elPlanMapper.deletePlanByPlanId(planId);
+            if (res <= 0) {
+                return false;
+            }
+            //logger.debug("delete elPlan byID: "+planId);
+            return true;
+        } catch (Exception e) {
+            //rollback();
+            e.printStackTrace();
+            //logger.debug("delete elPlan exception: "+planId);
+            return false;
+        }
+    }
+
+    public Paging findElPlanByCondition(ElPlan elPlan, int pageSize, int pageNum) {
+
+        try {
+            int maxResult = (pageNum - 1) * pageSize;
+            Paging page = elPlanMapper.paging(maxResult, pageNum, elPlan);
+            //logger.debug("pageSize: "+pageSize+"pageNum: "+pageNum+";findElPlanByCondition: "+JSON.toJSONString(elPlan));
+            return page;
+        } catch (Exception e) {
+            e.printStackTrace();
+            //logger.debug("exception: pageSize: "+pageSize+"pageNum: "+pageNum+";findElPlanByCondition: "+JSON.toJSONString(elPlan));
+            return null;
+        }
+    }
+
+    public boolean approve(ElPlan elPlan) {
+        return elPlanMapper.update(elPlan);
     }
 }

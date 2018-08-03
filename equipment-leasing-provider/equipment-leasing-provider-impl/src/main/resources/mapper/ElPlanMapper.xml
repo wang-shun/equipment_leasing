@@ -142,12 +142,12 @@
 
     <select id="findById" parameterType="long" resultMap="ElPlanMap" >
         SELECT <include refid="cols_all" /> FROM <include refid="tb" />
-        WHERE plan_id = #{plan_id}
+        WHERE plan_id = #{plan_id} AND plan_is_del = 0
     </select>
 
     <select id="findByPrimarykey" parameterType="java.lang.String" resultMap="ElPlanMap" >
         SELECT <include refid="cols_all" /> FROM <include refid="tb" />
-        WHERE plan_id = #{planId}
+        WHERE plan_id = #{planId} AND plan_is_del = 0
     </select>
 
     <update id="update" parameterType="com.yankuang.equipment.leasing.model.ElPlan">
@@ -220,7 +220,7 @@
     <select id="list" parameterType="map" resultMap="ElPlanMap">
         SELECT <include refid="cols_all"/> FROM <include refid="tb"/>
         <where>
-            1 = 1
+            1 = 1 AND plan_is_del = 0
             <include refid="criteria"/>
         </where>
     </select>
@@ -228,7 +228,7 @@
     <select id="count" parameterType="map" resultType="long">
         SELECT count(1) FROM <include refid="tb"/>
         <where>
-            1 = 1
+            1 = 1 AND plan_is_del = 0
             <include refid="criteria"/>
         </where>
     </select>
@@ -236,7 +236,7 @@
     <select id="paging" parameterType="map" resultMap="ElPlanMap">
         SELECT <include refid="cols_all"/> FROM <include refid="tb"/>
         <where>
-            1 = 1
+            1 = 1 AND plan_is_del = 0
             <include refid="criteria"/>
         </where>
         order by created_at desc LIMIT #{offset}, #{limit}
@@ -265,5 +265,11 @@
         </foreach>
         ;
     </insert>
+
+    <update id="deletePlanByPlanId" parameterType="java.lang.String">
+        UPDATE <include refid="tb"/>
+        <set > plan_is_del = 1 </set>
+        WHERE plan_id = #{planId}
+    </update>
 
 </mapper>

@@ -13,9 +13,8 @@ import java.util.List;
 @Repository
 public class ElPlanMapper extends MyBatisDao<ElPlan> {
 
-    public List<ElPlanItem> queryElPlanItemByPlanId(String planId) {
-        return sqlSession.selectList("queryElPlanItemByPlanId", planId);
-    }
+    public List<ElPlanItem> queryElPlanItemByPlanId(String planId) { return sqlSession.selectList("queryElPlanItemByPlanId", planId);}
+
     public int save (ElPlan elPlan) {
         return sqlSession.insert("save", elPlan);
     }
@@ -31,4 +30,6 @@ public class ElPlanMapper extends MyBatisDao<ElPlan> {
     public int savePlanItemByPlanId(ElPlan elPlan) {
         return sqlSession.insert("savePlanItemByPlanId", elPlan);
     }
+
+    public int deletePlanByPlanId(String planId) { return sqlSession.update("deletePlanByPlanId", planId);  }
 }
