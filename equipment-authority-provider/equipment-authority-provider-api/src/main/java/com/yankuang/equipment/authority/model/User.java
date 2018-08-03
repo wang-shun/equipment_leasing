@@ -8,26 +8,47 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-//@Data
+@Data
 //@Entity
-@Table(name = "user")
+@Table(name = "el_user")
 public class User implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
+//    private String nickName;
+//    private String userName;
+//    private String password;
+//    private Long createdAt;
+//    private Long updatedAt;
+
     private Long id;
 
+    private String name;
 
-    private String nickName;
-    private String userName;
+    private String telephone;
+
+    private String mail;
+
     private String password;
 
+    private Byte status;
 
-//    @CreationTimestamp
-    private Long createdAt;
+    private String remark;
 
-//    @UpdateTimestamp
-    private Long updatedAt;
+    private String createBy;
+
+    private String updateBy;
+
+    private Long updateAt;
+
+    private Long sorting;
+
+    private Long version;
+
+    private Long createAt;
+
+    private String code;
 
     public Long getId() {
         return id;
@@ -37,20 +58,28 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public String getNickName() {
-        return nickName;
+    public String getName() {
+        return name;
     }
 
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getTelephone() {
+        return telephone;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
     }
 
     public String getPassword() {
@@ -61,19 +90,75 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public Long getCreatedAt() {
-        return createdAt;
+    public Byte getStatus() {
+        return status;
     }
 
-    public void setCreatedAt(Long createdAt) {
-        this.createdAt = createdAt;
+    public void setStatus(Byte status) {
+        this.status = status;
     }
 
-    public Long getUpdatedAt() {
-        return updatedAt;
+    public String getRemark() {
+        return remark;
     }
 
-    public void setUpdatedAt(Long updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+
+    public String getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
+    }
+
+    public Long getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(Long updateAt) {
+        this.updateAt = updateAt;
+    }
+
+    public Long getSorting() {
+        return sorting;
+    }
+
+    public void setSorting(Long sorting) {
+        this.sorting = sorting;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
+    public Long getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(Long createAt) {
+        this.createAt = createAt;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

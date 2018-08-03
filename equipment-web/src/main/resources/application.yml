@@ -4,17 +4,15 @@ server:
 spring:
   application:
     name: equipment-web
-#  redis:
-#    host: ${REDIS_HOST:47.94.211.172}
-#    port: ${REDIS_PORT:6379}
-#    password: ${REDIS_PASSWORD:738788}
+  redis:
+    host: ${REDIS_HOST:47.94.211.172}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:738788}
 rpc:
   mode: true
   dubbo:
     module: equipment-web
-#    registryAddress: localhost:2181
-#    registryAddress: ${ZOOKEEPER_HOST:127.0.0.1}:${ZOOKEEPER_PORT:2181}
     registryAddress: ${ZK_HOST:127.0.0.1}:${ZK_PORT:2181}
-    port: 20880
+#    port: 20880
 
 management.security.enabled: false

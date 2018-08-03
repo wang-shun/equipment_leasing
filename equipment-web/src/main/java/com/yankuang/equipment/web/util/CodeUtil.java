@@ -1,10 +1,10 @@
-package com.yankuang.equipment.authority.util;
+package com.yankuang.equipment.web.util;
 
 import java.util.UUID;
 
 public class CodeUtil {
 
-    private static String getCode(){
+    public static String getCode(){
         String code = UUID.randomUUID().
                 toString().replace("-", "");
         return code;

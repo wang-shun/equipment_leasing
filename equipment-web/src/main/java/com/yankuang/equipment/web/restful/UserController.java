@@ -3,6 +3,7 @@ package com.yankuang.equipment.web.restful;
 import com.yankuang.equipment.authority.model.User;
 import com.yankuang.equipment.authority.service.UserService;
 import com.yankuang.equipment.authority.util.CommonResponse;
+import com.yankuang.equipment.web.util.CodeUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
@@ -25,7 +26,7 @@ public class UserController {
         if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)) {
             return CommonResponse.errorTokenMsg("用户名和密码不能为空");
         }
-        User loginUser =  userService.login(userName, password);
+        User loginUser =  userService.login(userName);
         if (loginUser != null && !password.equals(loginUser.getPassword())) {
             return CommonResponse.errorTokenMsg("密码错误");
         }
@@ -37,15 +38,30 @@ public class UserController {
         return CommonResponse.errorTokenMsg("用户不存在");
     }
 
-    @ApiOperation("user getById")
-    @GetMapping(value = "/{id}")
-    CommonResponse getById(@PathVariable Long id) {
-        return CommonResponse.ok(userService.getById(id));
+    @ApiOperation("user findByCode")
+    @GetMapping(value = "/{code}")
+    CommonResponse findByCode(@PathVariable String code) {
+        return CommonResponse.ok(userService.findByCode(code));
     }
 
     @ApiOperation("user create")
     @PostMapping()
     CommonResponse addUser(@RequestBody User user) {
+
+
+
+//        #{updateBy},
+//        #{createBy},
+
+        user.setCode(CodeUtil.getCode());
+        user.setMail("213@121.COM");
+        user.setRemark("some");
+        user.setStatus((byte) 1);
+        user.setTelephone("13654567865");
+        user.setSorting((long) 1);
+        user.setVersion((long) 1);
+        user.setUpdateBy("admin");
+        user.setCreateBy("admin");
         Boolean b = userService.create(user);
         if (b == true) {
         return CommonResponse.ok(user);}

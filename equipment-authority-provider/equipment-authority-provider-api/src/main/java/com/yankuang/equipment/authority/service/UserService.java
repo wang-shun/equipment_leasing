@@ -4,9 +4,9 @@ import com.yankuang.equipment.authority.model.User;
 
 public interface UserService {
 
-    User login(String userName, String password);
+    User login(String name);
 
-    User getById(Long id);
+    public User findByCode(String code);
 
     boolean create(User user);
 

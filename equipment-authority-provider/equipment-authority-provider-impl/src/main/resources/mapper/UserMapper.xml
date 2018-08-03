@@ -3,91 +3,115 @@
 
 <mapper namespace="User">
     <resultMap id="UserMap" type="User">
-        <id column="id" property="id"/>
-        <result column="nick_name" property="nickName"/>
-        <result column="user_name" property="userName"/>
-        <result column="password" property="password"/>
-        <result column="created_at" property="createdAt"/>
-        <result column="updated_at" property="updatedAt"/>
-
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="telephone" property="telephone" jdbcType="VARCHAR" />
+        <result column="mail" property="mail" jdbcType="VARCHAR" />
+        <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="TINYINT" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+        <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+        <result column="update_at" property="updateAt" jdbcType="BIGINT" />
+        <result column="sorting" property="sorting" jdbcType="BIGINT" />
+        <result column="version" property="version" jdbcType="BIGINT" />
+        <result column="create_at" property="createAt" jdbcType="BIGINT" />
+        <result column="code" property="code" jdbcType="VARCHAR" />
     </resultMap>
 
-    <sql id="tb">
-        user
+    <sql id="cols_exclude_password">
+        id, <include refid="cols_exclude_id_password" />
     </sql>
-
     <sql id="cols_all">
-        id, <include refid="cols_exclude_id" />
+        password, <include refid="cols_exclude_password" />
     </sql>
-
-    <sql id="cols_exclude_id">
-        nick_name,
-        user_name,
-        password,
-        created_at,
-        updated_at
-
+    <sql id="cols_exclude_id_password">
+        code,
+        name,
+        telephone,
+        mail,
+        status,
+        remark,
+        sorting,
+        version,
+        update_by,
+        create_by,
+        create_at,
+        update_at
     </sql>
 
     <sql id="vals">
-        #{id},
-        #{nickName},
-        #{userName},
         #{password},
+        #{id},
+        #{code},
+        #{name},
+        #{telephone},
+        #{mail},
+        #{status},
+        #{remark},
+        #{sorting},
+        #{version},
+        #{updateBy},
+        #{createBy},
         unix_timestamp(now()),
         unix_timestamp(now())
     </sql>
 
     <sql id="criteria">
         <if test="id != null">AND id = #{id}</if>
-        <if test="nickName != null">AND nick_name = #{nickName}</if>
-        <if test="userName != null">AND user_name = #{userName}</if>
+        <if test="name != null">AND name = #{name}</if>
+        <if test="code != null">AND code = #{code}</if>
     </sql>
 
-    <!--<insert id="create" parameterType="User" keyProperty="id" useGeneratedKeys="true">-->
-        <!--INSERT INTO <include refid="tb" />-->
-        <!--(<include refid="cols_all" />)-->
-        <!--VALUES-->
-        <!--(<include refid="vals" />)-->
-    <!--</insert>-->
     <insert id="create" parameterType="User" keyProperty="id" useGeneratedKeys="true">
-        INSERT INTO user
+        INSERT INTO el_user
         (<include refid="cols_all" />)
         VALUES
         (<include refid="vals" />)
     </insert>
 
     <select id="findById" parameterType="long" resultMap="UserMap" >
-        SELECT <include refid="cols_all" /> FROM <include refid="tb" />
+        SELECT <include refid="cols_all" />
+        FROM el_user
         WHERE id = #{id}
     </select>
 
     <update id="update" parameterType="User">
-        UPDATE <include refid="tb"/>
+        UPDATE el_user
         <set>
-            <if test="id != null">id = #{id},</if>
-            <if test="nickName != null">nick_name = #{nickName},</if>
-            <if test="userName != null">user_name = #{userName},</if>
-            updated_at=now()
+            <if test="name != null">name = #{name},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="telephone != null">telephone = #{telephone},</if>
+            <if test="mail != null">mail = #{mail},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="sorting != null">sorting = #{sorting},</if>
+            <if test="version != null">version = #{version},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            update_at=unix_timestamp(now())
         </set>
-        WHERE id = #{id}
+        WHERE code = #{code}
     </update>
 
     <delete id="delete" parameterType="long">
-        DELETE FROM <include refid="tb"/>
-        WHERE id = #{id}
+        UPDATE el_user
+        SET status = 99
+        WHERE code = #{code}
     </delete>
 
     <select id="list" parameterType="map" resultMap="UserMap">
-        SELECT <include refid="cols_all"/> FROM <include refid="tb"/>
+        SELECT <include refid="cols_exclude_id_password"/>
+        FROM el_user
         <where>
             1 = 1
+            and status != 99
             <include refid="criteria"/>
         </where>
+        ORDER BY create_at DESC
     </select>
 
     <select id="count" parameterType="map" resultType="long">
-        SELECT count(1) FROM <include refid="tb"/>
+        SELECT count(1)
+        FROM el_user
         <where>
             1 = 1
             <include refid="criteria"/>
@@ -95,18 +119,26 @@
     </select>
 
     <select id="paging" parameterType="map" resultMap="UserMap">
-        SELECT <include refid="cols_all"/> FROM <include refid="tb"/>
+        SELECT <include refid="cols_exclude_id_password"/>
+        FROM el_user
         <where>
             1 = 1
+            and status != 99
             <include refid="criteria"/>
         </where>
-        order by created_at desc LIMIT #{offset}, #{limit}
+        order by create_at desc LIMIT #{offset}, #{limit}
     </select>
 
     <select id="login" parameterType="String" resultMap="UserMap">
         select <include refid="cols_all"/>
-        from  <include refid="tb"/>
-        where user_name = #{userName}
+        from  el_user
+        where name = #{name}
+    </select>
+
+    <select id="findByCode" parameterType="String" resultMap="UserMap" >
+        SELECT <include refid="cols_exclude_id_password" />
+        FROM el_user
+        WHERE code = #{code}
     </select>
 
 </mapper>

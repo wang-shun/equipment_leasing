@@ -17,12 +17,12 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
 
-    public User login(String userName, String password) {
-        return userMapper.login(userName);
+    public User login(String name) {
+        return userMapper.login(name);
     }
 
-    public User getById(Long id) {
-        return userMapper.findById(id);
+    public User findByCode(String code) {
+        return userMapper.findByCode(code);
     }
 
     public boolean create(User user){
