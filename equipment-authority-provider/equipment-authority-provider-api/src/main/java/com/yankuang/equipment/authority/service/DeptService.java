@@ -1,6 +1,7 @@
 package com.yankuang.equipment.authority.service;
 
 import com.yankuang.equipment.authority.model.Dept;
+import io.terminus.common.model.Paging;
 
 import java.util.List;
 
@@ -13,4 +14,5 @@ public interface DeptService {
 
     Dept getByName(String name);
     List<Dept> getAll( );
+    Paging findpage(int pageSize, int pageNum, Dept dept);
 }

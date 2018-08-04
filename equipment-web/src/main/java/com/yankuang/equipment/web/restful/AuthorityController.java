@@ -5,7 +5,10 @@ import com.yankuang.equipment.authority.service.AuthorityService;
 import com.yankuang.equipment.common.util.CommonResponse;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.web.bind.annotation.*;
-
+/**
+ * @author boms
+ * @createtime 2018/8/2
+ */
 @CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("/v1/acls")
@@ -13,11 +16,23 @@ public class AuthorityController{
     @RpcConsumer
     private AuthorityService authorityService;
 
+    /**
+     * @author boms
+     * @method 通过id查询
+     * @param id
+     * @return
+     */
     @GetMapping(value = "/{id}")
     CommonResponse getById(@PathVariable Long id) {
         return CommonResponse.ok(authorityService.getById(id));
     }
 
+    /**
+     * @author boms
+     * @method 修改
+     * @param authority
+     * @return
+     */
     @PutMapping
     CommonResponse updateById(Authority authority){
         if (" ".equals(authority.getName()) || authority.getName() == null){
@@ -46,6 +61,13 @@ public class AuthorityController{
         return CommonResponse.ok(authorityService.update(authority));
     }
 
+    /**
+     * @author boms
+     * @method 添加
+     * @param authority
+     * @return
+     */
+
     @PostMapping("/add")
     CommonResponse add(Authority authority){
         if (" ".equals(authority.getName()) || authority.getName() == null){
@@ -70,11 +92,24 @@ public class AuthorityController{
 
         return CommonResponse.ok(authorityService.add(authority));
     }
-    @DeleteMapping
-    CommonResponse del(Long id){
+
+    /**
+     * @author boms
+     * @method 删除
+     * @param id
+     * @return
+     */
+    @DeleteMapping("/{id}")
+    CommonResponse del(@PathVariable Long id){
         return CommonResponse.ok(authorityService.del(id));
     }
 
+    /**
+     * @author boms
+     * @method 通过名字查询
+     * @param name
+     * @return
+     */
     @PostMapping
     CommonResponse getByName(String name){
         if (name == null || " ".equals(name)){
@@ -83,10 +118,24 @@ public class AuthorityController{
         return CommonResponse.ok(authorityService.getByName(name));
     }
 
+    /**
+     * @author boms
+     * @method 查询所有
+     * @return
+     */
     @GetMapping(value = "/findAll")
     CommonResponse getAll( ){
         return CommonResponse.ok(authorityService.getAll());
     }
+
+    /**
+     * @author boms
+     * @method 分页查询
+     * @param page
+     * @param limit
+     * @param authority
+     * @return
+     */
 
     @PostMapping("/findpage/{page}/{limit}")
     CommonResponse getPage(@PathVariable int page,@PathVariable int limit,Authority authority){

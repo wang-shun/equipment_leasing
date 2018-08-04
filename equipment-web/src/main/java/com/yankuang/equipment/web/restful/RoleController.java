@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * @author boms
+ * @createtime 2018/8/2
+ */
 @CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("/v1/rols")
@@ -15,6 +19,12 @@ public class RoleController {
     @RpcConsumer
     private RolService rolService;
 
+
+    /**
+     * @method 通过id查询
+     * @param id
+     * @return
+     */
     @GetMapping(value = "/{id}")
     CommonResponse getById(@PathVariable Long id) {
         if (id == null || id ==0){
@@ -23,7 +33,12 @@ public class RoleController {
         return CommonResponse.ok(rolService.getById(id));
     }
 
-    @PutMapping(value = "/update")
+    /**
+     * @method 更新
+     * @param role
+     * @return
+     */
+    @PutMapping
     CommonResponse updateById(Role role){
         if (role.getId() == null || role.getId() == 0){
             return CommonResponse.errorMsg("系统错误");
@@ -49,6 +64,11 @@ public class RoleController {
         return CommonResponse.ok(rolService.update(role));
     }
 
+    /**
+     * @method 添加
+     * @param role
+     * @return
+     */
     @PostMapping(value = "/add")
     CommonResponse add(Role role){
         if (role.getName() == null || " ".equals(role.getName())){
@@ -74,20 +94,36 @@ public class RoleController {
         return CommonResponse.ok(rolService.add(role));
     }
 
-    @PutMapping(value = "/del")
-    CommonResponse del(Long id){
+    /**
+     * @method 删除
+     * @param id
+     * @return
+     */
+
+    @DeleteMapping("/{id}")
+    CommonResponse del(@PathVariable Long id){
         if (id == null || id ==0){
             return CommonResponse.ok("系统错误");
         }
         return CommonResponse.ok(rolService.del(id));
     }
 
+    /**
+     * @method 查询所有
+     * @param ids
+     * @return
+     */
     @GetMapping(value = "/sel")
     CommonResponse getAll(List<Long> ids){
         return  CommonResponse.ok(rolService.getAll(ids));
     }
 
-    @PostMapping(value = "/find")
+    /**
+     * @method 通过名字查询
+     * @param name
+     * @return
+     */
+    @PostMapping
     CommonResponse getByName(String name){
         if (name == null || " ".equals(name)){
             return CommonResponse.errorMsg("角色名称不能为空");
@@ -95,8 +131,24 @@ public class RoleController {
         return CommonResponse.ok(rolService.getByName(name));
     }
 
+    /**
+     * @method 查询所有
+     * @return
+     */
     @PostMapping(value = "/findAll")
     CommonResponse getAll(  ){
         return CommonResponse.ok(rolService.getAll( ));
+    }
+
+    /**
+     * @method 分页查询
+     * @param page
+     * @param limit
+     * @param role
+     * @return
+     */
+    @PostMapping("/findpage/{page}/{limit}")
+    CommonResponse getPage(@PathVariable int page,@PathVariable int limit,Role role){
+        return CommonResponse.ok(rolService.findpage(page,limit,role));
     }
 }

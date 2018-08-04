@@ -5,7 +5,10 @@ import com.yankuang.equipment.authority.service.DeptService;
 import com.yankuang.equipment.common.util.CommonResponse;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.web.bind.annotation.*;
-
+/**
+ * @author boms
+ * @createtime 2018/8/2
+ */
 @CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("/v1/depts")
@@ -13,6 +16,11 @@ public class DeptController {
     @RpcConsumer
     private DeptService deptService;
 
+    /**
+     * @method 通过id查询
+     * @param id
+     * @return
+     */
     @GetMapping(value = "/{id}")
     CommonResponse getById(@PathVariable Long id) {
         if(id == null || id == 0){
@@ -21,7 +29,12 @@ public class DeptController {
         return CommonResponse.ok(deptService.getById(id));
     }
 
-    @PutMapping(value = "/update")
+    /**
+     * @method 更新
+     * @param dept
+     * @return
+     */
+    @PutMapping
     CommonResponse updateById(Dept dept){
         if(dept.getId() == null || dept.getId() == 0){
             return  CommonResponse.errorMsg("系统错误");
@@ -44,6 +57,11 @@ public class DeptController {
         return CommonResponse.ok(deptService.update(dept));
     }
 
+    /**
+     * @method 添加
+     * @param dept
+     * @return
+     */
     @PostMapping(value = "/add")
     CommonResponse add(Dept dept){
 
@@ -68,15 +86,26 @@ public class DeptController {
         return CommonResponse.ok(deptService.add(dept));
     }
 
-    @PutMapping(value = "/del")
-    CommonResponse del(Long id){
+    /**
+     * @method 删除
+     * @param id
+     * @return
+     */
+    @DeleteMapping("/{id}")
+    CommonResponse del(@PathVariable Long id){
         if(id == null || id == 0){
             return  CommonResponse.errorMsg("系统错误");
         }
         return  CommonResponse.ok(deptService.del(id));
     }
 
-    @PostMapping(value = "/find")
+    /**
+     * @method 通过名字查询
+     * @param name
+     * @return
+     */
+
+    @PostMapping
     CommonResponse getByName(String name){
         if (name == null || " ".equals(name)){
             return CommonResponse.errorMsg("部门名称不能为空");
@@ -84,8 +113,25 @@ public class DeptController {
         return CommonResponse.ok(deptService.getByName(name));
     }
 
+    /**
+     * @method 查询所有
+     * @return
+     */
+
     @GetMapping(value = "/findAll")
     CommonResponse getAll( ){
         return CommonResponse.ok(deptService.getAll( ));
+    }
+
+    /**
+     * @method 分页查询
+     * @param page
+     * @param limit
+     * @param dept
+     * @return
+     */
+    @PostMapping("/findpage/{page}/{limit}")
+    CommonResponse getPage(@PathVariable int page,@PathVariable int limit,Dept dept){
+        return CommonResponse.ok(deptService.findpage(page,limit,dept));
     }
 }

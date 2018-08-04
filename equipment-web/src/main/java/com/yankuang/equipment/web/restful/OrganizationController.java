@@ -7,7 +7,10 @@ import com.yankuang.equipment.authority.service.OrganizationService;
 import com.yankuang.equipment.common.util.CommonResponse;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.web.bind.annotation.*;
-
+/**
+ * @author boms
+ * @createtime 2018/8/2
+ */
 @CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("/v1/orgs")
@@ -16,11 +19,21 @@ public class OrganizationController {
     @RpcConsumer
     private OrganizationService organizationService;
 
+    /**
+     * @method 通过id查询
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     CommonResponse getById(@PathVariable Long id) {
         return CommonResponse.ok(organizationService.getById(id));
     }
 
+    /**
+     * @method 添加
+     * @param organization
+     * @return
+     */
     @PostMapping()
     CommonResponse add(Organization organization){
         if (organization.getName() == null || " ".equals(organization.getName())){
@@ -47,7 +60,12 @@ public class OrganizationController {
         return CommonResponse.ok(organizationService.add(organization));
     }
 
-    @PutMapping()
+    /**
+     * @method 更新
+     * @param organization
+     * @return
+     */
+    @PutMapping
     CommonResponse update(Organization organization){
         if (organization.getId() == null || organization.getId() == 0){
             return CommonResponse.errorMsg("系统错误");
@@ -84,15 +102,25 @@ public class OrganizationController {
         return CommonResponse.ok(organizationService.update(organization));
     }
 
-    @DeleteMapping("/{code}")
-    CommonResponse del(Long id){
+    /**
+     * @mehtod 删除
+     * @param id
+     * @return
+     */
+    @DeleteMapping("/{id}")
+    CommonResponse del(@PathVariable Long id){
         if (id == null || id == 0){
             return CommonResponse.errorMsg("系统错误");
         }
         return CommonResponse.ok(organizationService.del(id));
     }
 
-    @PostMapping(value = "/find")
+    /**
+     * @method 通过名字查找
+     * @param name
+     * @return
+     */
+    @PostMapping
     CommonResponse getByName(String name){
         if (name == null || " ".equals(name)){
             return CommonResponse.errorMsg("组织名称不能为空");
@@ -100,8 +128,25 @@ public class OrganizationController {
         return CommonResponse.ok(organizationService.getByName(name));
     }
 
+    /**
+     * @method 查询所有
+     * @return
+     */
     @GetMapping(value = "/findAll")
     CommonResponse getAll( ){
         return CommonResponse.ok(organizationService.getAll( ));
+    }
+
+
+    /**
+     * @method 分页查询
+     * @param page
+     * @param limit
+     * @param organization
+     * @return
+     */
+    @PostMapping("/findpage/{page}/{limit}")
+    CommonResponse getPage(@PathVariable int page,@PathVariable int limit,Organization organization){
+        return CommonResponse.ok(organizationService.findpage(page,limit,organization));
     }
 }

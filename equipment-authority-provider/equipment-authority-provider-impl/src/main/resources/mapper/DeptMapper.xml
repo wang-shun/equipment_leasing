@@ -137,7 +137,101 @@
         <if test="status != null" >
             AND version = #{status}
         </if>
-        WHERE status != 99
+        AND status != 99
         ORDER BY create_at asc
+    </select>
+    <select id="paging" parameterType="map" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM yankuang_equipment.el_department
+        WHERE
+        1 = 1
+        <if test="name != null" >
+            AND name = #{name}
+        </if>
+        <if test="code != null" >
+            AND code = #{code}
+        </if>
+        <if test="pcode != null" >
+            AND pcode = #{pcode}
+        </if>
+        <if test="level != null" >
+            AND level = #{level}
+        </if>
+        <if test="sorting != null" >
+            AND sorting = #{sorting}
+        </if>
+        <if test="remark != null" >
+            AND remark = #{remark}
+        </if>
+        <if test="cteateBy != null" >
+            AND cteate_by = #{cteateBy}
+        </if>
+        <if test="createAt != null" >
+            AND create_at = #{createAt}
+        </if>
+        <if test="updateBy != null" >
+            AND update_by = #{updateBy}
+        </if>
+        <if test="updateAt != null" >
+            AND update_at = #{updateAt}
+        </if>
+        <if test="version != null" >
+            AND version = #{version}
+        </if>
+        <if test="id != null">
+            AND id = #{id}
+        </if>
+        <if test="status != null" >
+            AND version = #{status}
+        </if>
+        AND status != 99
+        order by create_at desc LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="count" parameterType="map" resultType="long">
+        SELECT count(1)
+        FROM yankuang_equipment.el_department
+        WHERE
+        1 = 1
+        <if test="name != null" >
+            AND name = #{name}
+        </if>
+        <if test="code != null" >
+            AND code = #{code}
+        </if>
+        <if test="pcode != null" >
+            AND pcode = #{pcode}
+        </if>
+        <if test="level != null" >
+            AND level = #{level}
+        </if>
+        <if test="sorting != null" >
+            AND sorting = #{sorting}
+        </if>
+        <if test="remark != null" >
+            AND remark = #{remark}
+        </if>
+        <if test="cteateBy != null" >
+            AND cteate_by = #{cteateBy}
+        </if>
+        <if test="createAt != null" >
+            AND create_at = #{createAt}
+        </if>
+        <if test="updateBy != null" >
+            AND update_by = #{updateBy}
+        </if>
+        <if test="updateAt != null" >
+            AND update_at = #{updateAt}
+        </if>
+        <if test="version != null" >
+            AND version = #{version}
+        </if>
+        <if test="id != null">
+            AND id = #{id}
+        </if>
+        <if test="status != null" >
+            AND version = #{status}
+        </if>
+        AND status != 99
     </select>
 </mapper>
