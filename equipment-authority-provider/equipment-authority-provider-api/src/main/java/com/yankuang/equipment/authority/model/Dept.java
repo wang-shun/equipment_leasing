@@ -19,7 +19,15 @@ public class Dept implements Serializable {
 
     private String remark;
 
-    private String cteateBy;
+    private String createBy;
+
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
 
     private Long createAt;
 
@@ -28,6 +36,16 @@ public class Dept implements Serializable {
     private Long updateAt;
 
     private Long version;
+
+    private Byte status;
+
+    public Byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(Byte status) {
+        this.status = status;
+    }
 
     public Integer getId() {
         return id;
@@ -86,11 +104,11 @@ public class Dept implements Serializable {
     }
 
     public String getCteateBy() {
-        return cteateBy;
+        return createBy;
     }
 
     public void setCteateBy(String cteateBy) {
-        this.cteateBy = cteateBy == null ? null : cteateBy.trim();
+        this.createBy = cteateBy == null ? null : cteateBy.trim();
     }
 
     public Long getCreateAt() {

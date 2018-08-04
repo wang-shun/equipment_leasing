@@ -66,6 +66,11 @@
             <artifactId>terminus-common</artifactId>
             <version>2.0.3.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>com.yankuang.equipment</groupId>
+            <artifactId>equipment-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
 
     </dependencies>
 

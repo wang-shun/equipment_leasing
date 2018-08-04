@@ -29,6 +29,16 @@ public class Organization implements Serializable {
 
     private Long version;
 
+    private Byte status;
+
+    public Byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(Byte status) {
+        this.status = status;
+    }
+
     public Integer getId() {
         return id;
     }
