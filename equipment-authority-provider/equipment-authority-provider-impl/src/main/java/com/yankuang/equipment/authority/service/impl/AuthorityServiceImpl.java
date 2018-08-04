@@ -1,10 +1,12 @@
 package com.yankuang.equipment.authority.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.yankuang.equipment.authority.mapper.AuthorityMapper;
 import com.yankuang.equipment.authority.model.Authority;
 import com.yankuang.equipment.authority.service.AuthorityService;
 import com.yankuang.equipment.common.util.UuidUtils;
 import io.terminus.boot.rpc.common.annotation.RpcProvider;
+import io.terminus.common.model.Paging;
 import jdk.nashorn.internal.ir.annotations.Reference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,7 +47,9 @@ public class AuthorityServiceImpl implements AuthorityService{
         return authorityMapper.getAll();
     }
 
-//    public List<Authority> findPage(){
-//
-//    }
+    public Paging findpage(Authority authority, int pageSize, int pageNum) {
+            int maxResult = (pageNum - 1) * pageSize;
+            Paging page = authorityMapper.paging(maxResult, pageNum, authority);
+            return page;
+    }
 }
