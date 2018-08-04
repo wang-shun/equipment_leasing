@@ -35,7 +35,7 @@ public class DeptController {
      * @return
      */
     @PutMapping
-    CommonResponse updateById(Dept dept){
+    CommonResponse updateById(@RequestBody Dept dept){
         if(dept.getId() == null || dept.getId() == 0){
             return  CommonResponse.errorMsg("系统错误");
         }
@@ -63,7 +63,7 @@ public class DeptController {
      * @return
      */
     @PostMapping(value = "/add")
-    CommonResponse add(Dept dept){
+    CommonResponse add(@RequestBody Dept dept){
 
         if (dept.getName() == null || " ".equals(dept.getName())){
             return CommonResponse.errorMsg("部门名称不能为空");
@@ -131,7 +131,7 @@ public class DeptController {
      * @return
      */
     @PostMapping("/findpage/{page}/{limit}")
-    CommonResponse getPage(@PathVariable Integer page,@PathVariable Integer limit,Dept dept){
+    CommonResponse getPage(@PathVariable Integer page,@PathVariable Integer limit,@RequestBody Dept dept){
         return CommonResponse.ok(deptService.findpage(page == null ?0:page,limit == null ?0:limit,dept));
     }
 }

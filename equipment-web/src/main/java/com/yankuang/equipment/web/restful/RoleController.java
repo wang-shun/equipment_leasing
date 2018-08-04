@@ -39,7 +39,7 @@ public class RoleController {
      * @return
      */
     @PutMapping
-    CommonResponse updateById(Role role){
+    CommonResponse updateById(@RequestBody Role role){
         if (role.getId() == null || role.getId() == 0){
             return CommonResponse.errorMsg("系统错误");
         }
@@ -70,7 +70,7 @@ public class RoleController {
      * @return
      */
     @PostMapping(value = "/add")
-    CommonResponse add(Role role){
+    CommonResponse add(@RequestBody Role role){
         if (role.getName() == null || " ".equals(role.getName())){
             return CommonResponse.errorMsg("角色不能为空");
         }
@@ -108,15 +108,6 @@ public class RoleController {
         return CommonResponse.ok(rolService.del(id));
     }
 
-    /**
-     * @method 查询所有
-     * @param ids
-     * @return
-     */
-    @GetMapping(value = "/sel")
-    CommonResponse getAll(List<Long> ids){
-        return  CommonResponse.ok(rolService.getAll(ids));
-    }
 
     /**
      * @method 通过名字查询
@@ -148,7 +139,7 @@ public class RoleController {
      * @return
      */
     @PostMapping("/findpage/{page}/{limit}")
-    CommonResponse getPage(@PathVariable Integer page,@PathVariable Integer limit,Role role){
+    CommonResponse getPage(@PathVariable Integer page,@PathVariable Integer limit,@RequestBody Role role){
         return CommonResponse.ok(rolService.findpage(page == null ?0:page,limit == null ?0:limit,role));
     }
 }

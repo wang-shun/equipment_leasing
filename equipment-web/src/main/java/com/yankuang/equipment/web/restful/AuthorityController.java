@@ -34,7 +34,7 @@ public class AuthorityController{
      * @return
      */
     @PutMapping
-    CommonResponse updateById(Authority authority){
+    CommonResponse updateById(@RequestBody Authority authority){
         if (" ".equals(authority.getName()) || authority.getName() == null){
             return CommonResponse.errorMsg("用户不能为空");
         }
@@ -69,7 +69,7 @@ public class AuthorityController{
      */
 
     @PostMapping("/add")
-    CommonResponse add(Authority authority){
+    CommonResponse add(@RequestBody Authority authority){
         if (" ".equals(authority.getName()) || authority.getName() == null){
             return CommonResponse.errorMsg("用户不能为空");
         }
@@ -138,7 +138,7 @@ public class AuthorityController{
      */
 
     @PostMapping("/findpage/{page}/{limit}")
-    CommonResponse getPage(@PathVariable Integer page,@PathVariable Integer limit,Authority authority){
+    CommonResponse getPage(@PathVariable Integer page,@PathVariable Integer limit,@RequestBody Authority authority){
         return CommonResponse.ok(authorityService.findpage(page == null ?0:page,limit == null ?0:limit,authority));
     }
 
