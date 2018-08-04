@@ -66,6 +66,7 @@
             <artifactId>equipment-authority-provider-api</artifactId>
             <version>${project.version}</version>
         </dependency>
+<<<<<<< HEAD
         <dependency>
             <groupId>com.yankuang.equipment</groupId>
             <artifactId>equipment-leasing-provider-api</artifactId>
@@ -76,6 +77,15 @@
             <artifactId>equipment-common</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+=======
+
+        <dependency>
+            <groupId>com.yankuang.equipment</groupId>
+            <artifactId>equipment-equipment-provider-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+>>>>>>> b8bd3bbb883b73b6dab4aa0e80f102bb4157ad58
         <dependency>
             <groupId>io.swagger</groupId>
             <artifactId>swagger-core</artifactId>
