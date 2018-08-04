@@ -108,13 +108,12 @@ public class RoleController {
         return CommonResponse.ok(rolService.del(id));
     }
 
-
     /**
      * @method 通过名字查询
      * @param name
      * @return
      */
-    @PostMapping
+    @PostMapping(value = "/find")
     CommonResponse getByName(String name){
         if (name == null || " ".equals(name)){
             return CommonResponse.errorMsg("角色名称不能为空");
@@ -139,7 +138,7 @@ public class RoleController {
      * @return
      */
     @PostMapping("/findpage/{page}/{limit}")
-    CommonResponse getPage(@PathVariable Integer page,@PathVariable Integer limit,@RequestBody Role role){
-        return CommonResponse.ok(rolService.findpage(page == null ?0:page,limit == null ?0:limit,role));
+    CommonResponse getPage(@PathVariable int page,@PathVariable int limit,@RequestBody Role role){
+        return CommonResponse.ok(rolService.findpage(page,limit,role));
     }
 }

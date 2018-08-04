@@ -34,7 +34,7 @@ public class OrganizationController {
      * @param organization
      * @return
      */
-    @PostMapping()
+    @PostMapping("/add")
     CommonResponse add(@RequestBody Organization organization){
         if (organization.getName() == null || " ".equals(organization.getName())){
             return CommonResponse.errorMsg("请填写组织名称");
@@ -146,7 +146,7 @@ public class OrganizationController {
      * @return
      */
     @PostMapping("/findpage/{page}/{limit}")
-    CommonResponse getPage(@PathVariable Integer page,@PathVariable Integer limit,@RequestBody Organization organization){
-        return CommonResponse.ok(organizationService.findpage(page == null ?0:page,limit == null ?0:limit,organization));
+    CommonResponse getPage(@PathVariable int page,@PathVariable int limit,@RequestBody Organization organization){
+        return CommonResponse.ok(organizationService.findpage(page,limit,organization));
     }
 }

@@ -138,8 +138,8 @@ public class AuthorityController{
      */
 
     @PostMapping("/findpage/{page}/{limit}")
-    CommonResponse getPage(@PathVariable Integer page,@PathVariable Integer limit,@RequestBody Authority authority){
-        return CommonResponse.ok(authorityService.findpage(page == null ?0:page,limit == null ?0:limit,authority));
+    CommonResponse getPage(@PathVariable int page,@PathVariable int limit,@RequestBody Authority authority){
+        return CommonResponse.ok(authorityService.findpage(page,limit,authority));
     }
 
 }
