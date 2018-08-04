@@ -36,13 +36,14 @@
     </sql>
 
     <sql id="cols_exclude_id">
-        plan_year, plan_month, plan_quarter, plan_position, plan_remarks,
+        plan_id, plan_year, plan_month, plan_quarter, plan_position, plan_remarks,
     plan_opinion, plan_creator_id, plan_status, plan_approve_time, plan_approver_id, plan_equipment_type,
     plan_type, plan_is_del, plan_create_time, plan_update_time,plan_code,plan_updator_id,plan_sorting,plan_version
 
     </sql>
 
     <sql id="vals">
+        #{planId},
         #{planYear},
         #{planMonth},
         #{planQuarter},
@@ -242,13 +243,22 @@
         order by created_at desc LIMIT #{offset}, #{limit}
     </select>
 
+    <sql id="Base_Column_List" >
+        item_id, plan_id, equipment_id, equipment_name, equipment_num, item_position, item_effect,
+        equipment_big_type, equipment_middle_type, equipment_small_type, equipment_specification,
+        equipment_param_name, equipment_param_value, item_remarks
+    </sql>
+
     <insert id="save">
         INSERT INTO <include refid="tb"/> (<include refid="cols_exclude_id" />) VALUES (<include refid="vals" />);
-        INSERT INTO el_plan_item VALUES
-        <foreach collection="elPlanItemList" item="item" separator=",">
-            (#{item.itemId},#{planId},#{item.equipmentId},#{item.equipmentName},#{item.equipmentNum},#{item.itemPosition},#{item.itemEffect},
-            #{item.equipmentBigType},#{item.equipmentMiddleType},#{item.equipmentSmallType},#{item.equipmentSpecification},#{item.equipmentParamName},#{item.equipmentParamValue},#{item.itemRemarks})
-        </foreach>
+        <if test="elPlanItemList != null">
+            INSERT INTO el_plan_item (<include refid="Base_Column_List"/> ) VALUES
+            <foreach collection="elPlanItemList" item="item" separator=",">
+
+                (#{item.itemId},#{planId},#{item.equipmentId},#{item.equipmentName},#{item.equipmentNum},#{item.itemPosition},#{item.itemEffect},
+                #{item.equipmentBigType},#{item.equipmentMiddleType},#{item.equipmentSmallType},#{item.equipmentSpecification},#{item.equipmentParamName},#{item.equipmentParamValue},#{item.itemRemarks})
+            </foreach>
+        </if>
         ;
     </insert>
 
@@ -258,8 +268,9 @@
     </delete>
 
     <insert id="savePlanItemByPlanId">
-        INSERT INTO el_plan_item VALUES
         <foreach collection="elPlanItemList" item="item" separator=",">
+        INSERT INTO el_plan_item (item_id,plan_id,equipment_id,equipment_name,equipment_num,item_position,item_effect,
+            equipment_big_type,equipment_middle_type,equipment_small_type,equipment_specification,equipment_param_name,equipment_param_value,item_remarks) VALUES
             (#{item.itemId},#{planId},#{item.equipmentId},#{item.equipmentName},#{item.equipmentNum},#{item.itemPosition},#{item.itemEffect},
             #{item.equipmentBigType},#{item.equipmentMiddleType},#{item.equipmentSmallType},#{item.equipmentSpecification},#{item.equipmentParamName},#{item.equipmentParamValue},#{item.itemRemarks})
         </foreach>

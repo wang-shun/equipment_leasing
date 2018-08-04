@@ -4,11 +4,12 @@ import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 @Data
 @Entity
 @Table(name = "el_plan_item")
-public class ElPlanItem {
+public class ElPlanItem implements Serializable {
     private String itemId;
 
     private String planId;

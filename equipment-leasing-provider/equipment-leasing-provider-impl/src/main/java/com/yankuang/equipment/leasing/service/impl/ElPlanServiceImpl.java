@@ -1,5 +1,6 @@
 package com.yankuang.equipment.leasing.service.impl;
 
+import com.alibaba.fastjson.parser.deserializer.ArrayListTypeFieldDeserializer;
 import com.yankuang.equipment.common.util.StringUtils;
 import com.yankuang.equipment.common.util.UuidUtils;
 import com.yankuang.equipment.leasing.model.ElPlanItem;
@@ -14,7 +15,9 @@ import com.yankuang.equipment.leasing.model.ElPlan;
 import com.yankuang.equipment.leasing.service.ElPlanService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by zhouy on 2018/7/30.
@@ -39,10 +42,13 @@ public class ElPlanServiceImpl extends BaseService implements ElPlanService {
             elPlan.setPlanCode(UuidUtils.newUuid());
             elPlan.setPlanUpdatorId(elPlan.getPlanCreatorId());
             elPlan.setPlanVersion(UuidUtils.newUuid());
-            for (ElPlanItem elPlanItem : elPlan.getElPlanItemList()) {
-                elPlanItem.setItemId(UuidUtils.newUuid());
+            List<ElPlanItem> elPlanItemList = elPlan.getElPlanItemList();
+            if (elPlanItemList != null) {
+                for (ElPlanItem elPlanItem : elPlanItemList) {
+                    elPlanItem.setItemId(UuidUtils.newUuid());
+                }
             }
-            res = elPlanMapper.create(elPlan);
+            res = elPlanMapper.save(elPlan) > 0;
             logger.debug("create ElPlan:"+JSON.toJSONString(elPlan));
             return res;
         } catch (Exception e) {
