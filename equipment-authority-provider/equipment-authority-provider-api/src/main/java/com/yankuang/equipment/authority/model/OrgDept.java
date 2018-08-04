@@ -4,13 +4,11 @@ import javax.persistence.Table;
 
 @Table(name = "el_organization_department_mapping")
 public class OrgDept {
-    private Integer id;
+    private Long id;
 
-    private String code;
+    private Long departmentId;
 
-    private String departmentCode;
-
-    private String organizationCode;
+    private Long organizationId;
 
     private String createBy;
 
@@ -24,36 +22,28 @@ public class OrgDept {
 
     private Byte status;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getCode() {
-        return code;
+    public Long getDepartmentId() {
+        return departmentId;
     }
 
-    public void setCode(String code) {
-        this.code = code == null ? null : code.trim();
+    public void setDepartmentId(Long departmentId) {
+        this.departmentId = departmentId;
     }
 
-    public String getDepartmentCode() {
-        return departmentCode;
+    public Long getOrganizationId() {
+        return organizationId;
     }
 
-    public void setDepartmentCode(String departmentCode) {
-        this.departmentCode = departmentCode == null ? null : departmentCode.trim();
-    }
-
-    public String getOrganizationCode() {
-        return organizationCode;
-    }
-
-    public void setOrganizationCode(String organizationCode) {
-        this.organizationCode = organizationCode == null ? null : organizationCode.trim();
+    public void setOrganizationId(Long organizationId) {
+        this.organizationId = organizationId;
     }
 
     public String getCreateBy() {
@@ -61,7 +51,7 @@ public class OrgDept {
     }
 
     public void setCreateBy(String createBy) {
-        this.createBy = createBy == null ? null : createBy.trim();
+        this.createBy = createBy;
     }
 
     public Long getUpdateAt() {
@@ -77,7 +67,7 @@ public class OrgDept {
     }
 
     public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy == null ? null : updateBy.trim();
+        this.updateBy = updateBy;
     }
 
     public Long getCreateAt() {

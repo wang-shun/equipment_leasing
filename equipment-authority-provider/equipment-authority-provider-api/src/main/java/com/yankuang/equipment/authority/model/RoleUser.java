@@ -4,11 +4,11 @@ import javax.persistence.Table;
 
 @Table(name = "el_role_user_mapping")
 public class RoleUser {
-    private Integer id;
+    private Long id;
 
-    private String roleCode;
+    private Long roleId;
 
-    private String userCode;
+    private Long userId;
 
     private String createBy;
 
@@ -18,34 +18,32 @@ public class RoleUser {
 
     private Long createAt;
 
-    private String code;
-
     private Long version;
 
     private Byte status;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getRoleCode() {
-        return roleCode;
+    public Long getRoleId() {
+        return roleId;
     }
 
-    public void setRoleCode(String roleCode) {
-        this.roleCode = roleCode == null ? null : roleCode.trim();
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
     }
 
-    public String getUserCode() {
-        return userCode;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUserCode(String userCode) {
-        this.userCode = userCode == null ? null : userCode.trim();
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getCreateBy() {
@@ -53,7 +51,7 @@ public class RoleUser {
     }
 
     public void setCreateBy(String createBy) {
-        this.createBy = createBy == null ? null : createBy.trim();
+        this.createBy = createBy;
     }
 
     public Long getUpdateAt() {
@@ -69,7 +67,7 @@ public class RoleUser {
     }
 
     public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy == null ? null : updateBy.trim();
+        this.updateBy = updateBy;
     }
 
     public Long getCreateAt() {
@@ -78,14 +76,6 @@ public class RoleUser {
 
     public void setCreateAt(Long createAt) {
         this.createAt = createAt;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code == null ? null : code.trim();
     }
 
     public Long getVersion() {
