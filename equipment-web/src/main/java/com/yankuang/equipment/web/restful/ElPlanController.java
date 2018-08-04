@@ -171,7 +171,7 @@ public class ElPlanController {
      * @return
      */
     @CrossOrigin(maxAge = 3600)
-    @RequestMapping(value = "/{equipmentType}/{planType}", method = RequestMethod.POST)
+    @RequestMapping(value = "/list/{equipmentType}/{planType}", method = RequestMethod.POST)
     public CommonResponse getElPlans(@RequestBody ElPlan elPlan,
                                      @RequestParam(value = "pageSize") int pageSize,
                                      @RequestParam(value = "pageNum") int pageNum,
