@@ -155,9 +155,6 @@
             <if test="type != null" >
                 AND type = #{type}
             </if>
-            <if test="status != null" >
-                AND status = #{status}
-            </if>
             <if test="createBy != null" >
                 AND create_by = #{createBy}
             </if>
@@ -182,7 +179,16 @@
             <if test="id != null">
                 AND id = #{id}
             </if>
+            AND status != 99
         </where>
         order by created_at desc LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="count" parameterType="map" resultType="long">
+        SELECT count(1) FROM yankuang_equipment.el_authority
+        <where>
+            1 = 1 AND status != 99
+            <include refid="criteria"/>
+        </where>
     </select>
 </mapper>
