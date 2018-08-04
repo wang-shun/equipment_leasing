@@ -44,4 +44,8 @@ public class AuthorityServiceImpl implements AuthorityService{
     public List<Authority> getAll( ){
         return authorityMapper.getAll();
     }
+
+//    public List<Authority> findPage(){
+//
+//    }
 }

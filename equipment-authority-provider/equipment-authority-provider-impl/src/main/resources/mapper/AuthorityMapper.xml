@@ -138,4 +138,51 @@
         WHERE status != 99
         ORDER BY create_at asc
     </select>
+    <select id="paging" parameterType="map" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM yankuang_equipment.el_authority
+        <where>
+            1 = 1
+            <if test="code != null" >
+                AND code = #{code}
+            </if>
+            <if test="name != null" >
+                AND name = #{name}
+            </if>
+            <if test="url != null" >
+                AND url = #{url}
+            </if>
+            <if test="type != null" >
+                AND type = #{type}
+            </if>
+            <if test="status != null" >
+                AND status = #{status}
+            </if>
+            <if test="createBy != null" >
+                AND create_by = #{createBy}
+            </if>
+            <if test="remark != null" >
+                AND remark = #{remark}
+            </if>
+            <if test="sorting != null" >
+                AND sorting = #{sorting}
+            </if>
+            <if test="updateAt != null" >
+                AND update_at = #{updateAt}
+            </if>
+            <if test="updateBy != null" >
+                AND update_by = #{updateBy}
+            </if>
+            <if test="version != null" >
+                AND version = #{version}
+            </if>
+            <if test="createAt != null" >
+                AND create_at = #{createAt}
+            </if>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+        </where>
+        order by created_at desc LIMIT #{offset}, #{limit}
+    </select>
 </mapper>
