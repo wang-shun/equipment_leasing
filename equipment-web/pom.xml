@@ -67,6 +67,17 @@
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.yankuang.equipment</groupId>
+            <artifactId>equipment-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.yankuang.equipment</groupId>
+            <artifactId>equipment-equipment-provider-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>io.swagger</groupId>
@@ -80,6 +91,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
     </dependencies>
 
     <build>
