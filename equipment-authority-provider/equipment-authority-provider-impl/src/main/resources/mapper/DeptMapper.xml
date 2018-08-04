@@ -14,9 +14,10 @@
         <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
         <result column="update_at" property="updateAt" jdbcType="BIGINT" />
         <result column="version" property="version" jdbcType="BIGINT" />
+        <result column="status" property="status" jdbcType="TINYINT" />
     </resultMap>
     <sql id="Base_Column_List" >
-        id, name, code, pcode, level, sorting, remark, create_by, create_at, update_by, update_at, version
+        id, name, code, pcode, level, sorting, remark, create_by, create_at, update_by, update_at, version, status
     </sql>
 
     <select id="findById" parameterType="long" resultMap="BaseResultMap" >
@@ -59,6 +60,9 @@
             <if test="version != null" >
                 version = #{version},
             </if>
+            <if test="status != null" >
+                version = #{status},
+            </if>
             update_at = unix_timestamp(now())
         </set>
         where id = #{id}
@@ -70,7 +74,7 @@
         VALUES(#{id}, #{name}, #{code},
         #{pcode}, #{level}, #{sorting},
         #{remark}, #{createBy},unix_timestamp(now()),
-        #{updateBy}, unix_timestamp(now()), #{version}
+        #{updateBy}, unix_timestamp(now()), #{version},1
         )
     </insert>
 
@@ -129,6 +133,9 @@
         </if>
         <if test="id != null">
             AND id = #{id}
+        </if>
+        <if test="status != null" >
+            AND version = #{status}
         </if>
         WHERE status != 99
         ORDER BY create_at asc

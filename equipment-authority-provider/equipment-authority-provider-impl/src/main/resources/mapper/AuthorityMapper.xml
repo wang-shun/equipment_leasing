@@ -71,7 +71,7 @@
         INSERT INTO yankuang_equipment.el_authority
         (<include refid="Base_Column_List" />)
         VALUES(#{id}, #{code}, #{name},
-        #{url}, #{type}, #{status},
+        #{url}, #{type}, 1,
         #{createBy}, #{remark}, #{sorting},
         unix_timestamp(now()), #{updateBy}, #{version},unix_timestamp(now())
         )

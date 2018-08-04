@@ -78,7 +78,7 @@
         (<include refid="Base_Column_List" />)
         VALUES(#{id}, #{name}, #{code},
         #{pcode}, #{type}, #{sorting},
-        #{status}, #{remark}, #{createBy},
+        1, #{remark}, #{createBy},
         unix_timestamp(now()), #{updateBy}, #{level},
         unix_timestamp(now()),#{version}
         )
