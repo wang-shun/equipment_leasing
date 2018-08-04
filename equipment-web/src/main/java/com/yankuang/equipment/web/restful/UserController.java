@@ -44,20 +44,14 @@ public class UserController {
         return CommonResponse.ok(userService.findByCode(code));
     }
 
-<<<<<<< HEAD
     //@ApiOperation("user getById")
-    @GetMapping(value = "/{id}")
+    /*@GetMapping(value = "/{id}")
     CommonResponse getById(@PathVariable Long id) {
         return CommonResponse.ok(userService.getById(id));
-=======
+    }*/
     @ApiOperation("user create")
     @PostMapping()
     CommonResponse addUser(@RequestBody User user) {
-
-
-
-//        #{updateBy},
-//        #{createBy},
 
         user.setCode(CodeUtil.getCode());
         user.setMail("213@121.COM");
@@ -72,7 +66,6 @@ public class UserController {
         if (b == true) {
         return CommonResponse.ok(user);}
         return CommonResponse.errorTokenMsg("添加失败");
->>>>>>> master
     }
 }
 

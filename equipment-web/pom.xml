@@ -79,7 +79,6 @@
             <version>${project.version}</version>
         </dependency>
 
-<<<<<<< HEAD
         <dependency>
             <groupId>com.yankuang.equipment</groupId>
             <artifactId>equipment-common</artifactId>
@@ -91,8 +90,6 @@
             <artifactId>equipment-equipment-provider-api</artifactId>
             <version>${project.version}</version>
         </dependency>
-=======
->>>>>>> master
 
         <dependency>
             <groupId>io.swagger</groupId>
@@ -106,20 +103,13 @@
                 </exclusion>
             </exclusions>
         </dependency>
-<<<<<<< HEAD
 
-=======
         <dependency>
             <groupId>com.yankuang.equipment</groupId>
             <artifactId>equipment-common</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-starter-security</artifactId>-->
-        <!--</dependency>-->
->>>>>>> master
     </dependencies>
 
     <build>

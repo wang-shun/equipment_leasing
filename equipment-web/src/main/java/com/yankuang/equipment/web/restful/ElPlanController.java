@@ -1,9 +1,9 @@
 package com.yankuang.equipment.web.restful;
 
+import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.StringUtils;
 import com.yankuang.equipment.leasing.model.ElPlan;
 import com.yankuang.equipment.leasing.service.ElPlanService;
-import com.yankuang.equipment.web.util.CommonResponse;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import io.terminus.common.model.Paging;
 import org.springframework.web.bind.annotation.*;
