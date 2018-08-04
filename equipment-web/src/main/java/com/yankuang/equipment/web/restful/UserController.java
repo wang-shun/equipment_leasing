@@ -2,7 +2,7 @@ package com.yankuang.equipment.web.restful;
 
 import com.yankuang.equipment.authority.model.User;
 import com.yankuang.equipment.authority.service.UserService;
-import com.yankuang.equipment.authority.util.CommonResponse;
+import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.web.util.CodeUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

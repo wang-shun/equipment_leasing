@@ -23,6 +23,11 @@
             <version>1.2.17</version>
         </dependency>
 
+        <dependency>
+            <groupId>io.terminus</groupId>
+            <artifactId>terminus-common</artifactId>
+            <version>2.0.3.RELEASE</version>
+        </dependency>
     </dependencies>
 
 </project>

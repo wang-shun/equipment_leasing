@@ -3,7 +3,8 @@ package com.yankuang.equipment.web.restful;
 
 import com.yankuang.equipment.authority.model.Organization;
 import com.yankuang.equipment.authority.service.OrganizationService;
-import com.yankuang.equipment.authority.util.CommonResponse;
+
+import com.yankuang.equipment.common.util.CommonResponse;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +16,7 @@ public class OrganizationController {
     @RpcConsumer
     private OrganizationService organizationService;
 
-    @GetMapping("/{code}")
+    @GetMapping("/{id}")
     CommonResponse getById(@PathVariable Long id) {
         if (id == null || id == 0){
             return CommonResponse.errorMsg("系统错误");

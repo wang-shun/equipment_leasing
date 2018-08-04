@@ -2,7 +2,7 @@ package com.yankuang.equipment.web.restful;
 
 import com.yankuang.equipment.authority.model.Role;
 import com.yankuang.equipment.authority.service.RolService;
-import com.yankuang.equipment.web.util.CommonResponse;
+import com.yankuang.equipment.common.util.CommonResponse;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.web.bind.annotation.*;
 

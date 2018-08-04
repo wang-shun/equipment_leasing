@@ -9,7 +9,6 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>equipment-authority-provider</module>
-        <module>equipment-leasing-provider</module>
         <module>equipment-common</module>
         <module>equipment-web</module>
     </modules>

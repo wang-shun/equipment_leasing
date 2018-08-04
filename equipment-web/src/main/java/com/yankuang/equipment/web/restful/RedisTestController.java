@@ -1,8 +1,8 @@
 package com.yankuang.equipment.web.restful;
 
 import com.yankuang.equipment.authority.model.User;
-import com.yankuang.equipment.authority.util.CommonResponse;
-import com.yankuang.equipment.authority.util.JsonUtils;
+import com.yankuang.equipment.common.util.CommonResponse;
+import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.web.util.RedisOperator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
