@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Role">
+    <resultMap id="BaseResultMap" type="Role" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="code" property="code" jdbcType="VARCHAR" />
+        <result column="pcode" property="pcode" jdbcType="VARCHAR" />
+        <result column="type" property="type" jdbcType="BIGINT" />
+        <result column="sorting" property="sorting" jdbcType="BIGINT" />
+        <result column="status" property="status" jdbcType="TINYINT" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+        <result column="update_at" property="updateAt" jdbcType="BIGINT" />
+        <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+        <result column="level" property="level" jdbcType="BIGINT" />
+        <result column="create_at" property="createAt" jdbcType="BIGINT" />
+        <result column="version" property="version" jdbcType="BIGINT" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+    id, name, code, pcode, type, sorting, status, remark, create_by, update_at, update_by,
+    level, create_at, version
+  </sql>
+
+    <select id="findById" parameterType="long" resultMap="BaseResultMap" >
+        SELECT <include refid="Base_Column_List" />
+        FROM yankuang_equipment.el_role
+        WHERE id = #{id}
+    </select>
+
+    <update id="update" parameterType="Role">
+        UPDATE yankuang_equipment.el_role
+            <set >
+                <if test="name != null" >
+                    name = #{name},
+                </if>
+                <if test="code != null" >
+                    code = #{code},
+                </if>
+                <if test="pcode != null" >
+                    pcode = #{pcode},
+                </if>
+                <if test="type != null" >
+                    type = #{type},
+                </if>
+                <if test="sorting != null" >
+                    sorting = #{sorting},
+                </if>
+                <if test="status != null" >
+                    status = #{status},
+                </if>
+                <if test="remark != null" >
+                    remark = #{remark},
+                </if>
+                <if test="createBy != null" >
+                    create_by = #{createBy},
+                </if>
+                <if test="updateAt != null" >
+                    update_at = #{updateAt},
+                </if>
+                <if test="updateBy != null" >
+                    update_by = #{updateBy},
+                </if>
+                <if test="level != null" >
+                    level = #{level},
+                </if>
+                <if test="createAt != null" >
+                    create_at = #{createAt},
+                </if>
+                <if test="version != null" >
+                    version = #{version},
+                </if>
+            </set>
+        WHERE id = #{id}
+    </update>
+
+    <insert id="create" parameterType="Role" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO yankuang_equipment.el_role
+        (<include refid="Base_Column_List" />)
+        VALUES(#{id}, #{name}, #{code},
+        #{pcode}, #{type}, #{sorting},
+        #{status}, #{remark}, #{createBy},
+        #{updateAt}, #{updateBy}, #{level},
+        #{createAt},#{version}
+        )
+    </insert>
+    <update id="updatedel" parameterType="long">
+        UPDATE yankuang_equipment.el_role
+        <set>
+            status = 99
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <select id="findObject" parameterType="Role" resultMap="BaseResultMap" >
+        SELECT <include refid="Base_Column_List" />
+        FROM yankuang_equipment.el_role
+        WHERE
+        <if test="name != null" >
+            name = #{name},
+        </if>
+        <if test="code != null" >
+            code = #{code},
+        </if>
+        <if test="pcode != null" >
+            pcode = #{pcode},
+        </if>
+        <if test="type != null" >
+            type = #{type},
+        </if>
+        <if test="sorting != null" >
+            sorting = #{sorting},
+        </if>
+        <if test="status != null" >
+            status = #{status},
+        </if>
+        <if test="remark != null" >
+            remark = #{remark},
+        </if>
+        <if test="createBy != null" >
+            create_by = #{createBy},
+        </if>
+        <if test="updateAt != null" >
+            update_at = #{updateAt},
+        </if>
+        <if test="updateBy != null" >
+            update_by = #{updateBy},
+        </if>
+        <if test="level != null" >
+            level = #{level},
+        </if>
+        <if test="createAt != null" >
+            create_at = #{createAt},
+        </if>
+        <if test="version != null" >
+            version = #{version},
+        </if>
+    </select>
+
+    <select id="findByNameR" parameterType="String" resultMap="BaseResultMap" >
+        SELECT <include refid="Base_Column_List" />
+        FROM yankuang_equipment.el_role
+        WHERE name = #{name}
+    </select>
+
+    <select id="findAllR" resultMap="BaseResultMap" >
+        SELECT <include refid="Base_Column_List" />
+        FROM yankuang_equipment.el_role
+        WHERE 1=1
+        <if test="name != null" >
+            AND name = #{name}
+        </if>
+        <if test="code != null" >
+            AND code = #{code}
+        </if>
+        <if test="pcode != null" >
+            AND pcode = #{pcode}
+        </if>
+        <if test="type != null" >
+            AND type = #{type}
+        </if>
+        <if test="sorting != null" >
+            AND sorting = #{sorting}
+        </if>
+        <if test="status != null" >
+            AND status = #{status}
+        </if>
+        <if test="remark != null" >
+            AND remark = #{remark}
+        </if>
+        <if test="createBy != null" >
+            AND create_by = #{createBy}
+        </if>
+        <if test="updateAt != null" >
+            AND update_at = #{updateAt}
+        </if>
+        <if test="updateBy != null" >
+            AND update_by = #{updateBy
+        </if>
+        <if test="level != null" >
+            AND level = #{level}
+        </if>
+        <if test="createAt != null" >
+            AND create_at = #{createAt}
+        </if>
+        <if test="version != null" >
+            AND version = #{version}
+        </if>
+        <if test="id != null">
+            AND id = #{id}
+        </if>
+        ORDER BY create_at asc
+    </select>
+</mapper>

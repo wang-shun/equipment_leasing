@@ -28,4 +28,7 @@ public class StringUtils {
         }
     }
 
+    public static String getRandomData () {
+        return (int)(Math.random()*900)+100 + System.currentTimeMillis() + "";
+    }
 }
