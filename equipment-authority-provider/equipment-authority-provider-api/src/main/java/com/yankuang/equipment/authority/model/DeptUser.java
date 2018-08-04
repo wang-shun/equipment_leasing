@@ -4,13 +4,11 @@ import javax.persistence.Table;
 
 @Table(name = "el_department_user_mapping")
 public class DeptUser {
-    private Integer id;
+    private Long id;
 
-    private String code;
+    private Long departmentId;
 
-    private String departmentCode;
-
-    private String userCode;
+    private Long userId;
 
     private String createBy;
 
@@ -24,36 +22,28 @@ public class DeptUser {
 
     private Byte status;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getCode() {
-        return code;
+    public Long getDepartmentId() {
+        return departmentId;
     }
 
-    public void setCode(String code) {
-        this.code = code == null ? null : code.trim();
+    public void setDepartmentId(Long departmentId) {
+        this.departmentId = departmentId;
     }
 
-    public String getDepartmentCode() {
-        return departmentCode;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setDepartmentCode(String departmentCode) {
-        this.departmentCode = departmentCode == null ? null : departmentCode.trim();
-    }
-
-    public String getUserCode() {
-        return userCode;
-    }
-
-    public void setUserCode(String userCode) {
-        this.userCode = userCode == null ? null : userCode.trim();
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getCreateBy() {
@@ -61,7 +51,7 @@ public class DeptUser {
     }
 
     public void setCreateBy(String createBy) {
-        this.createBy = createBy == null ? null : createBy.trim();
+        this.createBy = createBy;
     }
 
     public Long getUpdateAt() {
@@ -77,7 +67,7 @@ public class DeptUser {
     }
 
     public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy == null ? null : updateBy.trim();
+        this.updateBy = updateBy;
     }
 
     public Long getCreateAt() {

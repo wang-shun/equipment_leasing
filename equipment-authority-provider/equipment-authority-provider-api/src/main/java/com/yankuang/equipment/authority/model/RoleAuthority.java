@@ -4,11 +4,11 @@ import javax.persistence.Table;
 
 @Table(name = "el_role_authority_mapping")
 public class RoleAuthority {
-    private Integer id;
+    private Long id;
 
-    private String roleCode;
+    private Long roleId;
 
-    private String authorityCode;
+    private Long authorityId;
 
     private String createBy;
 
@@ -22,28 +22,28 @@ public class RoleAuthority {
 
     private Byte status;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getRoleCode() {
-        return roleCode;
+    public Long getRoleId() {
+        return roleId;
     }
 
-    public void setRoleCode(String roleCode) {
-        this.roleCode = roleCode == null ? null : roleCode.trim();
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
     }
 
-    public String getAuthorityCode() {
-        return authorityCode;
+    public Long getAuthorityId() {
+        return authorityId;
     }
 
-    public void setAuthorityCode(String authorityCode) {
-        this.authorityCode = authorityCode == null ? null : authorityCode.trim();
+    public void setAuthorityId(Long authorityId) {
+        this.authorityId = authorityId;
     }
 
     public String getCreateBy() {
@@ -51,7 +51,7 @@ public class RoleAuthority {
     }
 
     public void setCreateBy(String createBy) {
-        this.createBy = createBy == null ? null : createBy.trim();
+        this.createBy = createBy;
     }
 
     public Long getUpdateAt() {
@@ -67,7 +67,7 @@ public class RoleAuthority {
     }
 
     public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy == null ? null : updateBy.trim();
+        this.updateBy = updateBy;
     }
 
     public Long getCreateAt() {
