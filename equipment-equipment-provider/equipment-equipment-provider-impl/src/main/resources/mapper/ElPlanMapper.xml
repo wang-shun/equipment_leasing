@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="com.yankuang.equipment.leasing.mapper.ElPlanMapper">
-    <resultMap id="ElPlanMap" type="com.yankuang.equipment.leasing.model.ElPlan">
+<mapper namespace="com.yankuang.equipment.equipment.mapper.ElPlanMapper">
+    <resultMap id="ElPlanMap" type="com.yankuang.equipment.equipment.model.ElPlan">
         <id column="plan_id" property="planId" jdbcType="VARCHAR" />
         <result column="plan_year" property="planYear" jdbcType="INTEGER" />
         <result column="plan_month" property="planMonth" jdbcType="INTEGER" />
@@ -23,7 +23,7 @@
         <result column="plan_updator_id" property="planUpdatorId" jdbcType="VARCHAR" />
         <result column="plan_sorting" property="planSorting" jdbcType="VARCHAR" />
         <result column="plan_version" property="planVersion" jdbcType="VARCHAR" />
-        <collection property="elPlanItemList" javaType="Arraylist" ofType="com.yankuang.equipment.leasing.model.ElPlanItem" autoMapping="true" select="queryElPlanItemByPlanId" column="plan_id">
+        <collection property="elPlanItemList" javaType="Arraylist" ofType="com.yankuang.equipment.equipment.model.ElPlanItem" autoMapping="true" select="queryElPlanItemByPlanId" column="plan_id">
         </collection>
     </resultMap>
 
@@ -130,11 +130,11 @@
         </if>
     </sql>
 
-    <select id="queryElPlanItemByPlanId" resultType="com.yankuang.equipment.leasing.model.ElPlanItem" parameterType="String">
+    <select id="queryElPlanItemByPlanId" resultType="com.yankuang.equipment.equipment.model.ElPlanItem" parameterType="String">
         SELECT * FROM el_plan_item WHERE plan_id = #{planId};
     </select>
 
-    <insert id="create" parameterType="com.yankuang.equipment.leasing.model.ElPlan" keyProperty="planId" useGeneratedKeys="true">
+    <insert id="create" parameterType="com.yankuang.equipment.equipment.model.ElPlan" keyProperty="planId" useGeneratedKeys="true">
         INSERT INTO <include refid="tb" />
         (<include refid="cols_exclude_id" />)
         VALUES
@@ -151,7 +151,7 @@
         WHERE plan_id = #{planId} AND plan_is_del = 0
     </select>
 
-    <update id="update" parameterType="com.yankuang.equipment.leasing.model.ElPlan">
+    <update id="update" parameterType="com.yankuang.equipment.equipment.model.ElPlan">
         UPDATE <include refid="tb"/>
         <set >
             <if test="planId != null" >

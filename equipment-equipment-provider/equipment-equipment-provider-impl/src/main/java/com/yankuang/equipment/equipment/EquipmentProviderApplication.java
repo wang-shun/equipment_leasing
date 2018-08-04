@@ -1,4 +1,4 @@
-package com.yankuang.equipment;
+package com.yankuang.equipment.equipment;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;

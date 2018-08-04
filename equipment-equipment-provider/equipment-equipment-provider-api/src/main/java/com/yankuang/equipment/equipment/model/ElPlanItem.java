@@ -1,4 +1,4 @@
-package com.yankuang.equipment.leasing.model;
+package com.yankuang.equipment.equipment.model;
 
 import lombok.Data;
 

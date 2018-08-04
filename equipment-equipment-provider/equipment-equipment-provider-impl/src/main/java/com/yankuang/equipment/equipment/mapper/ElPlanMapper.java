@@ -1,7 +1,7 @@
-package com.yankuang.equipment.leasing.mapper;
+package com.yankuang.equipment.equipment.mapper;
 
-import com.yankuang.equipment.leasing.model.ElPlan;
-import com.yankuang.equipment.leasing.model.ElPlanItem;
+import com.yankuang.equipment.equipment.model.ElPlan;
+import com.yankuang.equipment.equipment.model.ElPlanItem;
 import io.terminus.common.mysql.dao.MyBatisDao;
 import org.springframework.stereotype.Repository;
 

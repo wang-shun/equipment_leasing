@@ -1,7 +1,6 @@
-package com.yankuang.equipment.leasing.service;
+package com.yankuang.equipment.equipment.service;
 
-import com.yankuang.equipment.leasing.model.ElPlan;
-
+import com.yankuang.equipment.equipment.model.ElPlan;
 import io.terminus.common.model.Paging;
 
 /**

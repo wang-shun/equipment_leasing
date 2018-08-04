@@ -1,17 +1,16 @@
-package com.yankuang.equipment.leasing.service.impl;
-
-import com.yankuang.equipment.common.util.StringUtils;
-import com.yankuang.equipment.common.util.UuidUtils;
-import com.yankuang.equipment.leasing.model.ElPlanItem;
-import io.terminus.boot.rpc.common.annotation.RpcProvider;
-import io.terminus.common.model.Paging;
-import org.springframework.beans.factory.annotation.Autowired;
+package com.yankuang.equipment.equipment.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.yankuang.equipment.common.base.BaseService;
-import com.yankuang.equipment.leasing.mapper.ElPlanMapper;
-import com.yankuang.equipment.leasing.model.ElPlan;
-import com.yankuang.equipment.leasing.service.ElPlanService;
+import com.yankuang.equipment.common.util.StringUtils;
+import com.yankuang.equipment.common.util.UuidUtils;
+import com.yankuang.equipment.equipment.mapper.ElPlanMapper;
+import com.yankuang.equipment.equipment.model.ElPlan;
+import com.yankuang.equipment.equipment.model.ElPlanItem;
+import com.yankuang.equipment.equipment.service.ElPlanService;
+import io.terminus.boot.rpc.common.annotation.RpcProvider;
+import io.terminus.common.model.Paging;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;

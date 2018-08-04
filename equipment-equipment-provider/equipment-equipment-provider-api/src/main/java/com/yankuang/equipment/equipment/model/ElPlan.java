@@ -1,4 +1,4 @@
-package com.yankuang.equipment.leasing.model;
+package com.yankuang.equipment.equipment.model;
 
 import lombok.Data;
 
@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.List;
+
 @Data
 @Entity
 @Table(name = "el_plan")
