@@ -28,16 +28,16 @@ public class RoleController {
         if (role.getId() == null || role.getId() == 0){
             return CommonResponse.errorMsg("系统错误");
         }
-        if (role.getName() == null || role.getName().equals(" ")){
+        if (role.getName() == null || " ".equals(role.getName())){
             return CommonResponse.errorMsg("角色不能为空");
         }
         if (rolService.getByName(role.getName()) != null){
             return CommonResponse.errorMsg("此角色名称已存在");
         }
-        if (role.getPcode() == null || role.getPcode().equals(" ")){
+        if (role.getPcode() == null || " ".equals(role.getPcode())){
             return CommonResponse.errorMsg("系统错误");
         }
-        if (role.getType() != 1 && role.getType() != 2){
+        if (role.getType() == null){
             return CommonResponse.errorMsg("类型不能为空");
         }
         if (role.getSorting() == null){
@@ -51,7 +51,7 @@ public class RoleController {
 
     @PostMapping(value = "/add")
     CommonResponse add(Role role){
-        if (role.getName() == null || role.getName().equals(" ")){
+        if (role.getName() == null || " ".equals(role.getName())){
             return CommonResponse.errorMsg("角色不能为空");
         }
 
@@ -59,16 +59,16 @@ public class RoleController {
             return CommonResponse.errorMsg("此角色名称已存在");
         }
 
-        String pcode = (role.getPcode() == null || role.getPcode().equals(" ")) ?role.getPcode():"0";
+        String pcode = (role.getPcode() == null || " ".equals(role.getPcode())) ?"0":role.getPcode();
         role.setPcode(pcode);
 
-        Long type = (role.getType() != 1 && role.getType() != 2) ?role.getType():1;
+        Long type = (role.getType() == null) ?1:role.getType();
         role.setType(type);
 
-        Long sort = role.getSorting() == null ?role.getSorting():1;
+        Long sort = role.getSorting() == null ?1:role.getSorting();
         role.setSorting(sort);
 
-        Long level = role.getLevel() == null ?role.getLevel():0;
+        Long level = role.getLevel() == null ?0:role.getLevel();
         role.setLevel(level);
 
         return CommonResponse.ok(rolService.add(role));
@@ -89,7 +89,7 @@ public class RoleController {
 
     @PostMapping(value = "/find")
     CommonResponse getByName(String name){
-        if (name == null || name.equals(" ")){
+        if (name == null || " ".equals(name)){
             return CommonResponse.errorMsg("角色名称不能为空");
         }
         return CommonResponse.ok(rolService.getByName(name));

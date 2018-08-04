@@ -23,7 +23,7 @@ public class OrganizationController {
 
     @PostMapping()
     CommonResponse add(Organization organization){
-        if (organization.getName() == null || organization.getName().equals(" ")){
+        if (organization.getName() == null || " ".equals(organization.getName())){
             return CommonResponse.errorMsg("请填写组织名称");
         }
 
@@ -35,13 +35,13 @@ public class OrganizationController {
             return CommonResponse.errorMsg("系统错误");
         }
 
-        String pcode = (organization.getPcode() == null || organization.getPcode().equals(" ")) ?organization.getPcode():"1";
+        String pcode = (organization.getPcode() == null || " ".equals(organization.getPcode())) ?"1":organization.getPcode();
         organization.setPcode(pcode);
 
-        int sort = organization.getSorting() == null ?organization.getSorting():1;
+        int sort = organization.getSorting() == null ?1:organization.getSorting();
         organization.setSorting(sort);
 
-        Long version = (organization.getVersion() == null || organization.getVersion() == 0) ?organization.getVersion():1;
+        Long version = (organization.getVersion() == null || organization.getVersion() == 0) ?1:organization.getVersion();
         organization.setVersion(version);
 
         return CommonResponse.ok(organizationService.add(organization));
@@ -53,7 +53,7 @@ public class OrganizationController {
             return CommonResponse.errorMsg("系统错误");
         }
 
-        if (organization.getName() == null || organization.getName().equals(" ")){
+        if (organization.getName() == null || " ".equals(organization.getName())){
             return CommonResponse.errorMsg("请填写组织名称");
         }
 
@@ -61,7 +61,7 @@ public class OrganizationController {
             return CommonResponse.errorMsg("此组织名称已存在");
         }
 
-        if (organization.getPcode() == null || organization.getPcode().equals(" ")){
+        if (organization.getPcode() == null || " ".equals(organization.getPcode())){
             return CommonResponse.errorMsg("系统错误");
         }
 
@@ -73,7 +73,7 @@ public class OrganizationController {
             return CommonResponse.errorMsg("系统错误");
         }
 
-        if (organization.getCode() == null || organization.getCode().equals(" ")){
+        if (organization.getCode() == null || " ".equals(organization.getCode())){
             return CommonResponse.errorMsg("系统错误");
         }
 
@@ -94,7 +94,7 @@ public class OrganizationController {
 
     @PostMapping(value = "/find")
     CommonResponse getByName(String name){
-        if (name == null || name.equals(" ")){
+        if (name == null || " ".equals(name)){
             return CommonResponse.errorMsg("组织名称不能为空");
         }
         return CommonResponse.ok(organizationService.getByName(name));

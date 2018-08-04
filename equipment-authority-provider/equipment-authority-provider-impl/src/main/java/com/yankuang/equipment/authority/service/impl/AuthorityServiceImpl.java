@@ -32,6 +32,8 @@ public class AuthorityServiceImpl implements AuthorityService{
 
     public boolean add(Authority authority){
         authority.setCode(uuidUtils.newUuid());
+        authority.setCreateBy("小狼");
+        authority.setUpdateBy("小狼");
         return authorityMapper.create(authority);
     }
 
@@ -47,7 +49,7 @@ public class AuthorityServiceImpl implements AuthorityService{
         return authorityMapper.getAll();
     }
 
-    public Paging findpage(Authority authority, int pageSize, int pageNum) {
+    public Paging findpage(int pageSize, int pageNum, Authority authority) {
             int maxResult = (pageNum - 1) * pageSize;
             Paging page = authorityMapper.paging(maxResult, pageNum, authority);
             return page;

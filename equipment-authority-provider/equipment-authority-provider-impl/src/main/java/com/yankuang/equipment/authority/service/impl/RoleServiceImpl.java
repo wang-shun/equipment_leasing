@@ -30,6 +30,8 @@ public class RoleServiceImpl implements RolService{
 
     public boolean add(Role role){
         role.setCode(uuidUtils.newUuid());
+        role.setCreateBy("小狼");
+        role.setUpdateBy("小狼");
         return roleMapper.create(role);
     }
 

@@ -29,6 +29,8 @@ public class DeptServiceImpl implements DeptService{
 
     public boolean add(Dept dept){
         dept.setCode(uuidUtils.newUuid());
+        dept.setCreateBy("小狼");
+        dept.setUpdateBy("小狼");
         return deptMapper.create(dept);
     }
 

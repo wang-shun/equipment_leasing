@@ -28,6 +28,8 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     public boolean add(Organization organization){
         organization.setCode(uuidUtils.newUuid());
+        organization.setCreateBy("小狼");
+        organization.setUpdateBy("小狼");
         return organizationMapper.create(organization);
     }
 

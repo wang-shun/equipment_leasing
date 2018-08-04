@@ -12,5 +12,5 @@ public interface AuthorityService {
     boolean del(Long id);
     Authority getByName(String name);
     List<Authority> getAll( );
-    Paging findpage(Authority authority, int pageSize, int pageNum);
+    Paging findpage(int pageSize, int pageNum,Authority authority);
 }

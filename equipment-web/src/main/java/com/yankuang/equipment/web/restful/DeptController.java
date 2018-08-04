@@ -26,10 +26,10 @@ public class DeptController {
         if(dept.getId() == null || dept.getId() == 0){
             return  CommonResponse.errorMsg("系统错误");
         }
-        if (dept.getName() == null || dept.getName().equals(" ")){
+        if (dept.getName() == null || " ".equals(dept.getName())){
             return CommonResponse.errorMsg("部门名称不能为空");
         }
-        if (dept.getPcode() == null || dept.getPcode().equals(" ")){
+        if (dept.getPcode() == null || " ".equals(dept.getPcode())){
             return CommonResponse.errorMsg("系统错误");
         }
         if (dept.getLevel() == null){
@@ -47,7 +47,7 @@ public class DeptController {
     @PostMapping(value = "/add")
     CommonResponse add(Dept dept){
 
-        if (dept.getName() == null || dept.getName().equals(" ")){
+        if (dept.getName() == null || " ".equals(dept.getName())){
             return CommonResponse.errorMsg("部门名称不能为空");
         }
 
@@ -59,10 +59,10 @@ public class DeptController {
             return  CommonResponse.errorMsg("系统错误");
         }
 
-        String pcode = (dept.getPcode() == null || dept.getPcode().equals(" ")) ?dept.getPcode():"1";
+        String pcode = (dept.getPcode() == null || " ".equals(dept.getPcode())) ?"1":dept.getPcode();
         dept.setPcode(pcode);
 
-        Long sort = dept.getSorting() == null ?dept.getSorting():1;
+        Long sort = dept.getSorting() == null ?1:dept.getSorting();
         dept.setSorting(sort);
 
         return CommonResponse.ok(deptService.add(dept));
@@ -78,7 +78,7 @@ public class DeptController {
 
     @PostMapping(value = "/find")
     CommonResponse getByName(String name){
-        if (name == null || name.equals(" ")){
+        if (name == null || " ".equals(name)){
             return CommonResponse.errorMsg("部门名称不能为空");
         }
         return CommonResponse.ok(deptService.getByName(name));
