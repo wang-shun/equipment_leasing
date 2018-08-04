@@ -32,6 +32,8 @@ public class User implements Serializable {
 
     private String password;
 
+    private Byte sex;
+
     private Byte status;
 
     private String remark;
@@ -160,5 +162,13 @@ public class User implements Serializable {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public Byte getSex() {
+        return sex;
+    }
+
+    public void setSex(Byte sex) {
+        this.sex = sex;
     }
 }

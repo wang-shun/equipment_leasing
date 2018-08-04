@@ -3,6 +3,7 @@ package com.yankuang.equipment.web.restful;
 import com.yankuang.equipment.authority.model.User;
 import com.yankuang.equipment.authority.service.UserService;
 import com.yankuang.equipment.common.util.CommonResponse;
+import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.web.util.CodeUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -46,25 +47,38 @@ public class UserController {
 
     @ApiOperation("user create")
     @PostMapping()
-    CommonResponse addUser(@RequestBody User user) {
-
-
-
-//        #{updateBy},
-//        #{createBy},
-
+    CommonResponse addUser(@RequestBody String jsonString) {
+        if (jsonString == null || "".equals(jsonString)) {
+            return CommonResponse.errorMsg("参数不能为空");
+        }
+        User user = JsonUtils.jsonToPojo(jsonString,User.class);
         user.setCode(CodeUtil.getCode());
-        user.setMail("213@121.COM");
-        user.setRemark("some");
-        user.setStatus((byte) 1);
-        user.setTelephone("13654567865");
-        user.setSorting((long) 1);
+
+        if (user.getMail() == null|| "".equals(user.getMail())) {
+            return CommonResponse.errorMsg("mail 不能为空");
+        }
+        if (user.getTelephone() == null || "".equals(user.getTelephone())) {
+            return CommonResponse.errorMsg("telephone 不能为空");
+        }
+        if (user.getSex() == null || "".equals(user.getSex())) {
+            return CommonResponse.errorMsg("性别 不能为空");
+        }
+        String remark = (user.getRemark() == null || "".equals(user.getRemark())) ? "备注":user.getRemark();
+        user.setRemark(remark);
+        if (user.getSorting() == null || "".equals(user.getSorting())) {
+            return CommonResponse.errorMsg("sorting 不能为空");
+        }
         user.setVersion((long) 1);
+        user.setStatus((byte) 1);
+        //TODO 从redis中获取登陆人姓名
         user.setUpdateBy("admin");
         user.setCreateBy("admin");
+
+
         Boolean b = userService.create(user);
         if (b == true) {
-        return CommonResponse.ok(user);}
+            return CommonResponse.ok(user);
+        }
         return CommonResponse.errorTokenMsg("添加失败");
     }
 }

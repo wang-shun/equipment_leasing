@@ -5,6 +5,7 @@
     <resultMap id="UserMap" type="User">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="sex" property="sex" jdbcType="TINYINT" />
         <result column="telephone" property="telephone" jdbcType="VARCHAR" />
         <result column="mail" property="mail" jdbcType="VARCHAR" />
         <result column="password" property="password" jdbcType="VARCHAR" />
@@ -28,6 +29,7 @@
     <sql id="cols_exclude_id_password">
         code,
         name,
+        sex,
         telephone,
         mail,
         status,
@@ -45,6 +47,7 @@
         #{id},
         #{code},
         #{name},
+        #{sex},
         #{telephone},
         #{mail},
         #{status},
@@ -80,6 +83,7 @@
         UPDATE el_user
         <set>
             <if test="name != null">name = #{name},</if>
+            <if test="sex != null">sex = #{sex},</if>
             <if test="password != null">password = #{password},</if>
             <if test="telephone != null">telephone = #{telephone},</if>
             <if test="mail != null">mail = #{mail},</if>
