@@ -146,7 +146,7 @@ public class OrganizationController {
      * @return
      */
     @PostMapping("/findpage/{page}/{limit}")
-    CommonResponse getPage(@PathVariable int page,@PathVariable int limit,Organization organization){
-        return CommonResponse.ok(organizationService.findpage(page,limit,organization));
+    CommonResponse getPage(@PathVariable Integer page,@PathVariable Integer limit,Organization organization){
+        return CommonResponse.ok(organizationService.findpage(page == null ?0:page,limit == null ?0:limit,organization));
     }
 }

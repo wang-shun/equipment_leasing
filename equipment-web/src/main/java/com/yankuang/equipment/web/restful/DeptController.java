@@ -131,7 +131,7 @@ public class DeptController {
      * @return
      */
     @PostMapping("/findpage/{page}/{limit}")
-    CommonResponse getPage(@PathVariable int page,@PathVariable int limit,Dept dept){
-        return CommonResponse.ok(deptService.findpage(page,limit,dept));
+    CommonResponse getPage(@PathVariable Integer page,@PathVariable Integer limit,Dept dept){
+        return CommonResponse.ok(deptService.findpage(page == null ?0:page,limit == null ?0:limit,dept));
     }
 }

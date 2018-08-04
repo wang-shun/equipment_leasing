@@ -148,7 +148,7 @@ public class RoleController {
      * @return
      */
     @PostMapping("/findpage/{page}/{limit}")
-    CommonResponse getPage(@PathVariable int page,@PathVariable int limit,Role role){
-        return CommonResponse.ok(rolService.findpage(page,limit,role));
+    CommonResponse getPage(@PathVariable Integer page,@PathVariable Integer limit,Role role){
+        return CommonResponse.ok(rolService.findpage(page == null ?0:page,limit == null ?0:limit,role));
     }
 }
