@@ -1,11 +1,6 @@
 spring:
   application:
     name: equipment-authority-provider
-#  datasource:
-#    driver-class-name: com.mysql.jdbc.Driver
-#    url: jdbc:mysql://47.94.211.172:3306/yankuang_equipment?useUnicode=true&characterEncoding=UTF8
-#    username: root
-#    password: uAiqwVwjJ8-i
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://${MYSQL_HOST:47.94.211.172}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:yankuang_equipment}?useUnicode=true&characterEncoding=UTF8
@@ -19,8 +14,6 @@ rpc:
   mode: true
   dubbo:
     module: equipment-authority-provider
-#    registryAddress: localhost:2181
-#    registryAddress: ${ZOOKEEPER_HOST:127.0.0.1}:${ZOOKEEPER_PORT:2181}
     registryAddress: ${ZK_HOST:127.0.0.1}:${ZK_PORT:2181}
     port: 20880
 

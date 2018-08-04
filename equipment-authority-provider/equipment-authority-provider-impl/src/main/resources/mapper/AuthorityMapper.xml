@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Authority">
+    <resultMap id="BaseResultMap" type="Authority" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="code" property="code" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="url" property="url" jdbcType="VARCHAR" />
+        <result column="type" property="type" jdbcType="BIGINT" />
+        <result column="status" property="status" jdbcType="TINYINT" />
+        <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="sorting" property="sorting" jdbcType="BIGINT" />
+        <result column="update_at" property="updateAt" jdbcType="BIGINT" />
+        <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+        <result column="version" property="version" jdbcType="BIGINT" />
+        <result column="create_at" property="createAt" jdbcType="BIGINT" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+    id, code, name, url, type, status, create_by, remark, sorting, update_at, update_by,
+    version, create_at
+    </sql>
+
+    <select id="findById" parameterType="long" resultMap="BaseResultMap" >
+        SELECT <include refid="Base_Column_List" />
+        FROM yankuang_equipment.el_authority
+        WHERE id = #{id}
+    </select>
+    <update id="update" parameterType="Authority" >
+        update el_authority
+        <set >
+            <if test="code != null" >
+                code = #{code},
+            </if>
+            <if test="name != null" >
+                name = #{name},
+            </if>
+            <if test="url != null" >
+                url = #{url},
+            </if>
+            <if test="type != null" >
+                type = #{type},
+            </if>
+            <if test="status != null" >
+                status = #{status},
+            </if>
+            <if test="createBy != null" >
+                create_by = #{createBy},
+            </if>
+            <if test="remark != null" >
+                remark = #{remark},
+            </if>
+            <if test="sorting != null" >
+                sorting = #{sorting},
+            </if>
+            <if test="updateAt != null" >
+                update_at = #{updateAt},
+            </if>
+            <if test="updateBy != null" >
+                update_by = #{updateBy},
+            </if>
+            <if test="version != null" >
+                version = #{version},
+            </if>
+            <if test="createAt != null" >
+                create_at = #{createAt},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <insert id="create" parameterType="Authority" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO yankuang_equipment.el_authority
+        (<include refid="Base_Column_List" />)
+        VALUES(#{id}, #{code}, #{name},
+        #{url}, #{type}, #{status},
+        #{createBy}, #{remark}, #{sorting},
+        #{updateAt}, #{updateBy}, #{version},#{createAt}
+        )
+    </insert>
+    <update id="updatedel" parameterType="long">
+        UPDATE yankuang_equipment.el_authority
+        <set>
+            status = 3
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <select id="findByNameA" parameterType="String" resultMap="BaseResultMap" >
+        SELECT <include refid="Base_Column_List" />
+        FROM yankuang_equipment.el_authority
+        WHERE name = #{name}
+    </select>
+
+    <select id="findAllA" resultMap="BaseResultMap" >
+        SELECT <include refid="Base_Column_List" />
+        FROM yankuang_equipment.el_authority
+        WHERE 1=1
+        <if test="code != null" >
+           AND code = #{code}
+        </if>
+        <if test="name != null" >
+            AND name = #{name}
+        </if>
+        <if test="url != null" >
+            AND url = #{url}
+        </if>
+        <if test="type != null" >
+            AND type = #{type}
+        </if>
+        <if test="status != null" >
+            AND status = #{status}
+        </if>
+        <if test="createBy != null" >
+            AND create_by = #{createBy}
+        </if>
+        <if test="remark != null" >
+            AND remark = #{remark}
+        </if>
+        <if test="sorting != null" >
+            AND sorting = #{sorting}
+        </if>
+        <if test="updateAt != null" >
+            AND update_at = #{updateAt}
+        </if>
+        <if test="updateBy != null" >
+            AND update_by = #{updateBy}
+        </if>
+        <if test="version != null" >
+            AND version = #{version}
+        </if>
+        <if test="createAt != null" >
+            AND create_at = #{createAt}
+        </if>
+        <if test="id != null">
+            AND id = #{id}
+        </if>
+        ORDER BY create_at asc
+    </select>
+</mapper>
