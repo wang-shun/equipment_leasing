@@ -23,6 +23,10 @@
       <version>${spring.boot.version}</version>
       <scope>provided</scope>
     </dependency>
-
+    <dependency>
+      <groupId>io.terminus</groupId>
+      <artifactId>terminus-common</artifactId>
+      <version>2.0.3.RELEASE</version>
+    </dependency>
   </dependencies>
 </project>

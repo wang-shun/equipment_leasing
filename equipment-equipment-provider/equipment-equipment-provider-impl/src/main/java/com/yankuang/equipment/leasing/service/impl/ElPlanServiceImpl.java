@@ -1,6 +1,5 @@
 package com.yankuang.equipment.leasing.service.impl;
 
-import com.alibaba.fastjson.parser.deserializer.ArrayListTypeFieldDeserializer;
 import com.yankuang.equipment.common.util.StringUtils;
 import com.yankuang.equipment.common.util.UuidUtils;
 import com.yankuang.equipment.leasing.model.ElPlanItem;
@@ -15,7 +14,6 @@ import com.yankuang.equipment.leasing.model.ElPlan;
 import com.yankuang.equipment.leasing.service.ElPlanService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
