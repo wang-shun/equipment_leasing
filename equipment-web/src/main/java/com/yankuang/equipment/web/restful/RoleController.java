@@ -37,8 +37,6 @@ public class RoleController {
             return CommonResponse.errorMsg("类型不能为空");
         }else if (role.getSorting() == null){
             return CommonResponse.errorMsg("系统错误");
-        }else if (role.getStatus() != 1 && role.getStatus() != 2 && role.getSorting() != 99){
-            return CommonResponse.errorMsg("请选择状态");
         }else if (role.getLevel() == null){
             return CommonResponse.errorMsg("系统错误");
         }else if (rolService.getByName(role.getName()) != null){
@@ -59,8 +57,6 @@ public class RoleController {
             return CommonResponse.errorMsg("类型不能为空");
         }else if (role.getSorting() == null){
             return CommonResponse.errorMsg("系统错误");
-        }else if (role.getStatus() != 1 && role.getStatus() != 2 && role.getSorting() != 99){
-            return CommonResponse.errorMsg("请选择状态");
         }else if (role.getLevel() == null){
             return CommonResponse.errorMsg("系统错误");
         }else if (rolService.getByName(role.getName()) != null){

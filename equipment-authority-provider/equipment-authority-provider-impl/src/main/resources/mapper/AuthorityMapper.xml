@@ -25,6 +25,7 @@
         SELECT <include refid="Base_Column_List" />
         FROM yankuang_equipment.el_authority
         WHERE id = #{id}
+        AND status != 99
     </select>
     <update id="update" parameterType="Authority" >
         update el_authority
@@ -53,9 +54,6 @@
             <if test="sorting != null" >
                 sorting = #{sorting},
             </if>
-            <if test="updateAt != null" >
-                update_at = #{updateAt},
-            </if>
             <if test="updateBy != null" >
                 update_by = #{updateBy},
             </if>
@@ -65,6 +63,7 @@
             <if test="createAt != null" >
                 create_at = #{createAt},
             </if>
+            update_at = unix_timestamp(now())
         </set>
         where id = #{id}
     </update>
@@ -74,13 +73,14 @@
         VALUES(#{id}, #{code}, #{name},
         #{url}, #{type}, #{status},
         #{createBy}, #{remark}, #{sorting},
-        #{updateAt}, #{updateBy}, #{version},#{createAt}
+        unix_timestamp(now()), #{updateBy}, #{version},unix_timestamp(now())
         )
     </insert>
     <update id="updatedel" parameterType="long">
         UPDATE yankuang_equipment.el_authority
         <set>
-            status = 3
+            status = 3,
+            update_at = unix_timestamp(now())
         </set>
         WHERE id = #{id}
     </update>
@@ -89,6 +89,7 @@
         SELECT <include refid="Base_Column_List" />
         FROM yankuang_equipment.el_authority
         WHERE name = #{name}
+        AND status != 99
     </select>
 
     <select id="findAllA" resultMap="BaseResultMap" >
@@ -134,6 +135,7 @@
         <if test="id != null">
             AND id = #{id}
         </if>
+        WHERE status != 99
         ORDER BY create_at asc
     </select>
 </mapper>

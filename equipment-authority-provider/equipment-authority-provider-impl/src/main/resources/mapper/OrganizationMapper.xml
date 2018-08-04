@@ -24,6 +24,7 @@
     SELECT <include refid="Base_Column_List" />
     FROM yankuang_equipment.el_organization
     WHERE id = #{id}
+    AND status != 99
   </select>
 
   <insert id="create" parameterType="Organization" keyProperty="id" useGeneratedKeys="true">
@@ -31,8 +32,8 @@
     (<include refid="Base_Column_List" />)
     VALUES(#{id}, #{name}, #{pcode},
     #{level}, #{sorting}, #{remark},
-    #{createBy}, #{createAt}, #{updateBy},
-    #{code}, #{updateAt}, #{version}
+    #{createBy},unix_timestamp(now()), #{updateBy},
+    #{code}, unix_timestamp(now()), #{version}
     )
   </insert>
 
@@ -66,12 +67,10 @@
       <if test="code != null" >
         code = #{code},
       </if>
-      <if test="updateAt != null" >
-        update_at = #{updateAt},
-      </if>
       <if test="version != null" >
         version = #{version},
       </if>
+      update_at = unix_timestamp(now())
     </set>
     where id = #{id}
   </update>
@@ -79,7 +78,8 @@
   <update id="updatedel" parameterType="long">
     UPDATE el_organization
     <set>
-      status = 99
+      status = 99.
+      update_at = unix_timestamp(now())
     </set>
     WHERE id = #{id}
   </update>
@@ -88,6 +88,7 @@
     SELECT <include refid="Base_Column_List" />
     FROM yankuang_equipment.el_organization
     WHERE name = #{name}
+    AND status != 99
   </select>
 
   <select id="findAllO" resultMap="BaseResultMap" >
@@ -130,6 +131,7 @@
     <if test="id != null">
       AND id = #{id}
     </if>
+    WHERE status != 99
     ORDER BY create_at asc
   </select>
 </mapper>

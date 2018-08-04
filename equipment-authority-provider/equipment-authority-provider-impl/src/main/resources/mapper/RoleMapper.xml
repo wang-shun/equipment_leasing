@@ -26,6 +26,7 @@
         SELECT <include refid="Base_Column_List" />
         FROM yankuang_equipment.el_role
         WHERE id = #{id}
+        AND status != 99
     </select>
 
     <update id="update" parameterType="Role">
@@ -64,12 +65,10 @@
                 <if test="level != null" >
                     level = #{level},
                 </if>
-                <if test="createAt != null" >
-                    create_at = #{createAt},
-                </if>
                 <if test="version != null" >
                     version = #{version},
                 </if>
+                update_at = unix_timestamp(now())
             </set>
         WHERE id = #{id}
     </update>
@@ -80,14 +79,15 @@
         VALUES(#{id}, #{name}, #{code},
         #{pcode}, #{type}, #{sorting},
         #{status}, #{remark}, #{createBy},
-        #{updateAt}, #{updateBy}, #{level},
-        #{createAt},#{version}
+        unix_timestamp(now()), #{updateBy}, #{level},
+        unix_timestamp(now()),#{version}
         )
     </insert>
     <update id="updatedel" parameterType="long">
         UPDATE yankuang_equipment.el_role
         <set>
-            status = 99
+            status = 99,
+            update_at = unix_timestamp(now())
         </set>
         WHERE id = #{id}
     </update>
@@ -135,12 +135,14 @@
         <if test="version != null" >
             version = #{version},
         </if>
+        WHERE status != 99
     </select>
 
     <select id="findByNameR" parameterType="String" resultMap="BaseResultMap" >
         SELECT <include refid="Base_Column_List" />
         FROM yankuang_equipment.el_role
         WHERE name = #{name}
+        AND AND status != 99
     </select>
 
     <select id="findAllR" resultMap="BaseResultMap" >
@@ -189,6 +191,7 @@
         <if test="id != null">
             AND id = #{id}
         </if>
+        WHERE status != 99
         ORDER BY create_at asc
     </select>
 </mapper>

@@ -18,9 +18,6 @@ public class OrganizationController {
 
     @GetMapping("/{id}")
     CommonResponse getById(@PathVariable Long id) {
-        if (id == null || id == 0){
-            return CommonResponse.errorMsg("系统错误");
-        }
         return CommonResponse.ok(organizationService.getById(id));
     }
 
@@ -28,19 +25,25 @@ public class OrganizationController {
     CommonResponse add(Organization organization){
         if (organization.getName() == null || organization.getName().equals(" ")){
             return CommonResponse.errorMsg("请填写组织名称");
-        }else if (organization.getPcode() == null || organization.getPcode().equals(" ")){
-            return CommonResponse.errorMsg("系统错误");
-        }else if (organization.getLevel() == null){
-            return CommonResponse.errorMsg("系统错误");
-        }else if (organization.getSorting() == null){
-            return CommonResponse.errorMsg("系统错误");
-        }else if (organization.getCode() == null || organization.getCode().equals(" ")){
-            return CommonResponse.errorMsg("系统错误");
-        }else if (organization.getVersion() == null || organization.getVersion() == 0){
-            return CommonResponse.errorMsg("版本号不能为空");
-        }else if (organizationService.getByName(organization.getName()) != null){
+        }
+
+        if (organizationService.getByName(organization.getName()) != null){
             return CommonResponse.errorMsg("此组织名称已存在");
         }
+
+        if (organization.getLevel() == null){
+            return CommonResponse.errorMsg("系统错误");
+        }
+
+        String pcode = (organization.getPcode() == null || organization.getPcode().equals(" ")) ?organization.getPcode():"1";
+        organization.setPcode(pcode);
+
+        int sort = organization.getSorting() == null ?organization.getSorting():1;
+        organization.setSorting(sort);
+
+        Long version = (organization.getVersion() == null || organization.getVersion() == 0) ?organization.getVersion():1;
+        organization.setVersion(version);
+
         return CommonResponse.ok(organizationService.add(organization));
     }
 
@@ -48,21 +51,36 @@ public class OrganizationController {
     CommonResponse update(Organization organization){
         if (organization.getId() == null || organization.getId() == 0){
             return CommonResponse.errorMsg("系统错误");
-        }else if (organization.getName() == null || organization.getName().equals(" ")){
+        }
+
+        if (organization.getName() == null || organization.getName().equals(" ")){
             return CommonResponse.errorMsg("请填写组织名称");
-        }else if (organization.getPcode() == null || organization.getPcode().equals(" ")){
-            return CommonResponse.errorMsg("系统错误");
-        }else if (organization.getLevel() == null){
-            return CommonResponse.errorMsg("系统错误");
-        }else if (organization.getSorting() == null){
-            return CommonResponse.errorMsg("系统错误");
-        }else if (organization.getCode() == null || organization.getCode().equals(" ")){
-            return CommonResponse.errorMsg("系统错误");
-        }else if (organization.getVersion() == null || organization.getVersion() == 0){
-            return CommonResponse.errorMsg("版本号不能为空");
-        }else if (organizationService.getByName(organization.getName()) != null){
+        }
+
+        if (organizationService.getByName(organization.getName()) != null){
             return CommonResponse.errorMsg("此组织名称已存在");
         }
+
+        if (organization.getPcode() == null || organization.getPcode().equals(" ")){
+            return CommonResponse.errorMsg("系统错误");
+        }
+
+        if (organization.getLevel() == null){
+            return CommonResponse.errorMsg("系统错误");
+        }
+
+        if (organization.getSorting() == null){
+            return CommonResponse.errorMsg("系统错误");
+        }
+
+        if (organization.getCode() == null || organization.getCode().equals(" ")){
+            return CommonResponse.errorMsg("系统错误");
+        }
+
+        if (organization.getVersion() == null || organization.getVersion() == 0){
+            return CommonResponse.errorMsg("版本号不能为空");
+        }
+
         return CommonResponse.ok(organizationService.update(organization));
     }
 
@@ -82,7 +100,7 @@ public class OrganizationController {
         return CommonResponse.ok(organizationService.getByName(name));
     }
 
-    @PostMapping(value = "/findAll")
+    @GetMapping(value = "/findAll")
     CommonResponse getAll( ){
         return CommonResponse.ok(organizationService.getAll( ));
     }
