@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Api
@@ -37,7 +38,7 @@ public class UserController {
     RoleUserService roleUserService;
 
     @RpcConsumer
-    RolService rolService;
+    RolService roleService;
 
     @RpcConsumer
     AuthorityService authorityService;
@@ -52,6 +53,8 @@ public class UserController {
     @PostMapping(value = "/login")
     CommonResponse login(String userName, String password) {
         UserDTO userDTO = new UserDTO();
+        List<Long> authorityIds = new ArrayList<Long>();
+        List<Long> roleIds = new ArrayList<Long>();
 
         if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)) {
             return CommonResponse.errorTokenMsg("用户名和密码不能为空");
@@ -62,28 +65,45 @@ public class UserController {
         }
         if (loginUser != null && password.equals(loginUser.getPassword())) {
             System.out.println(loginUser);
-            //拼装最终存入redis的用户信息
-            userDTO.setCode(loginUser.getCode());
-            userDTO.setId(loginUser.getId());
-            userDTO.setName(loginUser.getName());
-            userDTO.setPassword(loginUser.getPassword());
-
-            //TODO 查询用户详情，角色 存放redis，返回key
-            List<RoleUser> roleUsers = roleUserService.findByUserId(loginUser.getId());
-            if (roleUsers == null || roleUsers.size() == 0) {
-                return CommonResponse.ok();
-            }
-
-            //遍历
-            for (RoleUser roleUser : roleUsers) {
-
-                List<RoleAuthority> roleAuthorities =
-                        roleAuthorityService.findByRoleId(roleUser.getRoleId());
-            }
-
-            return CommonResponse.ok();
+            UserDTO userResult = getUserDTO(userDTO, authorityIds, roleIds, loginUser);
+            // TODO
+            String token = CodeUtil.getCode();
+            redis.set(token, JsonUtils.objectToJson(userDTO), 1800);
+            // 密码不返回处理
+            userDTO.setPassword("");
+            return CommonResponse.ok(userDTO);
         }
         return CommonResponse.errorTokenMsg("用户不存在");
+    }
+
+    private UserDTO getUserDTO(UserDTO userDTO, List<Long> authorityIds, List<Long> roleIds, User loginUser) {
+        //拼装最终存入redis的用户信息
+        userDTO.setCode(loginUser.getCode());
+        userDTO.setId(loginUser.getId());
+        userDTO.setName(loginUser.getName());
+        userDTO.setPassword(loginUser.getPassword());
+
+        // 用户角色列表
+        List<RoleUser> roleUsers = roleUserService.findByUserId(loginUser.getId());
+        if (roleUsers == null || roleUsers.size() == 0) {
+            return userDTO;
+        }
+
+        // 遍历用户角色列表
+        for (RoleUser roleUser : roleUsers) {
+            roleIds.add(roleUser.getRoleId());
+            // 用户角色idlist
+            userDTO.setRoleIds(roleIds);
+            // 角色权限
+            List<RoleAuthority> roleAuthorities =
+                    roleAuthorityService.findByRoleId(roleUser.getRoleId());
+            for (RoleAuthority roleAuthority : roleAuthorities) {
+                authorityIds.add(roleAuthority.getAuthorityId());
+            }
+        }
+        // 用户角色idlist
+        userDTO.setAuthorityIds(authorityIds);
+        return userDTO;
     }
 
     /**
