@@ -1,31 +1,25 @@
 package com.yankuang.equipment.equipment.model;
 
-import org.hibernate.validator.constraints.Length;
-
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
-public class SbType implements Serializable {
+public class SbModel implements Serializable {
     private Long id;
 
-    @NotNull(message = "设备编码不能为空!")
-    @Length(min = 1,max = 255)
+    @NotNull(message = "设备型号编码不能为空!")
     private String code;
 
-    @NotNull(message = "设备名称不能为空!")
-    @Length(min = 1,max = 255)
+    @NotNull(message = "设备型号名称不能为空!")
     private String name;
 
-    private String pcode;
+    private String sbtypeOne;
 
-    private Long sorting;
+    private String sbtypeTwo;
 
-    private Long level;
+    private String sbtypeThree;
 
     private Byte status;
-
-    private String remark;
 
     private String createBy;
 
@@ -61,28 +55,28 @@ public class SbType implements Serializable {
         this.name = name == null ? null : name.trim();
     }
 
-    public String getPcode() {
-        return pcode;
+    public String getSbtypeOne() {
+        return sbtypeOne;
     }
 
-    public void setPcode(String pcode) {
-        this.pcode = pcode == null ? null : pcode.trim();
+    public void setSbtypeOne(String sbtypeOne) {
+        this.sbtypeOne = sbtypeOne == null ? null : sbtypeOne.trim();
     }
 
-    public Long getSorting() {
-        return sorting;
+    public String getSbtypeTwo() {
+        return sbtypeTwo;
     }
 
-    public void setSorting(Long sorting) {
-        this.sorting = sorting;
+    public void setSbtypeTwo(String sbtypeTwo) {
+        this.sbtypeTwo = sbtypeTwo == null ? null : sbtypeTwo.trim();
     }
 
-    public Long getLevel() {
-        return level;
+    public String getSbtypeThree() {
+        return sbtypeThree;
     }
 
-    public void setLevel(Long level) {
-        this.level = level;
+    public void setSbtypeThree(String sbtypeThree) {
+        this.sbtypeThree = sbtypeThree == null ? null : sbtypeThree.trim();
     }
 
     public Byte getStatus() {
@@ -91,14 +85,6 @@ public class SbType implements Serializable {
 
     public void setStatus(Byte status) {
         this.status = status;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
     }
 
     public String getCreateBy() {

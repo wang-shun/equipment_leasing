@@ -14,11 +14,11 @@ public class SbTypeInfoServiceImpl implements SbTypeInfoService {
     @Autowired
     private SbTypeInfoMapper sbTypeInfoMapper;
 
-    public SbTypeInfo selectByPrimaryKey(Long id) {
+    public SbTypeInfo findSbTypeInfoByKey(Long id) {
         return sbTypeInfoMapper.selectByPrimaryKey(id);
     }
 
-    public void insertSbTypeInfo(SbTypeInfo record){
+    public void createSbTypeInfo(SbTypeInfo record){
         sbTypeInfoMapper.insert(record);
     }
 

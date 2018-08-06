@@ -1,0 +1,32 @@
+package com.yankuang.equipment.equipment.service.impl;
+
+import com.yankuang.equipment.equipment.mapper.SbPositionMapper;
+import com.yankuang.equipment.equipment.model.SbPosition;
+import com.yankuang.equipment.equipment.service.SbPositionService;
+import io.terminus.boot.rpc.common.annotation.RpcProvider;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+@RpcProvider(version = "0.0.1")
+public class SbPositionServiceImpl implements SbPositionService {
+
+    @Autowired
+    SbPositionMapper sbPositionMapper;
+
+    public void createSbPosition(SbPosition sbPosition) {
+        sbPositionMapper.insert(sbPosition);
+    }
+
+    public void updateSbPosition(SbPosition sbPosition) {
+        sbPositionMapper.updateByPrimaryKey(sbPosition);
+    }
+
+    public SbPosition findSbPositionByKey(Long id) {
+        return sbPositionMapper.selectByPrimaryKey(id);
+    }
+
+    public void deleteSbPositionByKey(Long id) {
+        sbPositionMapper.deleteByPrimaryKey(id);
+    }
+}

@@ -1,31 +1,33 @@
 package com.yankuang.equipment.equipment.model;
 
-import org.hibernate.validator.constraints.Length;
-
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
-public class SbType implements Serializable {
+public class SbPosition implements Serializable {
     private Long id;
 
-    @NotNull(message = "设备编码不能为空!")
-    @Length(min = 1,max = 255)
+    @NotNull(message = "位置编码不能为空!")
     private String code;
 
-    @NotNull(message = "设备名称不能为空!")
-    @Length(min = 1,max = 255)
+    @NotNull(message = "位置名称不能为空!")
     private String name;
 
-    private String pcode;
+    private String state;
 
-    private Long sorting;
+    private String type;
 
-    private Long level;
+    private String org;
 
-    private Byte status;
+    private String position;
+
+    private Byte isuse;
+
+    private Byte isrfid;
 
     private String remark;
+
+    private Byte status;
 
     private String createBy;
 
@@ -61,36 +63,52 @@ public class SbType implements Serializable {
         this.name = name == null ? null : name.trim();
     }
 
-    public String getPcode() {
-        return pcode;
+    public String getState() {
+        return state;
     }
 
-    public void setPcode(String pcode) {
-        this.pcode = pcode == null ? null : pcode.trim();
+    public void setState(String state) {
+        this.state = state == null ? null : state.trim();
     }
 
-    public Long getSorting() {
-        return sorting;
+    public String getType() {
+        return type;
     }
 
-    public void setSorting(Long sorting) {
-        this.sorting = sorting;
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
     }
 
-    public Long getLevel() {
-        return level;
+    public String getOrg() {
+        return org;
     }
 
-    public void setLevel(Long level) {
-        this.level = level;
+    public void setOrg(String org) {
+        this.org = org == null ? null : org.trim();
     }
 
-    public Byte getStatus() {
-        return status;
+    public String getPosition() {
+        return position;
     }
 
-    public void setStatus(Byte status) {
-        this.status = status;
+    public void setPosition(String position) {
+        this.position = position == null ? null : position.trim();
+    }
+
+    public Byte getIsuse() {
+        return isuse;
+    }
+
+    public void setIsuse(Byte isuse) {
+        this.isuse = isuse;
+    }
+
+    public Byte getIsrfid() {
+        return isrfid;
+    }
+
+    public void setIsrfid(Byte isrfid) {
+        this.isrfid = isrfid;
     }
 
     public String getRemark() {
@@ -99,6 +117,14 @@ public class SbType implements Serializable {
 
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    public Byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(Byte status) {
+        this.status = status;
     }
 
     public String getCreateBy() {

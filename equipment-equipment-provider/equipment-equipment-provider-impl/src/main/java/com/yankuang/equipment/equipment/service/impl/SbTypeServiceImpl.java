@@ -16,11 +16,15 @@ public class SbTypeServiceImpl implements SbTypeService {
     @Autowired
     private SbTypeMapper sbTypeMapper;
 
-    public List<SbType> selectAllSbTypes() {
+    public List<SbType> listSbTypes() {
         return sbTypeMapper.selectAllSbTypes();
     }
 
-    public void insertSbType(SbType record){
+    public void createSbType(SbType record){
         sbTypeMapper.insert(record);
+    }
+
+    public void deleteSbTypeByKey(Long id) {
+        sbTypeMapper.deleteByPrimaryKey(id);
     }
 }
