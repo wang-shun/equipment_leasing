@@ -32,4 +32,6 @@ public class ElPlanMapper extends MyBatisDao<ElPlan> {
     }
 
     public int deletePlanByPlanId(String planId) { return sqlSession.update("deletePlanByPlanId", planId);  }
+
+    public int insertByPrimaryKey(ElPlan elPlan) {return sqlSession.insert("insertByPrimaryKey", elPlan);}
 }

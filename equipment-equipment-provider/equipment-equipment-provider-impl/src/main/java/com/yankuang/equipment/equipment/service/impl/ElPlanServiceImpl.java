@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.yankuang.equipment.common.base.BaseService;
 import com.yankuang.equipment.common.util.StringUtils;
 import com.yankuang.equipment.common.util.UuidUtils;
+import com.yankuang.equipment.equipment.mapper.ElPlanItemMapper;
 import com.yankuang.equipment.equipment.mapper.ElPlanMapper;
 import com.yankuang.equipment.equipment.model.ElPlan;
 import com.yankuang.equipment.equipment.model.ElPlanItem;
@@ -25,6 +26,8 @@ public class ElPlanServiceImpl extends BaseService implements ElPlanService {
 
     @Autowired
     private ElPlanMapper elPlanMapper;
+    @Autowired
+    private ElPlanItemMapper elPlanItemMapper;
 
     public Boolean create (ElPlan elPlan) {
         Boolean res = false;
@@ -40,12 +43,16 @@ public class ElPlanServiceImpl extends BaseService implements ElPlanService {
             elPlan.setPlanUpdatorId(elPlan.getPlanCreatorId());
             elPlan.setPlanVersion(UuidUtils.newUuid());
             List<ElPlanItem> elPlanItemList = elPlan.getElPlanItemList();
+            boolean itemRes = true;
             if (elPlanItemList != null) {
                 for (ElPlanItem elPlanItem : elPlanItemList) {
                     elPlanItem.setItemId(UuidUtils.newUuid());
+                    elPlanItem.setPlanId(elPlan.getPlanId());
+                    elPlanItemMapper.saveByPrimaryKey(elPlanItem);
                 }
+                //itemRes = elPlanItemMapper.saveBatch(elPlan.getElPlanItemList()) >= 0;
             }
-            res = elPlanMapper.save(elPlan) > 0;
+            res = elPlanMapper.insertByPrimaryKey(elPlan) > 0 && itemRes;
             logger.debug("create ElPlan:"+JSON.toJSONString(elPlan));
             return res;
         } catch (Exception e) {
@@ -60,6 +67,10 @@ public class ElPlanServiceImpl extends BaseService implements ElPlanService {
 
         try {
             ElPlan elPlan = elPlanMapper.findById(planId);
+            List<ElPlanItem> list = elPlanItemMapper.findByPlanId(planId);
+            if (list != null) {
+                elPlan.setElPlanItemList(list);
+            }
             logger.debug("findElPlanById: " + JSON.toJSONString(elPlan));
             return elPlan;
         } catch (Exception e) {

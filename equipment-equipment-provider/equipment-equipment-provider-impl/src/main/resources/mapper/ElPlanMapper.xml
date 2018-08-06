@@ -36,7 +36,7 @@
     </sql>
 
     <sql id="cols_exclude_id">
-        plan_id, plan_year, plan_month, plan_quarter, plan_position, plan_remarks,
+        plan_year, plan_month, plan_quarter, plan_position, plan_remarks,
     plan_opinion, plan_creator_id, plan_status, plan_approve_time, plan_approver_id, plan_equipment_type,
     plan_type, plan_is_del, plan_create_time, plan_update_time,plan_code,plan_updator_id,plan_sorting,plan_version
 
@@ -136,7 +136,7 @@
 
     <insert id="create" parameterType="com.yankuang.equipment.equipment.model.ElPlan" keyProperty="planId" useGeneratedKeys="true">
         INSERT INTO <include refid="tb" />
-        (<include refid="cols_exclude_id" />)
+        (<include refid="cols_all" />)
         VALUES
         (<include refid="vals" />)
     </insert>
@@ -240,7 +240,7 @@
             1 = 1 AND plan_is_del = 0
             <include refid="criteria"/>
         </where>
-        order by created_at desc LIMIT #{offset}, #{limit}
+        order by plan_create_time desc LIMIT #{offset}, #{limit}
     </select>
 
     <sql id="Base_Column_List" >
@@ -251,15 +251,26 @@
 
     <insert id="save">
         INSERT INTO <include refid="tb"/> (<include refid="cols_exclude_id" />) VALUES (<include refid="vals" />);
-        <if test="elPlanItemList != null">
+        <!--<if test="elPlanItemList != null">
             INSERT INTO el_plan_item (<include refid="Base_Column_List"/> ) VALUES
-            <foreach collection="elPlanItemList" item="item" separator=",">
+            <foreach collection="elPlanItemList" item="iteme" separator=",">
+                (#{iteme.itemId},
+                #{iteme.planId},
+                #{iteme.equipmentId},
+                #{iteme.equipmentName},
+                #{iteme.equipmentNum},
+                #{iteme.itemPosition},
+                #{iteme.itemEffect},
+                #{iteme.equipmentBigType},
+                #{iteme.equipmentMiddleType},
+                #{iteme.equipmentSmallType},
+                #{iteme.equipmentSpecification},
+                #{iteme.equipmentParamName},
+                #{iteme.equipmentParamValue},
+                #{iteme.itemRemarks})
+            </foreach>;
+        </if>-->
 
-                (#{item.itemId},#{planId},#{item.equipmentId},#{item.equipmentName},#{item.equipmentNum},#{item.itemPosition},#{item.itemEffect},
-                #{item.equipmentBigType},#{item.equipmentMiddleType},#{item.equipmentSmallType},#{item.equipmentSpecification},#{item.equipmentParamName},#{item.equipmentParamValue},#{item.itemRemarks})
-            </foreach>
-        </if>
-        ;
     </insert>
 
     <delete id="deletePlanItemByPlanId" parameterType="java.lang.String">
@@ -268,11 +279,22 @@
     </delete>
 
     <insert id="savePlanItemByPlanId">
-        <foreach collection="elPlanItemList" item="item" separator=",">
-        INSERT INTO el_plan_item (item_id,plan_id,equipment_id,equipment_name,equipment_num,item_position,item_effect,
-            equipment_big_type,equipment_middle_type,equipment_small_type,equipment_specification,equipment_param_name,equipment_param_value,item_remarks) VALUES
-            (#{item.itemId},#{planId},#{item.equipmentId},#{item.equipmentName},#{item.equipmentNum},#{item.itemPosition},#{item.itemEffect},
-            #{item.equipmentBigType},#{item.equipmentMiddleType},#{item.equipmentSmallType},#{item.equipmentSpecification},#{item.equipmentParamName},#{item.equipmentParamValue},#{item.itemRemarks})
+        INSERT INTO el_plan_item (<include refid="Base_Column_List"/> ) VALUES
+        <foreach collection="elPlanItemList" item="iteme" separator=",">
+            (#{iteme.itemId},
+            #{iteme.planId},
+            #{iteme.equipmentId},
+            #{iteme.equipmentName},
+            #{iteme.equipmentNum},
+            #{iteme.itemPosition},
+            #{iteme.itemEffect},
+            #{iteme.equipmentBigType},
+            #{iteme.equipmentMiddleType},
+            #{iteme.equipmentSmallType},
+            #{iteme.equipmentSpecification},
+            #{iteme.equipmentParamName},
+            #{iteme.equipmentParamValue},
+            #{iteme.itemRemarks})
         </foreach>
         ;
     </insert>
@@ -283,4 +305,131 @@
         WHERE plan_id = #{planId}
     </update>
 
+    <insert id="insertByPrimaryKey" parameterType="com.yankuang.equipment.equipment.model.ElPlan" >
+        insert into el_plan
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="planId != null" >
+                plan_id,
+            </if>
+            <if test="planYear != null" >
+                plan_year,
+            </if>
+            <if test="planMonth != null" >
+                plan_month,
+            </if>
+            <if test="planQuarter != null" >
+                plan_quarter,
+            </if>
+            <if test="planPosition != null" >
+                plan_position,
+            </if>
+            <if test="planRemarks != null" >
+                plan_remarks,
+            </if>
+            <if test="planOpinion != null" >
+                plan_opinion,
+            </if>
+            <if test="planCreatorId != null" >
+                plan_creator_id,
+            </if>
+            <if test="planStatus != null" >
+                plan_status,
+            </if>
+            <if test="planApproveTime != null" >
+                plan_approve_time,
+            </if>
+            <if test="planApproverId != null" >
+                plan_approver_id,
+            </if>
+            <if test="planEquipmentType != null" >
+                plan_equipment_type,
+            </if>
+            <if test="planType != null" >
+                plan_type,
+            </if>
+            <if test="planIsDel != null" >
+                plan_is_del,
+            </if>
+            <if test="planCreateTime != null" >
+                plan_create_time,
+            </if>
+            <if test="planUpdateTime != null" >
+                plan_update_time,
+            </if>
+            <if test="planCode != null" >
+                plan_code,
+            </if>
+            <if test="planUpdatorId != null" >
+                plan_updator_id,
+            </if>
+            <if test="planSorting != null" >
+                plan_sorting,
+            </if>
+            <if test="planVersion != null" >
+                plan_version,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="planId != null" >
+                #{planId,jdbcType=VARCHAR},
+            </if>
+            <if test="planYear != null" >
+                #{planYear,jdbcType=INTEGER},
+            </if>
+            <if test="planMonth != null" >
+                #{planMonth,jdbcType=INTEGER},
+            </if>
+            <if test="planQuarter != null" >
+                #{planQuarter,jdbcType=INTEGER},
+            </if>
+            <if test="planPosition != null" >
+                #{planPosition,jdbcType=VARCHAR},
+            </if>
+            <if test="planRemarks != null" >
+                #{planRemarks,jdbcType=VARCHAR},
+            </if>
+            <if test="planOpinion != null" >
+                #{planOpinion,jdbcType=VARCHAR},
+            </if>
+            <if test="planCreatorId != null" >
+                #{planCreatorId,jdbcType=VARCHAR},
+            </if>
+            <if test="planStatus != null" >
+                #{planStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="planApproveTime != null" >
+                #{planApproveTime,jdbcType=BIGINT},
+            </if>
+            <if test="planApproverId != null" >
+                #{planApproverId,jdbcType=VARCHAR},
+            </if>
+            <if test="planEquipmentType != null" >
+                #{planEquipmentType,jdbcType=VARCHAR},
+            </if>
+            <if test="planType != null" >
+                #{planType,jdbcType=VARCHAR},
+            </if>
+            <if test="planIsDel != null" >
+                #{planIsDel,jdbcType=BIT},
+            </if>
+            <if test="planCreateTime != null" >
+                #{planCreateTime,jdbcType=BIGINT},
+            </if>
+            <if test="planUpdateTime != null" >
+                #{planUpdateTime,jdbcType=BIGINT},
+            </if>
+            <if test="planCode != null" >
+                #{planCode,jdbcType=VARCHAR},
+            </if>
+            <if test="planUpdatorId != null" >
+                #{planUpdatorId,jdbcType=VARCHAR},
+            </if>
+            <if test="planSorting != null" >
+                #{planSorting,jdbcType=VARCHAR},
+            </if>
+            <if test="planVersion != null" >
+                #{planVersion,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
 </mapper>
