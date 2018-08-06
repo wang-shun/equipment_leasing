@@ -50,4 +50,7 @@ public class DeptServiceImpl implements DeptService{
         Paging page = deptMapper.paging(maxResult, pageNum, dept);
         return page;
     }
+    public List<String> findName(){
+        return deptMapper.getName();
+    }
 }

@@ -134,4 +134,13 @@ public class DeptController {
     CommonResponse getPage(@PathVariable int page,@PathVariable int limit,@RequestBody Dept dept){
         return CommonResponse.ok(deptService.findpage(page,limit,dept));
     }
+
+    /**
+     * @method 查找名字
+     * @return
+     */
+    @GetMapping("/findName")
+    CommonResponse getName(){
+        return CommonResponse.ok(deptService.findName());
+    }
 }

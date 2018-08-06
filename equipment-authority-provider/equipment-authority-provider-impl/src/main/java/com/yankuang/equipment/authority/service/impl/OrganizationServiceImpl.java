@@ -52,4 +52,8 @@ public class OrganizationServiceImpl implements OrganizationService {
         Paging page = organizationMapper.paging(maxResult, pageNum, organization);
         return page;
     }
+
+    public List<String> findName(){
+        return organizationMapper.getName();
+    }
 }

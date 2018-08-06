@@ -51,4 +51,7 @@ public class AuthorityServiceImpl implements AuthorityService{
             Paging page = authorityMapper.paging(maxResult, pageNum, authority);
             return page;
     }
+    public List<String> findName(){
+        return authorityMapper.getName();
+    }
 }

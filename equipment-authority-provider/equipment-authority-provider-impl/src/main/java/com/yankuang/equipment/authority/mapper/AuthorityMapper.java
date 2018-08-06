@@ -17,4 +17,7 @@ public class AuthorityMapper extends MyBatisDao<Authority> {
     public List<Authority> getAll( ){
         return getSqlSession().selectList("findAllA");
     }
+    public List<String> getName(){
+        return getSqlSession().selectList("aclFindName");
+    }
 }

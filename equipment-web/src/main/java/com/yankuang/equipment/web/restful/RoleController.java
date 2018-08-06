@@ -1,12 +1,10 @@
 package com.yankuang.equipment.web.restful;
 
 import com.yankuang.equipment.authority.model.Role;
-import com.yankuang.equipment.authority.service.RolService;
+import com.yankuang.equipment.authority.service.RoleService;
 import com.yankuang.equipment.common.util.CommonResponse;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * @author boms
@@ -17,7 +15,7 @@ import java.util.List;
 @RequestMapping("/v1/rols")
 public class RoleController {
     @RpcConsumer
-    private RolService rolService;
+    private RoleService roleService;
 
 
     /**
@@ -30,7 +28,7 @@ public class RoleController {
         if (id == null || id ==0){
             return CommonResponse.ok("系统错误");
         }
-        return CommonResponse.ok(rolService.getById(id));
+        return CommonResponse.ok(roleService.getById(id));
     }
 
     /**
@@ -46,7 +44,7 @@ public class RoleController {
         if (role.getName() == null || " ".equals(role.getName())){
             return CommonResponse.errorMsg("角色不能为空");
         }
-        if (rolService.getByName(role.getName()) != null){
+        if (roleService.getByName(role.getName()) != null){
             return CommonResponse.errorMsg("此角色名称已存在");
         }
         if (role.getPcode() == null || " ".equals(role.getPcode())){
@@ -61,7 +59,7 @@ public class RoleController {
         if (role.getLevel() == null){
             return CommonResponse.errorMsg("系统错误");
         }
-        return CommonResponse.ok(rolService.update(role));
+        return CommonResponse.ok(roleService.update(role));
     }
 
     /**
@@ -75,7 +73,7 @@ public class RoleController {
             return CommonResponse.errorMsg("角色不能为空");
         }
 
-        if (rolService.getByName(role.getName()) != null){
+        if (roleService.getByName(role.getName()) != null){
             return CommonResponse.errorMsg("此角色名称已存在");
         }
 
@@ -91,7 +89,7 @@ public class RoleController {
         Long level = role.getLevel() == null ?0:role.getLevel();
         role.setLevel(level);
 
-        return CommonResponse.ok(rolService.add(role));
+        return CommonResponse.ok(roleService.add(role));
     }
 
     /**
@@ -105,7 +103,7 @@ public class RoleController {
         if (id == null || id ==0){
             return CommonResponse.ok("系统错误");
         }
-        return CommonResponse.ok(rolService.del(id));
+        return CommonResponse.ok(roleService.del(id));
     }
 
     /**
@@ -118,7 +116,7 @@ public class RoleController {
         if (name == null || " ".equals(name)){
             return CommonResponse.errorMsg("角色名称不能为空");
         }
-        return CommonResponse.ok(rolService.getByName(name));
+        return CommonResponse.ok(roleService.getByName(name));
     }
 
     /**
@@ -127,7 +125,7 @@ public class RoleController {
      */
     @PostMapping(value = "/findAll")
     CommonResponse getAll(  ){
-        return CommonResponse.ok(rolService.getAll( ));
+        return CommonResponse.ok(roleService.getAll( ));
     }
 
     /**
@@ -139,6 +137,15 @@ public class RoleController {
      */
     @PostMapping("/findpage/{page}/{limit}")
     CommonResponse getPage(@PathVariable int page,@PathVariable int limit,@RequestBody Role role){
-        return CommonResponse.ok(rolService.findpage(page,limit,role));
+        return CommonResponse.ok(roleService.findpage(page,limit,role));
+    }
+
+    /**
+     * @method 查找名字
+     * @return
+     */
+    @GetMapping("/findName")
+    CommonResponse getName(){
+        return CommonResponse.ok(roleService.findName());
     }
 }

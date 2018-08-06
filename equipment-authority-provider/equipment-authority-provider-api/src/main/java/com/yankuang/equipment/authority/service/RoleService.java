@@ -6,7 +6,7 @@ import io.terminus.common.model.Paging;
 
 import java.util.List;
 
-public interface RolService {
+public interface RoleService {
     Role getById(Long id);
     boolean update(Role role);
     boolean add(Role role);
@@ -15,4 +15,5 @@ public interface RolService {
     Role getByName(String name);
     List<Role> getAll( );
     Paging findpage(int pageSize, int pageNum, Role role);
+    List<String> findName();
 }

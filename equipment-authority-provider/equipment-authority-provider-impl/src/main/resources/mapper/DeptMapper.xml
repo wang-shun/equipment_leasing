@@ -234,4 +234,11 @@
         </if>
         AND status != 99
     </select>
+    <select id="deptFindName" resultType="map">
+        SELECT name
+        FROM yankuang_equipment.el_department
+        WHERE
+        status != 99
+        ORDER BY create_at
+    </select>
 </mapper>

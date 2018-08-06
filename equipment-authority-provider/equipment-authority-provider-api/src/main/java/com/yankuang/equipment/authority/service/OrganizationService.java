@@ -14,4 +14,5 @@ public interface OrganizationService {
     Organization getByName(String name);
     List<Organization> getAll( );
     Paging findpage(int pageSize, int pageNum, Organization organization);
+    List<String> findName();
 }

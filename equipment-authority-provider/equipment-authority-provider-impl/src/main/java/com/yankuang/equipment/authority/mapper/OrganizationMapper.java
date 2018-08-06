@@ -19,4 +19,7 @@ public class OrganizationMapper extends MyBatisDao<Organization> {
     public List<Organization> getAll( ){
         return getSqlSession().selectList("findAllO");
     }
+    public List<String> getName(){
+        return getSqlSession().selectList("orgFindName");
+    }
 }

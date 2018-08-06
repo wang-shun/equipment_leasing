@@ -225,4 +225,11 @@
             </if>
             AND status != 99
     </select>
+    <select id="aclFindName" resultType="map">
+        SELECT name
+        FROM yankuang_equipment.el_authority
+        WHERE
+        status != 99
+        ORDER BY create_at
+    </select>
 </mapper>

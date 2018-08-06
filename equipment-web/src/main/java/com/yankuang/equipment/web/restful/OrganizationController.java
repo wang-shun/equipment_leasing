@@ -149,4 +149,14 @@ public class OrganizationController {
     CommonResponse getPage(@PathVariable int page,@PathVariable int limit,@RequestBody Organization organization){
         return CommonResponse.ok(organizationService.findpage(page,limit,organization));
     }
+
+    /**
+     * @method 查询所有名字
+     * @return
+     */
+
+    @GetMapping("/findName")
+    CommonResponse getName(){
+        return CommonResponse.ok(organizationService.findName());
+    }
 }

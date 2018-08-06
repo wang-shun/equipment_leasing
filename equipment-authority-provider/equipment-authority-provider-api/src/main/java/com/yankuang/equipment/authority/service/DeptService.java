@@ -15,4 +15,5 @@ public interface DeptService {
     Dept getByName(String name);
     List<Dept> getAll( );
     Paging findpage(int pageSize, int pageNum, Dept dept);
+    List<String> findName();
 }

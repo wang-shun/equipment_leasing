@@ -295,4 +295,11 @@
         </if>
         AND status != 99
     </select>
+    <select id="roleFindName" resultType="map">
+        SELECT name
+        FROM yankuang_equipment.el_role
+        WHERE
+        status != 99
+        ORDER BY create_at
+    </select>
 </mapper>

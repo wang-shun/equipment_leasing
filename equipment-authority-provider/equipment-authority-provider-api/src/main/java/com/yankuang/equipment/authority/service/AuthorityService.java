@@ -13,4 +13,5 @@ public interface AuthorityService {
     Authority getByName(String name);
     List<Authority> getAll( );
     Paging findpage(int pageSize, int pageNum,Authority authority);
+    List<String> findName();
 }

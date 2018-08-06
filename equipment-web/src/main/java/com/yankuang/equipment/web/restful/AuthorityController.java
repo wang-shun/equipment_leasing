@@ -142,4 +142,12 @@ public class AuthorityController{
         return CommonResponse.ok(authorityService.findpage(page,limit,authority));
     }
 
+    /**
+     * @method 查找名字
+     * @return
+     */
+    @GetMapping("/findName")
+    CommonResponse getName(){
+        return CommonResponse.ok(authorityService.findName());
+    }
 }
