@@ -10,7 +10,7 @@ import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-@Api
+//@Api
 @CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("/v1/users")
@@ -19,7 +19,7 @@ public class UserController {
     @RpcConsumer(version = "0.0.1", check = "false")
     private UserService userService;
 
-    @ApiOperation("user login")
+    //@ApiOperation("user login")
     @PostMapping(value = "/login")
     CommonResponse login(String userName, String password) {
 
@@ -44,14 +44,14 @@ public class UserController {
         return CommonResponse.ok(userService.findByCode(code));
     }
 
+    //@ApiOperation("user getById")
+    /*@GetMapping(value = "/{id}")
+    CommonResponse getById(@PathVariable Long id) {
+        return CommonResponse.ok(userService.getById(id));
+    }*/
     @ApiOperation("user create")
     @PostMapping()
     CommonResponse addUser(@RequestBody User user) {
-
-
-
-//        #{updateBy},
-//        #{createBy},
 
         user.setCode(CodeUtil.getCode());
         user.setMail("213@121.COM");
