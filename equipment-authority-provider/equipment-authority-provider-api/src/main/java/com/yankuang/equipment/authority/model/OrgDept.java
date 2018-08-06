@@ -1,9 +1,10 @@
 package com.yankuang.equipment.authority.model;
 
 import javax.persistence.Table;
+import java.io.Serializable;
 
 @Table(name = "el_organization_department_mapping")
-public class OrgDept {
+public class OrgDept implements Serializable {
     private Long id;
 
     private Long departmentId;
