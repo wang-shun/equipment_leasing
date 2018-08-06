@@ -53,4 +53,8 @@ public class DeptServiceImpl implements DeptService{
     public List<String> findName(){
         return deptMapper.getName();
     }
+
+    public Long getId(String name){
+        return deptMapper.getId(name);
+    }
 }
