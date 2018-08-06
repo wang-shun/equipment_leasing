@@ -1,7 +1,5 @@
 package com.yankuang.equipment.web.dto;
 
-import com.yankuang.equipment.authority.model.Role;
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -15,7 +13,12 @@ public class UserDTO implements Serializable {
 
     private String password;
 
-    private List<RoleDTO> roles;
+    private String token;
+
+    private List<Long> roleIds;
+
+    private List<Long> authorityIds;
+
 
     public Long getId() {
         return id;
@@ -49,11 +52,27 @@ public class UserDTO implements Serializable {
         this.password = password;
     }
 
-    public List<RoleDTO> getRoles() {
-        return roles;
+    public List<Long> getRoleIds() {
+        return roleIds;
     }
 
-    public void setRoles(List<RoleDTO> roles) {
-        this.roles = roles;
+    public void setRoleIds(List<Long> roleIds) {
+        this.roleIds = roleIds;
+    }
+
+    public List<Long> getAuthorityIds() {
+        return authorityIds;
+    }
+
+    public void setAuthorityIds(List<Long> authorityIds) {
+        this.authorityIds = authorityIds;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
