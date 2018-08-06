@@ -22,18 +22,6 @@
             <artifactId>log4j</artifactId>
             <version>1.2.17</version>
         </dependency>
-<<<<<<< HEAD
-<<<<<<< HEAD
-       <!-- <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>org.springframework.transaction</artifactId>
-            <version>3.2.2.RELEASE</version>
-        </dependency>-->
-=======
->>>>>>> ffa5dfeefc3b445d44fa1b525c3d68426ca12392
-=======
->>>>>>> master
-
         <dependency>
             <groupId>io.terminus</groupId>
             <artifactId>terminus-common</artifactId>
