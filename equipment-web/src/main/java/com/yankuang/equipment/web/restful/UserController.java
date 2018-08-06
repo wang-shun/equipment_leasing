@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,18 +44,29 @@ public class UserController {
     @RpcConsumer
     AuthorityService authorityService;
 
+
     /**
-     * 用户登录.
+     * 用户登录loginWithoutToken.
      * @param userName
      * @param password
      * @return
      */
     @ApiOperation("user login")
     @PostMapping(value = "/login")
-    CommonResponse login(String userName, String password) {
+    CommonResponse login(@RequestParam(defaultValue = "") String userName,
+                                     @RequestParam(defaultValue = "") String password,
+                                     HttpServletRequest request) {
         UserDTO userDTO = new UserDTO();
         List<Long> authorityIds = new ArrayList<Long>();
         List<Long> roleIds = new ArrayList<Long>();
+
+        // 登录先去redis中查看登陆状态
+        String token = request.getHeader("token");
+        String userJson = redis.get(token);
+        if (!StringUtils.isEmpty(userJson)) {
+            redis.expire(token, 1800);
+            return CommonResponse.ok(JsonUtils.jsonToPojo(userJson, UserDTO.class));
+        }
 
         if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)) {
             return CommonResponse.errorTokenMsg("用户名和密码不能为空");
@@ -67,10 +79,11 @@ public class UserController {
             System.out.println(loginUser);
             UserDTO userResult = getUserDTO(userDTO, authorityIds, roleIds, loginUser);
             // TODO
-            String token = CodeUtil.getCode();
+            token = CodeUtil.getCode();
             redis.set(token, JsonUtils.objectToJson(userDTO), 1800);
             // 密码不返回处理
             userDTO.setPassword("");
+            userDTO.setToken(token);
             return CommonResponse.ok(userDTO);
         }
         return CommonResponse.errorTokenMsg("用户不存在");

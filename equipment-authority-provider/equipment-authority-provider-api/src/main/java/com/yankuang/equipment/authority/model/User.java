@@ -13,15 +13,6 @@ import java.util.Date;
 @Table(name = "el_user")
 public class User implements Serializable {
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
-//    private String nickName;
-//    private String userName;
-//    private String password;
-//    private Long createdAt;
-//    private Long updatedAt;
-
     private Long id;
 
     private String name;
