@@ -17,7 +17,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 @Api
@@ -69,14 +71,20 @@ public class UserController {
         UserDTO userDTO = new UserDTO();
         List<Long> authorityIds = new ArrayList<Long>();
         List<Long> roleIds = new ArrayList<Long>();
-
+        final Base64.Decoder decoder = Base64.getDecoder();
         // 登录先去redis中查看登陆状态
         String token = request.getHeader("token");
         String userJson = redis.get(token);
         if (!StringUtils.isEmpty(userJson)) {
             redis.expire(token, 1800);
-            System.out.printf(userJson);
-            return CommonResponse.ok(JsonUtils.jsonToPojo(userJson, UserDTO.class));
+            // 解密
+            try {
+                String decoderResult = new String(decoder.decode(userJson), "UTF-8");
+                System.out.println(decoderResult);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            return CommonResponse.ok(token);
         }
 
         if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)) {
@@ -88,29 +96,34 @@ public class UserController {
         }
         if (loginUser != null && password.equals(loginUser.getPassword())) {
             System.out.println(loginUser);
-            UserDTO userResult = getUserDTO(userDTO, authorityIds, roleIds, loginUser);
-            // TODO
+            String result = getUserDTO(userDTO, authorityIds, roleIds, loginUser);
             token = CodeUtil.getCode();
-            userDTO.setToken(token);
-            redis.set(token, JsonUtils.objectToJson(userDTO), 1800);
-            // 密码不返回处理
-            userDTO.setPassword("");
-            return CommonResponse.ok(userDTO);
+
+            final Base64.Encoder encoder = Base64.getEncoder();
+            String encodedResult = "";
+            try {
+
+                final byte[] textByte = result.getBytes("UTF-8");
+                // 加密
+                encodedResult = encoder.encodeToString(textByte);
+                System.out.println(encodedResult);
+
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            redis.set(token, encodedResult, 1800);
+
+            return CommonResponse.ok(token);
         }
         return CommonResponse.errorTokenMsg("用户不存在");
     }
 
-    private UserDTO getUserDTO(UserDTO userDTO, List<Long> authorityIds, List<Long> roleIds, User loginUser) {
-        //拼装最终存入redis的用户信息
-        userDTO.setCode(loginUser.getCode());
-        userDTO.setId(loginUser.getId());
-        userDTO.setName(loginUser.getName());
-        userDTO.setPassword(loginUser.getPassword());
+    private String getUserDTO(UserDTO userDTO, List<Long> authorityIds, List<Long> roleIds, User loginUser) {
 
         // 用户角色列表
         List<RoleUser> roleUsers = roleUserService.findByUserId(loginUser.getId());
         if (roleUsers == null || roleUsers.size() == 0) {
-            return userDTO;
+            return "";
         }
 
         // 遍历用户角色列表
@@ -127,7 +140,8 @@ public class UserController {
         }
         // 用户角色idlist
         userDTO.setAuthorityIds(authorityIds);
-        return userDTO;
+        System.out.println(userDTO.toString());
+        return userDTO.toString();
     }
 
     /**
