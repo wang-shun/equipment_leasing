@@ -39,7 +39,7 @@ public class UserController {
     RoleUserService roleUserService;
 
     @RpcConsumer
-    RolService roleService;
+    RoleService roleService;
 
     @RpcConsumer
     AuthorityService authorityService;

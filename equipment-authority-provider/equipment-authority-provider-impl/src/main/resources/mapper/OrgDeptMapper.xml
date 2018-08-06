@@ -16,27 +16,27 @@
     id, department_id, organization_id, create_by, update_at, update_by, create_at, version,
     status
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="Long" >
     select
     <include refid="Base_Column_List" />
     from el_organization_department_mapping
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+  <delete id="deleteByPrimaryKey" parameterType="Long" >
     delete from el_organization_department_mapping
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.yankuang.equipment.authority.model.OrgDept" >
+  <insert id="create" parameterType="OrgDept" >
     insert into el_organization_department_mapping (id, department_id, organization_id,
       create_by, update_at, update_by,
       create_at, version, status
       )
-    values (#{id,jdbcType=BIGINT}, #{departmentId,jdbcType=BIGINT}, #{organizationId,jdbcType=BIGINT},
-      #{createBy,jdbcType=VARCHAR}, #{updateAt,jdbcType=BIGINT}, #{updateBy,jdbcType=VARCHAR},
-      #{createAt,jdbcType=BIGINT}, #{version,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}
+    values (#{id}, #{departmentId}, #{organizationId},
+        #{createBy}, unix_timestamp(now()), #{updateBy},
+        unix_timestamp(now()), 1, 1
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.yankuang.equipment.authority.model.OrgDept" >
+  <insert id="insertSelective" parameterType="OrgDept" >
     insert into el_organization_department_mapping
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -69,35 +69,35 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
-        #{id,jdbcType=BIGINT},
+        #{id},
       </if>
       <if test="departmentId != null" >
-        #{departmentId,jdbcType=BIGINT},
+        #{departmentId},
       </if>
       <if test="organizationId != null" >
-        #{organizationId,jdbcType=BIGINT},
+        #{organizationId},
       </if>
       <if test="createBy != null" >
-        #{createBy,jdbcType=VARCHAR},
+        #{createBy},
       </if>
       <if test="updateAt != null" >
-        #{updateAt,jdbcType=BIGINT},
+        #{updateAt},
       </if>
       <if test="updateBy != null" >
-        #{updateBy,jdbcType=VARCHAR},
+        #{updateBy},
       </if>
       <if test="createAt != null" >
-        #{createAt,jdbcType=BIGINT},
+        #{createAt},
       </if>
       <if test="version != null" >
-        #{version,jdbcType=BIGINT},
+        #{version},
       </if>
       <if test="status != null" >
-        #{status,jdbcType=TINYINT},
+        #{status},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.yankuang.equipment.authority.model.OrgDept" >
+  <update id="updateByPrimaryKeySelective" parameterType="OrgDept" >
     update el_organization_department_mapping
     <set >
       <if test="departmentId != null" >
@@ -127,7 +127,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.yankuang.equipment.authority.model.OrgDept" >
+  <update id="updateByPrimaryKey" parameterType="OrgDept" >
     update el_organization_department_mapping
     set department_id = #{departmentId,jdbcType=BIGINT},
       organization_id = #{organizationId,jdbcType=BIGINT},

@@ -1,9 +1,9 @@
 package com.yankuang.equipment.web.restful;
 
 import com.yankuang.equipment.authority.model.Dept;
-import com.yankuang.equipment.authority.model.OrgsDeptMapping;
+import com.yankuang.equipment.authority.model.OrgDept;
 import com.yankuang.equipment.authority.service.DeptService;
-import com.yankuang.equipment.authority.service.OrgsDeptMappingService;
+import com.yankuang.equipment.authority.service.OrgDeptService;
 import com.yankuang.equipment.common.util.CommonResponse;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +19,7 @@ public class DeptController {
     private DeptService deptService;
 
     @RpcConsumer
-    private OrgsDeptMappingService orgsDeptMappingService;
+    private OrgDeptService orgDeptService;
 
     /**
      * @method 通过id查询
@@ -142,24 +142,26 @@ public class DeptController {
         return CommonResponse.ok(deptService.findName());
     }
 
+    /**
+     * @method 插入组织部门关系表
+     * @param orgDept
+     * @return
+     */
     @PostMapping("/findOrgNameAdd")
-    CommonResponse findOrgNameAdd(Long organizationId,String deptName,@RequestBody OrgsDeptMapping orgsDeptMapping){
-        if (deptName == null || " ".equals(deptName)){
-            return CommonResponse.errorTokenMsg("请填写部门名称");
-        }
+    CommonResponse findOrgNameAdd(@RequestBody OrgDept orgDept){
 
-        if (organizationId == null){
+
+        if (orgDept.getOrganizationId() == null){
             return CommonResponse.errorTokenMsg("请选择组织名称");
         }
 
-        if (deptService.getByName(deptName) != null){
-            Long deptId = deptService.getId(deptName);
-            orgsDeptMapping.setDepartment_id(deptId);
-            orgsDeptMapping.setOrganization_id(organizationId);
-            return CommonResponse.ok( orgsDeptMappingService.add(orgsDeptMapping));
+        if (orgDept.getDepartmentId() == null){
+            return CommonResponse.errorTokenMsg("请填写部门名称");
         }
 
-        return CommonResponse.ok( );
+        orgDeptService.add(orgDept);
+
+        return CommonResponse.ok();
     }
 
 }
