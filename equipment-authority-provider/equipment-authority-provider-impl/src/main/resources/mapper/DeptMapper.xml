@@ -241,4 +241,13 @@
         status != 99
         ORDER BY create_at
     </select>
+
+    <select id="getId" parameterType="String" resultMap="Long">
+      SELECT id
+      FROM yankuang_equipment.el_department
+      WHERE
+      name = #{name}
+      AND
+      staus != 99
+    </select>
 </mapper>

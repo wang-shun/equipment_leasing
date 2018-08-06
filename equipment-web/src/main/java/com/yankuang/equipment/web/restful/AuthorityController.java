@@ -36,28 +36,21 @@ public class AuthorityController{
     @PutMapping
     CommonResponse updateById(@RequestBody Authority authority){
         if (" ".equals(authority.getName()) || authority.getName() == null){
-            return CommonResponse.errorMsg("用户不能为空");
+            return CommonResponse.errorTokenMsg("用户不能为空");
         }
 
         if (authorityService.getByName(authority.getName()) != null){
-            return CommonResponse.errorMsg("此权限名称已存在");
+            return CommonResponse.errorTokenMsg("此权限名称已存在");
         }
 
         if (authority.getId() == null || authority.getId() == 0){
-            return CommonResponse.errorMsg("系统错误");
+            return CommonResponse.errorTokenMsg("系统错误");
         }
 
         if (authority.getUrl() == null || " ".equals(authority.getUrl())){
-            return CommonResponse.errorMsg("请求路径不能为空");
+            return CommonResponse.errorTokenMsg("请求路径不能为空");
         }
 
-        if (authority.getType() == null){
-            return CommonResponse.errorMsg("请选择类型");
-        }
-
-        if (authority.getSorting() == null){
-            return CommonResponse.errorMsg("系统错误");
-        }
         return CommonResponse.ok(authorityService.update(authority));
     }
 
@@ -71,11 +64,11 @@ public class AuthorityController{
     @PostMapping("/add")
     CommonResponse add(@RequestBody Authority authority){
         if (" ".equals(authority.getName()) || authority.getName() == null){
-            return CommonResponse.errorMsg("用户不能为空");
+            return CommonResponse.errorTokenMsg("用户不能为空");
         }
 
         if (authorityService.getByName(authority.getName()) != null){
-            return CommonResponse.errorMsg("此权限名称已存在");
+            return CommonResponse.errorTokenMsg("此权限名称已存在");
         }
 
         String url = (authority.getUrl() == null || " ".equals(authority.getUrl())) ?"1":authority.getUrl();

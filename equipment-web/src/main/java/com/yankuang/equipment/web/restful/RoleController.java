@@ -50,15 +50,6 @@ public class RoleController {
         if (role.getPcode() == null || " ".equals(role.getPcode())){
             return CommonResponse.errorMsg("系统错误");
         }
-        if (role.getType() == null){
-            return CommonResponse.errorMsg("类型不能为空");
-        }
-        if (role.getSorting() == null){
-            return CommonResponse.errorMsg("系统错误");
-        }
-        if (role.getLevel() == null){
-            return CommonResponse.errorMsg("系统错误");
-        }
         return CommonResponse.ok(roleService.update(role));
     }
 
@@ -88,6 +79,9 @@ public class RoleController {
 
         Long level = role.getLevel() == null ?0:role.getLevel();
         role.setLevel(level);
+
+        Long version = role.getVersion() == null ?1:role.getVersion();
+        role.setVersion(version);
 
         return CommonResponse.ok(roleService.add(role));
     }

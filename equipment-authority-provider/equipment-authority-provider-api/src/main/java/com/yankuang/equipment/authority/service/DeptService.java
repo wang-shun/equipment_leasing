@@ -16,4 +16,5 @@ public interface DeptService {
     List<Dept> getAll( );
     Paging findpage(int pageSize, int pageNum, Dept dept);
     List<String> findName();
+    Long getId(String name);
 }

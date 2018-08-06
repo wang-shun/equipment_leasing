@@ -44,9 +44,8 @@ public class OrganizationController {
             return CommonResponse.errorMsg("此组织名称已存在");
         }
 
-        if (organization.getLevel() == null){
-            return CommonResponse.errorMsg("系统错误");
-        }
+        int level = organization.getLevel() == null?0:organization.getLevel();
+        organization.setLevel(level);
 
         String pcode = (organization.getPcode() == null || " ".equals(organization.getPcode())) ?"1":organization.getPcode();
         organization.setPcode(pcode);
@@ -81,22 +80,6 @@ public class OrganizationController {
 
         if (organization.getPcode() == null || " ".equals(organization.getPcode())){
             return CommonResponse.errorMsg("系统错误");
-        }
-
-        if (organization.getLevel() == null){
-            return CommonResponse.errorMsg("系统错误");
-        }
-
-        if (organization.getSorting() == null){
-            return CommonResponse.errorMsg("系统错误");
-        }
-
-        if (organization.getCode() == null || " ".equals(organization.getCode())){
-            return CommonResponse.errorMsg("系统错误");
-        }
-
-        if (organization.getVersion() == null || organization.getVersion() == 0){
-            return CommonResponse.errorMsg("版本号不能为空");
         }
 
         return CommonResponse.ok(organizationService.update(organization));
