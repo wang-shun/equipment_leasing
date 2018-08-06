@@ -44,9 +44,19 @@ public class UserController {
     @RpcConsumer
     AuthorityService authorityService;
 
+    /**
+     * 用户退出登录.
+     */
+    @PostMapping(value = "/loginOut")
+    CommonResponse loginOut(HttpServletRequest request){
+        // 登录先去redis中查看登陆状态
+        String token = request.getHeader("token");
+        redis.del(token);
+        return CommonResponse.build(200, "您已经成功退出登录", null);
+    }
 
     /**
-     * 用户登录loginWithoutToken.
+     * 用户登录.
      * @param userName
      * @param password
      * @return
@@ -65,6 +75,7 @@ public class UserController {
         String userJson = redis.get(token);
         if (!StringUtils.isEmpty(userJson)) {
             redis.expire(token, 1800);
+            System.out.printf(userJson);
             return CommonResponse.ok(JsonUtils.jsonToPojo(userJson, UserDTO.class));
         }
 
@@ -80,10 +91,10 @@ public class UserController {
             UserDTO userResult = getUserDTO(userDTO, authorityIds, roleIds, loginUser);
             // TODO
             token = CodeUtil.getCode();
+            userDTO.setToken(token);
             redis.set(token, JsonUtils.objectToJson(userDTO), 1800);
             // 密码不返回处理
             userDTO.setPassword("");
-            userDTO.setToken(token);
             return CommonResponse.ok(userDTO);
         }
         return CommonResponse.errorTokenMsg("用户不存在");
