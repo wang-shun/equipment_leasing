@@ -20,4 +20,11 @@ public class DeptMapper extends MyBatisDao<Dept> {
     public List<Dept> getAll( ){
         return getSqlSession().selectList("findAllD");
     }
+    public List<String> getName(){
+        return getSqlSession().selectList("deptFindName");
+    }
+
+    public Long getId(String name){
+        return getSqlSession().selectOne("getId");
+    }
 }

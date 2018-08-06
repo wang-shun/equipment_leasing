@@ -31,7 +31,7 @@ public class CommonResponse {
     // 响应中的数据
     private Object data;
     
-    private String ok;	// 不使用
+    //private String ok;	// 不使用
 
     public static CommonResponse build(Integer status, String msg, Object data) {
         return new CommonResponse(status, msg, data);
@@ -176,12 +176,12 @@ public class CommonResponse {
         }
     }
 
-	public String getOk() {
+	/*public String getOk() {
 		return ok;
 	}
 
 	public void setOk(String ok) {
 		this.ok = ok;
 	}
-
+*/
 }

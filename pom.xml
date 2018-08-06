@@ -11,6 +11,7 @@
         <module>equipment-authority-provider</module>
         <module>equipment-common</module>
         <module>equipment-web</module>
+        <module>equipment-equipment-provider</module>
     </modules>
     <packaging>pom</packaging>
 

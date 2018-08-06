@@ -14,15 +14,17 @@
         <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
         <result column="update_at" property="updateAt" jdbcType="BIGINT" />
         <result column="version" property="version" jdbcType="BIGINT" />
+        <result column="status" property="status" jdbcType="TINYINT" />
     </resultMap>
     <sql id="Base_Column_List" >
-        id, name, code, pcode, level, sorting, remark, create_by, create_at, update_by, update_at, version
+        id, name, code, pcode, level, sorting, remark, create_by, create_at, update_by, update_at, version, status
     </sql>
 
     <select id="findById" parameterType="long" resultMap="BaseResultMap" >
         SELECT <include refid="Base_Column_List" />
         FROM yankuang_equipment.el_department
         WHERE id = #{id}
+        AND status != 99
     </select>
 
     <update id="update" parameterType="Dept" >
@@ -55,12 +57,13 @@
             <if test="updateBy != null" >
                 update_by = #{updateBy},
             </if>
-            <if test="updateAt != null" >
-                update_at = #{updateAt},
-            </if>
             <if test="version != null" >
                 version = #{version},
             </if>
+            <if test="status != null" >
+                version = #{status},
+            </if>
+            update_at = unix_timestamp(now())
         </set>
         where id = #{id}
     </update>
@@ -70,15 +73,16 @@
         (<include refid="Base_Column_List" />)
         VALUES(#{id}, #{name}, #{code},
         #{pcode}, #{level}, #{sorting},
-        #{remark}, #{createBy}, #{createAt},
-        #{updateBy}, #{updateAt}, #{version}
+        #{remark}, #{createBy},unix_timestamp(now()),
+        #{updateBy}, unix_timestamp(now()), #{version},1
         )
     </insert>
 
     <update id="updatedel" parameterType="long">
         UPDATE yankuang_equipment.el_department
         <set>
-            status = 99
+            status = 99,
+            update_at = unix_timestamp(now())
         </set>
         WHERE id = #{id}
     </update>
@@ -87,6 +91,7 @@
         SELECT <include refid="Base_Column_List" />
         FROM yankuang_equipment.el_department
         WHERE name = #{name}
+        AND status != 99
     </select>
 
     <select id="findAllD" resultMap="BaseResultMap" >
@@ -129,6 +134,120 @@
         <if test="id != null">
             AND id = #{id}
         </if>
+        <if test="status != null" >
+            AND version = #{status}
+        </if>
+        AND status != 99
         ORDER BY create_at asc
+    </select>
+    <select id="paging" parameterType="map" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM yankuang_equipment.el_department
+        WHERE
+        1 = 1
+        <if test="name != null" >
+            AND name = #{name}
+        </if>
+        <if test="code != null" >
+            AND code = #{code}
+        </if>
+        <if test="pcode != null" >
+            AND pcode = #{pcode}
+        </if>
+        <if test="level != null" >
+            AND level = #{level}
+        </if>
+        <if test="sorting != null" >
+            AND sorting = #{sorting}
+        </if>
+        <if test="remark != null" >
+            AND remark = #{remark}
+        </if>
+        <if test="cteateBy != null" >
+            AND cteate_by = #{cteateBy}
+        </if>
+        <if test="createAt != null" >
+            AND create_at = #{createAt}
+        </if>
+        <if test="updateBy != null" >
+            AND update_by = #{updateBy}
+        </if>
+        <if test="updateAt != null" >
+            AND update_at = #{updateAt}
+        </if>
+        <if test="version != null" >
+            AND version = #{version}
+        </if>
+        <if test="id != null">
+            AND id = #{id}
+        </if>
+        <if test="status != null" >
+            AND version = #{status}
+        </if>
+        AND status != 99
+        order by create_at desc LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="count" parameterType="map" resultType="long">
+        SELECT count(1)
+        FROM yankuang_equipment.el_department
+        WHERE
+        1 = 1
+        <if test="name != null" >
+            AND name = #{name}
+        </if>
+        <if test="code != null" >
+            AND code = #{code}
+        </if>
+        <if test="pcode != null" >
+            AND pcode = #{pcode}
+        </if>
+        <if test="level != null" >
+            AND level = #{level}
+        </if>
+        <if test="sorting != null" >
+            AND sorting = #{sorting}
+        </if>
+        <if test="remark != null" >
+            AND remark = #{remark}
+        </if>
+        <if test="cteateBy != null" >
+            AND cteate_by = #{cteateBy}
+        </if>
+        <if test="createAt != null" >
+            AND create_at = #{createAt}
+        </if>
+        <if test="updateBy != null" >
+            AND update_by = #{updateBy}
+        </if>
+        <if test="updateAt != null" >
+            AND update_at = #{updateAt}
+        </if>
+        <if test="version != null" >
+            AND version = #{version}
+        </if>
+        <if test="id != null">
+            AND id = #{id}
+        </if>
+        <if test="status != null" >
+            AND version = #{status}
+        </if>
+        AND status != 99
+    </select>
+    <select id="deptFindName" resultType="map">
+        SELECT name
+        FROM yankuang_equipment.el_department
+        WHERE
+        status != 99
+        ORDER BY create_at
+    </select>
+
+    <select id="getId" parameterType="String" resultMap="Long">
+      SELECT id
+      FROM yankuang_equipment.el_department
+      WHERE
+      name = #{name}
+      AND
+      staus != 99
     </select>
 </mapper>
