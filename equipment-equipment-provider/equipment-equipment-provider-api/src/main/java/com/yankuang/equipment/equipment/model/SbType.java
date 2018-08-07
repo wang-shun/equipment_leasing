@@ -1,19 +1,21 @@
-package com.yankuang.equipment.authority.model;
+package com.yankuang.equipment.equipment.model;
 
-import javax.persistence.Table;
 import java.io.Serializable;
 
-@Table(name = "el_organization")
-public class Organization implements Serializable {
+public class SbType implements Serializable {
     private Long id;
+
+    private String code;
 
     private String name;
 
     private String pcode;
 
-    private Integer level;
+    private Long sorting;
 
-    private Integer sorting;
+    private Long level;
+
+    private Byte status;
 
     private String remark;
 
@@ -23,21 +25,9 @@ public class Organization implements Serializable {
 
     private String updateBy;
 
-    private String code;
-
     private Long updateAt;
 
     private Long version;
-
-    private Byte status;
-
-    public Byte getStatus() {
-        return status;
-    }
-
-    public void setStatus(Byte status) {
-        this.status = status;
-    }
 
     public Long getId() {
         return id;
@@ -45,6 +35,14 @@ public class Organization implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code == null ? null : code.trim();
     }
 
     public String getName() {
@@ -63,20 +61,28 @@ public class Organization implements Serializable {
         this.pcode = pcode == null ? null : pcode.trim();
     }
 
-    public Integer getLevel() {
-        return level;
-    }
-
-    public void setLevel(Integer level) {
-        this.level = level;
-    }
-
-    public Integer getSorting() {
+    public Long getSorting() {
         return sorting;
     }
 
-    public void setSorting(Integer sorting) {
+    public void setSorting(Long sorting) {
         this.sorting = sorting;
+    }
+
+    public Long getLevel() {
+        return level;
+    }
+
+    public void setLevel(Long level) {
+        this.level = level;
+    }
+
+    public Byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(Byte status) {
+        this.status = status;
     }
 
     public String getRemark() {
@@ -109,14 +115,6 @@ public class Organization implements Serializable {
 
     public void setUpdateBy(String updateBy) {
         this.updateBy = updateBy == null ? null : updateBy.trim();
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code == null ? null : code.trim();
     }
 
     public Long getUpdateAt() {
