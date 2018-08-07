@@ -248,6 +248,7 @@
       WHERE
       name = #{name}
       AND
-      staus != 99
+      status != 99
     </select>
+
 </mapper>

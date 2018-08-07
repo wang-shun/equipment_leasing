@@ -1,9 +1,11 @@
 package com.yankuang.equipment.web.restful;
 
 import com.yankuang.equipment.authority.model.Role;
+import com.yankuang.equipment.authority.service.DeptRoleService;
 import com.yankuang.equipment.authority.service.RoleService;
 import com.yankuang.equipment.common.util.CommonResponse;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
+import io.terminus.boot.rpc.common.annotation.RpcProvider;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -16,6 +18,9 @@ import org.springframework.web.bind.annotation.*;
 public class RoleController {
     @RpcConsumer
     private RoleService roleService;
+
+    @RpcConsumer
+    private DeptRoleService deptRoleService;
 
 
     /**
@@ -105,7 +110,7 @@ public class RoleController {
      * @param name
      * @return
      */
-    @PostMapping(value = "/find")
+    @GetMapping(value = "/find")
     CommonResponse getByName(String name){
         if (name == null || " ".equals(name)){
             return CommonResponse.errorMsg("角色名称不能为空");
@@ -117,7 +122,7 @@ public class RoleController {
      * @method 查询所有
      * @return
      */
-    @PostMapping(value = "/findAll")
+    @GetMapping(value = "/findAll")
     CommonResponse getAll(  ){
         return CommonResponse.ok(roleService.getAll( ));
     }
@@ -141,5 +146,15 @@ public class RoleController {
     @GetMapping("/findName")
     CommonResponse getName(){
         return CommonResponse.ok(roleService.findName());
+    }
+
+    /**
+     * @method 部门管理删除功能
+     * @param id
+     * @return
+     */
+    @DeleteMapping("/mapperdel/{id}")
+    CommonResponse delDeptOrg(@PathVariable Long id){
+        return CommonResponse.ok(deptRoleService.delById(id));
     }
 }

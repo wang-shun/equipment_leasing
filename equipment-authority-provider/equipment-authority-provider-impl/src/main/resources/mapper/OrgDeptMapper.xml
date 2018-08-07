@@ -16,11 +16,13 @@
     id, department_id, organization_id, create_by, update_at, update_by, create_at, version,
     status
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="Long" >
+  <select id="findById" resultMap="BaseResultMap" parameterType="Long" >
     select
     <include refid="Base_Column_List" />
     from el_organization_department_mapping
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id}
+    AND status != 99
+    ORDER BY create_at
   </select>
   <delete id="delete" parameterType="Long" >
     delete from el_organization_department_mapping
@@ -148,4 +150,20 @@
     </set>
     WHERE id = #{id}
   </update>
+
+  <select id="paging" parameterType="map" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/>
+    FROM yankuang_equipment.el_organization_department_mapping
+    WHERE status != 99
+  </select>
+
+  <select id="findOrgDept" resultMap="BaseResultMap" parameterType="map" >
+    select
+    <include refid="Base_Column_List" />
+    from el_organization_department_mapping
+    where department_id = #{departmentId}
+    AND organization_id = #{organizationId}
+    AND status != 99
+    ORDER BY create_at
+  </select>
 </mapper>

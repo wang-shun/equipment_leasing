@@ -16,11 +16,13 @@
     id, department_id, role_id, create_by, update_at, update_by, create_at, version,
     status
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select
     <include refid="Base_Column_List" />
     from el_department_role_mapping
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id}
+    AND status != 99
+    ORDER BY create_at
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from el_department_role_mapping
@@ -138,5 +140,13 @@
       version = #{version,jdbcType=BIGINT},
       status = #{status,jdbcType=TINYINT}
     where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updatedelDR" parameterType="long">
+    UPDATE yankuang_equipment.el_department_role_mapping
+    <set>
+      status = 99,
+      update_at = unix_timestamp(now())
+    </set>
+    WHERE id = #{id}
   </update>
 </mapper>

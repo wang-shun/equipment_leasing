@@ -6,6 +6,7 @@ import com.yankuang.equipment.authority.service.DeptService;
 import com.yankuang.equipment.authority.service.OrgDeptService;
 import com.yankuang.equipment.common.util.CommonResponse;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 /**
  * @author boms
@@ -128,7 +129,7 @@ public class DeptController {
      * @param dept
      * @return
      */
-    @PostMapping("/findpage/{page}/{limit}")
+    @GetMapping("/findpage/{page}/{limit}")
     CommonResponse getPage(@PathVariable int page,@PathVariable int limit,@RequestBody Dept dept){
         return CommonResponse.ok(deptService.findpage(page,limit,dept));
     }
@@ -144,24 +145,60 @@ public class DeptController {
 
     /**
      * @method 添加部门管理
-     * @param orgDept
+     * @param organizationId
+     * @param name
      * @return
      */
-    @PostMapping("/findOrgNameAdd")
-    CommonResponse findOrgNameAdd(@RequestBody OrgDept orgDept){
+    @GetMapping("/findOrgNameAdd/{organizationId}/{name}")
+    CommonResponse findOrgNameAdd( @PathVariable(value = "organizationId") Long organizationId,
+                                   @PathVariable(value = "name") String name){
+        Long departmentId;
 
-
-        if (orgDept.getOrganizationId() == null){
+        if (organizationId == null){
             return CommonResponse.errorTokenMsg("请选择组织名称");
         }
 
-        if (orgDept.getDepartmentId() == null){
+        if (name == null || "".equals(name)){
             return CommonResponse.errorTokenMsg("请填写部门名称");
         }
 
-        orgDeptService.add(orgDept);
+        Dept dept = new Dept();
+        OrgDept orgDept = new OrgDept();
 
-        return CommonResponse.ok();
+        orgDept.setOrganizationId(organizationId);
+
+        if(deptService.getByName(name) ==  null){
+            dept.setName(name);
+
+            Long level = dept.getLevel() == null ? 0:dept.getLevel();
+            dept.setLevel(level);
+
+            String pcode = (dept.getPcode() == null || " ".equals(dept.getPcode())) ?"1":dept.getPcode();
+            dept.setPcode(pcode);
+
+            Long sort = dept.getSorting() == null ?1:dept.getSorting();
+            dept.setSorting(sort);
+
+            Long version = dept.getVersion() == null ?1:dept.getVersion();
+            dept.setVersion(version);
+
+            deptService.add(dept);
+        }
+
+        departmentId = deptService.getId("w");
+        if (departmentId == null){
+            return CommonResponse.errorTokenMsg("系统错误");
+        }
+
+        if (orgDeptService.selOrgDept(departmentId) != null){
+            return CommonResponse.errorTokenMsg("已存在此部门");
+        }
+
+        orgDept.setDepartmentId(departmentId);
+        orgDept.setUpdateBy("admin");//TODO 用户未完成暂写死
+        orgDept.setCreateBy("admin");
+
+        return CommonResponse.ok(orgDeptService.add(orgDept));
     }
 
     /**
@@ -174,4 +211,55 @@ public class DeptController {
         return CommonResponse.ok(orgDeptService.delById(id));
     }
 
+
+    /**
+     * @method 部门管理更新功能
+     * @param organizationId
+     * @param name
+     * @return
+     */
+    @PutMapping("/mapperudt/{organizationId}/{name}")
+    CommonResponse udtDeptOrg(@PathVariable(value = "organizationId") Long organizationId,
+                              @PathVariable(value = "name") String name){
+        Long departmentId;
+        if (organizationId == null){
+            return CommonResponse.errorTokenMsg("请选择组织名称");
+        }
+
+        if (name == null || "".equals(name)){
+            return CommonResponse.errorTokenMsg("请填写部门名称");
+        }
+        Dept dept = new Dept();
+        OrgDept orgDept = new OrgDept();
+
+        orgDept.setOrganizationId(organizationId);
+
+        if(deptService.getByName(name) ==  null){
+            dept.setName(name);
+            deptService.update(dept);
+        }
+
+        departmentId = deptService.getId(name);
+        if (departmentId == null){
+            return CommonResponse.errorTokenMsg("系统错误");
+        }
+
+        if (orgDeptService.selOrgDept(departmentId) != null){
+            return CommonResponse.errorTokenMsg("已存在此部门");
+        }
+        orgDept.setDepartmentId(departmentId);
+        return CommonResponse.ok(orgDeptService.udtOrgDept(orgDept));
+    }
+
+    /**
+     * @method 分页查询
+     * @param page
+     * @param limit
+     * @param orgDept
+     * @return
+     */
+    @GetMapping("/findpageOrgDept/{page}/{limit}")
+    CommonResponse getPageOrgDept(@PathVariable int page,@PathVariable int limit,@RequestBody OrgDept orgDept){
+        return CommonResponse.ok(orgDeptService.findpage(page,limit,orgDept));
+    }
 }
