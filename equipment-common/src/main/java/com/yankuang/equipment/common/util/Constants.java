@@ -53,6 +53,66 @@ public class Constants {
     /**
      * 默认一页显示记录数量
      */
-    public static final Integer PAGE_SIZE = 20;
+    public static final Integer PAGE_SIZE = 30;
 
+    /**
+     * 设备租赁计划状态_未提交
+     */
+    public static final String PLANSTATUS_UNCOMMITED = "1";
+
+    /**
+     * 设备租赁计划状态_已提交未审核
+     */
+    public static final String PLANSTATUS_COMMITED = "2";
+
+    /**
+     * 设备租赁计划状态_已审核未通过
+     */
+    public static final String PLANSTATUS_FAILED = "3";
+
+    /**
+     * 设备租赁计划状态_已审核已通过
+     */
+
+    public static final String PLANSTATUS_PASSED = "4";
+    /**
+     * 设备租赁计划状态_其他
+     */
+    public static final String PLANSTATUS_OTHERS = "5";
+
+    /**
+     * 设备租赁计划设备类型_通用设备
+     */
+
+    public static final String PLANEQUIPMENTTYPE_GENERIC = "1";
+
+    /**
+     * 设备租赁计划设备类型_综机设备
+     */
+    public static final String PLANEQUIPMENTTYPE_INTEGRATED = "2";
+
+    /**
+     * 设备租赁计划设备类型_综机设备
+     */
+    public static final String PLANEQUIPMENTTYPE_OTHERS = "3";
+
+    /**
+     * 设备租赁计划_计划类型_年度
+     */
+    public static final String PLANTYPE_YEAR = "1";
+
+    /**
+     * 设备租赁计划_计划类型_季度
+     */
+    public static final String PLANTYPE_QUARTER = "2";
+
+    /**
+     * 设备租赁计划_计划类型_月度
+     */
+    public static final String PLANTYPE_MONTH = "3";
+
+    /**
+     * 设备租赁计划_计划类型_应急
+     */
+    public static final String PLANTYPE_URGENT = "4";
 }
