@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 @Table(name = "el_department")
 public class Dept implements Serializable {
-    private Integer id;
+    private Long id;
 
     private String name;
 
@@ -47,11 +47,11 @@ public class Dept implements Serializable {
         this.status = status;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

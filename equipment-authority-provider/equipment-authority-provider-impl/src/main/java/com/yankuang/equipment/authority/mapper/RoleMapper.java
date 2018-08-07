@@ -19,4 +19,7 @@ public class RoleMapper extends MyBatisDao<Role> {
     public List<Role> getAll( ){
         return getSqlSession().selectList("findAllR");
     }
+    public List<String> getName(){
+        return getSqlSession().selectList("roleFindName");
+    }
 }

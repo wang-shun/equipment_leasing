@@ -5,7 +5,7 @@ import com.yankuang.equipment.authority.model.Authority;
 import com.yankuang.equipment.authority.service.AuthorityService;
 import com.yankuang.equipment.common.util.UuidUtils;
 import io.terminus.boot.rpc.common.annotation.RpcProvider;
-import jdk.nashorn.internal.ir.annotations.Reference;
+import io.terminus.common.model.Paging;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +17,6 @@ public class AuthorityServiceImpl implements AuthorityService{
     @Autowired
     AuthorityMapper authorityMapper;
 
-    @Reference
-    UuidUtils uuidUtils;
-
     public Authority getById(Long id) {
         return authorityMapper.findById(id);
     }
@@ -29,7 +26,9 @@ public class AuthorityServiceImpl implements AuthorityService{
     }
 
     public boolean add(Authority authority){
-        authority.setCode(uuidUtils.newUuid());
+        authority.setCode(UuidUtils.newUuid());
+        authority.setCreateBy("小狼");//TODO 由于用户功能暂未开发完，先写死，后期改
+        authority.setUpdateBy("小狼");
         return authorityMapper.create(authority);
     }
 
@@ -43,5 +42,14 @@ public class AuthorityServiceImpl implements AuthorityService{
 
     public List<Authority> getAll( ){
         return authorityMapper.getAll();
+    }
+
+    public Paging findpage(int pageSize, int pageNum, Authority authority) {
+            int maxResult = (pageNum - 1) * pageSize;
+            Paging page = authorityMapper.paging(maxResult, pageNum, authority);
+            return page;
+    }
+    public List<String> findName(){
+        return authorityMapper.getName();
     }
 }

@@ -41,14 +41,22 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.yankuang.equipment.equipment.model.SbTypeInfo" >
+<<<<<<< HEAD
     insert into sb_type_info (type_id, main_para,
+=======
+    insert into sb_type_info (id, type_id, main_para, 
+>>>>>>> cbb0518... init equipment-equipment
       main_para_type, def_para1, def_para1_type, 
       def_para2, def_para2_type, def_para3, 
       def_para3_type, def_para4, def_para4_type, 
       def_para5, def_para5_type, def_para6, 
       def_para6_type, def_para7, def_para7_type, 
       def_para8, def_para8_type)
+<<<<<<< HEAD
     values (#{typeId,jdbcType=BIGINT}, #{mainPara,jdbcType=VARCHAR},
+=======
+    values (#{id,jdbcType=BIGINT}, #{typeId,jdbcType=BIGINT}, #{mainPara,jdbcType=VARCHAR}, 
+>>>>>>> cbb0518... init equipment-equipment
       #{mainParaType,jdbcType=VARCHAR}, #{defPara1,jdbcType=VARCHAR}, #{defPara1Type,jdbcType=VARCHAR}, 
       #{defPara2,jdbcType=VARCHAR}, #{defPara2Type,jdbcType=VARCHAR}, #{defPara3,jdbcType=VARCHAR}, 
       #{defPara3Type,jdbcType=VARCHAR}, #{defPara4,jdbcType=VARCHAR}, #{defPara4Type,jdbcType=VARCHAR}, 

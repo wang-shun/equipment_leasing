@@ -31,12 +31,20 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.yankuang.equipment.equipment.model.SbType">
+<<<<<<< HEAD
     insert into sb_type (code, name,
+=======
+    insert into sb_type (id, code, name, 
+>>>>>>> cbb0518... init equipment-equipment
       pcode, sorting, level, 
       status, remark, create_by, 
       create_at, update_by, update_at, 
       version)
+<<<<<<< HEAD
     values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+=======
+    values (#{id,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+>>>>>>> cbb0518... init equipment-equipment
       #{pcode,jdbcType=VARCHAR}, #{sorting,jdbcType=BIGINT}, #{level,jdbcType=BIGINT}, 
       #{status,jdbcType=TINYINT}, #{remark,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, 
       #{createAt,jdbcType=BIGINT}, #{updateBy,jdbcType=VARCHAR}, #{updateAt,jdbcType=BIGINT}, 
