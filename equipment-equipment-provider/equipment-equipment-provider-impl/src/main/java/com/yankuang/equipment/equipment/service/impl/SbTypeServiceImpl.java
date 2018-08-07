@@ -27,4 +27,8 @@ public class SbTypeServiceImpl implements SbTypeService {
     public void deleteSbTypeByKey(Long id) {
         sbTypeMapper.deleteByPrimaryKey(id);
     }
+
+    public List<SbType> listSbTypesByPcodeOrLevel(String pcode, int level) {
+        return sbTypeMapper.listSbTypesByPcodeOrLevel(pcode,level);
+    }
 }

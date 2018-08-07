@@ -3,6 +3,8 @@ package com.yankuang.equipment.equipment.mapper;
 import com.yankuang.equipment.equipment.model.SbPosition;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface SbPositionMapper {
     int deleteByPrimaryKey(Long id);
@@ -16,4 +18,6 @@ public interface SbPositionMapper {
     int updateByPrimaryKeySelective(SbPosition record);
 
     int updateByPrimaryKey(SbPosition record);
+
+    List<SbPosition> listAll(String code,String name);
 }

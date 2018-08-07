@@ -1,5 +1,6 @@
 package com.yankuang.equipment.equipment.service;
 
+import com.github.pagehelper.PageInfo;
 import com.yankuang.equipment.equipment.model.SbModel;
 
 public interface SbModelService {
@@ -28,4 +29,14 @@ public interface SbModelService {
      * @param id
      */
     public void deleteSbModelByKey(Long id);
+
+    /**
+     * 查询规格型号列表
+     * @param code
+     * @param name
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    public PageInfo<SbModel> listAll(String code,String name,int pageNum, int pageSize);
 }

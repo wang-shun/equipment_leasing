@@ -6,7 +6,9 @@
     <result column="code" property="code" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="state_name" property="stateName" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="type_name" property="typeName" jdbcType="VARCHAR" />
     <result column="org" property="org" jdbcType="VARCHAR" />
     <result column="position" property="position" jdbcType="VARCHAR" />
     <result column="isuse" property="isuse" jdbcType="TINYINT" />
@@ -220,4 +222,20 @@
       version = #{version,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="listAll" resultMap="BaseResultMap">
+    select t.*,t1.name as state_name,t2.name as type_name
+    from sb_position t
+    left join sys_config t1 on t.state=t1.code and t1.type='sb_position_status' and t1.status = 1
+    left join sys_config t2 on t.state=t2.code and t2.type='sb_position_type' and t2.status = 1
+    <where>
+      1=1 and t.status = 1
+      <if test="code != null" >
+        AND t.code like '%#{code}%'
+      </if>
+      <if test="name != null" >
+        AND t.name like '%#{name}%'
+      </if>
+    </where>
+  </select>
 </mapper>

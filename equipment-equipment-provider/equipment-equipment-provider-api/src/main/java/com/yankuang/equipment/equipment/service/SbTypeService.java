@@ -22,4 +22,12 @@ public interface SbTypeService {
      * @param id
      */
     public void deleteSbTypeByKey(Long id);
+
+    /**
+     * 根据父编码、级别查询设备类型
+     * @param pcode
+     * @param level
+     * @return
+     */
+    public List<SbType> listSbTypesByPcodeOrLevel(String pcode,int level);
 }

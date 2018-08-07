@@ -21,4 +21,6 @@ public interface SbTypeMapper {
     int updateByPrimaryKey(SbType record);
 
     List<SbType> selectAllSbTypes();
+
+    List<SbType> listSbTypesByPcodeOrLevel(String pcode,int level);
 }

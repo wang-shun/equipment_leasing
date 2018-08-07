@@ -193,4 +193,18 @@
         where t.status = '1'
         order by t.level,code
     </select>
+
+  <select id="listSbTypesByPcodeOrLevel" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from sb_type t
+    where t.status = '1'
+      <if test="pcode != null">
+        and t.pcode = #{pcode}
+      </if>
+      <if test="level != null">
+        and t.level = #{level}
+      </if>
+    order by t.level,code
+  </select>
 </mapper>

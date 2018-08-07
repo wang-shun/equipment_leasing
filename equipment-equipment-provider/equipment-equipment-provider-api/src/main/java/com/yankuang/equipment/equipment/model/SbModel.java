@@ -14,10 +14,13 @@ public class SbModel implements Serializable {
     private String name;
 
     private String sbtypeOne;
+    private String sbtypeOneName;
 
     private String sbtypeTwo;
+    private String sbtypeTwoName;
 
     private String sbtypeThree;
+    private String sbtypeThreeName;
 
     private Byte status;
 
@@ -77,6 +80,30 @@ public class SbModel implements Serializable {
 
     public void setSbtypeThree(String sbtypeThree) {
         this.sbtypeThree = sbtypeThree == null ? null : sbtypeThree.trim();
+    }
+
+    public String getSbtypeOneName() {
+        return sbtypeOneName;
+    }
+
+    public void setSbtypeOneName(String sbtypeOneName) {
+        this.sbtypeOneName = sbtypeOneName;
+    }
+
+    public String getSbtypeTwoName() {
+        return sbtypeTwoName;
+    }
+
+    public void setSbtypeTwoName(String sbtypeTwoName) {
+        this.sbtypeTwoName = sbtypeTwoName;
+    }
+
+    public String getSbtypeThreeName() {
+        return sbtypeThreeName;
+    }
+
+    public void setSbtypeThreeName(String sbtypeThreeName) {
+        this.sbtypeThreeName = sbtypeThreeName;
     }
 
     public Byte getStatus() {
