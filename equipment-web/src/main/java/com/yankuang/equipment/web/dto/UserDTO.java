@@ -5,9 +5,19 @@ import java.util.List;
 
 public class UserDTO implements Serializable {
 
+    private String name;
+
     private List<Long> roleIds;
 
     private List<Long> authorityIds;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public List<Long> getRoleIds() {
         return roleIds;
@@ -27,9 +37,11 @@ public class UserDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "{UserDTO:{" +
-                "roleIds=" + roleIds.toString() +
-                ", authorityIds=" + authorityIds.toString() +
-                '}'+'}';
+        return "{UserDTO{" +
+                "name='" + name + '\'' +
+                ", roleIds=" + roleIds +
+                ", authorityIds=" + authorityIds +
+                '}' + '}';
     }
+
 }

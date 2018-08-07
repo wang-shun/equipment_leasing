@@ -10,7 +10,7 @@ import java.util.List;
 
 @CrossOrigin(maxAge = 3600)
 @RestController
-@RequestMapping("/v1/rols")
+@RequestMapping("/v1/roles")
 public class RoleController {
     @RpcConsumer
     private RolService rolService;

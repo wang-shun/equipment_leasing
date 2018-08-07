@@ -1,14 +1,23 @@
 package com.yankuang.equipment.authority.service;
 
 import com.yankuang.equipment.authority.model.User;
+import io.terminus.common.model.Paging;
 
 public interface UserService {
 
     User login(String name);
 
-    public User findByCode(String code);
+    User findByCode(String code);
+
+    User findById(Long id);
 
     boolean create(User user);
 
     String healthCheck();
+
+    Paging<User> paging(Integer offset, Integer limit, User user);
+
+    Boolean delete(Long id);
+
+    Boolean update(User t);
 }

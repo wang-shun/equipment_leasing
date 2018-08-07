@@ -3,7 +3,9 @@ package com.yankuang.equipment.web.restful;
 import com.yankuang.equipment.authority.model.RoleAuthority;
 import com.yankuang.equipment.authority.model.RoleUser;
 import com.yankuang.equipment.authority.model.User;
-import com.yankuang.equipment.authority.service.*;
+import com.yankuang.equipment.authority.service.RoleAuthorityService;
+import com.yankuang.equipment.authority.service.RoleUserService;
+import com.yankuang.equipment.authority.service.UserService;
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.web.dto.UserDTO;
@@ -12,6 +14,7 @@ import com.yankuang.equipment.web.util.RedisOperator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
+import io.terminus.common.model.Paging;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -39,12 +42,6 @@ public class UserController {
 
     @RpcConsumer
     RoleUserService roleUserService;
-
-    @RpcConsumer
-    RolService roleService;
-
-    @RpcConsumer
-    AuthorityService authorityService;
 
     /**
      * 用户退出登录.
@@ -145,14 +142,25 @@ public class UserController {
     }
 
     /**
-     * 根据code查询用户.
-     * @param code
+     * 根据id查询用户.
+     * @param id
      * @return
      */
-    @ApiOperation("user findByCode")
-    @GetMapping(value = "/{code}")
-    CommonResponse findByCode(@PathVariable String code) {
-        return CommonResponse.ok(userService.findByCode(code));
+    @ApiOperation("user findById")
+    @GetMapping(value = "/{id}")
+    CommonResponse findById(@PathVariable Long id) {
+        return CommonResponse.ok(userService.findById(id));
+    }
+
+    /**
+     * 根据id删除用户.
+     * @param id
+     * @return
+     */
+    @ApiOperation("user deleteById")
+    @DeleteMapping(value = "/{id}")
+    CommonResponse deleteById(@PathVariable Long id) {
+        return CommonResponse.ok(userService.delete(id));
     }
 
     /**
@@ -188,13 +196,49 @@ public class UserController {
         //TODO 从redis中获取登陆人姓名
         user.setUpdateBy("admin");
         user.setCreateBy("admin");
-
-
         Boolean b = userService.create(user);
         if (b == true) {
             return CommonResponse.ok(user);
         }
         return CommonResponse.errorTokenMsg("添加失败");
+    }
+
+    /**
+     * 添加用户.
+     * @param jsonString
+     * @return
+     */
+    @ApiOperation("user create")
+    @PutMapping()
+    public CommonResponse update(@RequestBody String jsonString) {
+        if (jsonString == null || "".equals(jsonString)) {
+            return CommonResponse.errorMsg("参数不能为空");
+        }
+        User user = JsonUtils.jsonToPojo(jsonString, User.class);
+        if (user.getId() == null|| "".equals(user.getId())) {
+            return CommonResponse.errorMsg("id 不能为空");
+        }
+        //todo
+        user.setUpdateBy("登陆人");
+        Boolean b = userService.update(user);
+        return CommonResponse.errorTokenMsg("更新失败");
+    }
+
+    /**
+     * 用户列表分页查询
+     * @param offset
+     * @param limit
+     * @param searchInput
+     * @return
+     */
+    @GetMapping
+    public CommonResponse paging(@RequestParam(value = "page", defaultValue = "1") Integer offset,
+                                 @RequestParam(value = "size", defaultValue = "20")Integer limit,
+                                 @RequestParam String searchInput){
+        User user = new User();
+//        user.setName(searchInput);
+        Paging<User> users = userService.paging(offset, limit, user);
+        return CommonResponse.ok(users);
     }
 }
 
