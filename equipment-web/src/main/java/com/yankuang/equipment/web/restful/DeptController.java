@@ -143,7 +143,7 @@ public class DeptController {
     }
 
     /**
-     * @method 插入组织部门关系表
+     * @method 添加部门管理
      * @param orgDept
      * @return
      */
@@ -162,6 +162,16 @@ public class DeptController {
         orgDeptService.add(orgDept);
 
         return CommonResponse.ok();
+    }
+
+    /**
+     * @method 部门管理删除功能
+     * @param id
+     * @return
+     */
+    @DeleteMapping("/mapperdel/{id}")
+    CommonResponse delDeptOrg(@PathVariable Long id){
+        return CommonResponse.ok(orgDeptService.delById(id));
     }
 
 }

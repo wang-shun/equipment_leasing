@@ -22,9 +22,9 @@
     from el_organization_department_mapping
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="Long" >
+  <delete id="delete" parameterType="Long" >
     delete from el_organization_department_mapping
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id}
   </delete>
   <insert id="create" parameterType="OrgDept" >
     insert into el_organization_department_mapping (id, department_id, organization_id,
@@ -138,5 +138,14 @@
       version = #{version,jdbcType=BIGINT},
       status = #{status,jdbcType=TINYINT}
     where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updatedelOD" parameterType="long">
+    UPDATE yankuang_equipment.el_organization_department_mapping
+    <set>
+      status = 99,
+      update_at = unix_timestamp(now())
+    </set>
+    WHERE id = #{id}
   </update>
 </mapper>

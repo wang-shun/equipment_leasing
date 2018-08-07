@@ -19,4 +19,8 @@ public class OrgDeptServiceImpl implements OrgDeptService {
         return orgDeptMapper.create(orgDept);
     }
 
+    public boolean delById(Long id){
+        return orgDeptMapper.updatedel(id);
+    }
+
 }

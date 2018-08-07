@@ -6,4 +6,5 @@ public interface OrgDeptService {
 
     boolean add(OrgDept orgDept);
 
+    boolean delById(Long id);
 }

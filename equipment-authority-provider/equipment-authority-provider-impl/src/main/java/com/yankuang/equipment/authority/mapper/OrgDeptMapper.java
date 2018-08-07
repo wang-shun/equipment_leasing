@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class OrgDeptMapper extends MyBatisDao<OrgDept> {
-
-
+    public Boolean updatedel(Long id) {
+        return this.sqlSession.insert(this.sqlId("updatedelOD"), id) == 1;
+    }
 }
