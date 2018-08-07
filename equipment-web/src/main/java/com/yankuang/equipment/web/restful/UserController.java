@@ -221,6 +221,9 @@ public class UserController {
         //todo
         user.setUpdateBy("登陆人");
         Boolean b = userService.update(user);
+        if (b) {
+            return CommonResponse.build(200, "更新成功", null);
+        }
         return CommonResponse.errorTokenMsg("更新失败");
     }
 

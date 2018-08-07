@@ -26,21 +26,14 @@ public class RoleServiceImpl implements RoleService {
     }
 
     public boolean add(Role role){
-        role.setCode(UuidUtils.newUuid());
-        role.setCreateBy("小狼");//TODO 由于用户功能暂未开发完，先写死，后期改
-        role.setUpdateBy("小狼");
         return roleMapper.create(role);
     }
 
-    public boolean del(Long id){
-        return  roleMapper.updatedel(id);
+    public boolean delete(Long id){
+        return  roleMapper.delete(id);
     }
 
-    public List<Role> getAll( List<Long> ids){
-        return  roleMapper.findByIds(ids);
-    }
-
-    public Role getByName(String name){
+    public Role findByName(String name){
         return roleMapper.findByName(name);
     }
 
@@ -48,13 +41,10 @@ public class RoleServiceImpl implements RoleService {
         return roleMapper.getAll( );
     }
 
-    public Paging findpage(int pageSize, int pageNum, Role role){
+    public Paging paging(int pageSize, int pageNum, Role role){
         int maxResult = (pageNum - 1) * pageSize;
         Paging page = roleMapper.paging(maxResult, pageNum, role);
         return page;
     }
 
-    public List<String> findName(){
-        return roleMapper.getName();
-    }
 }

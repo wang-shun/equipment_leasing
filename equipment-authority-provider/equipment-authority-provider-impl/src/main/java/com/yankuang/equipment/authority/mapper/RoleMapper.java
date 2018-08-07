@@ -9,17 +9,11 @@ import java.util.List;
 @Repository
 public class RoleMapper extends MyBatisDao<Role> {
 
-    public Boolean updatedel(Long id) {
-        return this.sqlSession.insert(this.sqlId("updatedel"), id) == 1;
-    }
-
     public Role findByName(String name) {
-        return getSqlSession().selectOne("findByNameR", name);
+        return getSqlSession().selectOne("findByName", name);
     }
     public List<Role> getAll( ){
-        return getSqlSession().selectList("findAllR");
+        return getSqlSession().selectList("findAll");
     }
-    public List<String> getName(){
-        return getSqlSession().selectList("roleFindName");
-    }
+
 }

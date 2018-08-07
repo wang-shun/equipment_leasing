@@ -81,10 +81,10 @@
         #{pcode}, #{type}, #{sorting},
         1, #{remark}, #{createBy},
         unix_timestamp(now()), #{updateBy}, #{level},
-        unix_timestamp(now()),#{version}
+        unix_timestamp(now()),0
         )
     </insert>
-    <update id="updatedel" parameterType="long">
+    <update id="delete" parameterType="long">
         UPDATE yankuang_equipment.el_role
         <set>
             status = 99,
@@ -93,107 +93,18 @@
         WHERE id = #{id}
     </update>
 
-    <select id="findObject" parameterType="Role" resultMap="BaseResultMap" >
-        SELECT <include refid="Base_Column_List" />
-        FROM yankuang_equipment.el_role
-        WHERE
-        <if test="name != null" >
-            name = #{name},
-        </if>
-        <if test="code != null" >
-            code = #{code},
-        </if>
-        <if test="pcode != null" >
-            pcode = #{pcode},
-        </if>
-        <if test="type != null" >
-            type = #{type},
-        </if>
-        <if test="sorting != null" >
-            sorting = #{sorting},
-        </if>
-        <if test="status != null" >
-            status = #{status},
-        </if>
-        <if test="remark != null" >
-            remark = #{remark},
-        </if>
-        <if test="createBy != null" >
-            create_by = #{createBy},
-        </if>
-        <if test="updateAt != null" >
-            update_at = #{updateAt},
-        </if>
-        <if test="updateBy != null" >
-            update_by = #{updateBy},
-        </if>
-        <if test="level != null" >
-            level = #{level},
-        </if>
-        <if test="createAt != null" >
-            create_at = #{createAt},
-        </if>
-        <if test="version != null" >
-            version = #{version},
-        </if>
-        AND status != 99
-    </select>
-
-    <select id="findByNameR" parameterType="String" resultMap="BaseResultMap" >
+    <select id="findByName" parameterType="String" resultMap="BaseResultMap" >
         SELECT <include refid="Base_Column_List" />
         FROM yankuang_equipment.el_role
         WHERE name = #{name}
         AND status != 99
     </select>
 
-    <select id="findAllR" resultMap="BaseResultMap" >
+    <select id="findAll" resultMap="BaseResultMap" >
         SELECT <include refid="Base_Column_List" />
         FROM yankuang_equipment.el_role
-        WHERE 1=1
-        <if test="name != null" >
-            AND name = #{name}
-        </if>
-        <if test="code != null" >
-            AND code = #{code}
-        </if>
-        <if test="pcode != null" >
-            AND pcode = #{pcode}
-        </if>
-        <if test="type != null" >
-            AND type = #{type}
-        </if>
-        <if test="sorting != null" >
-            AND sorting = #{sorting}
-        </if>
-        <if test="status != null" >
-            AND status = #{status}
-        </if>
-        <if test="remark != null" >
-            AND remark = #{remark}
-        </if>
-        <if test="createBy != null" >
-            AND create_by = #{createBy}
-        </if>
-        <if test="updateAt != null" >
-            AND update_at = #{updateAt}
-        </if>
-        <if test="updateBy != null" >
-            AND update_by = #{updateBy
-        </if>
-        <if test="level != null" >
-            AND level = #{level}
-        </if>
-        <if test="createAt != null" >
-            AND create_at = #{createAt}
-        </if>
-        <if test="version != null" >
-            AND version = #{version}
-        </if>
-        <if test="id != null">
-            AND id = #{id}
-        </if>
-        AND status != 99
-        ORDER BY create_at asc
+        WHERE status != 99
+        ORDER BY create_at desc
     </select>
     <select id="paging" parameterType="map" resultMap="BaseResultMap">
         SELECT <include refid="Base_Column_List"/>
@@ -295,11 +206,5 @@
         </if>
         AND status != 99
     </select>
-    <select id="roleFindName" resultType="map">
-        SELECT name
-        FROM yankuang_equipment.el_role
-        WHERE
-        status != 99
-        ORDER BY create_at
-    </select>
+
 </mapper>

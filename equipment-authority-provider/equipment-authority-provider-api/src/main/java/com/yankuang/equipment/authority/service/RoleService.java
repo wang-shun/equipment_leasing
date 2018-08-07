@@ -10,10 +10,9 @@ public interface RoleService {
     Role getById(Long id);
     boolean update(Role role);
     boolean add(Role role);
-    boolean del(Long id);
-    List<Role> getAll(List<Long> ids);
-    Role getByName(String name);
+    boolean delete(Long id);
+    Role findByName(String name);
     List<Role> getAll( );
-    Paging findpage(int pageSize, int pageNum, Role role);
-    List<String> findName();
+    Paging paging(int pageSize, int pageNum, Role role);
+
 }
