@@ -5,7 +5,10 @@ import com.yankuang.equipment.authority.model.Organization;
 import com.yankuang.equipment.authority.service.OrganizationService;
 
 import com.yankuang.equipment.common.util.CommonResponse;
+import com.yankuang.equipment.common.util.JsonUtils;
+import com.yankuang.equipment.common.util.UuidUtils;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 /**
  * @author boms
@@ -56,28 +59,29 @@ public class OrganizationController {
         Long version = (organization.getVersion() == null || organization.getVersion() == 0) ?1:organization.getVersion();
         organization.setVersion(version);
 
+        organization.setCode(UuidUtils.newUuid());
+        organization.setCreateBy("admin");//TODO 由于用户功能暂未开发完，先写死，后期改
+        organization.setUpdateBy("admin");
+
         return CommonResponse.ok(organizationService.add(organization));
     }
 
     /**
      * @method 更新
-     * @param organization
+     * @param jsonString
      * @return
      */
     @PutMapping
-    CommonResponse update(@RequestBody Organization organization){
+    CommonResponse update(@RequestBody String jsonString){
+        if (StringUtils.isEmpty(jsonString)){
+            return CommonResponse.errorTokenMsg("参数不能为空");
+        }
+
+        Organization organization = JsonUtils.jsonToPojo(jsonString,Organization.class);
+
         if (organization.getId() == null || organization.getId() == 0){
             return CommonResponse.errorMsg("系统错误");
         }
-
-        if (organization.getName() == null || " ".equals(organization.getName())){
-            return CommonResponse.errorMsg("请填写组织名称");
-        }
-
-        if (organizationService.getByName(organization.getName()) != null){
-            return CommonResponse.errorMsg("此组织名称已存在");
-        }
-
         if (organization.getPcode() == null || " ".equals(organization.getPcode())){
             return CommonResponse.errorMsg("系统错误");
         }
@@ -103,8 +107,8 @@ public class OrganizationController {
      * @param name
      * @return
      */
-    @PostMapping
-    CommonResponse getByName(String name){
+    @GetMapping
+    CommonResponse getByName(@RequestParam String name){
         if (name == null || " ".equals(name)){
             return CommonResponse.errorMsg("组织名称不能为空");
         }
@@ -125,11 +129,11 @@ public class OrganizationController {
      * @method 分页查询
      * @param page
      * @param limit
-     * @param organization
      * @return
      */
     @PostMapping("/findpage/{page}/{limit}")
-    CommonResponse getPage(@PathVariable int page,@PathVariable int limit,@RequestBody Organization organization){
+    CommonResponse getPage(@PathVariable int page,@PathVariable int limit){
+        Organization organization = new Organization();
         return CommonResponse.ok(organizationService.findpage(page,limit,organization));
     }
 
@@ -141,5 +145,79 @@ public class OrganizationController {
     @GetMapping("/findName")
     CommonResponse getName(){
         return CommonResponse.ok(organizationService.findName());
+    }
+
+    /**
+     * @method 公司管理添加功能
+     * @param pOrgsId
+     * @param OrgsName
+     * @return
+     */
+    @PostMapping("/orgsAdd")
+    CommonResponse orgsAdd(@RequestParam String pOrgsId,@RequestParam String OrgsName){
+        if (pOrgsId == null || " ".equals(pOrgsId)){
+            return CommonResponse.errorTokenMsg("系统错误");
+        }
+
+        if (OrgsName == null || " ".equals(OrgsName)){
+            return CommonResponse.errorMsg("请填写组织名称");
+        }
+
+        if (organizationService.getByName(OrgsName) != null){
+            return CommonResponse.errorMsg("此组织名称已存在");
+        }
+
+        Organization organization = new Organization();
+
+        organization.setName(OrgsName);
+        organization.setPcode(pOrgsId);
+
+        int level = organization.getLevel() == null?0:organization.getLevel();
+        organization.setLevel(level);
+
+        String pcode = (organization.getPcode() == null || " ".equals(organization.getPcode())) ?"1":organization.getPcode();
+        organization.setPcode(pcode);
+
+        int sort = organization.getSorting() == null ?1:organization.getSorting();
+        organization.setSorting(sort);
+
+        Long version = (organization.getVersion() == null || organization.getVersion() == 0) ?1:organization.getVersion();
+        organization.setVersion(version);
+
+        organization.setCode(UuidUtils.newUuid());
+        organization.setCreateBy("admin");//TODO 由于用户功能暂未开发完，先写死，后期改
+        organization.setUpdateBy("admin");
+
+        return CommonResponse.ok(organizationService.add(organization));
+    }
+
+    /**
+     * @method 公司管理修改功能
+     * @param pOrgsId
+     * @param orgsName
+     * @param id
+     * @return
+     */
+    @PutMapping("/orgsUpdate")
+    CommonResponse orgsUdt(@RequestParam String pOrgsId,@RequestParam String orgsName,@RequestParam Long id){
+
+        if (id == null){
+            return CommonResponse.errorMsg("系统错误");
+        }
+        if (pOrgsId == null || " ".equals(pOrgsId)){
+            return CommonResponse.errorMsg("系统错误");
+        }
+
+        if (orgsName == null || " ".equals(orgsName)){
+            return CommonResponse.errorTokenMsg("组织名称不能为空");
+        }
+
+        Organization organization = new Organization();
+        organization.setId(id);
+        organization.setName(orgsName);
+        organization.setPcode(pOrgsId);
+
+        return CommonResponse.ok(organizationService.update(organization));
+
     }
 }

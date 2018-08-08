@@ -25,9 +25,6 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     public boolean add(Organization organization){
-        organization.setCode(UuidUtils.newUuid());
-        organization.setCreateBy("小狼");//TODO 由于用户功能暂未开发完，先写死，后期改
-        organization.setUpdateBy("小狼");
         return organizationMapper.create(organization);
     }
 

@@ -5,8 +5,8 @@ import com.yankuang.equipment.authority.model.OrgDept;
 import com.yankuang.equipment.authority.service.DeptService;
 import com.yankuang.equipment.authority.service.OrgDeptService;
 import com.yankuang.equipment.common.util.CommonResponse;
+import com.yankuang.equipment.common.util.UuidUtils;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 /**
  * @author boms
@@ -40,7 +40,7 @@ public class DeptController {
      * @param dept
      * @return
      */
-    @PutMapping
+    @PutMapping("/update")
     CommonResponse updateById(@RequestBody Dept dept){
         if(dept.getId() == null || dept.getId() == 0){
             return  CommonResponse.errorTokenMsg("系统错误");
@@ -82,6 +82,10 @@ public class DeptController {
         Long version = dept.getVersion() == null ?1:dept.getVersion();
         dept.setVersion(version);
 
+        dept.setCode(UuidUtils.newUuid());
+        dept.setCreateBy("admin");//TODO 由于用户功能暂未开发完，先写死，后期改
+        dept.setUpdateBy("admin");
+
         return CommonResponse.ok(deptService.add(dept));
     }
 
@@ -104,8 +108,8 @@ public class DeptController {
      * @return
      */
 
-    @PostMapping
-    CommonResponse getByName(String name){
+    @GetMapping
+    CommonResponse getByName(@RequestParam String name){
         if (name == null || " ".equals(name)){
             return CommonResponse.errorTokenMsg("部门名称不能为空");
         }
@@ -126,11 +130,11 @@ public class DeptController {
      * @method 分页查询
      * @param page
      * @param limit
-     * @param dept
      * @return
      */
-    @GetMapping("/findpage/{page}/{limit}")
-    CommonResponse getPage(@PathVariable int page,@PathVariable int limit,@RequestBody Dept dept){
+    @GetMapping("/findpage")
+    CommonResponse getPage(@RequestParam int page,@RequestParam int limit){
+        Dept dept = new Dept();
         return CommonResponse.ok(deptService.findpage(page,limit,dept));
     }
 
@@ -149,7 +153,7 @@ public class DeptController {
      * @param name
      * @return
      */
-    @GetMapping("/findOrgNameAdd")
+    @PostMapping("/findOrgNameAdd")
     CommonResponse findOrgNameAdd( @RequestParam Long organizationId,
                                    @RequestParam String name){
         Long departmentId;
@@ -254,6 +258,10 @@ public class DeptController {
             orgDept.setOrganizationId(organizationId);
         }
 
+        if (orgDeptService.findOrgDept(orgDept) != 0){
+            return CommonResponse.errorTokenMsg("已存在此部门");
+        }
+
         orgDept.setId(id);
         return CommonResponse.ok(orgDeptService.udtOrgDept(orgDept));
     }
@@ -262,11 +270,11 @@ public class DeptController {
      * @method 分页查询
      * @param page
      * @param limit
-     * @param orgDept
      * @return
      */
-    @GetMapping("/findpageOrgDept/{page}/{limit}")
-    CommonResponse getPageOrgDept(@PathVariable int page,@PathVariable int limit,@RequestBody OrgDept orgDept){
+    @GetMapping("/findpageOrgDept")
+    CommonResponse getPageOrgDept(@RequestParam int page,@RequestParam int limit ){
+        OrgDept orgDept = new OrgDept();
         return CommonResponse.ok(orgDeptService.findpage(page,limit,orgDept));
     }
 }
