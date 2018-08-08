@@ -4,6 +4,7 @@ import com.yankuang.equipment.authority.model.DeptRole;
 import io.terminus.common.mysql.dao.MyBatisDao;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Map;
 
@@ -11,5 +12,9 @@ import java.util.Map;
 public class DeptRoleMapper extends MyBatisDao<DeptRole> {
     public DeptRole selectByDeptIdAndRoleId(Map map){
         return getSqlSession().selectOne("selectByDeptIdAndRoleId", map);
+    }
+
+    public Boolean updatedel(Long id) {
+        return this.sqlSession.insert(this.sqlId("updatedelDR"), id) == 1;
     }
 }

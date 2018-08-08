@@ -5,6 +5,7 @@ import com.yankuang.equipment.authority.model.OrgDept;
 import com.yankuang.equipment.authority.service.DeptService;
 import com.yankuang.equipment.authority.service.OrgDeptService;
 import com.yankuang.equipment.common.util.CommonResponse;
+import com.yankuang.equipment.common.util.UuidUtils;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.web.bind.annotation.*;
 /**
@@ -39,7 +40,7 @@ public class DeptController {
      * @param dept
      * @return
      */
-    @PutMapping
+    @PutMapping("/update")
     CommonResponse updateById(@RequestBody Dept dept){
         if(dept.getId() == null || dept.getId() == 0){
             return  CommonResponse.errorTokenMsg("系统错误");
@@ -81,6 +82,10 @@ public class DeptController {
         Long version = dept.getVersion() == null ?1:dept.getVersion();
         dept.setVersion(version);
 
+        dept.setCode(UuidUtils.newUuid());
+        dept.setCreateBy("admin");//TODO 由于用户功能暂未开发完，先写死，后期改
+        dept.setUpdateBy("admin");
+
         return CommonResponse.ok(deptService.add(dept));
     }
 
@@ -103,8 +108,8 @@ public class DeptController {
      * @return
      */
 
-    @PostMapping
-    CommonResponse getByName(String name){
+    @GetMapping
+    CommonResponse getByName(@RequestParam String name){
         if (name == null || " ".equals(name)){
             return CommonResponse.errorTokenMsg("部门名称不能为空");
         }
@@ -125,11 +130,11 @@ public class DeptController {
      * @method 分页查询
      * @param page
      * @param limit
-     * @param dept
      * @return
      */
-    @PostMapping("/findpage/{page}/{limit}")
-    CommonResponse getPage(@PathVariable int page,@PathVariable int limit,@RequestBody Dept dept){
+    @GetMapping("/findpage")
+    CommonResponse getPage(@RequestParam int page,@RequestParam int limit){
+        Dept dept = new Dept();
         return CommonResponse.ok(deptService.findpage(page,limit,dept));
     }
 
@@ -144,24 +149,61 @@ public class DeptController {
 
     /**
      * @method 添加部门管理
-     * @param orgDept
+     * @param organizationId
+     * @param name
      * @return
      */
     @PostMapping("/findOrgNameAdd")
-    CommonResponse findOrgNameAdd(@RequestBody OrgDept orgDept){
+    CommonResponse findOrgNameAdd( @RequestParam Long organizationId,
+                                   @RequestParam String name){
+        Long departmentId;
 
-
-        if (orgDept.getOrganizationId() == null){
+        if (organizationId == null){
             return CommonResponse.errorTokenMsg("请选择组织名称");
         }
 
-        if (orgDept.getDepartmentId() == null){
+        if (name == null || "".equals(name)){
             return CommonResponse.errorTokenMsg("请填写部门名称");
         }
 
-        orgDeptService.add(orgDept);
+        Dept dept = new Dept();
+        OrgDept orgDept = new OrgDept();
 
-        return CommonResponse.ok();
+        orgDept.setOrganizationId(organizationId);
+
+        if(deptService.getByName(name) ==  null){
+            dept.setName(name);
+
+            Long level = dept.getLevel() == null ? 0:dept.getLevel();
+            dept.setLevel(level);
+
+            String pcode = (dept.getPcode() == null || " ".equals(dept.getPcode())) ?"1":dept.getPcode();
+            dept.setPcode(pcode);
+
+            Long sort = dept.getSorting() == null ?1:dept.getSorting();
+            dept.setSorting(sort);
+
+            Long version = dept.getVersion() == null ?1:dept.getVersion();
+            dept.setVersion(version);
+
+            deptService.add(dept);
+        }
+
+        departmentId = deptService.getId(name);
+        if (departmentId == null){
+            return CommonResponse.errorTokenMsg("系统错误");
+        }
+
+        orgDept.setDepartmentId(departmentId);
+
+        if (orgDeptService.findOrgDept(orgDept) != 0){
+            return CommonResponse.errorTokenMsg("已存在此部门");
+        }
+
+        orgDept.setUpdateBy("admin");//TODO 用户未完成暂写死
+        orgDept.setCreateBy("admin");
+
+        return CommonResponse.ok(orgDeptService.add(orgDept));
     }
 
     /**
@@ -174,4 +216,65 @@ public class DeptController {
         return CommonResponse.ok(orgDeptService.delById(id));
     }
 
+
+    /**
+     * @method 部门管理更新功能
+     * @param organizationId
+     * @param name
+     * @return
+     */
+    @PutMapping("/orgDepts")
+    CommonResponse udtDeptOrg(@RequestParam Long organizationId,
+                              @RequestParam String name,
+                              @RequestParam Long id){
+        if (id == null){
+            return CommonResponse.errorTokenMsg("系统错误");
+        }
+
+        if (organizationId == null){
+            return CommonResponse.errorTokenMsg("请选择组织号");
+        }
+
+        if (name == null || " ".equals(name)){
+            return CommonResponse.errorTokenMsg("请填写部门名称");
+        }
+
+        Dept dept = new Dept();
+        OrgDept orgDept;
+
+        Long departmentId = deptService.getId(name);
+
+        if (departmentId == null){
+            orgDept = orgDeptService.selOrgDept(id);
+            dept.setId(orgDept.getDepartmentId());
+            dept.setName(name);
+            deptService.update(dept);
+        }else{
+            orgDept = new OrgDept();
+            orgDept.setDepartmentId(departmentId);
+        }
+
+        if (orgDept.getOrganizationId() != organizationId){
+            orgDept.setOrganizationId(organizationId);
+        }
+
+        if (orgDeptService.findOrgDept(orgDept) != 0){
+            return CommonResponse.errorTokenMsg("已存在此部门");
+        }
+
+        orgDept.setId(id);
+        return CommonResponse.ok(orgDeptService.udtOrgDept(orgDept));
+    }
+
+    /**
+     * @method 分页查询
+     * @param page
+     * @param limit
+     * @return
+     */
+    @GetMapping("/findpageOrgDept")
+    CommonResponse getPageOrgDept(@RequestParam int page,@RequestParam int limit ){
+        OrgDept orgDept = new OrgDept();
+        return CommonResponse.ok(orgDeptService.findpage(page,limit,orgDept));
+    }
 }

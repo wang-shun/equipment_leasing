@@ -12,18 +12,17 @@
     <result column="version" property="version" jdbcType="BIGINT" />
     <result column="status" property="status" jdbcType="TINYINT" />
   </resultMap>
-
   <sql id="Base_Column_List" >
     id, department_id, role_id, create_by, update_at, update_by, create_at, version,
     status
   </sql>
-
-  <select id="selectByDeptIdAndRoleId" resultMap="BaseResultMap" parameterType="Map" >
+  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select
     <include refid="Base_Column_List" />
     from el_department_role_mapping
-    where department_id = #{departmentId}
-    and role_id = #{roleId}
+    where id = #{id}
+    AND status != 99
+    ORDER BY create_at
   </select>
 
   <delete id="delete" parameterType="java.lang.Long" >
@@ -44,5 +43,54 @@
       unix_timestamp(now()),
       0, 1)
   </insert>
-
+  <update id="updateByPrimaryKeySelective" parameterType="com.yankuang.equipment.authority.model.DeptRole" >
+    update el_department_role_mapping
+    <set >
+      <if test="departmentId != null" >
+        department_id = #{departmentId,jdbcType=BIGINT},
+      </if>
+      <if test="roleId != null" >
+        role_id = #{roleId,jdbcType=BIGINT},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateAt != null" >
+        update_at = #{updateAt,jdbcType=BIGINT},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createAt != null" >
+        create_at = #{createAt,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yankuang.equipment.authority.model.DeptRole" >
+    update el_department_role_mapping
+    set department_id = #{departmentId,jdbcType=BIGINT},
+      role_id = #{roleId,jdbcType=BIGINT},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      update_at = #{updateAt,jdbcType=BIGINT},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      create_at = #{createAt,jdbcType=BIGINT},
+      version = #{version,jdbcType=BIGINT},
+      status = #{status,jdbcType=TINYINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updatedelDR" parameterType="long">
+    UPDATE yankuang_equipment.el_department_role_mapping
+    <set>
+      status = 99,
+      update_at = unix_timestamp(now())
+    </set>
+    WHERE id = #{id}
+  </update>
 </mapper>

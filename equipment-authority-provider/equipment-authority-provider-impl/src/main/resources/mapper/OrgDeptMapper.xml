@@ -16,11 +16,13 @@
     id, department_id, organization_id, create_by, update_at, update_by, create_at, version,
     status
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="Long" >
+  <select id="findById" resultMap="BaseResultMap" parameterType="Long" >
     select
     <include refid="Base_Column_List" />
     from el_organization_department_mapping
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id}
+    AND status != 99
+    ORDER BY create_at
   </select>
   <delete id="delete" parameterType="Long" >
     delete from el_organization_department_mapping
@@ -148,4 +150,52 @@
     </set>
     WHERE id = #{id}
   </update>
+
+  <select id="paging" parameterType="map" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/>
+    FROM yankuang_equipment.el_organization_department_mapping
+    WHERE status != 99
+  </select>
+
+  <select id="findOrgDept" resultType="Long" parameterType="OrgDept" >
+    select
+    count(1)
+    from el_organization_department_mapping
+    where department_id = #{departmentId}
+    AND organization_id = #{organizationId}
+    AND status != 99
+    ORDER BY create_at
+  </select>
+
+  <select id="count" parameterType="map" resultType="long">
+    SELECT count(1)
+    FROM yankuang_equipment.el_department
+    WHERE
+    1 = 1
+    <if test="id != null" >
+      id,
+    </if>
+    <if test="departmentId != null" >
+      department_id,
+    </if>
+    <if test="organizationId != null" >
+      organization_id,
+    </if>
+    <if test="createBy != null" >
+      create_by,
+    </if>
+    <if test="updateAt != null" >
+      update_at,
+    </if>
+    <if test="updateBy != null" >
+      update_by,
+    </if>
+    <if test="createAt != null" >
+      create_at,
+    </if>
+    <if test="version != null" >
+      version,
+    </if>
+    AND status != 99
+  </select>
 </mapper>

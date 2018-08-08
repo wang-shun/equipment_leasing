@@ -3,7 +3,10 @@ package com.yankuang.equipment.web.restful;
 import com.yankuang.equipment.authority.model.Authority;
 import com.yankuang.equipment.authority.service.AuthorityService;
 import com.yankuang.equipment.common.util.CommonResponse;
+import com.yankuang.equipment.common.util.JsonUtils;
+import com.yankuang.equipment.common.util.UuidUtils;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 /**
  * @author boms
@@ -30,25 +33,19 @@ public class AuthorityController{
     /**
      * @author boms
      * @method 修改
-     * @param authority
+     * @param jsonString
      * @return
      */
     @PutMapping
-    CommonResponse updateById(@RequestBody Authority authority){
-        if (" ".equals(authority.getName()) || authority.getName() == null){
-            return CommonResponse.errorTokenMsg("用户不能为空");
-        }
+    CommonResponse updateById(@RequestBody String jsonString){
 
-        if (authorityService.getByName(authority.getName()) != null){
-            return CommonResponse.errorTokenMsg("此权限名称已存在");
+        if (StringUtils.isEmpty(jsonString)){
+            return CommonResponse.errorTokenMsg("参数不能为空");
         }
+        Authority authority = JsonUtils.jsonToPojo(jsonString,Authority.class);
 
         if (authority.getId() == null || authority.getId() == 0){
             return CommonResponse.errorTokenMsg("系统错误");
-        }
-
-        if (authority.getUrl() == null || " ".equals(authority.getUrl())){
-            return CommonResponse.errorTokenMsg("请求路径不能为空");
         }
 
         return CommonResponse.ok(authorityService.update(authority));
@@ -83,6 +80,10 @@ public class AuthorityController{
         Long sort = authority.getSorting() == null ?0:authority.getSorting();
         authority.setSorting(sort);
 
+        authority.setCode(UuidUtils.newUuid());
+        authority.setCreateBy("admin");//TODO 由于用户功能暂未开发完，先写死，后期改
+        authority.setUpdateBy("admin");
+
         return CommonResponse.ok(authorityService.add(authority));
     }
 
@@ -94,6 +95,9 @@ public class AuthorityController{
      */
     @DeleteMapping("/{id}")
     CommonResponse del(@PathVariable Long id){
+        if (id == null || id == 0){
+            return CommonResponse.errorTokenMsg("系统错误");
+        }
         return CommonResponse.ok(authorityService.del(id));
     }
 
@@ -103,8 +107,8 @@ public class AuthorityController{
      * @param name
      * @return
      */
-    @PostMapping
-    CommonResponse getByName(String name){
+    @GetMapping("/NameAuthority")
+    CommonResponse getByName(@RequestParam String name){
         if (name == null || " ".equals(name)){
             return CommonResponse.errorMsg("权限名称不能为空");
         }
@@ -126,12 +130,12 @@ public class AuthorityController{
      * @method 分页查询
      * @param page
      * @param limit
-     * @param authority
      * @return
      */
 
-    @PostMapping("/findpage/{page}/{limit}")
-    CommonResponse getPage(@PathVariable int page,@PathVariable int limit,@RequestBody Authority authority){
+    @GetMapping("/pageing")
+    CommonResponse getPage(@RequestParam int page,@RequestParam int limit){
+        Authority authority = new Authority();
         return CommonResponse.ok(authorityService.findpage(page,limit,authority));
     }
 

@@ -26,9 +26,6 @@ public class AuthorityServiceImpl implements AuthorityService{
     }
 
     public boolean add(Authority authority){
-        authority.setCode(UuidUtils.newUuid());
-        authority.setCreateBy("小狼");//TODO 由于用户功能暂未开发完，先写死，后期改
-        authority.setUpdateBy("小狼");
         return authorityMapper.create(authority);
     }
 
