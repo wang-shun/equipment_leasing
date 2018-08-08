@@ -32,7 +32,9 @@ public class ElPlanServiceImpl extends BaseService implements ElPlanService {
     public Boolean create (ElPlan elPlan) {
         Boolean res = false;
         try {
-            if (StringUtils.isEmpty(elPlan.getPlanEquipmentType()) || StringUtils.isEmpty(elPlan.getPlanType())) {
+            // 验证数据
+            if (StringUtils.isEmpty(elPlan.getPlanEquipmentType())
+                    || StringUtils.isEmpty(elPlan.getPlanType())) {
                 return res;
             }
             elPlan.setPlanId(UuidUtils.newUuid());
@@ -48,9 +50,11 @@ public class ElPlanServiceImpl extends BaseService implements ElPlanService {
                 for (ElPlanItem elPlanItem : elPlanItemList) {
                     elPlanItem.setItemId(UuidUtils.newUuid());
                     elPlanItem.setPlanId(elPlan.getPlanId());
-                    elPlanItemMapper.saveByPrimaryKey(elPlanItem);
+                    itemRes = elPlanItemMapper.saveByPrimaryKey(elPlanItem) > 0;
+                    if (!itemRes) {
+                        break;
+                    }
                 }
-                //itemRes = elPlanItemMapper.saveBatch(elPlan.getElPlanItemList()) >= 0;
             }
             res = elPlanMapper.insertByPrimaryKey(elPlan) > 0 && itemRes;
             logger.debug("create ElPlan:"+JSON.toJSONString(elPlan));
@@ -58,7 +62,6 @@ public class ElPlanServiceImpl extends BaseService implements ElPlanService {
         } catch (Exception e) {
             e.printStackTrace();
             logger.debug("create ElPlan exception:"+JSON.toJSONString(elPlan));
-            //rollback();
             return res;
         }
     }
@@ -97,7 +100,6 @@ public class ElPlanServiceImpl extends BaseService implements ElPlanService {
             res = elPlanMapper.update(elPlan);
             return res;
         } catch (Exception e) {
-           // rollback();
             e.printStackTrace();
             logger.debug("update elPlan exception: "+JSON.toJSONString(elPlan));
             return res;

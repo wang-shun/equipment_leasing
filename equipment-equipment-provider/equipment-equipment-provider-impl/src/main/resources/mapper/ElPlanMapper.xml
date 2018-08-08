@@ -11,9 +11,11 @@
         <result column="plan_remarks" property="planRemarks" jdbcType="VARCHAR" />
         <result column="plan_opinion" property="planOpinion" jdbcType="VARCHAR" />
         <result column="plan_creator_id" property="planCreatorId" jdbcType="VARCHAR" />
+        <result column="plan_creator_name" property="planCreatorName" jdbcType="VARCHAR" />
         <result column="plan_status" property="planStatus" jdbcType="VARCHAR" />
         <result column="plan_approve_time" property="planApproveTime" jdbcType="BIGINT" />
         <result column="plan_approver_id" property="planApproverId" jdbcType="VARCHAR" />
+        <result column="plan_approver_name" property="planApproverName" jdbcType="VARCHAR" />
         <result column="plan_equipment_type" property="planEquipmentType" jdbcType="VARCHAR" />
         <result column="plan_type" property="planType" jdbcType="VARCHAR" />
         <result column="plan_is_del" property="planIsDel" jdbcType="BIT" />
@@ -21,6 +23,7 @@
         <result column="plan_update_time" property="planUpdateTime" jdbcType="BIGINT" />
         <result column="plan_code" property="planCode" jdbcType="VARCHAR" />
         <result column="plan_updator_id" property="planUpdatorId" jdbcType="VARCHAR" />
+        <result column="plan_updator_name" property="planUpdatorName" jdbcType="VARCHAR" />
         <result column="plan_sorting" property="planSorting" jdbcType="VARCHAR" />
         <result column="plan_version" property="planVersion" jdbcType="VARCHAR" />
         <collection property="elPlanItemList" javaType="Arraylist" ofType="com.yankuang.equipment.equipment.model.ElPlanItem" autoMapping="true" select="queryElPlanItemByPlanId" column="plan_id">
@@ -37,8 +40,8 @@
 
     <sql id="cols_exclude_id">
         plan_year, plan_month, plan_quarter, plan_position, plan_remarks,
-    plan_opinion, plan_creator_id, plan_status, plan_approve_time, plan_approver_id, plan_equipment_type,
-    plan_type, plan_is_del, plan_create_time, plan_update_time,plan_code,plan_updator_id,plan_sorting,plan_version
+    plan_opinion, plan_creator_id, plan_creator_name, plan_status, plan_approve_time, plan_approver_id, plan_approver_name, plan_equipment_type,
+    plan_type, plan_is_del, plan_create_time, plan_update_time,plan_code,plan_updator_id,plan_updator_name,plan_sorting,plan_version
 
     </sql>
 
@@ -51,9 +54,11 @@
         #{planRemarks},
         #{planOpinion},
         #{planCreatorId},
+        #{planCreatorName},
         #{planStatus},
         #{planApproveTime},
         #{planApproverId},
+        #{planApprovername},
         #{planEquipmentType},
         #{planType},
         #{planIsDel},
@@ -61,6 +66,7 @@
         #{planUpdateTime},
         #{planCode},
         #{planUpdatorId},
+        #{planUpdatorName},
         #{planSorting},
         #{planVersion}
     </sql>
@@ -91,6 +97,9 @@
         <if test="planCreatorId != null" >
             AND plan_creator_id = #{planCreatorId}
         </if>
+        <if test="planCreatorName != null" >
+            AND plan_creator_name = #{planCreatorName}
+        </if>
         <if test="planStatus != null" >
             AND plan_status = #{planStatus}
         </if>
@@ -99,6 +108,9 @@
         </if>
         <if test="planApproverId != null" >
             AND plan_approver_id = #{planApproverId}
+        </if>
+        <if test="planApproverName != null" >
+            AND plan_approver_name = #{planApproverName}
         </if>
         <if test="planEquipmentType != null" >
             AND plan_equipment_type = #{planEquipmentType}
@@ -121,6 +133,9 @@
         </if>
         <if test="planUpdatorId != null" >
             AND plan_updator_id = #{planUpdatorId}
+        </if>
+        <if test="planUpdatorName != null" >
+            AND plan_updator_name = #{planUpdatorName}
         </if>
         <if test="planSorting != null" >
             AND plan_sorting = #{planSorting}
@@ -178,6 +193,9 @@
             <if test="planCreatorId != null" >
                 plan_creator_id = #{planCreatorId,jdbcType=VARCHAR},
             </if>
+            <if test="planCreatorName != null" >
+                plan_creator_name = #{planCreatorName,jdbcType=VARCHAR},
+            </if>
             <if test="planStatus != null" >
                 plan_status = #{planStatus,jdbcType=VARCHAR},
             </if>
@@ -186,6 +204,9 @@
             </if>
             <if test="planApproverId != null" >
                 plan_approver_id = #{planApproverId,jdbcType=VARCHAR},
+            </if>
+            <if test="planApproverName != null" >
+                plan_approver_name = #{planApproverName,jdbcType=VARCHAR},
             </if>
             <if test="planEquipmentType != null" >
                 plan_equipment_type = #{planEquipmentType,jdbcType=VARCHAR},
@@ -201,6 +222,9 @@
             </if>
             <if test="planUpdatorId != null" >
                 plan_updator_id = #{planUpdatorId,jdbcType=VARCHAR},
+            </if>
+            <if test="planUpdatorName != null" >
+                plan_updator_name = #{planUpdatorName,jdbcType=VARCHAR},
             </if>
             <if test="planSorting != null" >
                 plan_sorting = #{planSorting,jdbcType=VARCHAR},
@@ -332,6 +356,9 @@
             <if test="planCreatorId != null" >
                 plan_creator_id,
             </if>
+            <if test="planCreatorName != null" >
+                plan_creator_name,
+            </if>
             <if test="planStatus != null" >
                 plan_status,
             </if>
@@ -340,6 +367,9 @@
             </if>
             <if test="planApproverId != null" >
                 plan_approver_id,
+            </if>
+            <if test="planApproverName != null" >
+                plan_approver_name,
             </if>
             <if test="planEquipmentType != null" >
                 plan_equipment_type,
@@ -361,6 +391,9 @@
             </if>
             <if test="planUpdatorId != null" >
                 plan_updator_id,
+            </if>
+            <if test="planUpdatorName != null" >
+                plan_updator_name,
             </if>
             <if test="planSorting != null" >
                 plan_sorting,
@@ -394,6 +427,9 @@
             <if test="planCreatorId != null" >
                 #{planCreatorId,jdbcType=VARCHAR},
             </if>
+            <if test="planCreatorName != null" >
+                #{planCreatorName,jdbcType=VARCHAR},
+            </if>
             <if test="planStatus != null" >
                 #{planStatus,jdbcType=VARCHAR},
             </if>
@@ -402,6 +438,9 @@
             </if>
             <if test="planApproverId != null" >
                 #{planApproverId,jdbcType=VARCHAR},
+            </if>
+            <if test="planApproverName != null" >
+                #{planApproverName,jdbcType=VARCHAR},
             </if>
             <if test="planEquipmentType != null" >
                 #{planEquipmentType,jdbcType=VARCHAR},
@@ -423,6 +462,9 @@
             </if>
             <if test="planUpdatorId != null" >
                 #{planUpdatorId,jdbcType=VARCHAR},
+            </if>
+            <if test="planUpdatorName != null" >
+                #{planUpdatorName,jdbcType=VARCHAR},
             </if>
             <if test="planSorting != null" >
                 #{planSorting,jdbcType=VARCHAR},
