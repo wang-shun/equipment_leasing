@@ -15,7 +15,7 @@ public interface UserService {
 
     String healthCheck();
 
-    Paging<User> paging(Integer offset, Integer limit, User user);
+    Paging<User> paging(Integer page, Integer size, User user);
 
     Boolean delete(Long id);
 

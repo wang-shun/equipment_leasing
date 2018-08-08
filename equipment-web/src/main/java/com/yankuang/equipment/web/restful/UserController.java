@@ -204,7 +204,7 @@ public class UserController {
     }
 
     /**
-     * 添加用户.
+     * 根据id修改用户.
      * @param jsonString
      * @return
      */
@@ -229,18 +229,18 @@ public class UserController {
 
     /**
      * 用户列表分页查询
-     * @param offset
-     * @param limit
+     * @param page
+     * @param size
      * @param searchInput
      * @return
      */
     @GetMapping
-    public CommonResponse paging(@RequestParam(value = "page", defaultValue = "1") Integer offset,
-                                 @RequestParam(value = "size", defaultValue = "20")Integer limit,
+    public CommonResponse paging(@RequestParam(value = "page", defaultValue = "1") Integer page,
+                                 @RequestParam(value = "size", defaultValue = "20")Integer size,
                                  @RequestParam String searchInput){
         User user = new User();
 //        user.setName(searchInput);
-        Paging<User> users = userService.paging(offset, limit, user);
+        Paging<User> users = userService.paging(page, size, user);
         return CommonResponse.ok(users);
     }
 }
