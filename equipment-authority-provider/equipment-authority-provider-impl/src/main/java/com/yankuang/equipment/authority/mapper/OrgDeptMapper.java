@@ -5,7 +5,9 @@ import io.terminus.common.mysql.dao.MyBatisDao;
 import org.springframework.stereotype.Repository;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class OrgDeptMapper extends MyBatisDao<OrgDept> {
@@ -13,8 +15,8 @@ public class OrgDeptMapper extends MyBatisDao<OrgDept> {
         return this.sqlSession.insert(this.sqlId("updatedelOD"), id) == 1;
     }
 
-    public List<OrgDept> findOrgDept(Long departmentId, Long organizationId){
-        return this.sqlSession.selectList(this.sqlId("findOrgDept"), Arrays.asList(departmentId, organizationId));
+    public Long findOrgDept(OrgDept orgDept){
+        return this.sqlSession.selectOne("findOrgDept",orgDept);
 
     }
 }

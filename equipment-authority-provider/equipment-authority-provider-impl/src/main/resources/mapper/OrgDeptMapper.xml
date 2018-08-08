@@ -157,9 +157,9 @@
     WHERE status != 99
   </select>
 
-  <select id="findOrgDept" resultMap="BaseResultMap" parameterType="map" >
+  <select id="findOrgDept" resultType="Long" parameterType="OrgDept" >
     select
-    <include refid="Base_Column_List" />
+    count(1)
     from el_organization_department_mapping
     where department_id = #{departmentId}
     AND organization_id = #{organizationId}

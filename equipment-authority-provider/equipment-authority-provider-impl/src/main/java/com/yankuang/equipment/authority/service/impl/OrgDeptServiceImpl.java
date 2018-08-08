@@ -8,6 +8,8 @@ import io.terminus.common.model.Paging;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RpcProvider
 public class OrgDeptServiceImpl implements OrgDeptService {
@@ -32,6 +34,9 @@ public class OrgDeptServiceImpl implements OrgDeptService {
         return orgDeptMapper.findById(id);
     }
 
+    public Long findOrgDept(OrgDept orgDept){
+        return orgDeptMapper.findOrgDept(orgDept);
+    }
     public Boolean udtOrgDept(OrgDept orgDept){
         return orgDeptMapper.update(orgDept);
     }
