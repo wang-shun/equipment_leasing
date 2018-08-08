@@ -24,8 +24,6 @@ public class DeptRoleServiceImpl implements DeptRoleService {
     public DeptRole selectByDeptIdAndRoleId(Map map) {
         return deptRoleMapper.selectByDeptIdAndRoleId(map);
     }
-    @Autowired
-    DeptRoleMapper deptRoleMapper;
 
     public boolean delById(Long id){
         return deptRoleMapper.updatedel(id);

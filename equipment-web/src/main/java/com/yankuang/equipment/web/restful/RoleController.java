@@ -165,13 +165,4 @@ public class RoleController {
         return CommonResponse.ok(roleService.paging(offset, limit, role));
     }
 
-    /**
-     * @method 查找名字
-     * @return
-     */
-    @GetMapping("/findName")
-    CommonResponse getName(){
-        return CommonResponse.ok(roleService.findName());
-    }
-
 }
