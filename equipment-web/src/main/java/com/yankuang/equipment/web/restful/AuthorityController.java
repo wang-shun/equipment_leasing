@@ -3,8 +3,16 @@ package com.yankuang.equipment.web.restful;
 import com.yankuang.equipment.authority.model.Authority;
 import com.yankuang.equipment.authority.service.AuthorityService;
 import com.yankuang.equipment.common.util.CommonResponse;
+import com.yankuang.equipment.common.util.JsonUtils;
+import com.yankuang.equipment.web.dto.TreeDTO;
+import com.yankuang.equipment.web.util.TreeUtils;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author boms
  * @createtime 2018/8/2
@@ -14,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/v1/acls")
 public class AuthorityController{
     @RpcConsumer
-    private AuthorityService authorityService;
+    AuthorityService authorityService;
 
     /**
      * @author boms
@@ -29,45 +37,44 @@ public class AuthorityController{
 
     /**
      * @author boms
-     * @method 修改
-     * @param authority
+     * @method 根据id修改权限
+     * @param jsonString
      * @return
      */
     @PutMapping
-    CommonResponse updateById(@RequestBody Authority authority){
-        if (" ".equals(authority.getName()) || authority.getName() == null){
-            return CommonResponse.errorTokenMsg("用户不能为空");
+    CommonResponse updateById(@RequestBody String jsonString){
+        if (jsonString == null || "".equals(jsonString)) {
+            return CommonResponse.errorMsg("参数不能为空");
         }
-
-        if (authorityService.getByName(authority.getName()) != null){
-            return CommonResponse.errorTokenMsg("此权限名称已存在");
+        Authority authority = JsonUtils.jsonToPojo(jsonString, Authority.class);
+        if (StringUtils.isEmpty(authority.getId())){
+            return CommonResponse.errorTokenMsg("权限id不能为空");
         }
-
-        if (authority.getId() == null || authority.getId() == 0){
-            return CommonResponse.errorTokenMsg("系统错误");
-        }
-
-        if (authority.getUrl() == null || " ".equals(authority.getUrl())){
-            return CommonResponse.errorTokenMsg("请求路径不能为空");
-        }
-
+        authority.setUpdateBy("admin");
         return CommonResponse.ok(authorityService.update(authority));
     }
 
     /**
      * @author boms
      * @method 添加
-     * @param authority
+     * @param jsonString
      * @return
      */
-
-    @PostMapping("/add")
-    CommonResponse add(@RequestBody Authority authority){
-        if (" ".equals(authority.getName()) || authority.getName() == null){
-            return CommonResponse.errorTokenMsg("用户不能为空");
+    @PostMapping
+    CommonResponse add(@RequestBody String jsonString){
+        if (jsonString == null || "".equals(jsonString)) {
+            return CommonResponse.errorMsg("参数不能为空");
         }
+        Authority authority = JsonUtils.jsonToPojo(jsonString, Authority.class);
+        if (StringUtils.isEmpty(authority.getName())){
+            return CommonResponse.errorTokenMsg("权限名称不能为空");
+        }
+        // 根据权限组名称查重
+        // 不存在 ，添加权限组，查询权限组id，添加权限组id和权限idLists关联表(遍历)
+        // 存在，根据组id和权限id查重，存在继续，不存在添加
+        // 返回成功失败
 
-        if (authorityService.getByName(authority.getName()) != null){
+        if (authorityService.findByName(authority.getName()) != null){
             return CommonResponse.errorTokenMsg("此权限名称已存在");
         }
 
@@ -93,8 +100,8 @@ public class AuthorityController{
      * @return
      */
     @DeleteMapping("/{id}")
-    CommonResponse del(@PathVariable Long id){
-        return CommonResponse.ok(authorityService.del(id));
+    CommonResponse deleteById(@PathVariable Long id){
+        return CommonResponse.ok(authorityService.delete(id));
     }
 
     /**
@@ -103,44 +110,48 @@ public class AuthorityController{
      * @param name
      * @return
      */
-    @PostMapping
-    CommonResponse getByName(String name){
-        if (name == null || " ".equals(name)){
+    @GetMapping
+    CommonResponse getByName(@RequestParam String name){
+        if (StringUtils.isEmpty(name)){
             return CommonResponse.errorMsg("权限名称不能为空");
         }
-        return CommonResponse.ok(authorityService.getByName(name));
+        return CommonResponse.ok(authorityService.findByName(name));
     }
 
     /**
-     * @author boms
-     * @method 查询所有
+     * @method 查询权限菜单(type = 1)
      * @return
      */
-    @GetMapping(value = "/findAll")
-    CommonResponse getAll( ){
-        return CommonResponse.ok(authorityService.getAll());
+    @GetMapping(value = "/all")
+    CommonResponse getAll(){
+
+        List<Authority> authorities = authorityService.findAll();
+        List<TreeDTO> trees = new ArrayList<>();
+        for (Authority authority : authorities) {
+            TreeDTO tree = new TreeDTO();
+            tree.setId(authority.getId());
+            tree.setpId(authority.getpId());
+            tree.setName(authority.getName());
+            trees.add(tree);
+        }
+        TreeUtils treeUtils = new TreeUtils();
+        List<Object> list  = treeUtils.menuList(trees);
+        return CommonResponse.ok(list);
     }
 
-    /**
-     * @author boms
-     * @method 分页查询
-     * @param page
-     * @param limit
-     * @param authority
-     * @return
-     */
+//    /**
+//     * @author boms
+//     * @method 分页查询
+//     * @param page
+//     * @param size
+//     * @return
+//     */
+//    @GetMapping
+//    CommonResponse paging(@RequestParam(value = "page", defaultValue = "1") Integer page,
+//                          @RequestParam(value = "size", defaultValue = "20")Integer size,
+//                          @RequestParam String searchInput){
+//        Authority authority = new Authority();
+//        return CommonResponse.ok(authorityService.paging(page,size,authority));
+//    }
 
-    @PostMapping("/findpage/{page}/{limit}")
-    CommonResponse getPage(@PathVariable int page,@PathVariable int limit,@RequestBody Authority authority){
-        return CommonResponse.ok(authorityService.findpage(page,limit,authority));
-    }
-
-    /**
-     * @method 查找名字
-     * @return
-     */
-    @GetMapping("/findName")
-    CommonResponse getName(){
-        return CommonResponse.ok(authorityService.findName());
-    }
 }

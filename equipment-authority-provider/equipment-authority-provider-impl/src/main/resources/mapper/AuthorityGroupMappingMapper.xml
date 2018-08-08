@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yankuang.equipment.authority.mapper.AuthorityGroupMappingMapper" >
+    <resultMap id="BaseResultMap" type="com.yankuang.equipment.authority.model.AuthorityGroupMapping" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="group_id" property="groupId" jdbcType="BIGINT" />
+        <result column="authority" property="authority" jdbcType="BIGINT" />
+        <result column="status" property="status" jdbcType="TINYINT" />
+        <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+        <result column="create_at" property="createAt" jdbcType="BIGINT" />
+        <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+        <result column="update_at" property="updateAt" jdbcType="BIGINT" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+    id, group_id, authority, status, create_by, create_at, update_by, update_at
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+        <include refid="Base_Column_List" />
+        from el_authority_group_mapping
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from el_authority_group_mapping
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.yankuang.equipment.authority.model.AuthorityGroupMapping" >
+    insert into el_authority_group_mapping (id, group_id, authority,
+      status, create_by, create_at,
+      update_by, update_at)
+    values (#{id,jdbcType=BIGINT}, #{groupId,jdbcType=BIGINT}, #{authority,jdbcType=BIGINT},
+      #{status,jdbcType=TINYINT}, #{createBy,jdbcType=VARCHAR}, #{createAt,jdbcType=BIGINT},
+      #{updateBy,jdbcType=VARCHAR}, #{updateAt,jdbcType=BIGINT})
+  </insert>
+    <insert id="insertSelective" parameterType="com.yankuang.equipment.authority.model.AuthorityGroupMapping" >
+        insert into el_authority_group_mapping
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="groupId != null" >
+                group_id,
+            </if>
+            <if test="authority != null" >
+                authority,
+            </if>
+            <if test="status != null" >
+                status,
+            </if>
+            <if test="createBy != null" >
+                create_by,
+            </if>
+            <if test="createAt != null" >
+                create_at,
+            </if>
+            <if test="updateBy != null" >
+                update_by,
+            </if>
+            <if test="updateAt != null" >
+                update_at,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="groupId != null" >
+                #{groupId,jdbcType=BIGINT},
+            </if>
+            <if test="authority != null" >
+                #{authority,jdbcType=BIGINT},
+            </if>
+            <if test="status != null" >
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="createBy != null" >
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createAt != null" >
+                #{createAt,jdbcType=BIGINT},
+            </if>
+            <if test="updateBy != null" >
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateAt != null" >
+                #{updateAt,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yankuang.equipment.authority.model.AuthorityGroupMapping" >
+        update el_authority_group_mapping
+        <set >
+            <if test="groupId != null" >
+                group_id = #{groupId,jdbcType=BIGINT},
+            </if>
+            <if test="authority != null" >
+                authority = #{authority,jdbcType=BIGINT},
+            </if>
+            <if test="status != null" >
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="createBy != null" >
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createAt != null" >
+                create_at = #{createAt,jdbcType=BIGINT},
+            </if>
+            <if test="updateBy != null" >
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateAt != null" >
+                update_at = #{updateAt,jdbcType=BIGINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yankuang.equipment.authority.model.AuthorityGroupMapping" >
+    update el_authority_group_mapping
+    set group_id = #{groupId,jdbcType=BIGINT},
+      authority = #{authority,jdbcType=BIGINT},
+      status = #{status,jdbcType=TINYINT},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_at = #{createAt,jdbcType=BIGINT},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      update_at = #{updateAt,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

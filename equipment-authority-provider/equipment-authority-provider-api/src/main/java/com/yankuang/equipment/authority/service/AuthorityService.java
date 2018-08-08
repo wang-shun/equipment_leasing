@@ -9,9 +9,8 @@ public interface AuthorityService {
     Authority getById(Long id);
     boolean update(Authority authority);
     boolean add(Authority authority);
-    boolean del(Long id);
-    Authority getByName(String name);
-    List<Authority> getAll( );
-    Paging findpage(int pageSize, int pageNum,Authority authority);
-    List<String> findName();
+    boolean delete(Long id);
+    Authority findByName(String name);
+    List<Authority> findAll();
+    Paging paging(Integer page, Integer size,Authority authority);
 }
