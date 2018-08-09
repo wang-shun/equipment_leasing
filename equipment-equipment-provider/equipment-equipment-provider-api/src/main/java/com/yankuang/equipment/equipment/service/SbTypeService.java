@@ -1,6 +1,7 @@
 package com.yankuang.equipment.equipment.service;
 
 import com.yankuang.equipment.equipment.model.SbType;
+import com.yankuang.equipment.equipment.model.SbTypeInfo;
 
 import java.util.List;
 
@@ -12,10 +13,11 @@ public interface SbTypeService {
     public List<SbType> listSbTypes();
 
     /**
-     * 添加设备类型
+     * 添加设备类型、类型信息
      * @param record
+     * @param sbTypeInfo
      */
-    public void createSbType(SbType record);
+    public void createSbType(SbType record, SbTypeInfo sbTypeInfo);
 
     /**
      * 根据id删除设备类型

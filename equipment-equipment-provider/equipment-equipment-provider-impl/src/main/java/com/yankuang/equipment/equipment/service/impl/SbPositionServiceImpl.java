@@ -19,6 +19,13 @@ public class SbPositionServiceImpl implements SbPositionService {
     SbPositionMapper sbPositionMapper;
 
     public void createSbPosition(SbPosition sbPosition) {
+        SbPosition sbPosition1 = sbPositionMapper.selectByMaxId();
+        if(sbPosition1==null){
+            sbPosition.setCode("01013100001");
+        }else{
+            Integer code = Integer.parseInt(sbPosition.getCode());
+            sbPosition.setCode(String.valueOf(code+1));
+        }
         sbPositionMapper.insert(sbPosition);
     }
 

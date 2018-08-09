@@ -20,4 +20,6 @@ public interface SbModelMapper {
     int updateByPrimaryKey(SbModel record);
 
     List<SbModel> listAll(String code,String name);
+
+    SbModel selectByMaxId();
 }
