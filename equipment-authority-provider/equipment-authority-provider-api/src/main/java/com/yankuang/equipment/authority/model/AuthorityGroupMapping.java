@@ -10,7 +10,7 @@ public class AuthorityGroupMapping implements Serializable {
 
     private Long groupId;
 
-    private Long authority;
+    private Long authorityId;
 
     private Byte status;
 
@@ -38,12 +38,12 @@ public class AuthorityGroupMapping implements Serializable {
         this.groupId = groupId;
     }
 
-    public Long getAuthority() {
-        return authority;
+    public Long getAuthorityId() {
+        return authorityId;
     }
 
-    public void setAuthority(Long authority) {
-        this.authority = authority;
+    public void setAuthorityId(Long authorityId) {
+        this.authorityId = authorityId;
     }
 
     public Byte getStatus() {
@@ -91,7 +91,7 @@ public class AuthorityGroupMapping implements Serializable {
         return "AuthorityGroupMapping{" +
                 "id=" + id +
                 ", groupId=" + groupId +
-                ", authority=" + authority +
+                ", authorityId=" + authorityId +
                 ", status=" + status +
                 ", createBy='" + createBy + '\'' +
                 ", createAt=" + createAt +

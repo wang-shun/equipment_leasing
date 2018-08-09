@@ -21,19 +21,28 @@
       id, name, code, p_id, level, sorting, status, remark, create_by, create_at, update_by,
      update_at, version
    </sql>
-     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+
+    <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
         select
         <include refid="Base_Column_List" />
         from el_authority_group
-        where id = #{id,jdbcType=BIGINT}
+        where id = #{id}
    </select>
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from el_authority_group
-    where id = #{id,jdbcType=BIGINT}
+    <select id="findByName" parameterType="String" resultMap="BaseResultMap" >
+        SELECT <include refid="Base_Column_List" />
+        FROM yankuang_equipment.el_authority_group
+        WHERE name = #{name}
+        AND status != 99
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Long" >
+    update el_authority_group
+    set status = 99
+    where id = #{id}
    </delete>
 
-  <insert id="insert" parameterType="com.yankuang.equipment.authority.model.AuthorityGroup" >
+  <insert id="create" parameterType="com.yankuang.equipment.authority.model.AuthorityGroup" >
     insert into el_authority_group (id, name, code,
       p_id, level, sorting, status,
       remark, create_by, create_at,
@@ -46,46 +55,58 @@
       )
   </insert>
 
-  <update id="updateByPrimaryKeySelective" parameterType="com.yankuang.equipment.authority.model.AuthorityGroup" >
+  <update id="update" parameterType="com.yankuang.equipment.authority.model.AuthorityGroup" >
         update el_authority_group
         <set >
             <if test="name != null" >
-                name = #{name,jdbcType=VARCHAR},
+                name = #{name},
             </if>
             <if test="code != null" >
-                code = #{code,jdbcType=VARCHAR},
+                code = #{code},
             </if>
             <if test="pId != null" >
-                p_id = #{pId,jdbcType=BIGINT},
+                p_id = #{pId},
             </if>
             <if test="level != null" >
-                level = #{level,jdbcType=BIGINT},
+                level = #{level},
             </if>
             <if test="sorting != null" >
-                sorting = #{sorting,jdbcType=BIGINT},
+                sorting = #{sorting},
             </if>
             <if test="status != null" >
-                status = #{status,jdbcType=TINYINT},
+                status = #{status},
             </if>
             <if test="remark != null" >
-                remark = #{remark,jdbcType=VARCHAR},
+                remark = #{remark},
             </if>
             <if test="createBy != null" >
-                create_by = #{createBy,jdbcType=VARCHAR},
+                create_by = #{createBy},
             </if>
             <if test="createAt != null" >
-                create_at = #{createAt,jdbcType=BIGINT},
+                create_at = #{createAt},
             </if>
             <if test="updateBy != null" >
-                update_by = #{updateBy,jdbcType=VARCHAR},
+                update_by = #{updateBy},
             </if>
             <if test="updateAt != null" >
-                update_at = #{updateAt,jdbcType=BIGINT},
+                update_at = #{updateAt},
             </if>
             <if test="version != null" >
-                version = #{version,jdbcType=BIGINT},
+                version = #{version},
             </if>
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
+
+    <select id="paging" parameterType="map" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM el_authority_group
+        <where>
+            1 = 1
+            and status != 99
+        </where>
+        order by create_at desc LIMIT #{offset}, #{limit}
+    </select>
+
+
 </mapper>
