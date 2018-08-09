@@ -9,4 +9,7 @@ public interface RoleUserService {
     boolean create(RoleUser roleAuthority);
 
     List<RoleUser> findByUserId(Long userId);
+
+    Long findUserId(Long userId);
+    Boolean deleteByUserId(Long userId);
 }

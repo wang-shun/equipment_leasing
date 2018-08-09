@@ -10,7 +10,7 @@ import java.util.List;
 public class DeptMapper extends MyBatisDao<Dept> {
 
     public Boolean updatedel(Long id) {
-        return this.sqlSession.insert(this.sqlId("updatedel"), id) == 1;
+        return this.sqlSession.update(this.sqlId("updatedel"), id) == 1;
     }
 
     public Dept findByName(String name) {
@@ -25,5 +25,9 @@ public class DeptMapper extends MyBatisDao<Dept> {
 
     public Long getId(String name){
         return getSqlSession().selectOne("getId",name);
+    }
+
+    public Dept findDept(Long deptId){
+        return getSqlSession().selectOne("findDept",deptId);
     }
 }

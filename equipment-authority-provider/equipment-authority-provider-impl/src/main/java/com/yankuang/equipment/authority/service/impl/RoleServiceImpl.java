@@ -47,4 +47,7 @@ public class RoleServiceImpl implements RoleService {
         return page;
     }
 
+    public Role findRoles(Long roleId){
+        return roleMapper.findRoles(roleId);
+    }
 }

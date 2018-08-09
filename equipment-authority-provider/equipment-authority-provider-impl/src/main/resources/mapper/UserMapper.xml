@@ -39,7 +39,8 @@
         update_by,
         create_by,
         create_at,
-        update_at
+        update_at,
+        account
     </sql>
 
     <sql id="vals">
@@ -57,7 +58,8 @@
         #{updateBy},
         #{createBy},
         unix_timestamp(now()),
-        unix_timestamp(now())
+        unix_timestamp(now()),
+        #{account}
     </sql>
 
     <sql id="criteria">
@@ -66,7 +68,7 @@
         <if test="code != null">AND code = #{code}</if>
     </sql>
 
-    <insert id="create" parameterType="User" keyProperty="id" useGeneratedKeys="true">
+    <insert id="create" parameterType="User">
         INSERT INTO el_user
         (<include refid="cols_all" />)
         VALUES
@@ -144,6 +146,20 @@
         SELECT <include refid="cols_exclude_id_password" />
         FROM el_user
         WHERE code = #{code}
+    </select>
+
+    <select id="findUserName" resultType="Long" parameterType="String">
+        SELECT count(1)
+        FROM el_user
+        WHERE status != 99
+        AND account = #{account}
+    </select>
+
+    <select id="findUserIds" parameterType="String" resultType="Long">
+        SELECT id
+        FROM el_user
+        WHERE status != 99
+        AND account = #{account}
     </select>
 
 </mapper>

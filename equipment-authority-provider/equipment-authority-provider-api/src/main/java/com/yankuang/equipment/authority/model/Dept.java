@@ -20,6 +20,7 @@ public class Dept implements Serializable {
     private String remark;
 
     private String createBy;
+    private Object beginTime;
 
     public String getCreateBy() {
         return createBy;
@@ -141,5 +142,9 @@ public class Dept implements Serializable {
 
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    public Object getBeginTime() {
+        return beginTime;
     }
 }

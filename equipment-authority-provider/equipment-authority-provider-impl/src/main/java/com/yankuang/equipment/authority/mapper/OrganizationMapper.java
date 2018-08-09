@@ -10,7 +10,7 @@ import java.util.List;
 public class OrganizationMapper extends MyBatisDao<Organization> {
 
     public Boolean updatedel(Long id) {
-        return this.sqlSession.insert(this.sqlId("updatedel"), id) == 1;
+        return this.sqlSession.update(this.sqlId("updatedel"), id) == 1;
     }
 
     public Organization findByName(String name) {

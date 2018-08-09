@@ -47,4 +47,12 @@ public class UserServiceImpl implements UserService {
         return userMapper.update(user);
     }
 
+    public Long findUserName(String account){
+        return userMapper.findUserName(account);
+    }
+
+    public Long findUserIds(String account){
+        return userMapper.findUserIds(account);
+    }
+
 }

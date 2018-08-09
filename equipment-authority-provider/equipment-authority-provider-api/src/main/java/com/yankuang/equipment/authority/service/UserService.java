@@ -20,4 +20,8 @@ public interface UserService {
     Boolean delete(Long id);
 
     Boolean update(User t);
+
+    Long findUserName(String account);
+
+    Long findUserIds(String account);
 }

@@ -251,4 +251,12 @@
       status != 99
     </select>
 
+    <select id="findDept" resultMap="BaseResultMap" parameterType="Long">
+        SELECT  <include refid="Base_Column_List"/>
+        FROM el_department
+        WHERE id = #{id}
+        AND status != 99
+        ORDER BY create_at
+    </select>
+
 </mapper>

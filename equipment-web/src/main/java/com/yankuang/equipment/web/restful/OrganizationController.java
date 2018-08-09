@@ -38,7 +38,7 @@ public class OrganizationController {
      * @return
      */
     @PostMapping("/add")
-    CommonResponse add(@RequestBody Organization organization){
+    public CommonResponse add(@RequestBody Organization organization){
         if (organization.getName() == null || " ".equals(organization.getName())){
             return CommonResponse.errorMsg("请填写组织名称");
         }
@@ -72,7 +72,7 @@ public class OrganizationController {
      * @return
      */
     @PutMapping
-    CommonResponse update(@RequestBody String jsonString){
+    public CommonResponse update(@RequestBody String jsonString){
         if (StringUtils.isEmpty(jsonString)){
             return CommonResponse.errorTokenMsg("参数不能为空");
         }
@@ -95,7 +95,7 @@ public class OrganizationController {
      * @return
      */
     @DeleteMapping("/{id}")
-    CommonResponse del(@PathVariable Long id){
+    public CommonResponse del(@PathVariable Long id){
         if (id == null || id == 0){
             return CommonResponse.errorMsg("系统错误");
         }
@@ -108,7 +108,7 @@ public class OrganizationController {
      * @return
      */
     @GetMapping
-    CommonResponse getByName(@RequestParam String name){
+    public CommonResponse getByName(@RequestParam String name){
         if (name == null || " ".equals(name)){
             return CommonResponse.errorMsg("组织名称不能为空");
         }
@@ -120,7 +120,7 @@ public class OrganizationController {
      * @return
      */
     @GetMapping(value = "/findAll")
-    CommonResponse getAll( ){
+    public CommonResponse getAll( ){
         return CommonResponse.ok(organizationService.getAll( ));
     }
 
@@ -132,7 +132,7 @@ public class OrganizationController {
      * @return
      */
     @PostMapping("/findpage/{page}/{limit}")
-    CommonResponse getPage(@PathVariable int page,@PathVariable int limit){
+    public CommonResponse getPage(@PathVariable int page,@PathVariable int limit){
         Organization organization = new Organization();
         return CommonResponse.ok(organizationService.findpage(page,limit,organization));
     }
@@ -143,7 +143,7 @@ public class OrganizationController {
      */
 
     @GetMapping("/findName")
-    CommonResponse getName(){
+    public CommonResponse getName(){
         return CommonResponse.ok(organizationService.findName());
     }
 
@@ -154,7 +154,7 @@ public class OrganizationController {
      * @return
      */
     @PostMapping("/orgsAdd")
-    CommonResponse orgsAdd(@RequestParam String pOrgsId,@RequestParam String OrgsName){
+    public CommonResponse orgsAdd(@RequestParam String pOrgsId,@RequestParam String OrgsName){
         if (pOrgsId == null || " ".equals(pOrgsId)){
             return CommonResponse.errorTokenMsg("系统错误");
         }
@@ -199,7 +199,7 @@ public class OrganizationController {
      * @return
      */
     @PutMapping("/orgsUpdate")
-    CommonResponse orgsUdt(@RequestParam String pOrgsId,@RequestParam String orgsName,@RequestParam Long id){
+    public CommonResponse orgsUdt(@RequestParam String pOrgsId,@RequestParam String orgsName,@RequestParam Long id){
 
         if (id == null){
             return CommonResponse.errorMsg("系统错误");

@@ -14,4 +14,12 @@ public class UserMapper extends MyBatisDao<User> {
         return getSqlSession().selectOne("findByCode", code);
     }
 
+    public Long findUserName(String account){
+        return getSqlSession().selectOne("findUserName",account);
+    }
+
+    public Long findUserIds(String account){
+        return getSqlSession().selectOne("findUserIds",account);
+    }
+
 }

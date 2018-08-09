@@ -12,7 +12,9 @@ import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,7 +38,7 @@ public class RoleController {
      * @return
      */
     @GetMapping(value = "/{id}")
-    CommonResponse getById(@PathVariable Long id) {
+    public CommonResponse getById(@PathVariable Long id) {
         if (StringUtils.isEmpty(id)){
             return CommonResponse.ok("角色id不能为空");
         }
@@ -49,7 +51,7 @@ public class RoleController {
      * @return
      */
     @PutMapping
-    CommonResponse updateById(@RequestBody String jsonString){
+    public CommonResponse updateById(@RequestBody String jsonString){
         if (StringUtils.isEmpty(jsonString)) {
             return CommonResponse.errorMsg("参数jsonString不能为空");
         }
@@ -71,7 +73,7 @@ public class RoleController {
      * @return
      */
     @PostMapping()
-    CommonResponse add(@RequestBody String jsonString){
+    public CommonResponse add(@RequestBody String jsonString){
 
         if (StringUtils.isEmpty(jsonString)) {
             return CommonResponse.errorMsg("参数jsonString不能为空");
@@ -143,7 +145,7 @@ public class RoleController {
      */
 
     @DeleteMapping("/{id}")
-    CommonResponse delete(@PathVariable Long id){
+    public CommonResponse delete(@PathVariable Long id){
         if (StringUtils.isEmpty(id)){
             return CommonResponse.ok("角色id不能为空");
         }
@@ -158,11 +160,25 @@ public class RoleController {
      * @return
      */
     @GetMapping
-    CommonResponse paging(@RequestParam(value = "page", defaultValue = "1") Integer offset,
+    public CommonResponse paging(@RequestParam(value = "page", defaultValue = "1") Integer offset,
                           @RequestParam(value = "size", defaultValue = "20")Integer limit,
                           @RequestParam String searchInput){
         Role role = new Role();
         return CommonResponse.ok(roleService.paging(offset, limit, role));
     }
 
+    /**
+     * @method 查找角色列表
+     * @param deptId
+     * @return
+     */
+    @GetMapping("/findRoles")
+    public CommonResponse findRoles(@RequestParam Long deptId){
+        List<Role> deptList = new ArrayList<Role>();
+        List<Long> roleIds = deptRoleService.findRoleId(deptId);
+        for (Long roleId:roleIds){
+            deptList.add(roleService.findRoles(roleId));
+        }
+        return CommonResponse.ok(deptList);
+    }
 }

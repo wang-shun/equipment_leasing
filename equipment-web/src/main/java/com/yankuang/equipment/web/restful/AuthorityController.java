@@ -26,7 +26,7 @@ public class AuthorityController{
      * @return
      */
     @GetMapping(value = "/{id}")
-    CommonResponse getById(@PathVariable Long id) {
+    public CommonResponse getById(@PathVariable Long id) {
         return CommonResponse.ok(authorityService.getById(id));
     }
 
@@ -37,7 +37,7 @@ public class AuthorityController{
      * @return
      */
     @PutMapping
-    CommonResponse updateById(@RequestBody String jsonString){
+    public CommonResponse updateById(@RequestBody String jsonString){
 
         if (StringUtils.isEmpty(jsonString)){
             return CommonResponse.errorTokenMsg("参数不能为空");
@@ -59,7 +59,7 @@ public class AuthorityController{
      */
 
     @PostMapping("/add")
-    CommonResponse add(@RequestBody Authority authority){
+    public CommonResponse add(@RequestBody Authority authority){
         if (" ".equals(authority.getName()) || authority.getName() == null){
             return CommonResponse.errorTokenMsg("用户不能为空");
         }
@@ -94,7 +94,7 @@ public class AuthorityController{
      * @return
      */
     @DeleteMapping("/{id}")
-    CommonResponse del(@PathVariable Long id){
+    public CommonResponse del(@PathVariable Long id){
         if (id == null || id == 0){
             return CommonResponse.errorTokenMsg("系统错误");
         }
@@ -108,7 +108,7 @@ public class AuthorityController{
      * @return
      */
     @GetMapping("/NameAuthority")
-    CommonResponse getByName(@RequestParam String name){
+    public CommonResponse getByName(@RequestParam String name){
         if (name == null || " ".equals(name)){
             return CommonResponse.errorMsg("权限名称不能为空");
         }
@@ -121,7 +121,7 @@ public class AuthorityController{
      * @return
      */
     @GetMapping(value = "/findAll")
-    CommonResponse getAll( ){
+    public CommonResponse getAll( ){
         return CommonResponse.ok(authorityService.getAll());
     }
 
@@ -134,7 +134,7 @@ public class AuthorityController{
      */
 
     @GetMapping("/pageing")
-    CommonResponse getPage(@RequestParam int page,@RequestParam int limit){
+    public CommonResponse getPage(@RequestParam int page,@RequestParam int limit){
         Authority authority = new Authority();
         return CommonResponse.ok(authorityService.findpage(page,limit,authority));
     }
@@ -144,7 +144,7 @@ public class AuthorityController{
      * @return
      */
     @GetMapping("/findName")
-    CommonResponse getName(){
+    public CommonResponse getName(){
         return CommonResponse.ok(authorityService.findName());
     }
 }

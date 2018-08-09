@@ -29,15 +29,28 @@
     WHERE id = #{id}
   </delete>
 
-  <insert id="insert" parameterType="RoleUser" keyProperty="id" useGeneratedKeys="true">
-    insert into el_role_user_mapping (id, role_code, user_code, 
+  <insert id="create" parameterType="RoleUser" keyProperty="id" useGeneratedKeys="true">
+    insert into el_role_user_mapping (id, role_id, user_id,
       create_by, update_at, update_by, 
-      create_at, code, version, 
+      create_at, version,
       status)
-    values (#{id,jdbcType=INTEGER}, #{roleCode,jdbcType=VARCHAR}, #{userCode,jdbcType=VARCHAR}, 
-      #{createBy,jdbcType=VARCHAR}, #{updateAt,jdbcType=BIGINT}, #{updateBy,jdbcType=VARCHAR}, 
-      #{createAt,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT}, 
-      #{status,jdbcType=TINYINT})
+    values (#{id}, #{roleId}, #{userId},
+      #{createBy}, unix_timestamp(now()), #{updateBy},
+      unix_timestamp(now()), #{version},
+      #{status})
   </insert>
 
+  <select id="findUserId" parameterType="Long" resultType="Long">
+    SELECT count(1)
+    FROM el_role_user_mapping
+    WHERE user_id = #{userId}
+    AND status != 99
+  </select>
+
+
+  <update id="deleteByUserId" parameterType="Long">
+    UPDATE el_role_user_mapping
+    SET status = 99
+    WHERE user_id = #{userId}
+  </update>
 </mapper>

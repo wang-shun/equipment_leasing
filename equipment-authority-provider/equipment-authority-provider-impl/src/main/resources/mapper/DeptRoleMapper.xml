@@ -12,6 +12,11 @@
     <result column="version" property="version" jdbcType="BIGINT" />
     <result column="status" property="status" jdbcType="TINYINT" />
   </resultMap>
+
+  <resultMap id="getRoleId" type="Long" >
+    <result column="role_id" property="roleId" jdbcType="BIGINT" />
+  </resultMap>
+
   <sql id="Base_Column_List" >
     id, department_id, role_id, create_by, update_at, update_by, create_at, version,
     status
@@ -43,7 +48,7 @@
       unix_timestamp(now()),
       0, 1)
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.yankuang.equipment.authority.model.DeptRole" >
+  <update id="update" parameterType="DeptRole" >
     update el_department_role_mapping
     <set >
       <if test="departmentId != null" >
@@ -93,4 +98,12 @@
     </set>
     WHERE id = #{id}
   </update>
+
+  <select id="findRoleId" parameterType="Long" resultMap="getRoleId">
+    SELECT role_id
+    FROM el_department_role_mapping
+    WHERE department_id = #{departmentId}
+    AND status != 99
+    ORDER BY create_at
+  </select>
 </mapper>

@@ -1,13 +1,11 @@
 package com.yankuang.equipment.web.restful;
 
-import com.yankuang.equipment.authority.model.RoleAuthority;
-import com.yankuang.equipment.authority.model.RoleUser;
-import com.yankuang.equipment.authority.model.User;
-import com.yankuang.equipment.authority.service.RoleAuthorityService;
-import com.yankuang.equipment.authority.service.RoleUserService;
-import com.yankuang.equipment.authority.service.UserService;
+import com.yankuang.equipment.authority.model.*;
+import com.yankuang.equipment.authority.service.*;
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.JsonUtils;
+import com.yankuang.equipment.common.util.UuidUtils;
+import com.yankuang.equipment.web.dto.OrgRoleDTO;
 import com.yankuang.equipment.web.dto.UserDTO;
 import com.yankuang.equipment.web.util.CodeUtil;
 import com.yankuang.equipment.web.util.RedisOperator;
@@ -42,6 +40,9 @@ public class UserController {
 
     @RpcConsumer
     RoleUserService roleUserService;
+
+    @RpcConsumer
+    DeptUserService deptUserService;
 
     /**
      * 用户退出登录.
@@ -239,9 +240,105 @@ public class UserController {
                                  @RequestParam(value = "size", defaultValue = "20")Integer limit,
                                  @RequestParam String searchInput){
         User user = new User();
-//        user.setName(searchInput);
         Paging<User> users = userService.paging(offset, limit, user);
         return CommonResponse.ok(users);
+    }
+
+    /**
+     * @method 用户添加功能
+     * @param jsonString
+     * @return
+     */
+    @PostMapping("/userAdd")
+    public CommonResponse userAdd(@RequestBody String jsonString){
+        if (StringUtils.isEmpty(jsonString)){
+            return CommonResponse.errorTokenMsg("参数不能为空");
+        }
+        OrgRoleDTO orgRoleDTO = JsonUtils.jsonToPojo(jsonString, OrgRoleDTO.class);
+        if (orgRoleDTO.getAccount() == null || " ".equals(orgRoleDTO.getAccount())){
+            return CommonResponse.errorTokenMsg("请填写账号");
+        }
+
+        if (orgRoleDTO.getName() == null || " ".equals(orgRoleDTO.getName())){
+            return CommonResponse.errorTokenMsg("请填写用户名");
+        }
+
+        User user = new User();
+
+        if (userService.findUserName(orgRoleDTO.getAccount()) <= 0){
+            user.setName(orgRoleDTO.getName());
+            user.setAccount(orgRoleDTO.getAccount());
+            user.setCode(UuidUtils.newUuid());
+            user.setCreateBy("admin");//TODO 暂未开发完，先写死
+            user.setPassword("123456");//TODO 面密码默认为123456，加密功能等后续完善
+            user.setSex(orgRoleDTO.getSex());
+            user.setStatus((byte)1);
+            user.setSorting(0L);
+            user.setVersion(1L);
+            user.setUpdateBy("admin");
+            Boolean b = userService.create(user);
+
+            if (b == false){
+                return CommonResponse.errorTokenMsg("添加用户失败");
+            }
+
+        }
+        if (userService.findUserIds(orgRoleDTO.getAccount()) != null){
+            if (roleUserService.findUserId(userService.findUserIds(orgRoleDTO.getAccount())) > 0 || deptUserService.findDeptId(userService.findUserIds(orgRoleDTO.getAccount())) > 0){
+                return CommonResponse.errorTokenMsg("该用户已存在");
+            }
+
+        }
+        //将信息添加到用户角色关系表
+        RoleUser roleUser = new RoleUser();
+        roleUser.setUserId(userService.findUserIds(orgRoleDTO.getAccount()));
+        roleUser.setCreateBy("admin");//TODO 暂未开发完，先写死
+        roleUser.setUpdateBy("admin");
+        roleUser.setStatus((byte)1);
+        roleUser.setRoleId(orgRoleDTO.getRoleId());
+        roleUser.setVersion(1L);
+
+        roleUserService.create(roleUser);
+        //将信息添加到部门用户关系表
+        DeptUser deptUser = new DeptUser();
+        deptUser.setCreateBy("admin");//TODO 暂未开发完，先写死
+        deptUser.setUpdateBy("admin");
+        deptUser.setStatus((byte)1);
+        deptUser.setDepartmentId(orgRoleDTO.getDeptId());
+        deptUser.setUserId(userService.findUserIds(orgRoleDTO.getAccount()));
+        deptUser.setVersion(1L);
+
+        deptUserService.create(deptUser);
+
+        return CommonResponse.build(200, "更新成功", null);
+    }
+
+    /**
+     * @method 删除用户功能
+     * @param userId
+     * @return
+     */
+    @DeleteMapping("/delUser")
+    public CommonResponse delUser(@RequestParam Long userId){
+        if (roleUserService.deleteByUserId(userId) == false){
+            return CommonResponse.errorTokenMsg("删除失败");
+        }
+        if (deptUserService.deleteByUserId(userId) == false){
+            return CommonResponse.errorTokenMsg("删除失败");
+        }
+        return CommonResponse.build(200, "删除成功", null);
+    }
+
+    @PutMapping("/updateUser")
+    public CommonResponse udtUser(@RequestBody String jsonString){
+        if (StringUtils.isEmpty(jsonString)){
+            return CommonResponse.errorTokenMsg("参数不能为空");
+        }
+        OrgRoleDTO orgRoleDTO = JsonUtils.jsonToPojo(jsonString, OrgRoleDTO.class);
+        if (orgRoleDTO.getDeptId() != null){
+
+        }
+        return CommonResponse.ok();
     }
 }
 

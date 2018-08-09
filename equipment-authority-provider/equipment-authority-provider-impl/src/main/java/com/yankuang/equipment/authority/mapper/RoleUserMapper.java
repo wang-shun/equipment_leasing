@@ -18,4 +18,12 @@ public class RoleUserMapper extends MyBatisDao<RoleUser> {
     public List<RoleUser> findByUserId(Long userId){
         return this.sqlSession.selectList("findByUserId", userId);
     }
+
+    public Long findUserId(Long userId){
+        return this.sqlSession.selectOne("findUserId",userId);
+    }
+
+    public Boolean deleteByUserId(Long userId) {
+        return this.sqlSession.update(this.sqlId("deleteByUserId"), userId) == 1;
+    }
 }

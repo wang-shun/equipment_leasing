@@ -26,14 +26,14 @@
     delete from el_department_user_mapping
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.yankuang.equipment.authority.model.DeptUser" >
+  <insert id="create" parameterType="DeptUser" >
     insert into el_department_user_mapping (id, department_id, user_id,
       create_by, update_at, update_by,
       create_at, version, status
       )
-    values (#{id,jdbcType=BIGINT}, #{departmentId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT},
-      #{createBy,jdbcType=VARCHAR}, #{updateAt,jdbcType=BIGINT}, #{updateBy,jdbcType=VARCHAR},
-      #{createAt,jdbcType=BIGINT}, #{version,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}
+    values (#{id}, #{departmentId}, #{userId},
+      #{createBy}, unix_timestamp(now()), #{updateBy},
+      unix_timestamp(now()), #{version}, #{status}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.yankuang.equipment.authority.model.DeptUser" >
@@ -138,5 +138,18 @@
       version = #{version,jdbcType=BIGINT},
       status = #{status,jdbcType=TINYINT}
     where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="findDeptIds" resultType="Long" parameterType="Long">
+    SELECT count(1)
+    FROM el_department_user_mapping
+    WHERE user_id = #{userId}
+    AND status != 99
+  </select>
+
+  <update id="deleteByUserId" parameterType="Long">
+    UPDATE el_department_user_mapping
+    SET status = 99
+    WHERE user_id = #{userId}
   </update>
 </mapper>

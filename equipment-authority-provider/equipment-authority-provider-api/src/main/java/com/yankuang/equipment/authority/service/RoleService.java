@@ -14,5 +14,6 @@ public interface RoleService {
     Role findByName(String name);
     List<Role> getAll( );
     Paging paging(int pageSize, int pageNum, Role role);
+    Role findRoles(Long roleId);
 
 }

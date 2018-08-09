@@ -1,13 +1,20 @@
 package com.yankuang.equipment.web.restful;
 
+import com.alibaba.dubbo.common.json.JSONArray;
+import com.alibaba.dubbo.common.json.JSONObject;
 import com.yankuang.equipment.authority.model.Dept;
 import com.yankuang.equipment.authority.model.OrgDept;
 import com.yankuang.equipment.authority.service.DeptService;
 import com.yankuang.equipment.authority.service.OrgDeptService;
 import com.yankuang.equipment.common.util.CommonResponse;
+import com.yankuang.equipment.common.util.StringUtils;
 import com.yankuang.equipment.common.util.UuidUtils;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author boms
  * @createtime 2018/8/2
@@ -28,7 +35,7 @@ public class DeptController {
      * @return
      */
     @GetMapping(value = "/{id}")
-    CommonResponse getById(@PathVariable Long id) {
+    public CommonResponse getById(@PathVariable Long id) {
         if(id == null || id == 0){
             return  CommonResponse.errorTokenMsg("系统错误");
         }
@@ -41,7 +48,7 @@ public class DeptController {
      * @return
      */
     @PutMapping("/update")
-    CommonResponse updateById(@RequestBody Dept dept){
+    public CommonResponse updateById(@RequestBody Dept dept){
         if(dept.getId() == null || dept.getId() == 0){
             return  CommonResponse.errorTokenMsg("系统错误");
         }
@@ -60,7 +67,7 @@ public class DeptController {
      * @return
      */
     @PostMapping(value = "/add")
-    CommonResponse add(@RequestBody Dept dept){
+    public CommonResponse add(@RequestBody Dept dept){
 
         if (dept.getName() == null || " ".equals(dept.getName())){
             return CommonResponse.errorTokenMsg("部门名称不能为空");
@@ -95,7 +102,7 @@ public class DeptController {
      * @return
      */
     @DeleteMapping("/{id}")
-    CommonResponse del(@PathVariable Long id){
+    public CommonResponse del(@PathVariable Long id){
         if(id == null || id == 0){
             return  CommonResponse.errorTokenMsg("系统错误");
         }
@@ -109,7 +116,7 @@ public class DeptController {
      */
 
     @GetMapping
-    CommonResponse getByName(@RequestParam String name){
+    public CommonResponse getByName(@RequestParam String name){
         if (name == null || " ".equals(name)){
             return CommonResponse.errorTokenMsg("部门名称不能为空");
         }
@@ -122,7 +129,7 @@ public class DeptController {
      */
 
     @GetMapping(value = "/findAll")
-    CommonResponse getAll( ){
+    public CommonResponse getAll( ){
         return CommonResponse.ok(deptService.getAll( ));
     }
 
@@ -133,7 +140,7 @@ public class DeptController {
      * @return
      */
     @GetMapping("/findpage")
-    CommonResponse getPage(@RequestParam int page,@RequestParam int limit){
+    public CommonResponse getPage(@RequestParam int page,@RequestParam int limit){
         Dept dept = new Dept();
         return CommonResponse.ok(deptService.findpage(page,limit,dept));
     }
@@ -143,7 +150,7 @@ public class DeptController {
      * @return
      */
     @GetMapping("/findName")
-    CommonResponse getName(){
+    public CommonResponse getName(){
         return CommonResponse.ok(deptService.findName());
     }
 
@@ -154,7 +161,7 @@ public class DeptController {
      * @return
      */
     @PostMapping("/findOrgNameAdd")
-    CommonResponse findOrgNameAdd( @RequestParam Long organizationId,
+    public CommonResponse findOrgNameAdd( @RequestParam Long organizationId,
                                    @RequestParam String name){
         Long departmentId;
 
@@ -212,7 +219,7 @@ public class DeptController {
      * @return
      */
     @DeleteMapping("/mapperdel/{id}")
-    CommonResponse delDeptOrg(@PathVariable Long id){
+    public CommonResponse delDeptOrg(@PathVariable Long id){
         return CommonResponse.ok(orgDeptService.delById(id));
     }
 
@@ -224,7 +231,7 @@ public class DeptController {
      * @return
      */
     @PutMapping("/orgDepts")
-    CommonResponse udtDeptOrg(@RequestParam Long organizationId,
+    public CommonResponse udtDeptOrg(@RequestParam Long organizationId,
                               @RequestParam String name,
                               @RequestParam Long id){
         if (id == null){
@@ -273,8 +280,23 @@ public class DeptController {
      * @return
      */
     @GetMapping("/findpageOrgDept")
-    CommonResponse getPageOrgDept(@RequestParam int page,@RequestParam int limit ){
+    public CommonResponse getPageOrgDept(@RequestParam int page,@RequestParam int limit ){
         OrgDept orgDept = new OrgDept();
         return CommonResponse.ok(orgDeptService.findpage(page,limit,orgDept));
+    }
+
+    /**
+     * @method 查找部门列表
+     * @param orgsId
+     * @return
+     */
+    @GetMapping("/findDepts")
+    public CommonResponse findDept(@RequestParam Long orgsId){
+        List<Dept> deptList = new ArrayList<Dept>();
+        List<Long> deptIds = orgDeptService.findDeptId(orgsId);
+        for (Long deptId:deptIds){
+            deptList.add(deptService.findDept(deptId));
+        }
+        return CommonResponse.ok(deptList);
     }
 }
