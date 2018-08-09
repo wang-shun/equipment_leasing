@@ -48,10 +48,10 @@
       remark, create_by, create_at,
       update_by, update_at, version
       )
-    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR},
-      #{pId,jdbcType=BIGINT}, #{level,jdbcType=BIGINT}, #{sorting,jdbcType=BIGINT}, #{status,jdbcType=TINYINT},
-      #{remark,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createAt,jdbcType=BIGINT},
-      #{updateBy,jdbcType=VARCHAR}, #{updateAt,jdbcType=BIGINT}, #{version,jdbcType=BIGINT}
+    values (#{id}, #{name}, #{code},
+      #{pId}, #{level}, #{sorting}, 1,
+      #{remark}, #{createBy}, unix_timestamp(now()),
+      #{updateBy}, unix_timestamp(now()), 0
       )
   </insert>
 

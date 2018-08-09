@@ -11,4 +11,8 @@ public class AuthorityGroupMappingMapper extends MyBatisDao<AuthorityGroupMappin
     public AuthorityGroupMapping selectByAuthorityIdAndGroupId(Map map){
         return getSqlSession().selectOne("selectByAuthorityIdAndGroupId", map);
     }
+
+    public Boolean create(AuthorityGroupMapping t) {
+        return getSqlSession().insert("com.yankuang.equipment.authority.mapper.AuthorityGroupMappingMapper.create", t) == 1;
+    }
 }

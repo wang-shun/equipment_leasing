@@ -22,5 +22,4 @@ public class AuthorityGroupServiceImpl implements AuthorityGroupService {
         return authorityGroupMapper.create(authorityGroup);
     }
 
-
 }
