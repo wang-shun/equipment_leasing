@@ -25,7 +25,7 @@ public class RoleServiceImpl implements RoleService {
         return roleMapper.update(role);
     }
 
-    public boolean add(Role role){
+    public boolean create(Role role){
         return roleMapper.create(role);
     }
 
