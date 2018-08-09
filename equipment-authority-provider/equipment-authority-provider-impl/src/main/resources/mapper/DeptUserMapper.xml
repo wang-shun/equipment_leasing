@@ -12,6 +12,7 @@
     <result column="version" property="version" jdbcType="BIGINT" />
     <result column="status" property="status" jdbcType="TINYINT" />
   </resultMap>
+
   <sql id="Base_Column_List" >
     id, department_id, user_id, create_by, update_at, update_by, create_at, version,
     status

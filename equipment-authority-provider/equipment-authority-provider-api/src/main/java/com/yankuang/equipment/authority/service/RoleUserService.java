@@ -12,4 +12,5 @@ public interface RoleUserService {
 
     Long findUserId(Long userId);
     Boolean deleteByUserId(Long userId);
+    Boolean update(RoleUser roleUser);
 }

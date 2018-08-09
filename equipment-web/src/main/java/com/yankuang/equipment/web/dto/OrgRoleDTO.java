@@ -7,6 +7,7 @@ public class OrgRoleDTO {
     private Long orgId;
     private Long deptId;
     private Long roleId;
+    private Long userId;
 
     public String getAccount() {
         return account;
@@ -56,8 +57,16 @@ public class OrgRoleDTO {
         this.roleId = roleId;
     }
 
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
     @Override
     public String toString() {
-        return "OrgRoleDTO{" + "account='" + account + '\'' + ", name='" + name + '\'' + ", sex=" + sex + ", orgId=" + orgId + ", deptId=" + deptId + ", roleId=" + roleId + '}';
+        return "OrgRoleDTO{" + "account='" + account + '\'' + ", name='" + name + '\'' + ", sex=" + sex + ", orgId=" + orgId + ", deptId=" + deptId + ", roleId=" + roleId + ", userId=" + userId + '}';
     }
 }

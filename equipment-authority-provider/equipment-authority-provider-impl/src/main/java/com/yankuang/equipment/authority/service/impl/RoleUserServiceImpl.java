@@ -31,4 +31,8 @@ public class RoleUserServiceImpl implements RoleUserService {
     public Boolean deleteByUserId(Long userId){
         return roleUserMapper.deleteByUserId(userId);
     }
+
+    public Boolean update(RoleUser roleUser){
+        return roleUserMapper.update(roleUser);
+    }
 }

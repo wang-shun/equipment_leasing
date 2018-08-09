@@ -326,7 +326,15 @@ public class UserController {
         if (deptUserService.deleteByUserId(userId) == false){
             return CommonResponse.errorTokenMsg("删除失败");
         }
+        if (userService.delete(userId) == false){
+            return CommonResponse.errorTokenMsg("删除失败");
+        }
         return CommonResponse.build(200, "删除成功", null);
+    }
+
+    @GetMapping("/findUser")
+    public CommonResponse findUser(){
+        return CommonResponse.ok();
     }
 
     @PutMapping("/updateUser")
@@ -334,11 +342,96 @@ public class UserController {
         if (StringUtils.isEmpty(jsonString)){
             return CommonResponse.errorTokenMsg("参数不能为空");
         }
+
         OrgRoleDTO orgRoleDTO = JsonUtils.jsonToPojo(jsonString, OrgRoleDTO.class);
-        if (orgRoleDTO.getDeptId() != null){
+        User user = new User();
+
+        if (orgRoleDTO.getName() != null){
+            if(userService.findUserAccount(orgRoleDTO.getName()) <= 0){
+                user.setName(orgRoleDTO.getName());
+                user.setId(orgRoleDTO.getUserId());
+                userService.update(user);
+            }else{
+                return CommonResponse.errorTokenMsg("姓名未改变");
+            }
+        }
+
+        if (orgRoleDTO.getSex() != null ){
+            if(userService.findUserSex(orgRoleDTO.getSex()) <= 0){
+                user.setSex(orgRoleDTO.getSex());
+                user.setId(orgRoleDTO.getUserId());
+                userService.update(user);
+            }else{
+                return CommonResponse.errorTokenMsg("性别未改变");
+            }
 
         }
+
+        if (orgRoleDTO.getAccount() != null){
+            if(userService.findUserName(orgRoleDTO.getAccount()) <= 0){
+                user.setAccount(orgRoleDTO.getAccount());
+                user.setId(orgRoleDTO.getUserId());
+                userService.update(user);
+            }else{
+                return CommonResponse.errorTokenMsg("账号未改变");
+            }
+        }
+
+        if (userService.findUserIds(orgRoleDTO.getAccount()) != null){
+            if (roleUserService.findUserId(userService.findUserIds(orgRoleDTO.getAccount())) > 0 || deptUserService.findDeptId(userService.findUserIds(orgRoleDTO.getAccount())) > 0){
+                return CommonResponse.errorTokenMsg("组织、部门、角色关系未改变");
+            }
+        }
+
+        //将信息添加到用户角色关系表
+        RoleUser roleUser = new RoleUser();
+        roleUser.setUserId(userService.findUserIds(orgRoleDTO.getAccount()));
+        roleUser.setCreateBy("admin");//TODO 暂未开发完，先写死
+        roleUser.setUpdateBy("admin");
+        roleUser.setStatus((byte)1);
+        roleUser.setRoleId(orgRoleDTO.getRoleId());
+        roleUser.setVersion(1L);
+
+        roleUserService.update(roleUser);
+        //将信息添加到部门用户关系表
+        DeptUser deptUser = new DeptUser();
+        deptUser.setCreateBy("admin");//TODO 暂未开发完，先写死
+        deptUser.setUpdateBy("admin");
+        deptUser.setStatus((byte)1);
+        deptUser.setDepartmentId(orgRoleDTO.getDeptId());
+        deptUser.setUserId(userService.findUserIds(orgRoleDTO.getAccount()));
+        deptUser.setVersion(1L);
+
+        deptUserService.update(deptUser);
+
         return CommonResponse.ok();
     }
+
+    /**
+     * @method 禁用
+     * @param id
+     * @return
+     */
+    @PutMapping("/updateCloseStatus")
+    public CommonResponse udtUserStatusClose(@RequestParam Long id){
+        if (userService.closeStatusUser(id) == false){
+            return CommonResponse.errorTokenMsg("禁用失败");
+        }
+        return CommonResponse.build(200, "禁用成功", null);
+    }
+
+    /**
+     * @method 启用功能
+     * @param id
+     * @return
+     */
+    @PutMapping("/updateOpenStatus")
+    public CommonResponse udtUserStatusOpen(@RequestParam Long id){
+        if (userService.openStatusUser(id) == false){
+            return CommonResponse.errorTokenMsg("启用失败");
+        }
+        return CommonResponse.build(200,"启用成功",null);
+    }
+
 }
 

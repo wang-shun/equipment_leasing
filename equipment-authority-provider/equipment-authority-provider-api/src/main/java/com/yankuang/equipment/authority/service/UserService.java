@@ -24,4 +24,15 @@ public interface UserService {
     Long findUserName(String account);
 
     Long findUserIds(String account);
+
+    Boolean closeStatusUser(Long id);
+
+    Boolean openStatusUser(Long id);
+
+    Boolean updateAccount(User user);
+
+    Long findUserAccount(String name);
+
+    Long findUserSex(Byte sex);
+
 }

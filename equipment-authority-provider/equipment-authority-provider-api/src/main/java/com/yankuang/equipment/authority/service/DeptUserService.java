@@ -9,4 +9,6 @@ public interface DeptUserService {
     Boolean create(DeptUser deptUser);
 
     Boolean deleteByUserId(Long userId);
+
+    Boolean update(DeptUser deptUser);
 }

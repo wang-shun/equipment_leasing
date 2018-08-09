@@ -25,4 +25,8 @@ public class DeptUserServiceImpl implements DeptUserService {
     public Boolean deleteByUserId(Long userId){
         return deptUserMapper.deleteByUserId(userId);
     }
+
+    public Boolean update(DeptUser deptUser){
+        return deptUserMapper.update(deptUser);
+    }
 }

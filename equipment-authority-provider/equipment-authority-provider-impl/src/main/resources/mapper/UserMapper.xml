@@ -162,4 +162,35 @@
         AND account = #{account}
     </select>
 
+    <update id="closeStatusUser" parameterType="Long">
+        UPDATE el_user
+        SET status = 2
+        WHERE id = #{id}
+    </update>
+
+    <update id="openStatusUser" parameterType="Long">
+        UPDATE el_user
+        SET status = 1
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateAccount" parameterType="User">
+        UPDATE el_user
+        SET account = #{account}
+        WHERE id = #{id}
+    </update>
+
+    <select id="findUserAccount" resultType="Long" parameterType="String">
+        SELECT count(1)
+        FROM el_user
+        WHERE status != 99
+        AND name = #{name}
+    </select>
+
+    <select id="findUserSex" resultType="Long" parameterType="Byte">
+        SELECT count(1)
+        FROM el_user
+        WHERE status != 99
+        AND sex = #{sex}
+    </select>
 </mapper>

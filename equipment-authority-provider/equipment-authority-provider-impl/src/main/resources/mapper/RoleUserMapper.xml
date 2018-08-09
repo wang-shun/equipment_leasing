@@ -53,4 +53,40 @@
     SET status = 99
     WHERE user_id = #{userId}
   </update>
+
+  <update id="update" parameterType="RoleUser">
+    UPDATE el_role_user_mapping
+    SET
+    <set >
+      <if test="id != null" >
+        id = #{id},
+      </if>
+      <if test="roleId != null" >
+        role_id = #{roleId},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy},
+      </if>
+      <if test="createAt != null" >
+        create_at = #{createAt},
+      </if>
+      <if test="cteateBy != null" >
+        cteate_by = #{cteateBy},
+      </if>
+      <if test="version != null" >
+        version = #{version},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      update_at = unix_timestamp(now())
+    </set>
+    where id = #{id}
+  </update>
 </mapper>

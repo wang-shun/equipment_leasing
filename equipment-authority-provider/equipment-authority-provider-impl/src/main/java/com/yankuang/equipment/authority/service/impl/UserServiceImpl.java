@@ -55,4 +55,23 @@ public class UserServiceImpl implements UserService {
         return userMapper.findUserIds(account);
     }
 
+    public Boolean closeStatusUser(Long id){
+        return userMapper.closeStatusUser(id);
+    }
+
+    public Boolean openStatusUser(Long id){
+        return userMapper.openStatusUser(id);
+    }
+
+    public Boolean updateAccount(User user){
+        return userMapper.updateAccount(user);
+    }
+
+    public Long findUserAccount(String name){
+        return userMapper.findUserAccount(name);
+    }
+
+    public Long findUserSex(Byte sex){
+        return userMapper.findUserSex(sex);
+    }
 }
