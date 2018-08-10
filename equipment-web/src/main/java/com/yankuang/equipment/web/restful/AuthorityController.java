@@ -153,21 +153,21 @@ public class AuthorityController {
      * @return
      */
     @DeleteMapping("/{id}")
-    public CommonResponse del(@PathVariable Long id){
+    public CommonResponse delete(@PathVariable Long id){
         if (id == null || id == 0){
             return CommonResponse.errorTokenMsg("系统错误");
         }
-        return CommonResponse.ok(authorityService.del(id));
+        return CommonResponse.ok(authorityService.delete(id));
     }
 
     @DeleteMapping("/dels")
-    public CommonResponse del1(@RequestBody String jsonString){
+    public CommonResponse deleteByIds(@RequestBody String jsonString){
         if (StringUtils.isEmpty(jsonString)){
             return CommonResponse.errorTokenMsg("选择要删除的数据");
         }
        List<Long> ids = JsonUtils.jsonToList(jsonString,Long.class);
         for (Long id: ids){
-            if (authorityService.del(id) == false){
+            if (authorityService.delete(id) == false){
                 return CommonResponse.build(200,"删除失败",ids);
             }
         }
