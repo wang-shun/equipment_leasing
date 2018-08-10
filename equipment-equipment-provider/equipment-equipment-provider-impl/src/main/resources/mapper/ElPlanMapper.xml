@@ -30,6 +30,23 @@
         </collection>
     </resultMap>
 
+    <resultMap id="ElPlanItemMap" type="com.yankuang.equipment.equipment.model.ElPlanItem" >
+        <id column="item_id" property="itemId" jdbcType="VARCHAR" />
+        <result column="plan_id" property="planId" jdbcType="VARCHAR" />
+        <result column="backup1" property="backup1" jdbcType="VARCHAR" />
+        <result column="equipment_name" property="equipmentName" jdbcType="VARCHAR" />
+        <result column="equipment_num" property="equipmentNum" jdbcType="INTEGER" />
+        <result column="item_position" property="itemPosition" jdbcType="VARCHAR" />
+        <result column="item_effect" property="itemEffect" jdbcType="VARCHAR" />
+        <result column="equipment_big_type" property="equipmentBigType" jdbcType="VARCHAR" />
+        <result column="equipment_middle_type" property="equipmentMiddleType" jdbcType="VARCHAR" />
+        <result column="equipment_small_type" property="equipmentSmallType" jdbcType="VARCHAR" />
+        <result column="equipment_specification" property="equipmentSpecification" jdbcType="VARCHAR" />
+        <result column="equipment_param_name" property="equipmentParamName" jdbcType="VARCHAR" />
+        <result column="equipment_param_value" property="equipmentParamValue" jdbcType="INTEGER" />
+        <result column="item_remarks" property="itemRemarks" jdbcType="VARCHAR" />
+    </resultMap>
+
     <sql id="tb">
         el_plan
     </sql>
@@ -166,7 +183,7 @@
         WHERE plan_id = #{planId} AND plan_is_del = 0
     </select>
 
-    <update id="update" parameterType="com.yankuang.equipment.equipment.model.ElPlan">
+    <update id="updateByPrimarykey" parameterType="com.yankuang.equipment.equipment.model.ElPlan">
         UPDATE <include refid="tb"/>
         <set >
             <if test="planId != null" >
@@ -232,7 +249,9 @@
             <if test="planVersion != null" >
                 plan_version = #{planVersion,jdbcType=VARCHAR},
             </if>
-            plan_update_time = #{planUpdateTime,jdbcType=BIGINT}
+            <if test="planUpdateTime != null" >
+                plan_update_time = #{planUpdateTime,jdbcType=BIGINT},
+            </if>
         </set>
         WHERE plan_id = #{planId}
     </update>
@@ -248,6 +267,38 @@
             1 = 1 AND plan_is_del = 0
             <include refid="criteria"/>
         </where>
+    </select>
+
+    <select id="listByCondition" parameterType="map" resultMap="ElPlanMap">
+        SELECT el_plan.plan_id AS plan_id,
+        el_plan.plan_year AS plan_year,
+        el_plan.plan_month AS plan_month,
+        el_plan.plan_quarter AS plan_quarter,
+        el_plan.plan_position AS plan_position,
+        el_plan.plan_remarks AS plan_remarks,
+        el_plan.plan_opinion AS plan_opinion,
+        el_plan.plan_creator_id AS plan_creator_id,
+        el_plan.plan_creator_name AS plan_creator_name,
+        el_plan.plan_status AS plan_status,
+        el_plan.plan_approve_time AS plan_approve_time,
+        el_plan.plan_approver_id AS plan_approver_id,
+        el_plan.plan_approver_name AS plan_approver_name,
+        el_plan.plan_equipment_type AS plan_equipment_type,
+        el_plan.plan_type AS plan_type,
+        el_plan.plan_is_del AS plan_is_del,
+        el_plan.plan_create_time AS plan_create_time,
+        el_plan.plan_update_time AS plan_update_time,
+        el_plan.plan_code AS plan_code,
+        el_plan.plan_updator_id AS plan_updator_id,
+        el_plan.plan_updator_name AS plan_updator_name,
+        el_plan.plan_sorting AS plan_sorting,
+        el_plan.plan_version AS plan_version
+        FROM el_plan
+        <where>
+            1 = 1 AND plan_is_del = 0
+            <include refid="criteria"/>
+        </where>
+        ORDER BY el_plan.plan_update_time DESC
     </select>
 
     <select id="count" parameterType="map" resultType="long">
@@ -268,7 +319,7 @@
     </select>
 
     <sql id="Base_Column_List" >
-        item_id, plan_id, equipment_id, equipment_name, equipment_num, item_position, item_effect,
+        item_id, plan_id, backup1, equipment_name, equipment_num, item_position, item_effect,
         equipment_big_type, equipment_middle_type, equipment_small_type, equipment_specification,
         equipment_param_name, equipment_param_value, item_remarks
     </sql>
@@ -307,7 +358,7 @@
         <foreach collection="elPlanItemList" item="iteme" separator=",">
             (#{iteme.itemId},
             #{iteme.planId},
-            #{iteme.equipmentId},
+            #{iteme.backup1},
             #{iteme.equipmentName},
             #{iteme.equipmentNum},
             #{iteme.itemPosition},

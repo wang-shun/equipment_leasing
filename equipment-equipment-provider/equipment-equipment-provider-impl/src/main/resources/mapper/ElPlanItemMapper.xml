@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.yankuang.equipment.equipment.model.ElPlanItem" >
     <id column="item_id" property="itemId" jdbcType="VARCHAR" />
     <result column="plan_id" property="planId" jdbcType="VARCHAR" />
-    <result column="equipment_id" property="equipmentId" jdbcType="VARCHAR" />
+    <result column="backup1" property="backup1" jdbcType="VARCHAR" />
     <result column="equipment_name" property="equipmentName" jdbcType="VARCHAR" />
     <result column="equipment_num" property="equipmentNum" jdbcType="INTEGER" />
     <result column="item_position" property="itemPosition" jdbcType="VARCHAR" />
@@ -27,7 +27,7 @@
   </sql>
 
   <sql id="cols_exclude_id">
-    plan_id, equipment_id, equipment_name, equipment_num, item_position, item_effect,
+    plan_id, backup1, equipment_name, equipment_num, item_position, item_effect,
         equipment_big_type, equipment_middle_type, equipment_small_type, equipment_specification,
         equipment_param_name, equipment_param_value, item_remarks
   </sql>
@@ -35,7 +35,7 @@
   <sql id="vals">
     #{itemId},
     #{planId},
-    #{equipmentId},
+    #{backup1},
     #{equipmentName},
     #{equipmentNum},
     #{itemPosition},
@@ -57,8 +57,8 @@
     <if test="planId != null" >
       AND plan_id = #{planId}
     </if>
-    <if test="equipmentId != null" >
-      AND equipment_id = #{equipmentId}
+    <if test="backup1 != null" >
+      AND backup1 = #{backup1}
     </if>
     <if test="equipmentName != null" >
       AND equipment_name = #{equipmentName}
@@ -97,7 +97,7 @@
   </sql>
 
   <sql id="Base_Column_List" >
-    item_id, plan_id, equipment_id, equipment_name, equipment_num, item_position, item_effect,
+    item_id, plan_id, backup1, equipment_name, equipment_num, item_position, item_effect,
     equipment_big_type, equipment_middle_type, equipment_small_type, equipment_specification,
     equipment_param_name, equipment_param_value, item_remarks
   </sql>
@@ -117,13 +117,13 @@
     WHERE item_plan_id = #{itemPlanId}
   </delete>
   <insert id="insert" parameterType="com.yankuang.equipment.equipment.model.ElPlanItem" >
-    insert into el_plan_item (item_id, plan_id, equipment_id,
+    insert into el_plan_item (item_id, plan_id, backup1,
       equipment_name, equipment_num, item_position,
       item_effect, equipment_big_type, equipment_middle_type,
       equipment_small_type, equipment_specification,
       equipment_param_name, equipment_param_value,
       item_remarks)
-    values (#{itemId,jdbcType=VARCHAR}, #{planId,jdbcType=VARCHAR}, #{equipmentId,jdbcType=VARCHAR},
+    values (#{itemId,jdbcType=VARCHAR}, #{planId,jdbcType=VARCHAR}, #{backup1,jdbcType=VARCHAR},
       #{equipmentName,jdbcType=VARCHAR}, #{equipmentNum,jdbcType=INTEGER}, #{itemPosition,jdbcType=VARCHAR},
       #{itemEffect,jdbcType=VARCHAR}, #{equipmentBigType,jdbcType=VARCHAR}, #{equipmentMiddleType,jdbcType=VARCHAR},
       #{equipmentSmallType,jdbcType=VARCHAR}, #{equipmentSpecification,jdbcType=VARCHAR},
@@ -170,8 +170,8 @@
       <if test="planId != null" >
         plan_id,
       </if>
-      <if test="equipmentId != null" >
-        equipment_id,
+      <if test="backup1 != null" >
+        backup1,
       </if>
       <if test="equipmentName != null" >
         equipment_name,
@@ -214,8 +214,8 @@
       <if test="planId != null" >
         #{planId,jdbcType=VARCHAR},
       </if>
-      <if test="equipmentId != null" >
-        #{equipmentId,jdbcType=VARCHAR},
+      <if test="backup1 != null" >
+        #{backup1,jdbcType=VARCHAR},
       </if>
       <if test="equipmentName != null" >
         #{equipmentName,jdbcType=VARCHAR},
@@ -259,8 +259,8 @@
       <if test="planId != null" >
         plan_id = #{planId,jdbcType=VARCHAR},
       </if>
-      <if test="equipmentId != null" >
-        equipment_id = #{equipmentId,jdbcType=VARCHAR},
+      <if test="backup1 != null" >
+        backup1 = #{backup1,jdbcType=VARCHAR},
       </if>
       <if test="equipmentName != null" >
         equipment_name = #{equipmentName,jdbcType=VARCHAR},
@@ -301,7 +301,7 @@
   <update id="updateByPrimaryKey" parameterType="com.yankuang.equipment.equipment.model.ElPlanItem" >
     update el_plan_item
     set plan_id = #{planId,jdbcType=VARCHAR},
-      equipment_id = #{equipmentId,jdbcType=VARCHAR},
+      backup1 = #{backup1,jdbcType=VARCHAR},
       equipment_name = #{equipmentName,jdbcType=VARCHAR},
       equipment_num = #{equipmentNum,jdbcType=INTEGER},
       item_position = #{itemPosition,jdbcType=VARCHAR},

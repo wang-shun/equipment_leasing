@@ -1,7 +1,10 @@
 package com.yankuang.equipment.equipment.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.yankuang.equipment.common.base.BaseService;
+import com.yankuang.equipment.common.util.Constants;
 import com.yankuang.equipment.common.util.StringUtils;
 import com.yankuang.equipment.common.util.UuidUtils;
 import com.yankuang.equipment.equipment.mapper.ElPlanItemMapper;
@@ -95,9 +98,15 @@ public class ElPlanServiceImpl extends BaseService implements ElPlanService {
             }
             elPlanMapper.deletePlanItemByPlanId(planId);
             elPlan.setPlanUpdateTime(new Date().getTime());
+            if (elPlan.getElPlanItemList() != null) {
+                for (ElPlanItem elPlanItem : elPlan.getElPlanItemList()) {
+                    elPlanItem.setItemId(UuidUtils.newUuid());
+                    elPlanItem.setPlanId(elPlan.getPlanId());
+                }
+            }
             elPlanMapper.savePlanItemByPlanId(elPlan);
             logger.debug("update elPlan: "+JSON.toJSONString(elPlan));
-            res = elPlanMapper.update(elPlan);
+            res = elPlanMapper.updateByPrimarykey(elPlan) > 0;
             return res;
         } catch (Exception e) {
             e.printStackTrace();
@@ -127,8 +136,33 @@ public class ElPlanServiceImpl extends BaseService implements ElPlanService {
     public Paging findElPlanByCondition(ElPlan elPlan, int pageSize, int pageNum) {
 
         try {
-            int maxResult = (pageNum - 1) * pageSize;
-            Paging page = elPlanMapper.paging(maxResult, pageNum, elPlan);
+            PageHelper.startPage(pageNum, pageSize);
+            List<ElPlan> lists = elPlanMapper.listByCondition(elPlan);
+            PageInfo<ElPlan> pageInfo = new PageInfo<ElPlan>(lists);
+            Paging page = new Paging();
+            if (pageInfo.getList() != null) {
+                page.setData(pageInfo.getList());
+                page.setTotal(pageInfo.getTotal());
+                for (ElPlan plan : pageInfo.getList()) {
+                    //List<ElPlanItem> list = elPlanItemMapper.findByPlanId(plan.getPlanId());
+                    String str = Constants.PLANSTATUS_UNCOMMITED.equals(plan.getPlanStatus()) ? Constants.PLANSTATUS_UNCOMMITED_VALUE
+                            : Constants.PLANSTATUS_COMMITED.equals(plan.getPlanStatus()) ? Constants.PLANSTATUS_COMMITED_VALUE
+                            : Constants.PLANSTATUS_FAILED.equals(plan.getPlanStatus()) ? Constants.PLANSTATUS_FAILED_VALUE
+                            : Constants.PLANSTATUS_PASSED.equals(plan.getPlanStatus()) ? Constants.PLANSTATUS_PASSED_VALUE
+                            : Constants.PLANSTATUS_OTHERS_VALUE;
+                    plan.setPlanStatus(str);
+                    String planType = Constants.PLANTYPE_YEAR.equals(plan.getPlanType()) ? "年度计划"
+                            : Constants.PLANTYPE_QUARTER.equals(plan.getPlanType()) ? "季度计划"
+                            : Constants.PLANTYPE_MONTH.equals(plan.getPlanType()) ? "月度计划"
+                            : Constants.PLANTYPE_URGENT.equals(plan.getPlanType()) ? "应急计划" : "服务维护中";
+                    plan.setPlanType(planType);
+                    String equipmentType = Constants.PLANEQUIPMENTTYPE_GENERIC.equals(plan.getPlanEquipmentType()) ? "通用设备"
+                            : Constants.PLANEQUIPMENTTYPE_INTEGRATED.equals(plan.getPlanEquipmentType()) ? "综机设备" : "其他设备";
+                    plan.setPlanEquipmentType(equipmentType);
+                    plan.setElPlanItemList(null);
+                }
+            }
+
             logger.debug("pageSize: "+pageSize+"pageNum: "+pageNum+";findElPlanByCondition: "+JSON.toJSONString(elPlan));
             return page;
         } catch (Exception e) {
@@ -139,6 +173,6 @@ public class ElPlanServiceImpl extends BaseService implements ElPlanService {
     }
 
     public boolean approve(ElPlan elPlan) {
-        return elPlanMapper.update(elPlan);
+        return elPlanMapper.updateByPrimarykey(elPlan) > 0;
     }
 }
