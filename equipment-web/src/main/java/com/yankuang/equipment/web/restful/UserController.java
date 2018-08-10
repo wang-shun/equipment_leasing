@@ -32,10 +32,10 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private RedisOperator redis;
+    RedisOperator redis;
 
     @RpcConsumer(version = "0.0.1", check = "false")
-    private UserService userService;
+    UserService userService;
 
     @RpcConsumer
     RoleAuthorityService roleAuthorityService;
@@ -71,18 +71,18 @@ public class UserController {
         final Base64.Decoder decoder = Base64.getDecoder();
         // 登录先去redis中查看登陆状态
         String token = request.getHeader("token");
-        String userJson = redis.get(token);
-        if (!StringUtils.isEmpty(userJson)) {
-            redis.expire(token, 1800);
-            // 解密
-            try {
-                String decoderResult = new String(decoder.decode(userJson), "UTF-8");
-                System.out.println(decoderResult);
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-            return CommonResponse.ok(token);
-        }
+//        String userJson = redis.get(token);
+//        if (!StringUtils.isEmpty(userJson)) {
+//            redis.expire(token, 1800);
+//            // 解密
+//            try {
+//                String decoderResult = new String(decoder.decode(userJson), "UTF-8");
+//                System.out.println(decoderResult);
+//            } catch (UnsupportedEncodingException e) {
+//                e.printStackTrace();
+//            }
+//            return CommonResponse.ok(token);
+//        }
 
         if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)) {
             return CommonResponse.errorTokenMsg("用户名和密码不能为空");

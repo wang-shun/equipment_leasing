@@ -3,7 +3,6 @@ package com.yankuang.equipment.authority.service.impl;
 import com.yankuang.equipment.authority.mapper.RoleMapper;
 import com.yankuang.equipment.authority.model.Role;
 import com.yankuang.equipment.authority.service.RoleService;
-import com.yankuang.equipment.common.util.UuidUtils;
 import io.terminus.boot.rpc.common.annotation.RpcProvider;
 import io.terminus.common.model.Paging;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,10 +40,10 @@ public class RoleServiceImpl implements RoleService {
         return roleMapper.getAll( );
     }
 
-    public Paging paging(int pageSize, int pageNum, Role role){
-        int maxResult = (pageNum - 1) * pageSize;
-        Paging page = roleMapper.paging(maxResult, pageNum, role);
-        return page;
+    public Paging<Role> paging(Integer page, Integer size, Role role){
+        Integer offset = (page - 1) * size;
+        Integer limit = size;
+        return  roleMapper.paging(offset, limit, role);
     }
 
 }
