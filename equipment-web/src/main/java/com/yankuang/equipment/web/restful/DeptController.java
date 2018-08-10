@@ -1,15 +1,15 @@
 package com.yankuang.equipment.web.restful;
 
-import com.alibaba.dubbo.common.json.JSONArray;
-import com.alibaba.dubbo.common.json.JSONObject;
 import com.yankuang.equipment.authority.model.Dept;
 import com.yankuang.equipment.authority.model.OrgDept;
 import com.yankuang.equipment.authority.service.DeptService;
 import com.yankuang.equipment.authority.service.OrgDeptService;
 import com.yankuang.equipment.common.util.CommonResponse;
+import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.common.util.StringUtils;
 import com.yankuang.equipment.common.util.UuidUtils;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -44,11 +44,15 @@ public class DeptController {
 
     /**
      * @method 更新
-     * @param dept
+     * @param jsonString
      * @return
      */
     @PutMapping("/update")
-    public CommonResponse updateById(@RequestBody Dept dept){
+    public CommonResponse updateById(@RequestBody String jsonString){
+        if (StringUtils.isEmpty(jsonString)){
+            return CommonResponse.errorTokenMsg("参数不能为空");
+        }
+        Dept dept = JsonUtils.jsonToPojo(jsonString,Dept.class);
         if(dept.getId() == null || dept.getId() == 0){
             return  CommonResponse.errorTokenMsg("系统错误");
         }
@@ -63,11 +67,16 @@ public class DeptController {
 
     /**
      * @method 添加
-     * @param dept
+     * @param jsonString
      * @return
      */
     @PostMapping(value = "/add")
-    public CommonResponse add(@RequestBody Dept dept){
+    public CommonResponse add(@RequestBody String jsonString){
+
+        if (StringUtils.isEmpty(jsonString)){
+            return CommonResponse.errorTokenMsg("参数不能为空");
+        }
+        Dept dept = JsonUtils.jsonToPojo(jsonString,Dept.class);
 
         if (dept.getName() == null || " ".equals(dept.getName())){
             return CommonResponse.errorTokenMsg("部门名称不能为空");
@@ -161,6 +170,7 @@ public class DeptController {
      * @return
      */
     @PostMapping("/findOrgNameAdd")
+    @Transactional
     public CommonResponse findOrgNameAdd( @RequestParam Long organizationId,
                                    @RequestParam String name){
         Long departmentId;
