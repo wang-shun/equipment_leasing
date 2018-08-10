@@ -44,6 +44,9 @@ public class UserController {
     @RpcConsumer
     DeptUserService deptUserService;
 
+    @RpcConsumer
+    OrgDeptRoleUserService orgDeptRoleUserService;
+
     /**
      * 用户退出登录.
      */
@@ -332,11 +335,34 @@ public class UserController {
         return CommonResponse.build(200, "删除成功", null);
     }
 
+    /**
+     * @method 用户分页查询
+     * @param offset
+     * @param limit
+     * @return
+     */
     @GetMapping("/findUser")
-    public CommonResponse findUser(){
-        return CommonResponse.ok();
+    public CommonResponse findUser(@RequestParam Integer offset,
+                                   @RequestParam Integer limit){
+        OrgDeptRoleUser orgDeptRoleUser = new OrgDeptRoleUser();
+        Paging<OrgDeptRoleUser> orgDeptRoleUserPaging = orgDeptRoleUserService.getAll(offset, limit, orgDeptRoleUser);
+        return CommonResponse.ok(orgDeptRoleUserPaging);
     }
 
+    /**
+     * @method 用户查询
+     * @return
+     */
+    @GetMapping("/findUsers")
+    public CommonResponse getAll(){
+        return CommonResponse.ok(orgDeptRoleUserService.getAll());
+    }
+
+    /**
+     * @method 用户更新
+     * @param jsonString
+     * @return
+     */
     @PutMapping("/updateUser")
     public CommonResponse udtUser(@RequestBody String jsonString){
         if (StringUtils.isEmpty(jsonString)){
@@ -393,16 +419,16 @@ public class UserController {
         roleUser.setVersion(1L);
 
         roleUserService.update(roleUser);
-        //将信息添加到部门用户关系表
-        DeptUser deptUser = new DeptUser();
-        deptUser.setCreateBy("admin");//TODO 暂未开发完，先写死
-        deptUser.setUpdateBy("admin");
-        deptUser.setStatus((byte)1);
-        deptUser.setDepartmentId(orgRoleDTO.getDeptId());
-        deptUser.setUserId(userService.findUserIds(orgRoleDTO.getAccount()));
-        deptUser.setVersion(1L);
-
-        deptUserService.update(deptUser);
+//        //将信息添加到部门用户关系表
+//        DeptUser deptUser = new DeptUser();
+//        deptUser.setCreateBy("admin");//TODO 暂未开发完，先写死
+//        deptUser.setUpdateBy("admin");
+//        deptUser.setStatus((byte)1);
+//        deptUser.setDepartmentId(orgRoleDTO.getDeptId());
+//        deptUser.setUserId(userService.findUserIds(orgRoleDTO.getAccount()));
+//        deptUser.setVersion(1L);
+//
+//        deptUserService.update(deptUser);
 
         return CommonResponse.ok();
     }

@@ -153,4 +153,33 @@
     SET status = 99
     WHERE user_id = #{userId}
   </update>
+
+  <update id="update" parameterType="DeptUser">
+  UPDATE el_role_user_mapping
+    <set >
+      <if test="departmentId != null" >
+        department_id = #{departmentId},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy},
+      </if>
+      <if test="createAt != null" >
+        create_at = #{createAt},
+      </if>
+      <if test="version != null" >
+        version = #{version},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      update_at = unix_timestamp(now())
+    </set>
+    WHERE id = #{id}
+  </update>
 </mapper>

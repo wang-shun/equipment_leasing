@@ -56,7 +56,6 @@
 
   <update id="update" parameterType="RoleUser">
     UPDATE el_role_user_mapping
-    SET
     <set >
       <if test="id != null" >
         id = #{id},
@@ -76,8 +75,8 @@
       <if test="createAt != null" >
         create_at = #{createAt},
       </if>
-      <if test="cteateBy != null" >
-        cteate_by = #{cteateBy},
+      <if test="createBy != null" >
+        create_by = #{createBy},
       </if>
       <if test="version != null" >
         version = #{version},

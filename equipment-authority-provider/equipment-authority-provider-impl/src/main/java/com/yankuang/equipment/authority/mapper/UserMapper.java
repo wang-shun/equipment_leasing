@@ -39,6 +39,6 @@ public class UserMapper extends MyBatisDao<User> {
     }
 
     public Long findUserSex(Byte sex){
-        return this.getSqlSession().selectOne("findUserAccount",sex);
+        return this.getSqlSession().selectOne("findUserSex",sex);
     }
 }

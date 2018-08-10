@@ -1,7 +1,10 @@
 package com.yankuang.equipment.authority.service;
 
+import com.yankuang.equipment.authority.model.OrgDeptRoleUser;
 import com.yankuang.equipment.authority.model.User;
 import io.terminus.common.model.Paging;
+
+import java.util.List;
 
 public interface UserService {
 
@@ -34,5 +37,4 @@ public interface UserService {
     Long findUserAccount(String name);
 
     Long findUserSex(Byte sex);
-
 }

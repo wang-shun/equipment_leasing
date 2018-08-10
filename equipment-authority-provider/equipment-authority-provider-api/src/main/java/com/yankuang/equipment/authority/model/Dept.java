@@ -104,14 +104,6 @@ public class Dept implements Serializable {
         this.remark = remark == null ? null : remark.trim();
     }
 
-    public String getCteateBy() {
-        return createBy;
-    }
-
-    public void setCteateBy(String cteateBy) {
-        this.createBy = cteateBy == null ? null : cteateBy.trim();
-    }
-
     public Long getCreateAt() {
         return createAt;
     }
