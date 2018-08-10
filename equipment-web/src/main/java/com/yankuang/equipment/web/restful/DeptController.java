@@ -60,7 +60,7 @@ public class DeptController {
             return CommonResponse.errorTokenMsg("部门名称不能为空");
         }
         if (deptService.getByName(dept.getName()) != null){
-            return CommonResponse.errorTokenMsg("此权限名称已存在");
+            return CommonResponse.errorTokenMsg("此部门名称已存在");
         }
         return CommonResponse.ok(deptService.update(dept));
     }
@@ -107,15 +107,22 @@ public class DeptController {
 
     /**
      * @method 删除
-     * @param id
+     * @param jsonString
      * @return
      */
-    @DeleteMapping("/{id}")
-    public CommonResponse del(@PathVariable Long id){
-        if(id == null || id == 0){
-            return  CommonResponse.errorTokenMsg("系统错误");
+    @DeleteMapping("/dels")
+    public CommonResponse del(@RequestBody String jsonString){
+        if(StringUtils.isEmpty(jsonString)){
+            return CommonResponse.errorTokenMsg("没有查询的id");
         }
-        return  CommonResponse.ok(deptService.del(id));
+        List<Long> ids = JsonUtils.jsonToList(jsonString,Long.class);
+        for (Long id: ids){
+            boolean idB = deptService.del(id);
+            if (idB == false){
+                return CommonResponse.errorTokenMsg("删除失败");
+            }
+        }
+        return  CommonResponse.ok();
     }
 
     /**
@@ -203,6 +210,10 @@ public class DeptController {
             Long version = dept.getVersion() == null ?1:dept.getVersion();
             dept.setVersion(version);
 
+            dept.setCreateBy("admin");
+
+            dept.setUpdateBy("admin");
+
             deptService.add(dept);
         }
 
@@ -225,12 +236,22 @@ public class DeptController {
 
     /**
      * @method 部门管理删除功能
-     * @param id
+     * @param jsonString
      * @return
      */
-    @DeleteMapping("/mapperdel/{id}")
-    public CommonResponse delDeptOrg(@PathVariable Long id){
-        return CommonResponse.ok(orgDeptService.delById(id));
+    @DeleteMapping("/mapperdel/dels")
+    public CommonResponse delDeptOrg(@RequestBody String jsonString){
+        if(StringUtils.isEmpty(jsonString)){
+            return CommonResponse.errorTokenMsg("没有查询的id");
+        }
+        List<Long> ids = JsonUtils.jsonToList(jsonString,Long.class);
+        for (Long id: ids){
+            boolean idB = orgDeptService.delById(id);
+            if (idB == false){
+                return CommonResponse.errorTokenMsg("删除失败");
+            }
+        }
+        return  CommonResponse.ok();
     }
 
 

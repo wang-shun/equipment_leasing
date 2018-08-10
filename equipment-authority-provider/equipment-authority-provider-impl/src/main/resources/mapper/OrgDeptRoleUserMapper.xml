@@ -9,7 +9,7 @@
         <id column="roleName" property="roleName" jdbcType="VARCHAR"/>
         <id column="orgName" property="orgName" jdbcType="VARCHAR"/>
     </resultMap>
-    <select id="paging" parameterType="map" resultMap="BaseResultMap" >
+    <select id="getAll" parameterType="OrgDeptRoleUser" resultMap="BaseResultMap">
         SELECT user.name userName,user.sex userSex,user.account account,dept.name deptName,role.name roleName,org.name orgName
         FROM el_user user,el_department_user_mapping deptusermapping,el_department dept,
         el_role_user_mapping roleusermapping,el_role role,
@@ -20,19 +20,6 @@
         AND role.id = roleusermapping.role_id
         AND dept.id = orgdeptmapping.department_id
         AND org.id = orgdeptmapping.organization_id
-        ORDER BY user.create_at DESC LIMIT #{offset}, #{limit}
-    </select>
-    <select id="getAll" resultMap="BaseResultMap">
-        SELECT user.name userName,user.sex userSex,user.account account,dept.name deptName,role.name roleName,org.name orgName
-        FROM el_user user,el_department_user_mapping deptusermapping,el_department dept,
-        el_role_user_mapping roleusermapping,el_role role,
-        el_organization_department_mapping orgdeptmapping,el_organization org
-        WHERE user.id = deptusermapping.user_id
-        AND dept.id = deptusermapping.department_id
-        AND user.id = roleusermapping.user_id
-        AND role.id = roleusermapping.role_id
-        AND dept.id = orgdeptmapping.department_id
-        AND org.id = orgdeptmapping.organization_id
-        ORDER BY user.create_at
+        ORDER BY user.create_at DESC LIMIT #{pages},#{limit}
     </select>
 </mapper>

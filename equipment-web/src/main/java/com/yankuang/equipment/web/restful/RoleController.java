@@ -140,16 +140,23 @@ public class RoleController {
 
     /**
      * @method 删除
-     * @param id
+     * @param jsonString
      * @return
      */
 
-    @DeleteMapping("/{id}")
-    public CommonResponse delete(@PathVariable Long id){
-        if (StringUtils.isEmpty(id)){
-            return CommonResponse.ok("角色id不能为空");
+    @DeleteMapping("/dels")
+    public CommonResponse delete(@RequestBody String jsonString){
+        if(com.yankuang.equipment.common.util.StringUtils.isEmpty(jsonString)){
+            return CommonResponse.errorTokenMsg("没有查询的id");
         }
-        return CommonResponse.ok(roleService.delete(id));
+        List<Long> ids = JsonUtils.jsonToList(jsonString,Long.class);
+        for (Long id: ids){
+            boolean idB = roleService.delete(id);
+            if (idB == false){
+                return CommonResponse.errorTokenMsg("删除失败");
+            }
+        }
+        return  CommonResponse.ok();
     }
 
     /**
@@ -159,7 +166,7 @@ public class RoleController {
      * @param searchInput
      * @return
      */
-    @GetMapping
+    @GetMapping("/paging")
     public CommonResponse paging(@RequestParam(value = "page", defaultValue = "1") Integer offset,
                           @RequestParam(value = "size", defaultValue = "20")Integer limit,
                           @RequestParam String searchInput){

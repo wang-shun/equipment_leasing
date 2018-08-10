@@ -318,21 +318,27 @@ public class UserController {
 
     /**
      * @method 删除用户功能
-     * @param userId
+     * @param jsonString
      * @return
      */
     @DeleteMapping("/delUser")
-    public CommonResponse delUser(@RequestParam Long userId){
-        if (roleUserService.deleteByUserId(userId) == false){
-            return CommonResponse.errorTokenMsg("删除失败");
+    public CommonResponse delUser(@RequestBody String jsonString){
+        if(com.yankuang.equipment.common.util.StringUtils.isEmpty(jsonString)){
+            return CommonResponse.errorTokenMsg("没有查询的id");
         }
-        if (deptUserService.deleteByUserId(userId) == false){
-            return CommonResponse.errorTokenMsg("删除失败");
+        List<Long> ids = JsonUtils.jsonToList(jsonString,Long.class);
+        for (Long id: ids){
+            if (roleUserService.deleteByUserId(id) == false){
+                return CommonResponse.errorTokenMsg("删除失败");
+            }
+            if (deptUserService.deleteByUserId(id) == false){
+                return CommonResponse.errorTokenMsg("删除失败");
+            }
+            if (userService.delete(id) == false){
+                return CommonResponse.errorTokenMsg("删除失败");
+            }
         }
-        if (userService.delete(userId) == false){
-            return CommonResponse.errorTokenMsg("删除失败");
-        }
-        return CommonResponse.build(200, "删除成功", null);
+        return  CommonResponse.ok();
     }
 
     /**
@@ -344,18 +350,12 @@ public class UserController {
     @GetMapping("/findUser")
     public CommonResponse findUser(@RequestParam Integer offset,
                                    @RequestParam Integer limit){
-        OrgDeptRoleUser orgDeptRoleUser = new OrgDeptRoleUser();
-        Paging<OrgDeptRoleUser> orgDeptRoleUserPaging = orgDeptRoleUserService.getAll(offset, limit, orgDeptRoleUser);
-        return CommonResponse.ok(orgDeptRoleUserPaging);
-    }
-
-    /**
-     * @method 用户查询
-     * @return
-     */
-    @GetMapping("/findUsers")
-    public CommonResponse getAll(){
-        return CommonResponse.ok(orgDeptRoleUserService.getAll());
+        Integer startPage = limit * (offset - 1) + 1;
+        Integer endPage = limit * offset;
+       OrgDeptRoleUser orgDeptRoleUser = new OrgDeptRoleUser();
+       orgDeptRoleUser.setPages(startPage);
+       orgDeptRoleUser.setLimit(endPage);
+        return CommonResponse.ok(orgDeptRoleUserService.getAll(orgDeptRoleUser));
     }
 
     /**
@@ -419,16 +419,16 @@ public class UserController {
         roleUser.setVersion(1L);
 
         roleUserService.update(roleUser);
-//        //将信息添加到部门用户关系表
-//        DeptUser deptUser = new DeptUser();
-//        deptUser.setCreateBy("admin");//TODO 暂未开发完，先写死
-//        deptUser.setUpdateBy("admin");
-//        deptUser.setStatus((byte)1);
-//        deptUser.setDepartmentId(orgRoleDTO.getDeptId());
-//        deptUser.setUserId(userService.findUserIds(orgRoleDTO.getAccount()));
-//        deptUser.setVersion(1L);
-//
-//        deptUserService.update(deptUser);
+        //将信息添加到部门用户关系表
+        DeptUser deptUser = new DeptUser();
+        deptUser.setCreateBy("admin");//TODO 暂未开发完，先写死
+        deptUser.setUpdateBy("admin");
+        deptUser.setStatus((byte)1);
+        deptUser.setDepartmentId(orgRoleDTO.getDeptId());
+        deptUser.setUserId(userService.findUserIds(orgRoleDTO.getAccount()));
+        deptUser.setVersion(1L);
+
+        deptUserService.update(deptUser);
 
         return CommonResponse.ok();
     }

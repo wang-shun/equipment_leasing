@@ -8,6 +8,9 @@ import com.yankuang.equipment.common.util.UuidUtils;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 /**
  * @author boms
  * @createtime 2018/8/2
@@ -61,7 +64,7 @@ public class AuthorityController{
     @PostMapping("/add")
     public CommonResponse add(@RequestBody Authority authority){
         if (" ".equals(authority.getName()) || authority.getName() == null){
-            return CommonResponse.errorTokenMsg("用户不能为空");
+            return CommonResponse.errorTokenMsg("权限名称不能为空");
         }
 
         if (authorityService.getByName(authority.getName()) != null){
@@ -99,6 +102,20 @@ public class AuthorityController{
             return CommonResponse.errorTokenMsg("系统错误");
         }
         return CommonResponse.ok(authorityService.del(id));
+    }
+
+    @DeleteMapping("/dels")
+    public CommonResponse del1(@RequestBody String jsonString){
+        if (StringUtils.isEmpty(jsonString)){
+            return CommonResponse.errorTokenMsg("选择要删除的数据");
+        }
+       List<Long> ids = JsonUtils.jsonToList(jsonString,Long.class);
+        for (Long id: ids){
+            if (authorityService.del(id) == false){
+                return CommonResponse.build(200,"删除失败",ids);
+            }
+        }
+        return CommonResponse.ok();
     }
 
     /**

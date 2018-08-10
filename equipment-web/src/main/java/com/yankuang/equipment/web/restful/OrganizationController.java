@@ -10,6 +10,9 @@ import com.yankuang.equipment.common.util.UuidUtils;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 /**
  * @author boms
  * @createtime 2018/8/2
@@ -71,7 +74,7 @@ public class OrganizationController {
      * @param jsonString
      * @return
      */
-    @PutMapping
+    @PutMapping("/udt")
     public CommonResponse update(@RequestBody String jsonString){
         if (StringUtils.isEmpty(jsonString)){
             return CommonResponse.errorTokenMsg("参数不能为空");
@@ -91,15 +94,22 @@ public class OrganizationController {
 
     /**
      * @mehtod 删除
-     * @param id
+     * @param jsonString
      * @return
      */
-    @DeleteMapping("/{id}")
-    public CommonResponse del(@PathVariable Long id){
-        if (id == null || id == 0){
-            return CommonResponse.errorMsg("系统错误");
+    @DeleteMapping("/dels")
+    public CommonResponse delete(@RequestBody String jsonString){
+        if(com.yankuang.equipment.common.util.StringUtils.isEmpty(jsonString)){
+            return CommonResponse.errorTokenMsg("没有查询的id");
         }
-        return CommonResponse.ok(organizationService.del(id));
+        List<Long> ids = JsonUtils.jsonToList(jsonString,Long.class);
+        for (Long id: ids){
+            boolean idB = organizationService.del(id);
+            if (idB == false){
+                return CommonResponse.errorTokenMsg("删除失败");
+            }
+        }
+        return  CommonResponse.ok();
     }
 
     /**

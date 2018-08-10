@@ -23,7 +23,7 @@ public class OrgDeptRoleUserServiceImpl implements OrgDeptRoleUserService{
         return page;
     }
 
-    public List<OrgDeptRoleUser> getAll(){
-        return orgDeptRoleUserMapper.getAll();
+    public List<OrgDeptRoleUser> getAll(OrgDeptRoleUser orgDeptRoleUser){
+        return orgDeptRoleUserMapper.getAll(orgDeptRoleUser);
     }
 }

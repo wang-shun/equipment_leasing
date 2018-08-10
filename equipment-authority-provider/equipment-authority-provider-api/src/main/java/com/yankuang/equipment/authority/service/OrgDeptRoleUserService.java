@@ -9,5 +9,5 @@ public interface OrgDeptRoleUserService {
 
     Paging<OrgDeptRoleUser> getAll(int pageSize, int pageNum, OrgDeptRoleUser orgDeptRoleUser);
 
-    List<OrgDeptRoleUser> getAll();
+    List<OrgDeptRoleUser> getAll(OrgDeptRoleUser orgDeptRoleUser);
 }

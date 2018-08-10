@@ -14,6 +14,8 @@ public class OrgDeptRoleUser implements Serializable {
     private String roleName;
     private String Account;
     private Byte sex;
+    private Integer pages;
+    private Integer limit;
 
     public Long getUserId() {
         return userId;
@@ -93,5 +95,21 @@ public class OrgDeptRoleUser implements Serializable {
 
     public void setSex(Byte sex) {
         this.sex = sex;
+    }
+
+    public Integer getPages() {
+        return pages;
+    }
+
+    public void setPages(Integer pages) {
+        this.pages = pages;
+    }
+
+    public Integer getLimit() {
+        return limit;
+    }
+
+    public void setLimit(Integer limit) {
+        this.limit = limit;
     }
 }

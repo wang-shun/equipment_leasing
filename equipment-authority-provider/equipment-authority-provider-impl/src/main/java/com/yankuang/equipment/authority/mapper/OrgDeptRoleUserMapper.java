@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public class OrgDeptRoleUserMapper extends MyBatisDao<OrgDeptRoleUser> {
-    public List<OrgDeptRoleUser> getAll(){
-        return this.sqlSession.selectList("getAll");
+    public List<OrgDeptRoleUser> getAll(OrgDeptRoleUser orgDeptRoleUser){
+        return this.sqlSession.selectList("getAll",orgDeptRoleUser);
     }
 }
