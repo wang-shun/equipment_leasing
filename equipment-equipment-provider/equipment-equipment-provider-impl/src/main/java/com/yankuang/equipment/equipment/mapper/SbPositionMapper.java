@@ -20,4 +20,6 @@ public interface SbPositionMapper {
     int updateByPrimaryKey(SbPosition record);
 
     List<SbPosition> listAll(String code,String name);
+
+    SbPosition selectByMaxId();
 }

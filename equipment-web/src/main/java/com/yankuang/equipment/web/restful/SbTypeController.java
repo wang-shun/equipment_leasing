@@ -3,6 +3,7 @@ package com.yankuang.equipment.web.restful;
 import com.yankuang.equipment.common.util.Constants;
 import com.yankuang.equipment.common.util.ResponseMeta;
 import com.yankuang.equipment.equipment.model.SbType;
+import com.yankuang.equipment.equipment.model.SbTypeInfo;
 import com.yankuang.equipment.equipment.service.SbTypeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -42,16 +43,16 @@ public class SbTypeController {
 
     @ApiOperation("create shebei record")
     @RequestMapping(value = "/create")
-    public ResponseMeta createSbType(@Valid SbType sbType, BindingResult bindingResult){
+    public ResponseMeta createSbType(@Valid SbType sbType, SbTypeInfo sbTypeInfo, BindingResult bindingResult){
         ResponseMeta responseMeta = new ResponseMeta();
         try{
             if (bindingResult.hasErrors()){
                 return responseMeta.setMeta(Constants.RESPONSE_ERROR,bindingResult.getAllErrors().get(0).getDefaultMessage());
             }
-            sbTypeService.createSbType(sbType);
-            responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"创建设备类型成功");
+            sbTypeService.createSbType(sbType,sbTypeInfo);
+            responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"创建设备类型及信息成功");
         }catch (Exception e){
-            responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"创建设备类型失败");
+            responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"创建设备类型及信息失败");
             responseMeta.setData(ExceptionUtils.getStackTrace(e));
         }
         return responseMeta;

@@ -59,60 +59,72 @@ public class Constants {
      * 设备租赁计划状态_未提交
      */
     public static final String PLANSTATUS_UNCOMMITED = "1";
+    public static final String PLANSTATUS_UNCOMMITED_VALUE = "未提交";
 
     /**
      * 设备租赁计划状态_已提交未审核
      */
     public static final String PLANSTATUS_COMMITED = "2";
+    public static final String PLANSTATUS_COMMITED_VALUE = "已提交";
 
     /**
      * 设备租赁计划状态_已审核未通过
      */
     public static final String PLANSTATUS_FAILED = "3";
+    public static final String PLANSTATUS_FAILED_VALUE = "已审核未通过";
 
     /**
      * 设备租赁计划状态_已审核已通过
      */
 
     public static final String PLANSTATUS_PASSED = "4";
+    public static final String PLANSTATUS_PASSED_VALUE = "已审核已通过";
     /**
      * 设备租赁计划状态_其他
      */
     public static final String PLANSTATUS_OTHERS = "5";
+    public static final String PLANSTATUS_OTHERS_VALUE = "服务处理中";
 
     /**
      * 设备租赁计划设备类型_通用设备
      */
 
     public static final String PLANEQUIPMENTTYPE_GENERIC = "1";
+    public static final String PLANEQUIPMENTTYPE_GENERIC_VALUE = "generic";
 
     /**
      * 设备租赁计划设备类型_综机设备
      */
     public static final String PLANEQUIPMENTTYPE_INTEGRATED = "2";
+    public static final String PLANEQUIPMENTTYPE_INTEGRATED_VALUE = "integrated";
 
     /**
-     * 设备租赁计划设备类型_综机设备
+     * 设备租赁计划设备类型_其他设备
      */
     public static final String PLANEQUIPMENTTYPE_OTHERS = "3";
+    public static final String PLANEQUIPMENTTYPE_OTHERS_VALUE = "otherEquipment";
 
     /**
      * 设备租赁计划_计划类型_年度
      */
     public static final String PLANTYPE_YEAR = "1";
+    public static final String PLANTYPE_YEAR_VALUE = "year";
 
     /**
      * 设备租赁计划_计划类型_季度
      */
     public static final String PLANTYPE_QUARTER = "2";
+    public static final String PLANTYPE_QUARTER_VALUE = "quarter";
 
     /**
      * 设备租赁计划_计划类型_月度
      */
     public static final String PLANTYPE_MONTH = "3";
+    public static final String PLANTYPE_MONTH_VALUE = "month";
 
     /**
      * 设备租赁计划_计划类型_应急
      */
     public static final String PLANTYPE_URGENT = "4";
+    public static final String PLANTYPE_URGENT_VALUE = "urgent";
 }

@@ -19,6 +19,13 @@ public class SbModelServiceImpl implements SbModelService {
     SbModelMapper sbModelMapper;
 
     public void createSbModel(SbModel sbModel) {
+        SbModel sbModel1 = sbModelMapper.selectByMaxId();
+        if(sbModel1==null){
+            sbModel.setCode(sbModel.getSbtypeOne()+sbModel.getSbtypeTwo()+sbModel.getSbtypeThree()+"0001");
+        }else{
+            Integer code = Integer.parseInt(sbModel.getCode());
+            sbModel.setCode(String.valueOf(code+1));
+        }
         sbModelMapper.insert(sbModel);
     }
 

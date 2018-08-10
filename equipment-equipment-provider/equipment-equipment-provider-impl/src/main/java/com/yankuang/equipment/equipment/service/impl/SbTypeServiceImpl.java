@@ -1,7 +1,9 @@
 package com.yankuang.equipment.equipment.service.impl;
 
+import com.yankuang.equipment.equipment.mapper.SbTypeInfoMapper;
 import com.yankuang.equipment.equipment.mapper.SbTypeMapper;
 import com.yankuang.equipment.equipment.model.SbType;
+import com.yankuang.equipment.equipment.model.SbTypeInfo;
 import com.yankuang.equipment.equipment.service.SbTypeService;
 import io.terminus.boot.rpc.common.annotation.RpcProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +18,17 @@ public class SbTypeServiceImpl implements SbTypeService {
     @Autowired
     private SbTypeMapper sbTypeMapper;
 
+    @Autowired
+    private SbTypeInfoMapper sbTypeInfoMapper;
+
     public List<SbType> listSbTypes() {
         return sbTypeMapper.selectAllSbTypes();
     }
 
-    public void createSbType(SbType record){
+    public void createSbType(SbType record, SbTypeInfo sbTypeInfo){
         sbTypeMapper.insert(record);
+        sbTypeInfo.setTypeId(record.getId());
+        sbTypeInfoMapper.insert(sbTypeInfo);
     }
 
     public void deleteSbTypeByKey(Long id) {

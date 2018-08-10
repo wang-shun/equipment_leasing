@@ -238,4 +238,11 @@
       </if>
     </where>
   </select>
+
+  <select id="selectByMaxId" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from sb_position
+    where id=(select MAX(id) from sb_position)
+  </select>
 </mapper>

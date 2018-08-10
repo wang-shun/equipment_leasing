@@ -30,7 +30,7 @@
     delete from sb_type
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.yankuang.equipment.equipment.model.SbType">
+  <insert id="insert" parameterType="com.yankuang.equipment.equipment.model.SbType" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
     insert into sb_type (code, name,
       pcode, sorting, level, 
       status, remark, create_by, 
