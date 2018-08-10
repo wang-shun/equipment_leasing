@@ -32,7 +32,7 @@ public class ElPlanController {
     @RequestMapping(value = "/{equipmentType}/{planType}", method = RequestMethod.POST)
     public CommonResponse create (@PathVariable(value = "equipmentType") String equipmentType,
                                   @PathVariable(value = "planType") String planType,
-                                  @RequestBody ElPlan elPlan) {
+                                  ElPlan elPlan) {
 
         Boolean res = false;
         try {
@@ -96,7 +96,7 @@ public class ElPlanController {
     @CrossOrigin(maxAge = 3600)
     @ResponseBody
     @RequestMapping(value = "/", method = RequestMethod.PUT)
-    public CommonResponse update (@RequestBody ElPlan elPlan) {
+    public CommonResponse update (ElPlan elPlan) {
 
         Boolean res = false;
         try {
