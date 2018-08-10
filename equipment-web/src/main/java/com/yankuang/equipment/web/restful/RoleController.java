@@ -101,7 +101,7 @@ public class RoleController {
             role.setSorting((long) 1);
             role.setCreateBy("admin");
             role.setUpdateBy("admin");
-            Boolean b = roleService.add(role);
+            Boolean b = roleService.create(role);
             if (b) {
                 Role role1 = roleService.findByName(roleName);
                 DeptRole deptRole = new DeptRole();

@@ -8,16 +8,11 @@ import java.util.List;
 
 @Repository
 public class AuthorityMapper extends MyBatisDao<Authority> {
-    public Boolean updatedel(Long id) {
-        return this.sqlSession.update(this.sqlId("updatedel"), id) == 1;
-    }
     public Authority findByName(String name) {
-        return getSqlSession().selectOne("findByNameA", name);
+        return getSqlSession().selectOne("findByName", name);
     }
-    public List<Authority> getAll( ){
-        return getSqlSession().selectList("findAllA");
+    public List<Authority> findAll( ){
+        return getSqlSession().selectList("com.yankuang.equipment.authority.mapper.AuthorityMapper.findAll");
     }
-    public List<String> getName(){
-        return getSqlSession().selectList("aclFindName");
-    }
+
 }

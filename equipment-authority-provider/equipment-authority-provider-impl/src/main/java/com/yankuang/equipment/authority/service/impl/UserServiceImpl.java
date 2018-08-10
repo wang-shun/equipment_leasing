@@ -39,8 +39,9 @@ public class UserServiceImpl implements UserService {
         return "OK";
     }
 
-    public Paging<User> paging(Integer offset, Integer limit, User user) {
-        return userMapper.paging(offset, limit, user);
+    public Paging<User> paging(Integer page, Integer size, User user) {
+        Integer offset = (page - 1) * size;
+        return userMapper.paging(offset, size, user);
     }
 
     public Boolean delete(Long id) {
