@@ -1,7 +1,7 @@
 package com.yankuang.equipment.web.log;
 
-import com.yankuang.equipment.log.model.SysLog;
-import com.yankuang.equipment.log.service.SysLogService;
+import com.yankuang.equipment.syslog.model.SysLog;
+import com.yankuang.equipment.syslog.service.SysLogService;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;

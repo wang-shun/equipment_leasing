@@ -80,7 +80,7 @@
 
         <dependency>
             <groupId>com.yankuang.equipment</groupId>
-            <artifactId>equipment-log-provider-api</artifactId>
+            <artifactId>equipment-syslog-provider-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 
