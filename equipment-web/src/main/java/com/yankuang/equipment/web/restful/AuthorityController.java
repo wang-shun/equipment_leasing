@@ -174,14 +174,14 @@ public class AuthorityController {
         return CommonResponse.ok();
     }
 
-    /**
-     * @author boms
-     * @method 删除
-     */
-    @DeleteMapping("/{id}")
-    CommonResponse deleteById(@PathVariable Long id) {
-        return CommonResponse.ok(authorityService.delete(id));
-    }
+//    /**
+//     * @author boms
+//     * @method 删除
+//     */
+//    @DeleteMapping("/{id}")
+//    CommonResponse deleteById(@PathVariable Long id) {
+//        return CommonResponse.ok(authorityService.delete(id));
+//    }
 
     /**
      * @param name

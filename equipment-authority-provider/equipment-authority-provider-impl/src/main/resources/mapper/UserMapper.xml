@@ -192,5 +192,6 @@
         FROM el_user
         WHERE status != 99
         AND sex = #{sex}
+        AND id = #{id}
     </select>
 </mapper>
