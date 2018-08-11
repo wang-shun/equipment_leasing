@@ -19,4 +19,8 @@ public class OrgDeptMapper extends MyBatisDao<OrgDept> {
         return this.sqlSession.selectOne("findOrgDept",orgDept);
 
     }
+
+    public List<Long> findDeptId (Long organizationId){
+        return this.sqlSession.selectList("findDeptId",organizationId);
+    }
 }

@@ -1,13 +1,22 @@
 package com.yankuang.equipment.web.restful;
 
 import com.yankuang.equipment.authority.model.Dept;
+import com.yankuang.equipment.authority.model.OrgDepartment;
 import com.yankuang.equipment.authority.model.OrgDept;
+import com.yankuang.equipment.authority.service.DeptOrganizationService;
 import com.yankuang.equipment.authority.service.DeptService;
 import com.yankuang.equipment.authority.service.OrgDeptService;
 import com.yankuang.equipment.common.util.CommonResponse;
+import com.yankuang.equipment.common.util.JsonUtils;
+import com.yankuang.equipment.common.util.StringUtils;
 import com.yankuang.equipment.common.util.UuidUtils;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author boms
  * @createtime 2018/8/2
@@ -22,13 +31,16 @@ public class DeptController {
     @RpcConsumer
     private OrgDeptService orgDeptService;
 
+    @RpcConsumer
+    private DeptOrganizationService deptOrganizationService;
+
     /**
      * @method 通过id查询
      * @param id
      * @return
      */
     @GetMapping(value = "/{id}")
-    CommonResponse getById(@PathVariable Long id) {
+    public CommonResponse getById(@PathVariable Long id) {
         if(id == null || id == 0){
             return  CommonResponse.errorTokenMsg("系统错误");
         }
@@ -37,11 +49,15 @@ public class DeptController {
 
     /**
      * @method 更新
-     * @param dept
+     * @param jsonString
      * @return
      */
     @PutMapping("/update")
-    CommonResponse updateById(@RequestBody Dept dept){
+    public CommonResponse updateById(@RequestBody String jsonString){
+        if (StringUtils.isEmpty(jsonString)){
+            return CommonResponse.errorTokenMsg("参数不能为空");
+        }
+        Dept dept = JsonUtils.jsonToPojo(jsonString,Dept.class);
         if(dept.getId() == null || dept.getId() == 0){
             return  CommonResponse.errorTokenMsg("系统错误");
         }
@@ -49,18 +65,23 @@ public class DeptController {
             return CommonResponse.errorTokenMsg("部门名称不能为空");
         }
         if (deptService.getByName(dept.getName()) != null){
-            return CommonResponse.errorTokenMsg("此权限名称已存在");
+            return CommonResponse.errorTokenMsg("此部门名称已存在");
         }
         return CommonResponse.ok(deptService.update(dept));
     }
 
     /**
      * @method 添加
-     * @param dept
+     * @param jsonString
      * @return
      */
     @PostMapping(value = "/add")
-    CommonResponse add(@RequestBody Dept dept){
+    public CommonResponse add(@RequestBody String jsonString){
+
+        if (StringUtils.isEmpty(jsonString)){
+            return CommonResponse.errorTokenMsg("参数不能为空");
+        }
+        Dept dept = JsonUtils.jsonToPojo(jsonString,Dept.class);
 
         if (dept.getName() == null || " ".equals(dept.getName())){
             return CommonResponse.errorTokenMsg("部门名称不能为空");
@@ -91,15 +112,22 @@ public class DeptController {
 
     /**
      * @method 删除
-     * @param id
+     * @param jsonString
      * @return
      */
-    @DeleteMapping("/{id}")
-    CommonResponse del(@PathVariable Long id){
-        if(id == null || id == 0){
-            return  CommonResponse.errorTokenMsg("系统错误");
+    @DeleteMapping("/dels")
+    public CommonResponse del(@RequestBody String jsonString){
+        if(StringUtils.isEmpty(jsonString)){
+            return CommonResponse.errorTokenMsg("没有查询的id");
         }
-        return  CommonResponse.ok(deptService.del(id));
+        List<Long> ids = JsonUtils.jsonToList(jsonString,Long.class);
+        for (Long id: ids){
+            boolean idB = deptService.del(id);
+            if (idB == false){
+                return CommonResponse.errorTokenMsg("删除失败");
+            }
+        }
+        return  CommonResponse.ok();
     }
 
     /**
@@ -109,7 +137,7 @@ public class DeptController {
      */
 
     @GetMapping
-    CommonResponse getByName(@RequestParam String name){
+    public CommonResponse getByName(@RequestParam String name){
         if (name == null || " ".equals(name)){
             return CommonResponse.errorTokenMsg("部门名称不能为空");
         }
@@ -122,7 +150,7 @@ public class DeptController {
      */
 
     @GetMapping(value = "/findAll")
-    CommonResponse getAll( ){
+    public CommonResponse getAll( ){
         return CommonResponse.ok(deptService.getAll( ));
     }
 
@@ -133,7 +161,7 @@ public class DeptController {
      * @return
      */
     @GetMapping("/findpage")
-    CommonResponse getPage(@RequestParam int page,@RequestParam int limit){
+    public CommonResponse getPage(@RequestParam int page,@RequestParam int limit){
         Dept dept = new Dept();
         return CommonResponse.ok(deptService.findpage(page,limit,dept));
     }
@@ -143,7 +171,7 @@ public class DeptController {
      * @return
      */
     @GetMapping("/findName")
-    CommonResponse getName(){
+    public CommonResponse getName(){
         return CommonResponse.ok(deptService.findName());
     }
 
@@ -154,7 +182,8 @@ public class DeptController {
      * @return
      */
     @PostMapping("/findOrgNameAdd")
-    CommonResponse findOrgNameAdd( @RequestParam Long organizationId,
+    @Transactional
+    public CommonResponse findOrgNameAdd( @RequestParam Long organizationId,
                                    @RequestParam String name){
         Long departmentId;
 
@@ -186,6 +215,10 @@ public class DeptController {
             Long version = dept.getVersion() == null ?1:dept.getVersion();
             dept.setVersion(version);
 
+            dept.setCreateBy("admin");
+
+            dept.setUpdateBy("admin");
+
             deptService.add(dept);
         }
 
@@ -208,12 +241,22 @@ public class DeptController {
 
     /**
      * @method 部门管理删除功能
-     * @param id
+     * @param jsonString
      * @return
      */
-    @DeleteMapping("/mapperdel/{id}")
-    CommonResponse delDeptOrg(@PathVariable Long id){
-        return CommonResponse.ok(orgDeptService.delById(id));
+    @DeleteMapping("/mapperdel/dels")
+    public CommonResponse delDeptOrg(@RequestBody String jsonString){
+        if(StringUtils.isEmpty(jsonString)){
+            return CommonResponse.errorTokenMsg("没有查询的id");
+        }
+        List<Long> ids = JsonUtils.jsonToList(jsonString,Long.class);
+        for (Long id: ids){
+            boolean idB = orgDeptService.delById(id);
+            if (idB == false){
+                return CommonResponse.errorTokenMsg("删除失败");
+            }
+        }
+        return  CommonResponse.ok();
     }
 
 
@@ -224,7 +267,7 @@ public class DeptController {
      * @return
      */
     @PutMapping("/orgDepts")
-    CommonResponse udtDeptOrg(@RequestParam Long organizationId,
+    public CommonResponse udtDeptOrg(@RequestParam Long organizationId,
                               @RequestParam String name,
                               @RequestParam Long id){
         if (id == null){
@@ -273,8 +316,27 @@ public class DeptController {
      * @return
      */
     @GetMapping("/findpageOrgDept")
-    CommonResponse getPageOrgDept(@RequestParam int page,@RequestParam int limit ){
-        OrgDept orgDept = new OrgDept();
-        return CommonResponse.ok(orgDeptService.findpage(page,limit,orgDept));
+    public CommonResponse getPageOrgDept(@RequestParam int page,@RequestParam int limit ){
+        Integer startPage = limit * (page - 1);
+        Integer endPage = limit * page;
+        OrgDepartment orgDepartment = new OrgDepartment();
+        orgDepartment.setStartPage(startPage);
+        orgDepartment.setEndPage(endPage);
+        return CommonResponse.ok(deptOrganizationService.deptOrgAll(orgDepartment));
+    }
+
+    /**
+     * @method 查找部门列表
+     * @param orgsId
+     * @return
+     */
+    @GetMapping("/findDepts")
+    public CommonResponse findDept(@RequestParam Long orgsId){
+        List<Dept> deptList = new ArrayList<Dept>();
+        List<Long> deptIds = orgDeptService.findDeptId(orgsId);
+        for (Long deptId:deptIds){
+            deptList.add(deptService.findDept(deptId));
+        }
+        return CommonResponse.ok(deptList);
     }
 }

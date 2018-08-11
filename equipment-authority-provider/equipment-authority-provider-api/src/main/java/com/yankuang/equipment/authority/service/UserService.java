@@ -1,7 +1,10 @@
 package com.yankuang.equipment.authority.service;
 
+import com.yankuang.equipment.authority.model.OrgDeptRoleUser;
 import com.yankuang.equipment.authority.model.User;
 import io.terminus.common.model.Paging;
+
+import java.util.List;
 
 public interface UserService {
 
@@ -15,9 +18,23 @@ public interface UserService {
 
     String healthCheck();
 
-    Paging<User> paging(Integer offset, Integer limit, User user);
+    Paging<User> paging(Integer page, Integer size, User user);
 
     Boolean delete(Long id);
 
     Boolean update(User t);
+
+    Long findUserName(String account);
+
+    Long findUserIds(String account);
+
+    Boolean closeStatusUser(Long id);
+
+    Boolean openStatusUser(Long id);
+
+    Boolean updateAccount(User user);
+
+    Long findUserAccount(String name);
+
+    Long findUserSex(Byte sex);
 }

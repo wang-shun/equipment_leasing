@@ -22,13 +22,19 @@
     <result column="def_para7_type" property="defPara7Type" jdbcType="VARCHAR" />
     <result column="def_para8" property="defPara8" jdbcType="VARCHAR" />
     <result column="def_para8_type" property="defPara8Type" jdbcType="VARCHAR" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+    <result column="version" property="version" jdbcType="BIGINT" />
     <result column="code" property="typeCode" jdbcType="VARCHAR"/>
     <result column="name" property="typeName" jdbcType="VARCHAR"/>
   </resultMap>
   <sql id="Base_Column_List" >
     id, type_id, main_para, main_para_type, def_para1, def_para1_type, def_para2, def_para2_type, 
     def_para3, def_para3_type, def_para4, def_para4_type, def_para5, def_para5_type, 
-    def_para6, def_para6_type, def_para7, def_para7_type, def_para8, def_para8_type
+    def_para6, def_para6_type, def_para7, def_para7_type, def_para8, def_para8_type,
+    create_by, create_at, update_by, update_at, version
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select t1.code,t1.name,t2.*
@@ -41,28 +47,24 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.yankuang.equipment.equipment.model.SbTypeInfo" >
-<<<<<<< HEAD
     insert into sb_type_info (type_id, main_para,
-=======
-    insert into sb_type_info (id, type_id, main_para, 
->>>>>>> cbb0518... init equipment-equipment
       main_para_type, def_para1, def_para1_type, 
       def_para2, def_para2_type, def_para3, 
       def_para3_type, def_para4, def_para4_type, 
       def_para5, def_para5_type, def_para6, 
       def_para6_type, def_para7, def_para7_type, 
-      def_para8, def_para8_type)
-<<<<<<< HEAD
+      def_para8, def_para8_type,create_by,
+      create_at, update_by, update_at,
+      version)
     values (#{typeId,jdbcType=BIGINT}, #{mainPara,jdbcType=VARCHAR},
-=======
-    values (#{id,jdbcType=BIGINT}, #{typeId,jdbcType=BIGINT}, #{mainPara,jdbcType=VARCHAR}, 
->>>>>>> cbb0518... init equipment-equipment
       #{mainParaType,jdbcType=VARCHAR}, #{defPara1,jdbcType=VARCHAR}, #{defPara1Type,jdbcType=VARCHAR}, 
       #{defPara2,jdbcType=VARCHAR}, #{defPara2Type,jdbcType=VARCHAR}, #{defPara3,jdbcType=VARCHAR}, 
       #{defPara3Type,jdbcType=VARCHAR}, #{defPara4,jdbcType=VARCHAR}, #{defPara4Type,jdbcType=VARCHAR}, 
       #{defPara5,jdbcType=VARCHAR}, #{defPara5Type,jdbcType=VARCHAR}, #{defPara6,jdbcType=VARCHAR}, 
       #{defPara6Type,jdbcType=VARCHAR}, #{defPara7,jdbcType=VARCHAR}, #{defPara7Type,jdbcType=VARCHAR}, 
-      #{defPara8,jdbcType=VARCHAR}, #{defPara8Type,jdbcType=VARCHAR})
+      #{defPara8,jdbcType=VARCHAR}, #{defPara8Type,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR},
+      #{createAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateAt,jdbcType=TIMESTAMP},
+      #{version,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.yankuang.equipment.equipment.model.SbTypeInfo" >
     insert into sb_type_info
@@ -127,6 +129,21 @@
       <if test="defPara8Type != null" >
         def_para8_type,
       </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createAt != null" >
+        create_at,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateAt != null" >
+        update_at,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -188,6 +205,21 @@
       </if>
       <if test="defPara8Type != null" >
         #{defPara8Type,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createAt != null" >
+        #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateAt != null" >
+        #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
@@ -251,6 +283,21 @@
       <if test="defPara8Type != null" >
         def_para8_type = #{defPara8Type,jdbcType=VARCHAR},
       </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createAt != null" >
+        create_at = #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateAt != null" >
+        update_at = #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=BIGINT},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -274,7 +321,12 @@
       def_para7 = #{defPara7,jdbcType=VARCHAR},
       def_para7_type = #{defPara7Type,jdbcType=VARCHAR},
       def_para8 = #{defPara8,jdbcType=VARCHAR},
-      def_para8_type = #{defPara8Type,jdbcType=VARCHAR}
+      def_para8_type = #{defPara8Type,jdbcType=VARCHAR},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      update_at = #{updateAt,jdbcType=TIMESTAMP},
+      version = #{version,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

@@ -11,9 +11,9 @@
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="create_by" jdbcType="VARCHAR" property="createBy" />
-    <result column="create_at" jdbcType="BIGINT" property="createAt" />
+    <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
     <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
-    <result column="update_at" jdbcType="BIGINT" property="updateAt" />
+    <result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
     <result column="version" jdbcType="BIGINT" property="version" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -30,24 +30,16 @@
     delete from sb_type
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.yankuang.equipment.equipment.model.SbType">
-<<<<<<< HEAD
+  <insert id="insert" parameterType="com.yankuang.equipment.equipment.model.SbType" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
     insert into sb_type (code, name,
-=======
-    insert into sb_type (id, code, name, 
->>>>>>> cbb0518... init equipment-equipment
       pcode, sorting, level, 
       status, remark, create_by, 
       create_at, update_by, update_at, 
       version)
-<<<<<<< HEAD
     values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
-=======
-    values (#{id,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
->>>>>>> cbb0518... init equipment-equipment
       #{pcode,jdbcType=VARCHAR}, #{sorting,jdbcType=BIGINT}, #{level,jdbcType=BIGINT}, 
       #{status,jdbcType=TINYINT}, #{remark,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, 
-      #{createAt,jdbcType=BIGINT}, #{updateBy,jdbcType=VARCHAR}, #{updateAt,jdbcType=BIGINT}, 
+      #{createAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateAt,jdbcType=TIMESTAMP},
       #{version,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.yankuang.equipment.equipment.model.SbType">
@@ -122,13 +114,13 @@
         #{createBy,jdbcType=VARCHAR},
       </if>
       <if test="createAt != null">
-        #{createAt,jdbcType=BIGINT},
+        #{createAt,jdbcType=TIMESTAMP},
       </if>
       <if test="updateBy != null">
         #{updateBy,jdbcType=VARCHAR},
       </if>
       <if test="updateAt != null">
-        #{updateAt,jdbcType=BIGINT},
+        #{updateAt,jdbcType=TIMESTAMP},
       </if>
       <if test="version != null">
         #{version,jdbcType=BIGINT},
@@ -163,13 +155,13 @@
         create_by = #{createBy,jdbcType=VARCHAR},
       </if>
       <if test="createAt != null">
-        create_at = #{createAt,jdbcType=BIGINT},
+        create_at = #{createAt,jdbcType=TIMESTAMP},
       </if>
       <if test="updateBy != null">
         update_by = #{updateBy,jdbcType=VARCHAR},
       </if>
       <if test="updateAt != null">
-        update_at = #{updateAt,jdbcType=BIGINT},
+        update_at = #{updateAt,jdbcType=TIMESTAMP},
       </if>
       <if test="version != null">
         version = #{version,jdbcType=BIGINT},
@@ -187,9 +179,9 @@
       status = #{status,jdbcType=TINYINT},
       remark = #{remark,jdbcType=VARCHAR},
       create_by = #{createBy,jdbcType=VARCHAR},
-      create_at = #{createAt,jdbcType=BIGINT},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
       update_by = #{updateBy,jdbcType=VARCHAR},
-      update_at = #{updateAt,jdbcType=BIGINT},
+      update_at = #{updateAt,jdbcType=TIMESTAMP},
       version = #{version,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -201,4 +193,18 @@
         where t.status = '1'
         order by t.level,code
     </select>
+
+  <select id="listSbTypesByPcodeOrLevel" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from sb_type t
+    where t.status = '1'
+      <if test="pcode != null">
+        and t.pcode = #{pcode}
+      </if>
+      <if test="level != null">
+        and t.level = #{level}
+      </if>
+    order by t.level,code
+  </select>
 </mapper>

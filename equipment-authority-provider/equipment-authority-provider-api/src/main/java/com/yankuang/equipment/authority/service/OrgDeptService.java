@@ -20,4 +20,6 @@ public interface OrgDeptService {
     Paging findpage(int pageSize, int pageNum, OrgDept orgDept);
 
     Long findOrgDept(OrgDept orgDept);
+
+    List<Long> findDeptId(Long organizationId);
 }

@@ -9,7 +9,7 @@
         <result column="level" property="level" jdbcType="BIGINT" />
         <result column="sorting" property="sorting" jdbcType="BIGINT" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
-        <result column="cteate_by" property="cteateBy" jdbcType="VARCHAR" />
+        <result column="create_by" property="createBy" jdbcType="VARCHAR" />
         <result column="create_at" property="createAt" jdbcType="BIGINT" />
         <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
         <result column="update_at" property="updateAt" jdbcType="BIGINT" />
@@ -48,8 +48,8 @@
             <if test="remark != null" >
                 remark = #{remark},
             </if>
-            <if test="cteateBy != null" >
-                cteate_by = #{cteateBy},
+            <if test="createBy != null" >
+                create_by = #{createBy},
             </if>
             <if test="createAt != null" >
                 create_at = #{createAt},
@@ -116,8 +116,8 @@
         <if test="remark != null" >
             AND remark = #{remark}
         </if>
-        <if test="cteateBy != null" >
-            AND cteate_by = #{cteateBy}
+        <if test="createBy != null" >
+            AND create_by = #{createBy}
         </if>
         <if test="createAt != null" >
             AND create_at = #{createAt}
@@ -163,8 +163,8 @@
         <if test="remark != null" >
             AND remark = #{remark}
         </if>
-        <if test="cteateBy != null" >
-            AND cteate_by = #{cteateBy}
+        <if test="createBy != null" >
+            AND create_by = #{createBy}
         </if>
         <if test="createAt != null" >
             AND create_at = #{createAt}
@@ -211,8 +211,8 @@
         <if test="remark != null" >
             AND remark = #{remark}
         </if>
-        <if test="cteateBy != null" >
-            AND cteate_by = #{cteateBy}
+        <if test="createBy != null" >
+            AND create_by = #{createBy}
         </if>
         <if test="createAt != null" >
             AND create_at = #{createAt}
@@ -249,6 +249,14 @@
       name = #{name}
       AND
       status != 99
+    </select>
+
+    <select id="findDept" resultMap="BaseResultMap" parameterType="Long">
+        SELECT  <include refid="Base_Column_List"/>
+        FROM el_department
+        WHERE id = #{id}
+        AND status != 99
+        ORDER BY create_at
     </select>
 
 </mapper>

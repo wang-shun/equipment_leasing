@@ -1,0 +1,376 @@
+package com.yankuang.equipment.equipment.model;
+
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+
+public class SbEquipmentT implements Serializable {
+    private Long id;
+
+    @NotNull(message = "设备识别码不能为空!")
+    private String code;
+
+    @NotNull(message = "设备名称不能为空!")
+    private String name;
+
+    private Byte isLease;
+
+    private String sbtypeOne;
+    private String sbtypeOneName;
+
+    private String sbtypeTwo;
+    private String sbtypeTwoName;
+
+    private String sbtypeThree;
+    private String sbtypeThreeName;
+
+    private String sbmodelCode;
+    private String sbmodelName;
+
+    private String techCode;
+
+    private String factory;
+
+    private Date prodDate;
+
+    private String prodCode;
+
+    private String maCode;
+
+    private Date maStartDate;
+
+    private Date maEndDate;
+
+    private String proof;
+
+    private String proofCode;
+
+    private String license;
+
+    private Date arriveDate;
+
+    private Date useDate;
+
+    private String comp;
+
+    private String contranct;
+
+    private BigDecimal buyPrice;
+
+    private Byte isNew;
+
+    private String ware;
+
+    private Byte isRfid;
+
+    private String assetCode;
+
+    private Byte status;
+
+    private String createBy;
+
+    private Date createAt;
+
+    private String updateBy;
+
+    private Date updateAt;
+
+    private Long version;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code == null ? null : code.trim();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
+
+    public Byte getIsLease() {
+        return isLease;
+    }
+
+    public void setIsLease(Byte isLease) {
+        this.isLease = isLease;
+    }
+
+    public String getSbtypeOne() {
+        return sbtypeOne;
+    }
+
+    public void setSbtypeOne(String sbtypeOne) {
+        this.sbtypeOne = sbtypeOne == null ? null : sbtypeOne.trim();
+    }
+
+    public String getSbtypeTwo() {
+        return sbtypeTwo;
+    }
+
+    public void setSbtypeTwo(String sbtypeTwo) {
+        this.sbtypeTwo = sbtypeTwo == null ? null : sbtypeTwo.trim();
+    }
+
+    public String getSbtypeThree() {
+        return sbtypeThree;
+    }
+
+    public void setSbtypeThree(String sbtypeThree) {
+        this.sbtypeThree = sbtypeThree == null ? null : sbtypeThree.trim();
+    }
+
+    public String getSbtypeOneName() {
+        return sbtypeOneName;
+    }
+
+    public void setSbtypeOneName(String sbtypeOneName) {
+        this.sbtypeOneName = sbtypeOneName;
+    }
+
+    public String getSbtypeTwoName() {
+        return sbtypeTwoName;
+    }
+
+    public void setSbtypeTwoName(String sbtypeTwoName) {
+        this.sbtypeTwoName = sbtypeTwoName;
+    }
+
+    public String getSbtypeThreeName() {
+        return sbtypeThreeName;
+    }
+
+    public void setSbtypeThreeName(String sbtypeThreeName) {
+        this.sbtypeThreeName = sbtypeThreeName;
+    }
+
+    public String getSbmodelName() {
+        return sbmodelName;
+    }
+
+    public void setSbmodelName(String sbmodelName) {
+        this.sbmodelName = sbmodelName;
+    }
+
+    public String getSbmodelCode() {
+        return sbmodelCode;
+    }
+
+    public void setSbmodelCode(String sbmodelCode) {
+        this.sbmodelCode = sbmodelCode == null ? null : sbmodelCode.trim();
+    }
+
+    public String getTechCode() {
+        return techCode;
+    }
+
+    public void setTechCode(String techCode) {
+        this.techCode = techCode == null ? null : techCode.trim();
+    }
+
+    public String getFactory() {
+        return factory;
+    }
+
+    public void setFactory(String factory) {
+        this.factory = factory == null ? null : factory.trim();
+    }
+
+    public Date getProdDate() {
+        return prodDate;
+    }
+
+    public void setProdDate(Date prodDate) {
+        this.prodDate = prodDate;
+    }
+
+    public String getProdCode() {
+        return prodCode;
+    }
+
+    public void setProdCode(String prodCode) {
+        this.prodCode = prodCode == null ? null : prodCode.trim();
+    }
+
+    public String getMaCode() {
+        return maCode;
+    }
+
+    public void setMaCode(String maCode) {
+        this.maCode = maCode == null ? null : maCode.trim();
+    }
+
+    public Date getMaStartDate() {
+        return maStartDate;
+    }
+
+    public void setMaStartDate(Date maStartDate) {
+        this.maStartDate = maStartDate;
+    }
+
+    public Date getMaEndDate() {
+        return maEndDate;
+    }
+
+    public void setMaEndDate(Date maEndDate) {
+        this.maEndDate = maEndDate;
+    }
+
+    public String getProof() {
+        return proof;
+    }
+
+    public void setProof(String proof) {
+        this.proof = proof == null ? null : proof.trim();
+    }
+
+    public String getProofCode() {
+        return proofCode;
+    }
+
+    public void setProofCode(String proofCode) {
+        this.proofCode = proofCode == null ? null : proofCode.trim();
+    }
+
+    public String getLicense() {
+        return license;
+    }
+
+    public void setLicense(String license) {
+        this.license = license == null ? null : license.trim();
+    }
+
+    public Date getArriveDate() {
+        return arriveDate;
+    }
+
+    public void setArriveDate(Date arriveDate) {
+        this.arriveDate = arriveDate;
+    }
+
+    public Date getUseDate() {
+        return useDate;
+    }
+
+    public void setUseDate(Date useDate) {
+        this.useDate = useDate;
+    }
+
+    public String getComp() {
+        return comp;
+    }
+
+    public void setComp(String comp) {
+        this.comp = comp == null ? null : comp.trim();
+    }
+
+    public String getContranct() {
+        return contranct;
+    }
+
+    public void setContranct(String contranct) {
+        this.contranct = contranct == null ? null : contranct.trim();
+    }
+
+    public BigDecimal getBuyPrice() {
+        return buyPrice;
+    }
+
+    public void setBuyPrice(BigDecimal buyPrice) {
+        this.buyPrice = buyPrice;
+    }
+
+    public Byte getIsNew() {
+        return isNew;
+    }
+
+    public void setIsNew(Byte isNew) {
+        this.isNew = isNew;
+    }
+
+    public String getWare() {
+        return ware;
+    }
+
+    public void setWare(String ware) {
+        this.ware = ware == null ? null : ware.trim();
+    }
+
+    public Byte getIsRfid() {
+        return isRfid;
+    }
+
+    public void setIsRfid(Byte isRfid) {
+        this.isRfid = isRfid;
+    }
+
+    public String getAssetCode() {
+        return assetCode;
+    }
+
+    public void setAssetCode(String assetCode) {
+        this.assetCode = assetCode == null ? null : assetCode.trim();
+    }
+
+    public Byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(Byte status) {
+        this.status = status;
+    }
+
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy == null ? null : createBy.trim();
+    }
+
+    public Date getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(Date createAt) {
+        this.createAt = createAt;
+    }
+
+    public String getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy == null ? null : updateBy.trim();
+    }
+
+    public Date getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(Date updateAt) {
+        this.updateAt = updateAt;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+}
