@@ -11,8 +11,8 @@
     <artifactId>equipment-log-provider</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>equipment-log-provider-api</module>
         <module>equipment-log-provider-impl</module>
+        <module>equipment-log-provider-api</module>
     </modules>
 
 
