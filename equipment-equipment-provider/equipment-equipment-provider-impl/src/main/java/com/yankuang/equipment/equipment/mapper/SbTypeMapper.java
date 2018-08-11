@@ -8,19 +8,15 @@ import java.util.List;
 
 @Repository
 public interface SbTypeMapper {
-    int deleteByPrimaryKey(Long id);
+    int deleteById(Long id);
 
-    int insert(SbType record);
+    int create(SbType record);
 
-    int insertSelective(SbType record);
+    SbType findById(Long id);
 
-    SbType selectByPrimaryKey(Long id);
+    int update(SbType record);
 
-    int updateByPrimaryKeySelective(SbType record);
+    List<SbType> list();
 
-    int updateByPrimaryKey(SbType record);
-
-    List<SbType> selectAllSbTypes();
-
-    List<SbType> listSbTypesByPcodeOrLevel(String pcode,int level);
+    List<SbType> listByPcodeOrLevel(String pcode,int level);
 }

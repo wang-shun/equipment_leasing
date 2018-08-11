@@ -8,17 +8,17 @@ public interface SbTypeInfoService {
      * @param id
      * @return
      */
-    public SbTypeInfo findSbTypeInfoByKey(Long id);
+    public SbTypeInfo findById(Long id);
 
     /**
      * 添加设备类型信息
      * @param record
      */
-    public void createSbTypeInfo(SbTypeInfo record);
+    public void create(SbTypeInfo record);
 
     /**
      * 更新设备类型信息
      * @param record
      */
-    public void updateSbTypeInfo(SbTypeInfo record);
+    public void update(SbTypeInfo record);
 }

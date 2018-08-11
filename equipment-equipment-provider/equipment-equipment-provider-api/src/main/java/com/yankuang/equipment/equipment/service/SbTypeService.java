@@ -10,20 +10,20 @@ public interface SbTypeService {
      * 查询设备类型
      * @return
      */
-    public List<SbType> listSbTypes();
+    public List<SbType> list();
 
     /**
      * 添加设备类型、类型信息
      * @param record
      * @param sbTypeInfo
      */
-    public void createSbType(SbType record, SbTypeInfo sbTypeInfo);
+    public void create(SbType record, SbTypeInfo sbTypeInfo);
 
     /**
      * 根据id删除设备类型
      * @param id
      */
-    public void deleteSbTypeByKey(Long id);
+    public void deleteById(Long id);
 
     /**
      * 根据父编码、级别查询设备类型
@@ -31,5 +31,5 @@ public interface SbTypeService {
      * @param level
      * @return
      */
-    public List<SbType> listSbTypesByPcodeOrLevel(String pcode,int level);
+    public List<SbType> listByPcodeOrLevel(String pcode,int level);
 }

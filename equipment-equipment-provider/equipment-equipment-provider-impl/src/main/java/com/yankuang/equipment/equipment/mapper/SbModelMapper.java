@@ -7,19 +7,15 @@ import java.util.List;
 
 @Repository
 public interface SbModelMapper {
-    int deleteByPrimaryKey(Long id);
+    int deleteById(Long id);
 
-    int insert(SbModel record);
+    int create(SbModel record);
 
-    int insertSelective(SbModel record);
+    SbModel findById(Long id);
 
-    SbModel selectByPrimaryKey(Long id);
+    int update(SbModel record);
 
-    int updateByPrimaryKeySelective(SbModel record);
-
-    int updateByPrimaryKey(SbModel record);
-
-    List<SbModel> listAll(String code,String name);
+    List<SbModel> list(String code,String name);
 
     SbModel selectByMaxId();
 }

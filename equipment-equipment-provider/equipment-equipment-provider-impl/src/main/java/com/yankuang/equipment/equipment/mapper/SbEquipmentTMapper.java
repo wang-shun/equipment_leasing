@@ -8,17 +8,13 @@ import java.util.List;
 
 @Repository
 public interface SbEquipmentTMapper {
-    int deleteByPrimaryKey(Long id);
+    int deleteById(Long id);
 
-    int insert(SbEquipmentT record);
+    int create(SbEquipmentT record);
 
-    int insertSelective(SbEquipmentT record);
+    SbEquipmentT findById(Long id);
 
-    SbEquipmentT selectByPrimaryKey(Long id);
+    int update(SbEquipmentT record);
 
-    int updateByPrimaryKeySelective(SbEquipmentT record);
-
-    int updateByPrimaryKey(SbEquipmentT record);
-
-    List<SbEquipmentT> listAll(SbEquipmentT sbEquipmentT);
+    List<SbEquipmentT> list(SbEquipmentT sbEquipmentT);
 }

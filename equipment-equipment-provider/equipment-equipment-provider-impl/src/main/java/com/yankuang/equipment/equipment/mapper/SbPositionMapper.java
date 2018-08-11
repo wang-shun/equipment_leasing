@@ -7,19 +7,15 @@ import java.util.List;
 
 @Repository
 public interface SbPositionMapper {
-    int deleteByPrimaryKey(Long id);
+    int deleteById(Long id);
 
-    int insert(SbPosition record);
+    int create(SbPosition record);
 
-    int insertSelective(SbPosition record);
+    SbPosition findById(Long id);
 
-    SbPosition selectByPrimaryKey(Long id);
+    int update(SbPosition record);
 
-    int updateByPrimaryKeySelective(SbPosition record);
-
-    int updateByPrimaryKey(SbPosition record);
-
-    List<SbPosition> listAll(String code,String name);
+    List<SbPosition> list(String code,String name);
 
     SbPosition selectByMaxId();
 }

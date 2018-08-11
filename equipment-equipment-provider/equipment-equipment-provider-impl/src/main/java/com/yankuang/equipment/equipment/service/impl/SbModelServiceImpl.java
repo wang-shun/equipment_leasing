@@ -12,13 +12,13 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@RpcProvider(version = "0.0.1")
+@RpcProvider
 public class SbModelServiceImpl implements SbModelService {
 
     @Autowired
     SbModelMapper sbModelMapper;
 
-    public void createSbModel(SbModel sbModel) {
+    public void create(SbModel sbModel) {
         SbModel sbModel1 = sbModelMapper.selectByMaxId();
         if(sbModel1==null){
             sbModel.setCode(sbModel.getSbtypeOne()+sbModel.getSbtypeTwo()+sbModel.getSbtypeThree()+"0001");
@@ -26,24 +26,24 @@ public class SbModelServiceImpl implements SbModelService {
             Integer code = Integer.parseInt(sbModel.getCode());
             sbModel.setCode(String.valueOf(code+1));
         }
-        sbModelMapper.insert(sbModel);
+        sbModelMapper.create(sbModel);
     }
 
-    public void updateSbModel(SbModel sbModel) {
-        sbModelMapper.updateByPrimaryKey(sbModel);
+    public void update(SbModel sbModel) {
+        sbModelMapper.update(sbModel);
     }
 
-    public SbModel findSbModelByKey(Long id) {
-        return sbModelMapper.selectByPrimaryKey(id);
+    public SbModel findById(Long id) {
+        return sbModelMapper.findById(id);
     }
 
-    public void deleteSbModelByKey(Long id) {
-        sbModelMapper.deleteByPrimaryKey(id);
+    public void deleteById(Long id) {
+        sbModelMapper.deleteById(id);
     }
 
-    public PageInfo<SbModel> listAll(String code,String name,int pageNum,int pageSize){
+    public PageInfo<SbModel> list(String code,String name,int pageNum,int pageSize){
         PageHelper.startPage(pageNum,pageSize);
-        List<SbModel> list = sbModelMapper.listAll(code,name);
+        List<SbModel> list = sbModelMapper.list(code,name);
         PageInfo<SbModel> pageInfo = new PageInfo<SbModel>(list);
         return pageInfo;
     }
