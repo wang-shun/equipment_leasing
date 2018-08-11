@@ -5,6 +5,7 @@ import com.yankuang.equipment.authority.model.Organization;
 import com.yankuang.equipment.authority.service.OrganizationService;
 import com.yankuang.equipment.common.util.UuidUtils;
 import io.terminus.boot.rpc.common.annotation.RpcProvider;
+import io.terminus.common.model.Paging;
 import jdk.nashorn.internal.ir.annotations.Reference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,15 +20,11 @@ public class OrganizationServiceImpl implements OrganizationService {
     @Autowired
     OrganizationMapper organizationMapper;
 
-    @Reference
-    UuidUtils uuidUtils;
-
     public Organization getById(Long id) {
         return organizationMapper.findById(id);
     }
 
     public boolean add(Organization organization){
-        organization.setCode(uuidUtils.newUuid());
         return organizationMapper.create(organization);
     }
 
@@ -45,5 +42,15 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     public List<Organization> getAll( ){
         return organizationMapper.getAll( );
+    }
+
+    public Paging findpage(int pageSize, int pageNum, Organization organization){
+        int maxResult = (pageNum - 1) * pageSize;
+        Paging page = organizationMapper.paging(maxResult, pageNum, organization);
+        return page;
+    }
+
+    public List<String> findName(){
+        return organizationMapper.getName();
     }
 }

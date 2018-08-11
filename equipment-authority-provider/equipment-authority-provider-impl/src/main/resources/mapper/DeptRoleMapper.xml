@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="DeptRole" >
+  <resultMap id="BaseResultMap" type="DeptRole" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="department_id" property="departmentId" jdbcType="BIGINT" />
+    <result column="role_id" property="roleId" jdbcType="BIGINT" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="update_at" property="updateAt" jdbcType="BIGINT" />
+    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+    <result column="create_at" property="createAt" jdbcType="BIGINT" />
+    <result column="version" property="version" jdbcType="BIGINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+  </resultMap>
+
+  <resultMap id="getRoleId" type="Long" >
+    <result column="role_id" property="roleId" jdbcType="BIGINT" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, department_id, role_id, create_by, update_at, update_by, create_at, version,
+    status
+  </sql>
+
+  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from el_department_role_mapping
+    where id = #{id}
+    AND status != 99
+    ORDER BY create_at DESC
+  </select>
+
+  <delete id="delete" parameterType="java.lang.Long" >
+    update el_department_role_mapping
+    set status == 99,
+    update_at = unix_timestamp(now())
+    where id = #{id}
+  </delete>
+
+  <insert id="create" parameterType="DeptRole" keyProperty="id" useGeneratedKeys="true">
+    insert into el_department_role_mapping
+     (id, department_id, role_id, create_by, update_by,
+      update_at,
+      create_at,
+      version, status)
+    values
+     (#{id}, #{departmentId}, #{roleId}, #{createBy}, #{updateBy},
+      unix_timestamp(now()),
+      unix_timestamp(now()),
+      0, 1)
+  </insert>
+
+  <select id="selectByDeptIdAndRoleId" resultMap="BaseResultMap" parameterType="Map" >
+    select
+    <include refid="Base_Column_List" />
+    from el_department_role_mapping
+    where department_id = #{departmentId}
+    and role_id = #{roleId}
+  </select>
+
+  <update id="update" parameterType="com.yankuang.equipment.authority.model.DeptRole" >
+    update el_department_role_mapping
+    <set>
+      <if test="departmentId != null" >
+        department_id = #{departmentId},
+      </if>
+      <if test="roleId != null" >
+        role_id = #{roleId},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy},
+      </if>
+      <if test="updateAt != null" >
+        update_at = #{updateAt},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy},
+      </if>
+      <if test="createAt != null" >
+        create_at = #{createAt},
+      </if>
+      <if test="version != null" >
+        version = #{version},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+
+  <update id="updatedelDR" parameterType="long">
+    UPDATE yankuang_equipment.el_department_role_mapping
+    <set>
+      status = 99,
+      update_at = unix_timestamp(now())
+    </set>
+    WHERE id = #{id}
+  </update>
+
+  <select id="findRoleId" parameterType="Long" resultMap="getRoleId">
+    SELECT role_id
+    FROM el_department_role_mapping
+    WHERE department_id = #{departmentId}
+    AND status != 99
+    ORDER BY create_at
+  </select>
+</mapper>

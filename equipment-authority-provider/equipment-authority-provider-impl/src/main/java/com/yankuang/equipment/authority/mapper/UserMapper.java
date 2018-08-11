@@ -14,4 +14,31 @@ public class UserMapper extends MyBatisDao<User> {
         return getSqlSession().selectOne("findByCode", code);
     }
 
+    public Long findUserName(String account){
+        return getSqlSession().selectOne("findUserName",account);
+    }
+
+    public Long findUserIds(String account){
+        return getSqlSession().selectOne("findUserIds",account);
+    }
+
+    public Boolean closeStatusUser(Long id){
+        return this.getSqlSession().update("closeStatusUser",id) == 1;
+    }
+
+    public Boolean openStatusUser(Long id){
+        return this.getSqlSession().update("openStatusUser",id) == 1;
+    }
+
+    public Boolean updateAccount(User user){
+        return this.getSqlSession().update("updateAccount",user) == 1;
+    }
+
+    public Long findUserAccount(String name){
+        return this.getSqlSession().selectOne("findUserAccount",name);
+    }
+
+    public Long findUserSex(Byte sex){
+        return this.getSqlSession().selectOne("findUserSex",sex);
+    }
 }

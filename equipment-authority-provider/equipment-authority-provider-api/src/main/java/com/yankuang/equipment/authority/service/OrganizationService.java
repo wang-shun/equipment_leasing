@@ -1,6 +1,7 @@
 package com.yankuang.equipment.authority.service;
 
 import com.yankuang.equipment.authority.model.Organization;
+import io.terminus.common.model.Paging;
 
 import java.util.List;
 
@@ -12,4 +13,6 @@ public interface OrganizationService {
     boolean del(Long id);
     Organization getByName(String name);
     List<Organization> getAll( );
+    Paging findpage(int pageSize, int pageNum, Organization organization);
+    List<String> findName();
 }
