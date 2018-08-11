@@ -1,6 +1,7 @@
 *.iml
 .idea/
-*/target/*
+equipment-*/*/target/*
+equipment-*/target/*
 .dubbo/
 *.class
 
