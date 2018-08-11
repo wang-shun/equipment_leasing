@@ -8,19 +8,10 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-@Data
+//@Data
 //@Entity
 @Table(name = "el_user")
 public class User implements Serializable {
-
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
-//    private String nickName;
-//    private String userName;
-//    private String password;
-//    private Long createdAt;
-//    private Long updatedAt;
 
     private Long id;
 
@@ -31,6 +22,8 @@ public class User implements Serializable {
     private String mail;
 
     private String password;
+
+    private Byte sex;
 
     private Byte status;
 
@@ -49,6 +42,8 @@ public class User implements Serializable {
     private Long createAt;
 
     private String code;
+
+    private String account;
 
     public Long getId() {
         return id;
@@ -160,5 +155,21 @@ public class User implements Serializable {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public Byte getSex() {
+        return sex;
+    }
+
+    public void setSex(Byte sex) {
+        this.sex = sex;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
     }
 }

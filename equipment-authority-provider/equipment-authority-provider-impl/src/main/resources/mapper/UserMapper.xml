@@ -5,6 +5,7 @@
     <resultMap id="UserMap" type="User">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="sex" property="sex" jdbcType="TINYINT" />
         <result column="telephone" property="telephone" jdbcType="VARCHAR" />
         <result column="mail" property="mail" jdbcType="VARCHAR" />
         <result column="password" property="password" jdbcType="VARCHAR" />
@@ -28,6 +29,7 @@
     <sql id="cols_exclude_id_password">
         code,
         name,
+        sex,
         telephone,
         mail,
         status,
@@ -37,7 +39,8 @@
         update_by,
         create_by,
         create_at,
-        update_at
+        update_at,
+        account
     </sql>
 
     <sql id="vals">
@@ -45,6 +48,7 @@
         #{id},
         #{code},
         #{name},
+        #{sex},
         #{telephone},
         #{mail},
         #{status},
@@ -54,7 +58,8 @@
         #{updateBy},
         #{createBy},
         unix_timestamp(now()),
-        unix_timestamp(now())
+        unix_timestamp(now()),
+        #{account}
     </sql>
 
     <sql id="criteria">
@@ -63,7 +68,7 @@
         <if test="code != null">AND code = #{code}</if>
     </sql>
 
-    <insert id="create" parameterType="User" keyProperty="id" useGeneratedKeys="true">
+    <insert id="create" parameterType="User">
         INSERT INTO el_user
         (<include refid="cols_all" />)
         VALUES
@@ -80,6 +85,7 @@
         UPDATE el_user
         <set>
             <if test="name != null">name = #{name},</if>
+            <if test="sex != null">sex = #{sex},</if>
             <if test="password != null">password = #{password},</if>
             <if test="telephone != null">telephone = #{telephone},</if>
             <if test="mail != null">mail = #{mail},</if>
@@ -89,13 +95,13 @@
             <if test="updateBy != null">update_by = #{updateBy},</if>
             update_at=unix_timestamp(now())
         </set>
-        WHERE code = #{code}
+        WHERE id = #{id}
     </update>
 
     <delete id="delete" parameterType="long">
         UPDATE el_user
         SET status = 99
-        WHERE code = #{code}
+        WHERE id = #{id}
     </delete>
 
     <select id="list" parameterType="map" resultMap="UserMap">
@@ -114,12 +120,13 @@
         FROM el_user
         <where>
             1 = 1
+            and status != 99
             <include refid="criteria"/>
         </where>
     </select>
 
     <select id="paging" parameterType="map" resultMap="UserMap">
-        SELECT <include refid="cols_exclude_id_password"/>
+        SELECT <include refid="cols_all"/>
         FROM el_user
         <where>
             1 = 1
@@ -141,4 +148,50 @@
         WHERE code = #{code}
     </select>
 
+    <select id="findUserName" resultType="Long" parameterType="String">
+        SELECT count(1)
+        FROM el_user
+        WHERE status != 99
+        AND account = #{account}
+    </select>
+
+    <select id="findUserIds" parameterType="String" resultType="Long">
+        SELECT id
+        FROM el_user
+        WHERE status != 99
+        AND account = #{account}
+    </select>
+
+    <update id="closeStatusUser" parameterType="Long">
+        UPDATE el_user
+        SET status = 2
+        WHERE id = #{id}
+    </update>
+
+    <update id="openStatusUser" parameterType="Long">
+        UPDATE el_user
+        SET status = 1
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateAccount" parameterType="User">
+        UPDATE el_user
+        SET account = #{account}
+        WHERE id = #{id}
+    </update>
+
+    <select id="findUserAccount" resultType="Long" parameterType="String">
+        SELECT count(1)
+        FROM el_user
+        WHERE status != 99
+        AND name = #{name}
+    </select>
+
+    <select id="findUserSex" resultType="Long" parameterType="Byte">
+        SELECT count(1)
+        FROM el_user
+        WHERE status != 99
+        AND sex = #{sex}
+        AND id = #{id}
+    </select>
 </mapper>

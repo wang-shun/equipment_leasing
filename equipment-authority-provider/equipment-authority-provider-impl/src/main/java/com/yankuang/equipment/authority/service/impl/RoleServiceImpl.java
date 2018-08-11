@@ -2,10 +2,10 @@ package com.yankuang.equipment.authority.service.impl;
 
 import com.yankuang.equipment.authority.mapper.RoleMapper;
 import com.yankuang.equipment.authority.model.Role;
-import com.yankuang.equipment.authority.service.RolService;
+import com.yankuang.equipment.authority.service.RoleService;
 import com.yankuang.equipment.common.util.UuidUtils;
 import io.terminus.boot.rpc.common.annotation.RpcProvider;
-import jdk.nashorn.internal.ir.annotations.Reference;
+import io.terminus.common.model.Paging;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,12 +13,9 @@ import java.util.List;
 
 @Service
 @RpcProvider
-public class RoleServiceImpl implements RolService{
+public class RoleServiceImpl implements RoleService {
     @Autowired
     RoleMapper roleMapper;
-
-    @Reference
-    UuidUtils uuidUtils;
 
     public Role getById(Long id) {
         return roleMapper.findById(id);
@@ -28,20 +25,15 @@ public class RoleServiceImpl implements RolService{
         return roleMapper.update(role);
     }
 
-    public boolean add(Role role){
-        role.setCode(uuidUtils.newUuid());
+    public boolean create(Role role){
         return roleMapper.create(role);
     }
 
-    public boolean del(Long id){
-        return  roleMapper.updatedel(id);
+    public boolean delete(Long id){
+        return  roleMapper.delete(id);
     }
 
-    public List<Role> getAll( List<Long> ids){
-        return  roleMapper.findByIds(ids);
-    }
-
-    public Role getByName(String name){
+    public Role findByName(String name){
         return roleMapper.findByName(name);
     }
 
@@ -49,4 +41,13 @@ public class RoleServiceImpl implements RolService{
         return roleMapper.getAll( );
     }
 
+    public Paging paging(int pageSize, int pageNum, Role role){
+        int maxResult = (pageNum - 1) * pageSize;
+        Paging page = roleMapper.paging(maxResult, pageNum, role);
+        return page;
+    }
+
+    public Role findRoles(Long roleId){
+        return roleMapper.findRoles(roleId);
+    }
 }

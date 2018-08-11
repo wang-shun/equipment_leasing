@@ -1,97 +1,191 @@
 package com.yankuang.equipment.web.restful;
 
+import com.yankuang.equipment.authority.model.DeptRole;
 import com.yankuang.equipment.authority.model.Role;
-import com.yankuang.equipment.authority.service.RolService;
+import com.yankuang.equipment.authority.service.DeptRoleService;
+import com.yankuang.equipment.authority.service.RoleService;
 import com.yankuang.equipment.common.util.CommonResponse;
+import com.yankuang.equipment.common.util.JsonUtils;
+import com.yankuang.equipment.web.dto.DeptRoleDTO;
+import com.yankuang.equipment.web.util.CodeUtil;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+/**
+ * @author boms
+ * @createtime 2018/8/2
+ */
 @CrossOrigin(maxAge = 3600)
 @RestController
-@RequestMapping("/v1/rols")
+@RequestMapping("/v1/roles")
 public class RoleController {
+
     @RpcConsumer
-    private RolService rolService;
+    RoleService roleService;
 
+    @RpcConsumer
+    DeptRoleService deptRoleService;
+
+    /**
+     * @method 通过id查询
+     * @param id
+     * @return
+     */
     @GetMapping(value = "/{id}")
-    CommonResponse getById(@PathVariable Long id) {
-        if (id == null || id ==0){
-            return CommonResponse.ok("系统错误");
+    public CommonResponse getById(@PathVariable Long id) {
+        if (StringUtils.isEmpty(id)){
+            return CommonResponse.ok("角色id不能为空");
         }
-        return CommonResponse.ok(rolService.getById(id));
+        return CommonResponse.ok(roleService.getById(id));
     }
 
-    @PutMapping(value = "/update")
-    CommonResponse updateById(Role role){
-        if (role.getId() == null || role.getId() == 0){
-            return CommonResponse.errorMsg("系统错误");
-        }else if (role.getName() == null || role.getName().equals(" ")){
-            return CommonResponse.errorMsg("角色不能为空");
-        }else if (role.getCode() == null || role.getCode().equals(" ")){
-            return CommonResponse.errorMsg("系统错误");
-        }else if (role.getPcode() == null || role.getPcode().equals(" ")){
-            return CommonResponse.errorMsg("系统错误");
-        }else if (role.getType() != 1 && role.getType() != 2){
-            return CommonResponse.errorMsg("类型不能为空");
-        }else if (role.getSorting() == null){
-            return CommonResponse.errorMsg("系统错误");
-        }else if (role.getStatus() != 1 && role.getStatus() != 2 && role.getSorting() != 99){
-            return CommonResponse.errorMsg("请选择状态");
-        }else if (role.getLevel() == null){
-            return CommonResponse.errorMsg("系统错误");
-        }else if (rolService.getByName(role.getName()) != null){
-            return CommonResponse.errorMsg("此角色名称已存在");
+    /**
+     * @method 通过id更新
+     * @param jsonString
+     * @return
+     */
+    @PutMapping
+    public CommonResponse updateById(@RequestBody String jsonString){
+        if (StringUtils.isEmpty(jsonString)) {
+            return CommonResponse.errorMsg("参数jsonString不能为空");
         }
-        return CommonResponse.ok(rolService.update(role));
-    }
-
-    @PostMapping(value = "/add")
-    CommonResponse add(Role role){
-        if (role.getName() == null || role.getName().equals(" ")){
-            return CommonResponse.errorMsg("角色不能为空");
-        }else if (role.getCode() == null || role.getCode().equals(" ")){
-            return CommonResponse.errorMsg("系统错误");
-        }else if (role.getPcode() == null || role.getPcode().equals(" ")){
-            return CommonResponse.errorMsg("系统错误");
-        }else if (role.getType() != 1 && role.getType() != 2){
-            return CommonResponse.errorMsg("类型不能为空");
-        }else if (role.getSorting() == null){
-            return CommonResponse.errorMsg("系统错误");
-        }else if (role.getStatus() != 1 && role.getStatus() != 2 && role.getSorting() != 99){
-            return CommonResponse.errorMsg("请选择状态");
-        }else if (role.getLevel() == null){
-            return CommonResponse.errorMsg("系统错误");
-        }else if (rolService.getByName(role.getName()) != null){
-            return CommonResponse.errorMsg("此角色名称已存在");
+        Role role = JsonUtils.jsonToPojo(jsonString, Role.class);
+        if (StringUtils.isEmpty(role.getId())){
+            return CommonResponse.errorMsg("角色id不能为空");
         }
-        return CommonResponse.ok(rolService.add(role));
-    }
-
-    @PutMapping(value = "/del")
-    CommonResponse del(Long id){
-        if (id == null || id ==0){
-            return CommonResponse.ok("系统错误");
+        Boolean b = roleService.update(role);
+        if (b) {
+            return CommonResponse.build(200, "更新成功", null);
         }
-        return CommonResponse.ok(rolService.del(id));
+        return CommonResponse.errorTokenMsg("更新失败");
+
     }
 
-    @GetMapping(value = "/sel")
-    CommonResponse getAll(List<Long> ids){
-        return  CommonResponse.ok(rolService.getAll(ids));
-    }
+    /**
+     * @method 添加
+     * @param jsonString
+     * @return
+     */
+    @PostMapping()
+    public CommonResponse add(@RequestBody String jsonString){
 
-    @PostMapping(value = "/find")
-    CommonResponse getByName(String name){
-        if (name == null || name.equals(" ")){
-            return CommonResponse.errorMsg("角色名称不能为空");
+        if (StringUtils.isEmpty(jsonString)) {
+            return CommonResponse.errorMsg("参数jsonString不能为空");
         }
-        return CommonResponse.ok(rolService.getByName(name));
+        DeptRoleDTO deptRoleDTO = JsonUtils.jsonToPojo(jsonString, DeptRoleDTO.class);
+        Long deptId = deptRoleDTO.getDeptId();
+        if (StringUtils.isEmpty(deptId)) {
+            return CommonResponse.errorMsg("参数deptId不能为空");
+        }
+        String roleName = deptRoleDTO.getName();
+        if (StringUtils.isEmpty(roleName)){
+            return CommonResponse.errorMsg("角色名不能为空");
+        }
+        // 角色查重
+        Role roleCheck = roleService.findByName(roleName);
+
+        if (StringUtils.isEmpty(roleCheck)){
+            // 角色不存在，添加，根据name查询id,添加关联表
+            Role role = new Role();
+            role.setCode(CodeUtil.getCode());
+            role.setName(roleName);
+            role.setPcode("0");
+            role.setLevel((long) 1);
+            role.setType((long) 2);
+            role.setSorting((long) 1);
+            role.setCreateBy("admin");
+            role.setUpdateBy("admin");
+            Boolean b = roleService.create(role);
+            if (b) {
+                Role role1 = roleService.findByName(roleName);
+                DeptRole deptRole = new DeptRole();
+                deptRole.setRoleId(role1.getId());
+                deptRole.setDepartmentId(deptId);
+                deptRole.setCreateBy("admin");
+                deptRole.setUpdateBy("admin");
+                Boolean b1 = deptRoleService.create(deptRole);
+                if (b1) {
+                    return CommonResponse.build(200, "角色添加成功", null);
+                }
+                return CommonResponse.errorMsg("角色添加失败");
+            }
+        }
+        // 角色存在，根据name查询id,根据deptid和roleId 查重，存在返回成功，不存在添加返回成功
+        Long roleCheckId = roleCheck.getId();
+        Map map =  new HashMap();
+        map.put("roleId", roleCheckId);
+        map.put("departmentId", deptId);
+        // 关联表查重
+        DeptRole deptRole = deptRoleService.selectByDeptIdAndRoleId(map);
+        if (StringUtils.isEmpty(deptRole)) {
+            DeptRole deptRole1 = new DeptRole();
+            deptRole1.setRoleId(roleCheckId);
+            deptRole1.setDepartmentId(deptId);
+            deptRole1.setCreateBy("admin");
+            deptRole1.setUpdateBy("admin");
+            Boolean b1 = deptRoleService.create(deptRole1);
+            if (b1) {
+               return CommonResponse.build(200, "角色添加成功", null);
+            }
+            return  CommonResponse.errorMsg("角色添加失败");
+        }
+        return CommonResponse.errorMsg("角色已添加，请勿重复添加");
     }
 
-    @PostMapping(value = "/findAll")
-    CommonResponse getAll(  ){
-        return CommonResponse.ok(rolService.getAll( ));
+    /**
+     * @method 删除
+     * @param jsonString
+     * @return
+     */
+
+    @DeleteMapping("/dels")
+    public CommonResponse delete(@RequestBody String jsonString){
+        if(com.yankuang.equipment.common.util.StringUtils.isEmpty(jsonString)){
+            return CommonResponse.errorTokenMsg("没有查询的id");
+        }
+        List<Long> ids = JsonUtils.jsonToList(jsonString,Long.class);
+        for (Long id: ids){
+            boolean idB = roleService.delete(id);
+            if (idB == false){
+                return CommonResponse.errorTokenMsg("删除失败");
+            }
+        }
+        return  CommonResponse.ok();
+    }
+
+    /**
+     * @method 分页查询
+     * @param offset
+     * @param limit
+     * @param searchInput
+     * @return
+     */
+    @GetMapping("/paging")
+    public CommonResponse paging(@RequestParam(value = "page", defaultValue = "1") Integer offset,
+                          @RequestParam(value = "size", defaultValue = "20")Integer limit,
+                          @RequestParam String searchInput){
+        Role role = new Role();
+        return CommonResponse.ok(roleService.paging(offset, limit, role));
+    }
+
+    /**
+     * @method 查找角色列表
+     * @param deptId
+     * @return
+     */
+    @GetMapping("/findRoles")
+    public CommonResponse findRoles(@RequestParam Long deptId){
+        List<Role> deptList = new ArrayList<Role>();
+        List<Long> roleIds = deptRoleService.findRoleId(deptId);
+        for (Long roleId:roleIds){
+            deptList.add(roleService.findRoles(roleId));
+        }
+        return CommonResponse.ok(deptList);
     }
 }
