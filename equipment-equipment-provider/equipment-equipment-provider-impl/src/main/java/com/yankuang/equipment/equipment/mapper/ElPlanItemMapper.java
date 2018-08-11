@@ -11,9 +11,6 @@ import java.util.List;
  */
 @Repository
 public class ElPlanItemMapper extends MyBatisDao<ElPlanItem> {
-    public int saveBatch(List<ElPlanItem> list) {
-        return sqlSession.insert("saveBatch", list);
-    }
     public int saveByPrimaryKey(ElPlanItem elPlanItem) {return sqlSession.insert("saveByPrimaryKey", elPlanItem);}
 
     public List<ElPlanItem> findByPlanId(String planId) {

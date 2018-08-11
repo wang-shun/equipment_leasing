@@ -3,9 +3,11 @@ package com.yankuang.equipment.equipment.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.yankuang.equipment.common.base.BaseService;
 import com.yankuang.equipment.common.util.Constants;
-import com.yankuang.equipment.common.util.StringUtils;
+import org.apache.log4j.Logger;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.util.StringUtils;
 import com.yankuang.equipment.common.util.UuidUtils;
 import com.yankuang.equipment.equipment.mapper.ElPlanItemMapper;
 import com.yankuang.equipment.equipment.mapper.ElPlanMapper;
@@ -25,7 +27,10 @@ import java.util.List;
  */
 @Service
 @RpcProvider(version = "0.0.1")
-public class ElPlanServiceImpl extends BaseService implements ElPlanService {
+@Transactional
+public class ElPlanServiceImpl implements ElPlanService {
+
+    public static final Logger logger = Logger.getLogger(ElPlanServiceImpl.class);
 
     @Autowired
     private ElPlanMapper elPlanMapper;
@@ -40,12 +45,14 @@ public class ElPlanServiceImpl extends BaseService implements ElPlanService {
                     || StringUtils.isEmpty(elPlan.getPlanType())) {
                 return res;
             }
+
             elPlan.setPlanId(UuidUtils.newUuid());
             elPlan.setPlanCreateTime(new Date().getTime());
             elPlan.setPlanUpdateTime(elPlan.getPlanCreateTime());
-            elPlan.setPlanStatus("1");
-            elPlan.setPlanCode(UuidUtils.newUuid());
             elPlan.setPlanUpdatorId(elPlan.getPlanCreatorId());
+            elPlan.setPlanUpdatorName(elPlan.getPlanCreatorName());
+            elPlan.setPlanStatus(Constants.PLANSTATUS_UNCOMMITED);
+            elPlan.setPlanCode(UuidUtils.newUuid());
             elPlan.setPlanVersion(UuidUtils.newUuid());
             List<ElPlanItem> elPlanItemList = elPlan.getElPlanItemList();
             boolean itemRes = true;
@@ -60,11 +67,12 @@ public class ElPlanServiceImpl extends BaseService implements ElPlanService {
                 }
             }
             res = elPlanMapper.insertByPrimaryKey(elPlan) > 0 && itemRes;
-            logger.debug("create ElPlan:"+JSON.toJSONString(elPlan));
+            logger.info("create ElPlan:"+JSON.toJSONString(elPlan));
             return res;
         } catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             e.printStackTrace();
-            logger.debug("create ElPlan exception:"+JSON.toJSONString(elPlan));
+            logger.info("create ElPlan exception:"+JSON.toJSONString(elPlan));
             return res;
         }
     }
@@ -77,11 +85,11 @@ public class ElPlanServiceImpl extends BaseService implements ElPlanService {
             if (list != null) {
                 elPlan.setElPlanItemList(list);
             }
-            logger.debug("findElPlanById: " + JSON.toJSONString(elPlan));
+            logger.info("findElPlanById: " + JSON.toJSONString(elPlan));
             return elPlan;
         } catch (Exception e) {
             e.printStackTrace();
-            logger.debug("planId: "+planId+";findElPlanById exception");
+            logger.info("planId: "+planId+";findElPlanById exception");
             return null;
         }
 
@@ -105,12 +113,13 @@ public class ElPlanServiceImpl extends BaseService implements ElPlanService {
                 }
             }
             elPlanMapper.savePlanItemByPlanId(elPlan);
-            logger.debug("update elPlan: "+JSON.toJSONString(elPlan));
+            logger.info("update elPlan: "+JSON.toJSONString(elPlan));
             res = elPlanMapper.updateByPrimarykey(elPlan) > 0;
             return res;
         } catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             e.printStackTrace();
-            logger.debug("update elPlan exception: "+JSON.toJSONString(elPlan));
+            logger.info("update elPlan exception: "+JSON.toJSONString(elPlan));
             return res;
         }
 
@@ -123,12 +132,12 @@ public class ElPlanServiceImpl extends BaseService implements ElPlanService {
             if (res <= 0) {
                 return false;
             }
-            logger.debug("delete elPlan byID: "+planId);
+            logger.info("delete elPlan byID: "+planId);
             return true;
         } catch (Exception e) {
-            //rollback();
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             e.printStackTrace();
-            logger.debug("delete elPlan exception: "+planId);
+            logger.info("delete elPlan exception: "+planId);
             return false;
         }
     }
@@ -163,16 +172,23 @@ public class ElPlanServiceImpl extends BaseService implements ElPlanService {
                 }
             }
 
-            logger.debug("pageSize: "+pageSize+"pageNum: "+pageNum+";findElPlanByCondition: "+JSON.toJSONString(elPlan));
+            logger.info("pageSize: "+pageSize+"pageNum: "+pageNum+";findElPlanByCondition: "+JSON.toJSONString(elPlan));
             return page;
         } catch (Exception e) {
             e.printStackTrace();
-            logger.debug("exception: pageSize: "+pageSize+"pageNum: "+pageNum+";findElPlanByCondition: "+JSON.toJSONString(elPlan));
+            logger.info("exception: pageSize: "+pageSize+"pageNum: "+pageNum+";findElPlanByCondition: "+JSON.toJSONString(elPlan));
             return null;
         }
     }
 
     public boolean approve(ElPlan elPlan) {
-        return elPlanMapper.updateByPrimarykey(elPlan) > 0;
+
+        try {
+            return elPlanMapper.updateByPrimarykey(elPlan) > 0;
+        } catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            e.printStackTrace();
+            return false;
+        }
     }
 }

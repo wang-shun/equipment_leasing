@@ -326,26 +326,6 @@
 
     <insert id="save">
         INSERT INTO <include refid="tb"/> (<include refid="cols_exclude_id" />) VALUES (<include refid="vals" />);
-        <!--<if test="elPlanItemList != null">
-            INSERT INTO el_plan_item (<include refid="Base_Column_List"/> ) VALUES
-            <foreach collection="elPlanItemList" item="iteme" separator=",">
-                (#{iteme.itemId},
-                #{iteme.planId},
-                #{iteme.equipmentId},
-                #{iteme.equipmentName},
-                #{iteme.equipmentNum},
-                #{iteme.itemPosition},
-                #{iteme.itemEffect},
-                #{iteme.equipmentBigType},
-                #{iteme.equipmentMiddleType},
-                #{iteme.equipmentSmallType},
-                #{iteme.equipmentSpecification},
-                #{iteme.equipmentParamName},
-                #{iteme.equipmentParamValue},
-                #{iteme.itemRemarks})
-            </foreach>;
-        </if>-->
-
     </insert>
 
     <delete id="deletePlanItemByPlanId" parameterType="java.lang.String">
