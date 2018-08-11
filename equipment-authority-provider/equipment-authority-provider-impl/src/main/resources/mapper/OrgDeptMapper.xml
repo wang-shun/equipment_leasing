@@ -169,7 +169,7 @@
 
   <select id="count" parameterType="map" resultType="long">
     SELECT count(1)
-    FROM yankuang_equipment.el_department
+    FROM el_organization_department_mapping
     WHERE
     1 = 1
     <if test="id != null" >
@@ -197,5 +197,17 @@
       version,
     </if>
     AND status != 99
+  </select>
+
+  <resultMap id="getDepartmentId" type="Long" >
+    <result column="department_id" property="departmentId" jdbcType="BIGINT" />
+  </resultMap>
+
+  <select id="findDeptId" parameterType="Long" resultMap="getDepartmentId">
+    SELECT department_id
+    FROM el_organization_department_mapping
+    WHERE organization_id = #{organizationId}
+    AND status != 99
+    ORDER BY create_at
   </select>
 </mapper>

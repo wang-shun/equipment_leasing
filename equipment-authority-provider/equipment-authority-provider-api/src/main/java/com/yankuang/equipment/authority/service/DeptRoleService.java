@@ -2,6 +2,7 @@ package com.yankuang.equipment.authority.service;
 
 import com.yankuang.equipment.authority.model.DeptRole;
 
+import java.util.List;
 import java.util.Map;
 
 public interface DeptRoleService {
@@ -10,4 +11,5 @@ public interface DeptRoleService {
 
     DeptRole selectByDeptIdAndRoleId(Map map);
     boolean delById(Long id);
+    List<Long> findRoleId(Long deptId);
 }

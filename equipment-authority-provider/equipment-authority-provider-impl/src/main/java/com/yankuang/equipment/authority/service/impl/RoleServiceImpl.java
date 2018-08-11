@@ -46,4 +46,7 @@ public class RoleServiceImpl implements RoleService {
         return  roleMapper.paging(offset, limit, role);
     }
 
+    public Role findRoles(Long roleId){
+        return roleMapper.findRoles(roleId);
+    }
 }

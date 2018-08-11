@@ -17,6 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,26 +41,27 @@ public class AuthorityController {
     AuthorityGroupMappingService authorityGroupMappingService;
 
     /**
-     * @param id
-     * @return
      * @author boms
      * @method 通过id查询
+     * @param id
+     * @return
      */
     @GetMapping(value = "/{id}")
-    CommonResponse getById(@PathVariable Long id) {
+    public CommonResponse getById(@PathVariable Long id) {
         return CommonResponse.ok(authorityService.getById(id));
     }
 
     /**
+     * @author boms
+     * @method 修改
      * @param jsonString
      * @return
-     * @author boms
-     * @method 根据id修改权限
      */
     @PutMapping
-    CommonResponse updateById(@RequestBody String jsonString) {
-        if (jsonString == null || "".equals(jsonString)) {
-            return CommonResponse.errorMsg("参数不能为空");
+    public CommonResponse updateById(@RequestBody String jsonString){
+
+        if (StringUtils.isEmpty(jsonString)){
+            return CommonResponse.errorTokenMsg("参数不能为空");
         }
         Authority authority = JsonUtils.jsonToPojo(jsonString, Authority.class);
         if (StringUtils.isEmpty(authority.getId())) {
@@ -147,13 +151,37 @@ public class AuthorityController {
     /**
      * @param id
      * @return
-     * @author boms
-     * @method 删除
      */
     @DeleteMapping("/{id}")
-    CommonResponse deleteById(@PathVariable Long id) {
+    public CommonResponse delete(@PathVariable Long id){
+        if (id == null || id == 0){
+            return CommonResponse.errorTokenMsg("系统错误");
+        }
         return CommonResponse.ok(authorityService.delete(id));
     }
+
+    @DeleteMapping("/dels")
+    public CommonResponse deleteByIds(@RequestBody String jsonString){
+        if (StringUtils.isEmpty(jsonString)){
+            return CommonResponse.errorTokenMsg("选择要删除的数据");
+        }
+       List<Long> ids = JsonUtils.jsonToList(jsonString,Long.class);
+        for (Long id: ids){
+            if (authorityService.delete(id) == false){
+                return CommonResponse.build(200,"删除失败",ids);
+            }
+        }
+        return CommonResponse.ok();
+    }
+
+//    /**
+//     * @author boms
+//     * @method 删除
+//     */
+//    @DeleteMapping("/{id}")
+//    CommonResponse deleteById(@PathVariable Long id) {
+//        return CommonResponse.ok(authorityService.delete(id));
+//    }
 
     /**
      * @param name

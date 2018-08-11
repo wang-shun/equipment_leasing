@@ -13,6 +13,6 @@ rpc:
   dubbo:
     module: equipment-web
     registryAddress: ${ZOOKEEPER_HOST:127.0.0.1}:${ZOOKEEPER_PORT:2181}
-    port: 20880
+#    port: 20880
 
 management.security.enabled: false

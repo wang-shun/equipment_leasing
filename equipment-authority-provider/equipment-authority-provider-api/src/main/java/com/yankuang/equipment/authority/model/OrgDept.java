@@ -23,6 +23,12 @@ public class OrgDept implements Serializable {
 
     private Byte status;
 
+    private String organizationName;
+
+    private String departmentName;
+
+    private String code;
+
     public Long getId() {
         return id;
     }
@@ -93,5 +99,29 @@ public class OrgDept implements Serializable {
 
     public void setStatus(Byte status) {
         this.status = status;
+    }
+
+    public String getOrganizationName() {
+        return organizationName;
+    }
+
+    public void setOrganizationName(String organizationName) {
+        this.organizationName = organizationName;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

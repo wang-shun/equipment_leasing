@@ -8,6 +8,7 @@ import io.terminus.boot.rpc.common.annotation.RpcProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -27,5 +28,10 @@ public class DeptRoleServiceImpl implements DeptRoleService {
 
     public boolean delById(Long id){
         return deptRoleMapper.updatedel(id);
+    }
+
+
+    public List<Long> findRoleId(Long deptId){
+        return deptRoleMapper.findRoleId(deptId);
     }
 }

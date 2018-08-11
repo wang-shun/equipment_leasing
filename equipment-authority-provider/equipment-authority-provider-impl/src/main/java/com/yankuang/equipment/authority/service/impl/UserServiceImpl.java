@@ -1,12 +1,16 @@
 package com.yankuang.equipment.authority.service.impl;
 
+import com.yankuang.equipment.authority.mapper.OrgDeptRoleUserMapper;
 import com.yankuang.equipment.authority.mapper.UserMapper;
+import com.yankuang.equipment.authority.model.OrgDeptRoleUser;
 import com.yankuang.equipment.authority.model.User;
 import com.yankuang.equipment.authority.service.UserService;
 import io.terminus.boot.rpc.common.annotation.RpcProvider;
 import io.terminus.common.model.Paging;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RpcProvider(version = "0.0.1")
@@ -46,6 +50,34 @@ public class UserServiceImpl implements UserService {
 
     public Boolean update(User user) {
         return userMapper.update(user);
+    }
+
+    public Long findUserName(String account){
+        return userMapper.findUserName(account);
+    }
+
+    public Long findUserIds(String account){
+        return userMapper.findUserIds(account);
+    }
+
+    public Boolean closeStatusUser(Long id){
+        return userMapper.closeStatusUser(id);
+    }
+
+    public Boolean openStatusUser(Long id){
+        return userMapper.openStatusUser(id);
+    }
+
+    public Boolean updateAccount(User user){
+        return userMapper.updateAccount(user);
+    }
+
+    public Long findUserAccount(String name){
+        return userMapper.findUserAccount(name);
+    }
+
+    public Long findUserSex(Byte sex){
+        return userMapper.findUserSex(sex);
     }
 
 }

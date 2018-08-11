@@ -43,6 +43,8 @@ public class User implements Serializable {
 
     private String code;
 
+    private String account;
+
     public Long getId() {
         return id;
     }
@@ -161,5 +163,13 @@ public class User implements Serializable {
 
     public void setSex(Byte sex) {
         this.sex = sex;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
     }
 }

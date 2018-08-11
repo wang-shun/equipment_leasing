@@ -13,6 +13,7 @@ public interface RoleService {
     boolean delete(Long id);
     Role findByName(String name);
     List<Role> getAll( );
+    Role findRoles(Long roleId);
     Paging paging(Integer page, Integer size, Role role);
 
 }

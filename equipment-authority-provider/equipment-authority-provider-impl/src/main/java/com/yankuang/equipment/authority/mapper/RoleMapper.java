@@ -15,5 +15,7 @@ public class RoleMapper extends MyBatisDao<Role> {
     public List<Role> getAll( ){
         return getSqlSession().selectList("com.yankuang.equipment.authority.mapper.RoleMapper.findAll");
     }
-
+    public Role findRoles(Long roleId){
+        return getSqlSession().selectOne("findRoles",roleId);
+    }
 }

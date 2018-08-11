@@ -211,4 +211,12 @@
         AND status != 99
     </select>
 
+    <select id="findRoles" parameterType="Long" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM el_role
+        WHERE id = #{roleId}
+        AND status != 99
+        ORDER BY create_at DESC
+    </select>
+
 </mapper>

@@ -17,8 +17,6 @@ public class OrgDeptServiceImpl implements OrgDeptService {
     OrgDeptMapper orgDeptMapper;
 
     public boolean add(OrgDept orgDept){
-        orgDept.setCreateBy("小狼");//TODO 由于用户功能暂未开发完，先写死，后期改
-        orgDept.setUpdateBy("小狼");
         return orgDeptMapper.create(orgDept);
     }
 
@@ -46,5 +44,7 @@ public class OrgDeptServiceImpl implements OrgDeptService {
         Paging page = orgDeptMapper.paging(maxResult, pageNum, orgDept);
         return page;
     }
-
+    public List<Long> findDeptId(Long organizationId){
+        return orgDeptMapper.findDeptId(organizationId);
+    }
 }

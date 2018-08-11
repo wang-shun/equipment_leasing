@@ -11,9 +11,11 @@
         <result column="plan_remarks" property="planRemarks" jdbcType="VARCHAR" />
         <result column="plan_opinion" property="planOpinion" jdbcType="VARCHAR" />
         <result column="plan_creator_id" property="planCreatorId" jdbcType="VARCHAR" />
+        <result column="plan_creator_name" property="planCreatorName" jdbcType="VARCHAR" />
         <result column="plan_status" property="planStatus" jdbcType="VARCHAR" />
         <result column="plan_approve_time" property="planApproveTime" jdbcType="BIGINT" />
         <result column="plan_approver_id" property="planApproverId" jdbcType="VARCHAR" />
+        <result column="plan_approver_name" property="planApproverName" jdbcType="VARCHAR" />
         <result column="plan_equipment_type" property="planEquipmentType" jdbcType="VARCHAR" />
         <result column="plan_type" property="planType" jdbcType="VARCHAR" />
         <result column="plan_is_del" property="planIsDel" jdbcType="BIT" />
@@ -21,10 +23,28 @@
         <result column="plan_update_time" property="planUpdateTime" jdbcType="BIGINT" />
         <result column="plan_code" property="planCode" jdbcType="VARCHAR" />
         <result column="plan_updator_id" property="planUpdatorId" jdbcType="VARCHAR" />
+        <result column="plan_updator_name" property="planUpdatorName" jdbcType="VARCHAR" />
         <result column="plan_sorting" property="planSorting" jdbcType="VARCHAR" />
         <result column="plan_version" property="planVersion" jdbcType="VARCHAR" />
         <collection property="elPlanItemList" javaType="Arraylist" ofType="com.yankuang.equipment.equipment.model.ElPlanItem" autoMapping="true" select="queryElPlanItemByPlanId" column="plan_id">
         </collection>
+    </resultMap>
+
+    <resultMap id="ElPlanItemMap" type="com.yankuang.equipment.equipment.model.ElPlanItem" >
+        <id column="item_id" property="itemId" jdbcType="VARCHAR" />
+        <result column="plan_id" property="planId" jdbcType="VARCHAR" />
+        <result column="backup1" property="backup1" jdbcType="VARCHAR" />
+        <result column="equipment_name" property="equipmentName" jdbcType="VARCHAR" />
+        <result column="equipment_num" property="equipmentNum" jdbcType="INTEGER" />
+        <result column="item_position" property="itemPosition" jdbcType="VARCHAR" />
+        <result column="item_effect" property="itemEffect" jdbcType="VARCHAR" />
+        <result column="equipment_big_type" property="equipmentBigType" jdbcType="VARCHAR" />
+        <result column="equipment_middle_type" property="equipmentMiddleType" jdbcType="VARCHAR" />
+        <result column="equipment_small_type" property="equipmentSmallType" jdbcType="VARCHAR" />
+        <result column="equipment_specification" property="equipmentSpecification" jdbcType="VARCHAR" />
+        <result column="equipment_param_name" property="equipmentParamName" jdbcType="VARCHAR" />
+        <result column="equipment_param_value" property="equipmentParamValue" jdbcType="INTEGER" />
+        <result column="item_remarks" property="itemRemarks" jdbcType="VARCHAR" />
     </resultMap>
 
     <sql id="tb">
@@ -36,9 +56,9 @@
     </sql>
 
     <sql id="cols_exclude_id">
-        plan_id, plan_year, plan_month, plan_quarter, plan_position, plan_remarks,
-    plan_opinion, plan_creator_id, plan_status, plan_approve_time, plan_approver_id, plan_equipment_type,
-    plan_type, plan_is_del, plan_create_time, plan_update_time,plan_code,plan_updator_id,plan_sorting,plan_version
+        plan_year, plan_month, plan_quarter, plan_position, plan_remarks,
+    plan_opinion, plan_creator_id, plan_creator_name, plan_status, plan_approve_time, plan_approver_id, plan_approver_name, plan_equipment_type,
+    plan_type, plan_is_del, plan_create_time, plan_update_time,plan_code,plan_updator_id,plan_updator_name,plan_sorting,plan_version
 
     </sql>
 
@@ -51,9 +71,11 @@
         #{planRemarks},
         #{planOpinion},
         #{planCreatorId},
+        #{planCreatorName},
         #{planStatus},
         #{planApproveTime},
         #{planApproverId},
+        #{planApprovername},
         #{planEquipmentType},
         #{planType},
         #{planIsDel},
@@ -61,6 +83,7 @@
         #{planUpdateTime},
         #{planCode},
         #{planUpdatorId},
+        #{planUpdatorName},
         #{planSorting},
         #{planVersion}
     </sql>
@@ -91,6 +114,9 @@
         <if test="planCreatorId != null" >
             AND plan_creator_id = #{planCreatorId}
         </if>
+        <if test="planCreatorName != null" >
+            AND plan_creator_name = #{planCreatorName}
+        </if>
         <if test="planStatus != null" >
             AND plan_status = #{planStatus}
         </if>
@@ -99,6 +125,9 @@
         </if>
         <if test="planApproverId != null" >
             AND plan_approver_id = #{planApproverId}
+        </if>
+        <if test="planApproverName != null" >
+            AND plan_approver_name = #{planApproverName}
         </if>
         <if test="planEquipmentType != null" >
             AND plan_equipment_type = #{planEquipmentType}
@@ -122,6 +151,9 @@
         <if test="planUpdatorId != null" >
             AND plan_updator_id = #{planUpdatorId}
         </if>
+        <if test="planUpdatorName != null" >
+            AND plan_updator_name = #{planUpdatorName}
+        </if>
         <if test="planSorting != null" >
             AND plan_sorting = #{planSorting}
         </if>
@@ -136,7 +168,7 @@
 
     <insert id="create" parameterType="com.yankuang.equipment.equipment.model.ElPlan" keyProperty="planId" useGeneratedKeys="true">
         INSERT INTO <include refid="tb" />
-        (<include refid="cols_exclude_id" />)
+        (<include refid="cols_all" />)
         VALUES
         (<include refid="vals" />)
     </insert>
@@ -151,7 +183,7 @@
         WHERE plan_id = #{planId} AND plan_is_del = 0
     </select>
 
-    <update id="update" parameterType="com.yankuang.equipment.equipment.model.ElPlan">
+    <update id="updateByPrimarykey" parameterType="com.yankuang.equipment.equipment.model.ElPlan">
         UPDATE <include refid="tb"/>
         <set >
             <if test="planId != null" >
@@ -178,6 +210,9 @@
             <if test="planCreatorId != null" >
                 plan_creator_id = #{planCreatorId,jdbcType=VARCHAR},
             </if>
+            <if test="planCreatorName != null" >
+                plan_creator_name = #{planCreatorName,jdbcType=VARCHAR},
+            </if>
             <if test="planStatus != null" >
                 plan_status = #{planStatus,jdbcType=VARCHAR},
             </if>
@@ -186,6 +221,9 @@
             </if>
             <if test="planApproverId != null" >
                 plan_approver_id = #{planApproverId,jdbcType=VARCHAR},
+            </if>
+            <if test="planApproverName != null" >
+                plan_approver_name = #{planApproverName,jdbcType=VARCHAR},
             </if>
             <if test="planEquipmentType != null" >
                 plan_equipment_type = #{planEquipmentType,jdbcType=VARCHAR},
@@ -202,13 +240,18 @@
             <if test="planUpdatorId != null" >
                 plan_updator_id = #{planUpdatorId,jdbcType=VARCHAR},
             </if>
+            <if test="planUpdatorName != null" >
+                plan_updator_name = #{planUpdatorName,jdbcType=VARCHAR},
+            </if>
             <if test="planSorting != null" >
                 plan_sorting = #{planSorting,jdbcType=VARCHAR},
             </if>
             <if test="planVersion != null" >
                 plan_version = #{planVersion,jdbcType=VARCHAR},
             </if>
-            plan_update_time = #{planUpdateTime,jdbcType=BIGINT}
+            <if test="planUpdateTime != null" >
+                plan_update_time = #{planUpdateTime,jdbcType=BIGINT},
+            </if>
         </set>
         WHERE plan_id = #{planId}
     </update>
@@ -226,6 +269,38 @@
         </where>
     </select>
 
+    <select id="listByCondition" parameterType="map" resultMap="ElPlanMap">
+        SELECT el_plan.plan_id AS plan_id,
+        el_plan.plan_year AS plan_year,
+        el_plan.plan_month AS plan_month,
+        el_plan.plan_quarter AS plan_quarter,
+        el_plan.plan_position AS plan_position,
+        el_plan.plan_remarks AS plan_remarks,
+        el_plan.plan_opinion AS plan_opinion,
+        el_plan.plan_creator_id AS plan_creator_id,
+        el_plan.plan_creator_name AS plan_creator_name,
+        el_plan.plan_status AS plan_status,
+        el_plan.plan_approve_time AS plan_approve_time,
+        el_plan.plan_approver_id AS plan_approver_id,
+        el_plan.plan_approver_name AS plan_approver_name,
+        el_plan.plan_equipment_type AS plan_equipment_type,
+        el_plan.plan_type AS plan_type,
+        el_plan.plan_is_del AS plan_is_del,
+        el_plan.plan_create_time AS plan_create_time,
+        el_plan.plan_update_time AS plan_update_time,
+        el_plan.plan_code AS plan_code,
+        el_plan.plan_updator_id AS plan_updator_id,
+        el_plan.plan_updator_name AS plan_updator_name,
+        el_plan.plan_sorting AS plan_sorting,
+        el_plan.plan_version AS plan_version
+        FROM el_plan
+        <where>
+            1 = 1 AND plan_is_del = 0
+            <include refid="criteria"/>
+        </where>
+        ORDER BY el_plan.plan_update_time DESC
+    </select>
+
     <select id="count" parameterType="map" resultType="long">
         SELECT count(1) FROM <include refid="tb"/>
         <where>
@@ -240,26 +315,17 @@
             1 = 1 AND plan_is_del = 0
             <include refid="criteria"/>
         </where>
-        order by created_at desc LIMIT #{offset}, #{limit}
+        order by plan_create_time desc LIMIT #{offset}, #{limit}
     </select>
 
     <sql id="Base_Column_List" >
-        item_id, plan_id, equipment_id, equipment_name, equipment_num, item_position, item_effect,
+        item_id, plan_id, backup1, equipment_name, equipment_num, item_position, item_effect,
         equipment_big_type, equipment_middle_type, equipment_small_type, equipment_specification,
         equipment_param_name, equipment_param_value, item_remarks
     </sql>
 
     <insert id="save">
         INSERT INTO <include refid="tb"/> (<include refid="cols_exclude_id" />) VALUES (<include refid="vals" />);
-        <if test="elPlanItemList != null">
-            INSERT INTO el_plan_item (<include refid="Base_Column_List"/> ) VALUES
-            <foreach collection="elPlanItemList" item="item" separator=",">
-
-                (#{item.itemId},#{planId},#{item.equipmentId},#{item.equipmentName},#{item.equipmentNum},#{item.itemPosition},#{item.itemEffect},
-                #{item.equipmentBigType},#{item.equipmentMiddleType},#{item.equipmentSmallType},#{item.equipmentSpecification},#{item.equipmentParamName},#{item.equipmentParamValue},#{item.itemRemarks})
-            </foreach>
-        </if>
-        ;
     </insert>
 
     <delete id="deletePlanItemByPlanId" parameterType="java.lang.String">
@@ -268,11 +334,22 @@
     </delete>
 
     <insert id="savePlanItemByPlanId">
-        <foreach collection="elPlanItemList" item="item" separator=",">
-        INSERT INTO el_plan_item (item_id,plan_id,equipment_id,equipment_name,equipment_num,item_position,item_effect,
-            equipment_big_type,equipment_middle_type,equipment_small_type,equipment_specification,equipment_param_name,equipment_param_value,item_remarks) VALUES
-            (#{item.itemId},#{planId},#{item.equipmentId},#{item.equipmentName},#{item.equipmentNum},#{item.itemPosition},#{item.itemEffect},
-            #{item.equipmentBigType},#{item.equipmentMiddleType},#{item.equipmentSmallType},#{item.equipmentSpecification},#{item.equipmentParamName},#{item.equipmentParamValue},#{item.itemRemarks})
+        INSERT INTO el_plan_item (<include refid="Base_Column_List"/> ) VALUES
+        <foreach collection="elPlanItemList" item="iteme" separator=",">
+            (#{iteme.itemId},
+            #{iteme.planId},
+            #{iteme.backup1},
+            #{iteme.equipmentName},
+            #{iteme.equipmentNum},
+            #{iteme.itemPosition},
+            #{iteme.itemEffect},
+            #{iteme.equipmentBigType},
+            #{iteme.equipmentMiddleType},
+            #{iteme.equipmentSmallType},
+            #{iteme.equipmentSpecification},
+            #{iteme.equipmentParamName},
+            #{iteme.equipmentParamValue},
+            #{iteme.itemRemarks})
         </foreach>
         ;
     </insert>
@@ -283,4 +360,149 @@
         WHERE plan_id = #{planId}
     </update>
 
+    <insert id="insertByPrimaryKey" parameterType="com.yankuang.equipment.equipment.model.ElPlan" >
+        insert into el_plan
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="planId != null" >
+                plan_id,
+            </if>
+            <if test="planYear != null" >
+                plan_year,
+            </if>
+            <if test="planMonth != null" >
+                plan_month,
+            </if>
+            <if test="planQuarter != null" >
+                plan_quarter,
+            </if>
+            <if test="planPosition != null" >
+                plan_position,
+            </if>
+            <if test="planRemarks != null" >
+                plan_remarks,
+            </if>
+            <if test="planOpinion != null" >
+                plan_opinion,
+            </if>
+            <if test="planCreatorId != null" >
+                plan_creator_id,
+            </if>
+            <if test="planCreatorName != null" >
+                plan_creator_name,
+            </if>
+            <if test="planStatus != null" >
+                plan_status,
+            </if>
+            <if test="planApproveTime != null" >
+                plan_approve_time,
+            </if>
+            <if test="planApproverId != null" >
+                plan_approver_id,
+            </if>
+            <if test="planApproverName != null" >
+                plan_approver_name,
+            </if>
+            <if test="planEquipmentType != null" >
+                plan_equipment_type,
+            </if>
+            <if test="planType != null" >
+                plan_type,
+            </if>
+            <if test="planIsDel != null" >
+                plan_is_del,
+            </if>
+            <if test="planCreateTime != null" >
+                plan_create_time,
+            </if>
+            <if test="planUpdateTime != null" >
+                plan_update_time,
+            </if>
+            <if test="planCode != null" >
+                plan_code,
+            </if>
+            <if test="planUpdatorId != null" >
+                plan_updator_id,
+            </if>
+            <if test="planUpdatorName != null" >
+                plan_updator_name,
+            </if>
+            <if test="planSorting != null" >
+                plan_sorting,
+            </if>
+            <if test="planVersion != null" >
+                plan_version,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="planId != null" >
+                #{planId,jdbcType=VARCHAR},
+            </if>
+            <if test="planYear != null" >
+                #{planYear,jdbcType=INTEGER},
+            </if>
+            <if test="planMonth != null" >
+                #{planMonth,jdbcType=INTEGER},
+            </if>
+            <if test="planQuarter != null" >
+                #{planQuarter,jdbcType=INTEGER},
+            </if>
+            <if test="planPosition != null" >
+                #{planPosition,jdbcType=VARCHAR},
+            </if>
+            <if test="planRemarks != null" >
+                #{planRemarks,jdbcType=VARCHAR},
+            </if>
+            <if test="planOpinion != null" >
+                #{planOpinion,jdbcType=VARCHAR},
+            </if>
+            <if test="planCreatorId != null" >
+                #{planCreatorId,jdbcType=VARCHAR},
+            </if>
+            <if test="planCreatorName != null" >
+                #{planCreatorName,jdbcType=VARCHAR},
+            </if>
+            <if test="planStatus != null" >
+                #{planStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="planApproveTime != null" >
+                #{planApproveTime,jdbcType=BIGINT},
+            </if>
+            <if test="planApproverId != null" >
+                #{planApproverId,jdbcType=VARCHAR},
+            </if>
+            <if test="planApproverName != null" >
+                #{planApproverName,jdbcType=VARCHAR},
+            </if>
+            <if test="planEquipmentType != null" >
+                #{planEquipmentType,jdbcType=VARCHAR},
+            </if>
+            <if test="planType != null" >
+                #{planType,jdbcType=VARCHAR},
+            </if>
+            <if test="planIsDel != null" >
+                #{planIsDel,jdbcType=BIT},
+            </if>
+            <if test="planCreateTime != null" >
+                #{planCreateTime,jdbcType=BIGINT},
+            </if>
+            <if test="planUpdateTime != null" >
+                #{planUpdateTime,jdbcType=BIGINT},
+            </if>
+            <if test="planCode != null" >
+                #{planCode,jdbcType=VARCHAR},
+            </if>
+            <if test="planUpdatorId != null" >
+                #{planUpdatorId,jdbcType=VARCHAR},
+            </if>
+            <if test="planUpdatorName != null" >
+                #{planUpdatorName,jdbcType=VARCHAR},
+            </if>
+            <if test="planSorting != null" >
+                #{planSorting,jdbcType=VARCHAR},
+            </if>
+            <if test="planVersion != null" >
+                #{planVersion,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
 </mapper>

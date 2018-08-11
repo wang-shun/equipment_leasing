@@ -23,4 +23,16 @@ public class RoleUserServiceImpl implements RoleUserService {
     public List<RoleUser> findByUserId(Long userId) {
         return roleUserMapper.findByUserId(userId);
     }
+
+    public Long findUserId(Long userId){
+        return roleUserMapper.findUserId(userId);
+    }
+
+    public Boolean deleteByUserId(Long userId){
+        return roleUserMapper.deleteByUserId(userId);
+    }
+
+    public Boolean update(RoleUser roleUser){
+        return roleUserMapper.update(roleUser);
+    }
 }

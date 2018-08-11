@@ -17,6 +17,7 @@ import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,25 +44,26 @@ public class RoleController {
     RoleAuthorityService roleAuthorityService;
 
     /**
+     * @method 通过id查询
      * @param id
      * @return
      * @method 通过id查询
      */
     @GetMapping(value = "/{id}")
-    CommonResponse getById(@PathVariable Long id) {
-        if (StringUtils.isEmpty(id)) {
+    public CommonResponse getById(@PathVariable Long id) {
+        if (StringUtils.isEmpty(id)){
             return CommonResponse.ok("角色id不能为空");
         }
         return CommonResponse.ok(roleService.getById(id));
     }
 
     /**
+     * @method 通过id更新
      * @param jsonString
      * @return
-     * @method 通过id更新
      */
     @PutMapping
-    CommonResponse updateById(@RequestBody String jsonString) {
+    public CommonResponse updateById(@RequestBody String jsonString){
         if (StringUtils.isEmpty(jsonString)) {
             return CommonResponse.errorMsg("参数jsonString不能为空");
         }
@@ -83,7 +85,7 @@ public class RoleController {
      * @method 添加角色，关联部门
      */
     @PostMapping()
-    CommonResponse add(@RequestBody String jsonString) {
+    public CommonResponse add(@RequestBody String jsonString){
 
         if (StringUtils.isEmpty(jsonString)) {
             return CommonResponse.errorMsg("参数jsonString不能为空");
@@ -153,12 +155,20 @@ public class RoleController {
      * @return
      * @method 删除
      */
-    @DeleteMapping("/{id}")
-    CommonResponse delete(@PathVariable Long id) {
-        if (StringUtils.isEmpty(id)) {
-            return CommonResponse.errorMsg("角色id不能为空");
+
+    @DeleteMapping("/dels")
+    public CommonResponse delete(@RequestBody String jsonString){
+        if(com.yankuang.equipment.common.util.StringUtils.isEmpty(jsonString)){
+            return CommonResponse.errorTokenMsg("没有查询的id");
         }
-        return CommonResponse.ok(roleService.delete(id));
+        List<Long> ids = JsonUtils.jsonToList(jsonString,Long.class);
+        for (Long id: ids){
+            boolean idB = roleService.delete(id);
+            if (idB == false){
+                return CommonResponse.errorTokenMsg("删除失败");
+            }
+        }
+        return  CommonResponse.ok();
     }
 
     /**
@@ -225,4 +235,18 @@ public class RoleController {
     }
 
 
+    /**
+     * @method 查找角色列表
+     * @param deptId
+     * @return
+     */
+    @GetMapping("/findRoles")
+    public CommonResponse findRoles(@RequestParam Long deptId){
+        List<Role> deptList = new ArrayList<Role>();
+        List<Long> roleIds = deptRoleService.findRoleId(deptId);
+        for (Long roleId:roleIds){
+            deptList.add(roleService.findRoles(roleId));
+        }
+        return CommonResponse.ok(deptList);
+    }
 }
