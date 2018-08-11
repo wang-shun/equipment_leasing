@@ -22,11 +22,7 @@ rpc:
 #    registryAddress: localhost:2181
 #    registryAddress: ${ZOOKEEPER_HOST:127.0.0.1}:${ZOOKEEPER_PORT:2181}
     registryAddress: ${ZK_HOST:127.0.0.1}:${ZK_PORT:2181}
-<<<<<<< HEAD
     port: 20881
-=======
-    port: 20880
->>>>>>> cbb0518... init equipment-equipment
 
 mybatis:
   mapper-locations: classpath*:mapper/*Mapper.xml

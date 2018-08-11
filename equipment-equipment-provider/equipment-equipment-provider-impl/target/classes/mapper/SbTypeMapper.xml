@@ -30,15 +30,15 @@
     delete from sb_type
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.yankuang.equipment.equipment.model.SbType" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+  <insert id="insert" parameterType="com.yankuang.equipment.equipment.model.SbType">
     insert into sb_type (code, name,
-      pcode, sorting, level, 
-      status, remark, create_by, 
-      create_at, update_by, update_at, 
+      pcode, sorting, level,
+      status, remark, create_by,
+      create_at, update_by, update_at,
       version)
     values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
-      #{pcode,jdbcType=VARCHAR}, #{sorting,jdbcType=BIGINT}, #{level,jdbcType=BIGINT}, 
-      #{status,jdbcType=TINYINT}, #{remark,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, 
+      #{pcode,jdbcType=VARCHAR}, #{sorting,jdbcType=BIGINT}, #{level,jdbcType=BIGINT},
+      #{status,jdbcType=TINYINT}, #{remark,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR},
       #{createAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateAt,jdbcType=TIMESTAMP},
       #{version,jdbcType=BIGINT})
   </insert>
