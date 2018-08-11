@@ -3,8 +3,8 @@ package com.yankuang.equipment.authority.model;
 import javax.persistence.Table;
 import java.io.Serializable;
 
-@Table(name = "el_organization_department_mapping")
-public class OrgDept implements Serializable {
+@Table
+public class OrgDepartment implements Serializable {
     private Long id;
 
     private Long departmentId;
@@ -22,6 +22,34 @@ public class OrgDept implements Serializable {
     private Long version;
 
     private Byte status;
+
+    private Integer startPage;
+
+    private Integer endPage;
+
+    public String getOrganizationName() {
+        return organizationName;
+    }
+
+    public void setOrganizationName(String organizationName) {
+        this.organizationName = organizationName;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     private String organizationName;
 
@@ -101,27 +129,19 @@ public class OrgDept implements Serializable {
         this.status = status;
     }
 
-    public String getOrganizationName() {
-        return organizationName;
+    public Integer getStartPage() {
+        return startPage;
     }
 
-    public void setOrganizationName(String organizationName) {
-        this.organizationName = organizationName;
+    public void setStartPage(Integer startPage) {
+        this.startPage = startPage;
     }
 
-    public String getDepartmentName() {
-        return departmentName;
+    public Integer getEndPage() {
+        return endPage;
     }
 
-    public void setDepartmentName(String departmentName) {
-        this.departmentName = departmentName;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
+    public void setEndPage(Integer endPage) {
+        this.endPage = endPage;
     }
 }

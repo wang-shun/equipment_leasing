@@ -17,12 +17,6 @@ public class OrgDeptRoleUserServiceImpl implements OrgDeptRoleUserService{
     @Autowired
     private OrgDeptRoleUserMapper orgDeptRoleUserMapper;
 
-    public Paging<OrgDeptRoleUser> getAll(int pageSize, int pageNum, OrgDeptRoleUser orgDeptRoleUser){
-        int maxResult = (pageNum - 1) * pageSize;
-        Paging page = orgDeptRoleUserMapper.paging(maxResult, pageNum, orgDeptRoleUser);
-        return page;
-    }
-
     public List<OrgDeptRoleUser> getAll(OrgDeptRoleUser orgDeptRoleUser){
         return orgDeptRoleUserMapper.getAll(orgDeptRoleUser);
     }

@@ -351,7 +351,7 @@ public class UserController {
     @GetMapping("/findUser")
     public CommonResponse findUser(@RequestParam Integer offset,
                                    @RequestParam Integer limit){
-        Integer startPage = limit * (offset - 1) + 1;
+        Integer startPage = limit * (offset - 1);
         Integer endPage = limit * offset;
        OrgDeptRoleUser orgDeptRoleUser = new OrgDeptRoleUser();
        orgDeptRoleUser.setPages(startPage);

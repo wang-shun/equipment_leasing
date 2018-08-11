@@ -1,7 +1,9 @@
 package com.yankuang.equipment.web.restful;
 
 import com.yankuang.equipment.authority.model.Dept;
+import com.yankuang.equipment.authority.model.OrgDepartment;
 import com.yankuang.equipment.authority.model.OrgDept;
+import com.yankuang.equipment.authority.service.DeptOrganizationService;
 import com.yankuang.equipment.authority.service.DeptService;
 import com.yankuang.equipment.authority.service.OrgDeptService;
 import com.yankuang.equipment.common.util.CommonResponse;
@@ -28,6 +30,9 @@ public class DeptController {
 
     @RpcConsumer
     private OrgDeptService orgDeptService;
+
+    @RpcConsumer
+    private DeptOrganizationService deptOrganizationService;
 
     /**
      * @method 通过id查询
@@ -312,8 +317,12 @@ public class DeptController {
      */
     @GetMapping("/findpageOrgDept")
     public CommonResponse getPageOrgDept(@RequestParam int page,@RequestParam int limit ){
-        OrgDept orgDept = new OrgDept();
-        return CommonResponse.ok(orgDeptService.findpage(page,limit,orgDept));
+        Integer startPage = limit * (page - 1);
+        Integer endPage = limit * page;
+        OrgDepartment orgDepartment = new OrgDepartment();
+        orgDepartment.setStartPage(startPage);
+        orgDepartment.setEndPage(endPage);
+        return CommonResponse.ok(deptOrganizationService.deptOrgAll(orgDepartment));
     }
 
     /**
