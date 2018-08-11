@@ -23,6 +23,13 @@
         where id = #{id}
     </select>
 
+    <select id="findByGroupId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+        <include refid="Base_Column_List" />
+        from el_authority_group_mapping
+        where group_id = #{groupId}
+    </select>
+
     <delete id="delete" parameterType="java.lang.Long" >
       update el_authority_group_mapping
       set status = 99

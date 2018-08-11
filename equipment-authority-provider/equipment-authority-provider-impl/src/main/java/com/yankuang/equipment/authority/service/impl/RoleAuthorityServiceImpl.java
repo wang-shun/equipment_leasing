@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RpcProvider
@@ -22,6 +23,10 @@ public class RoleAuthorityServiceImpl implements RoleAuthorityService {
 
     public List<RoleAuthority> findByRoleId(Long roleId) {
         return roleAuthorityMapper.findByRoleId(roleId);
+    }
+
+    public RoleAuthority findByRoleIdAndAuthorityId(Map map) {
+        return roleAuthorityMapper.findByRoleIdAndAuthorityId(map);
     }
 
 

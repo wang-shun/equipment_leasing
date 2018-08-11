@@ -172,11 +172,12 @@ public class ElPlanServiceImpl implements ElPlanService {
                 }
             }
 
-            logger.info("pageSize: "+pageSize+"pageNum: "+pageNum+";findElPlanByCondition: "+JSON.toJSONString(elPlan));
+            logger.info("pageSize: "+pageSize+"; pageNum: "+pageNum+"; findElPlanByCondition: "+JSON.toJSONString(elPlan));
+            logger.info("findElPlanByCondition result: "+JSON.toJSONString(page));
             return page;
         } catch (Exception e) {
             e.printStackTrace();
-            logger.info("exception: pageSize: "+pageSize+"pageNum: "+pageNum+";findElPlanByCondition: "+JSON.toJSONString(elPlan));
+            logger.info("exception: pageSize: "+pageSize+"; pageNum: "+pageNum+"; findElPlanByCondition: "+JSON.toJSONString(elPlan));
             return null;
         }
     }
@@ -184,10 +185,13 @@ public class ElPlanServiceImpl implements ElPlanService {
     public boolean approve(ElPlan elPlan) {
 
         try {
-            return elPlanMapper.updateByPrimarykey(elPlan) > 0;
+            logger.info("approve elPlan: "+JSON.toJSONString(elPlan));
+            boolean res = elPlanMapper.updateByPrimarykey(elPlan) > 0;
+            return res;
         } catch (Exception e) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             e.printStackTrace();
+            logger.info("approve elPlan exception: "+JSON.toJSONString(elPlan));
             return false;
         }
     }

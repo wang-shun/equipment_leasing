@@ -32,10 +32,25 @@ endpoints:
         - USE_AGENT=true
     depends:
       - equipment-authority-provider
+      - equipment-equipment-provider
 
 services:
   equipment-authority-provider:
     module_path: equipment-authority-provider/equipment-authority-provider-impl
+    context: .
+    ports:
+      - 20880
+    resources:
+      cpu: 0.1
+      mem: 512
+    buildpack:
+      bp_repo: http://git.terminus.io/buildpacks/dice-bpack-termjava.git
+      bp_ver: master
+      bp_args:
+        - USE_AGENT=true
+
+  equipment-equipment-provider:
+    module_path: equipment-equipment-provider/equipment-equipment-provider-impl
     context: .
     ports:
       - 20880
@@ -57,7 +72,9 @@ addons:
     image: dnhsoft/mysql-utf8
   zk:
     plan: zookeeper:small
-    as: ZK
+  redis:
+    plan: redis:small
+    as: REDIS
 
 global_env:
   MYSQL_PORT: 3306

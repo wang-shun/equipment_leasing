@@ -4,6 +4,7 @@ import com.yankuang.equipment.authority.model.AuthorityGroupMapping;
 import io.terminus.common.mysql.dao.MyBatisDao;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -15,4 +16,9 @@ public class AuthorityGroupMappingMapper extends MyBatisDao<AuthorityGroupMappin
     public Boolean create(AuthorityGroupMapping t) {
         return getSqlSession().insert("com.yankuang.equipment.authority.mapper.AuthorityGroupMappingMapper.create", t) == 1;
     }
+
+    public List<AuthorityGroupMapping> findByGroupId(Long groupId) {
+        return this.sqlSession.selectList("findByGroupId", groupId);
+    }
+
 }
