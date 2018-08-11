@@ -11,8 +11,8 @@
     <artifactId>equipment-log-provider</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>equipment-log-provider-api</module>
         <module>equipment-log-provider-impl</module>
+        <module>equipment-log-provide-api</module>
     </modules>
 
 
@@ -32,6 +32,12 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.16.16</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
