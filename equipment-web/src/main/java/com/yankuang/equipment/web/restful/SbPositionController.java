@@ -60,10 +60,10 @@ public class SbPositionController {
         ResponseMeta responseMeta = new ResponseMeta();
         try{
             SbPosition sbPosition = sbPositionService.findById(id);
-            responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"查询设备位置信息成功");
+            responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"查询设备位置信息成功!");
             responseMeta.setData(sbPosition);
         }catch (Exception e){
-            responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"查询设备位置信息失败");
+            responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"查询设备位置信息失败!");
             responseMeta.setData(ExceptionUtils.getStackTrace(e));
         }
         return responseMeta;
