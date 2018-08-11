@@ -12,13 +12,27 @@
         <module>equipment-common</module>
         <module>equipment-web</module>
         <module>equipment-equipment-provider</module>
+        <module>equipment-log-provider</module>
     </modules>
     <packaging>pom</packaging>
 
     <properties>
-        <!--<boot.version>1.5.2.RELEASE</boot.version>-->
         <spring.boot.version>2.0.3.RELEASE</spring.boot.version>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>6.0.7.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+
+    </dependencies>
 
     <build>
         <plugins>

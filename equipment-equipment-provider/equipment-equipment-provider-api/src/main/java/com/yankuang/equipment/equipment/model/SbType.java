@@ -1,12 +1,20 @@
 package com.yankuang.equipment.equipment.model;
 
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Date;
 
 public class SbType implements Serializable {
     private Long id;
 
+    @NotNull(message = "设备编码不能为空!")
+    @Length(min = 1,max = 255)
     private String code;
 
+    @NotNull(message = "设备名称不能为空!")
+    @Length(min = 1,max = 255)
     private String name;
 
     private String pcode;
@@ -21,11 +29,11 @@ public class SbType implements Serializable {
 
     private String createBy;
 
-    private Long createAt;
+    private Date createAt;
 
     private String updateBy;
 
-    private Long updateAt;
+    private Date updateAt;
 
     private Long version;
 
@@ -101,11 +109,11 @@ public class SbType implements Serializable {
         this.createBy = createBy == null ? null : createBy.trim();
     }
 
-    public Long getCreateAt() {
+    public Date getCreateAt() {
         return createAt;
     }
 
-    public void setCreateAt(Long createAt) {
+    public void setCreateAt(Date createAt) {
         this.createAt = createAt;
     }
 
@@ -117,11 +125,11 @@ public class SbType implements Serializable {
         this.updateBy = updateBy == null ? null : updateBy.trim();
     }
 
-    public Long getUpdateAt() {
+    public Date getUpdateAt() {
         return updateAt;
     }
 
-    public void setUpdateAt(Long updateAt) {
+    public void setUpdateAt(Date updateAt) {
         this.updateAt = updateAt;
     }
 

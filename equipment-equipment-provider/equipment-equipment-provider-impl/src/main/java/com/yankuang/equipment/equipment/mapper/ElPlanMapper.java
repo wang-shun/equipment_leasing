@@ -15,21 +15,20 @@ public class ElPlanMapper extends MyBatisDao<ElPlan> {
 
     public List<ElPlanItem> queryElPlanItemByPlanId(String planId) { return sqlSession.selectList("queryElPlanItemByPlanId", planId);}
 
-    public int save (ElPlan elPlan) {
-        return sqlSession.insert("save", elPlan);
-    }
-
     public ElPlan findById (String planId) {
         return sqlSession.selectOne("findByPrimarykey", planId);
     }
 
-    public int deletePlanItemByPlanId(String planId) {
-        return sqlSession.delete("deletePlanItemByPlanId", planId);
-    }
+    public int deletePlanItemByPlanId(String planId) { return sqlSession.delete("deletePlanItemByPlanId", planId); }
 
-    public int savePlanItemByPlanId(ElPlan elPlan) {
-        return sqlSession.insert("savePlanItemByPlanId", elPlan);
-    }
+    public int savePlanItemByPlanId(ElPlan elPlan) { return sqlSession.insert("savePlanItemByPlanId", elPlan); }
 
     public int deletePlanByPlanId(String planId) { return sqlSession.update("deletePlanByPlanId", planId);  }
+
+    public int insertByPrimaryKey(ElPlan elPlan) {return sqlSession.insert("insertByPrimaryKey", elPlan);}
+
+    public List<ElPlan> listByCondition(ElPlan elPlan) {return sqlSession.selectList("listByCondition", elPlan);}
+
+    public int updateByPrimarykey(ElPlan elPlan) {return sqlSession.update("updateByPrimarykey", elPlan);}
+
 }

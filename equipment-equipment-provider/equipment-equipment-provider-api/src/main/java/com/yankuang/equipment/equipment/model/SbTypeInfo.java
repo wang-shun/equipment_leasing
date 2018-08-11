@@ -1,10 +1,13 @@
 package com.yankuang.equipment.equipment.model;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Date;
 
 public class SbTypeInfo implements Serializable {
     private Long id;
 
+    @NotNull
     private Long typeId;
 
     private String mainPara;
@@ -43,8 +46,19 @@ public class SbTypeInfo implements Serializable {
 
     private String defPara8Type;
 
-    private String typeCode;
-    private String typeName;
+    private String createBy;
+
+    private Date createAt;
+
+    private String updateBy;
+
+    private Date updateAt;
+
+    private Long version;
+
+
+    private String typeCode;//设备类型编码
+    private String typeName;//设备类型名称
 
     public Long getId() {
         return id;
@@ -204,6 +218,45 @@ public class SbTypeInfo implements Serializable {
 
     public void setDefPara8Type(String defPara8Type) {
         this.defPara8Type = defPara8Type == null ? null : defPara8Type.trim();
+    }
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy == null ? null : createBy.trim();
+    }
+
+    public Date getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(Date createAt) {
+        this.createAt = createAt;
+    }
+
+    public String getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy == null ? null : updateBy.trim();
+    }
+
+    public Date getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(Date updateAt) {
+        this.updateAt = updateAt;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 
     public void setTypeCode(String typeCode) {

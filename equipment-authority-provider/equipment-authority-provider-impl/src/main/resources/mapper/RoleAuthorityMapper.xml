@@ -23,6 +23,12 @@
     WHERE role_id = #{roleId}
   </select>
 
+  <select id="findByRoleIdAndAuthorityId" parameterType="Map" resultMap="BaseResultMap" >
+    SELECT <include refid="Base_Column_List" />
+    FROM el_role_authority_mapping
+    WHERE role_id = #{roleId} and authority_id = #{authorityId}
+  </select>
+
   <delete id="delete" parameterType="java.lang.Long" >
     UPDATE el_role_authority_mapping
     SET status = 99
@@ -31,13 +37,13 @@
 
   <insert id="create" parameterType="RoleAuthority" keyProperty="id" useGeneratedKeys="true">
     insert into el_role_authority_mapping
-      (id, role_code, authority_code,
+      (id, role_id, authority_id,
       create_by, update_at, update_by,
       create_at, version, status
       )
-    values (#{id,jdbcType=INTEGER}, #{roleCode,jdbcType=VARCHAR}, #{authorityCode,jdbcType=VARCHAR},
-      #{createBy,jdbcType=VARCHAR}, #{updateAt,jdbcType=BIGINT}, #{updateBy,jdbcType=VARCHAR},
-      #{createAt,jdbcType=BIGINT}, #{version,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}
+    values (#{id}, #{roleId}, #{authorityId},
+      #{createBy}, unix_timestamp(now()), #{updateBy},
+      unix_timestamp(now()), 0, 1
       )
   </insert>
 
