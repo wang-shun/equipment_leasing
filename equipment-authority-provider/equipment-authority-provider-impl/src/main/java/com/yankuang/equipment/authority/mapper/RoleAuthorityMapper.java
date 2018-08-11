@@ -5,6 +5,7 @@ import io.terminus.common.mysql.dao.MyBatisDao;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class RoleAuthorityMapper extends MyBatisDao<RoleAuthority> {
@@ -17,4 +18,7 @@ public class RoleAuthorityMapper extends MyBatisDao<RoleAuthority> {
         return this.sqlSession.selectList("findByRoleId", roleId);
     }
 
+    public RoleAuthority findByRoleIdAndAuthorityId(Map map){
+        return this.sqlSession.selectOne("findByRoleIdAndAuthorityId", map);
+    }
 }
