@@ -10,30 +10,26 @@ import io.swagger.annotations.ApiOperation;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@Api
 @CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping(value = "/v1/sbequipmentt")
 public class SbEquipmentTController {
 
-    @RpcConsumer(version = "0.0.1",check = "false")
-    private SbEquipmentTService sbEquipmentTService;
+    @RpcConsumer
+    SbEquipmentTService sbEquipmentTService;
 
-    @ApiOperation("create shebei t")
-    @RequestMapping(value = "/create")
-    public ResponseMeta createSbEquipmentT(@Valid SbEquipmentT sbEquipmentT, BindingResult bindingResult){
+    @RequestMapping(value = "/create",method = RequestMethod.POST)
+    public ResponseMeta create(@Valid SbEquipmentT sbEquipmentT, BindingResult bindingResult){
         ResponseMeta responseMeta = new ResponseMeta();
         try{
             if (bindingResult.hasErrors()){
                 return responseMeta.setMeta(Constants.RESPONSE_ERROR,bindingResult.getAllErrors().get(0).getDefaultMessage());
             }
-            sbEquipmentTService.createSbEquipmentT(sbEquipmentT);
+            sbEquipmentTService.create(sbEquipmentT);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"创建通用设备成功");
         }catch (Exception e){
             responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"创建通用设备失败");
@@ -42,15 +38,14 @@ public class SbEquipmentTController {
         return responseMeta;
     }
 
-    @ApiOperation("update shebei t")
-    @RequestMapping(value = "/update")
-    public ResponseMeta updateSbModel(@Valid SbEquipmentT sbEquipmentT, BindingResult bindingResult){
+    @RequestMapping(value = "/update",method = RequestMethod.PUT)
+    public ResponseMeta update(@Valid SbEquipmentT sbEquipmentT, BindingResult bindingResult){
         ResponseMeta responseMeta = new ResponseMeta();
         try{
             if (bindingResult.hasErrors()){
                 return responseMeta.setMeta(Constants.RESPONSE_ERROR,bindingResult.getAllErrors().get(0).getDefaultMessage());
             }
-            sbEquipmentTService.updateSbEquipmentT(sbEquipmentT);
+            sbEquipmentTService.update(sbEquipmentT);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"更新通用设备成功");
         }catch (Exception e){
             responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"更新通用设备失败");
@@ -59,12 +54,11 @@ public class SbEquipmentTController {
         return responseMeta;
     }
 
-    @ApiOperation("find shebei t by id")
-    @RequestMapping(value = "/find")
-    public ResponseMeta findSbModelByKey(Long id){
+    @RequestMapping(value = "/find/{id}",method = RequestMethod.GET)
+    public ResponseMeta findById(@PathVariable("id") Long id){
         ResponseMeta responseMeta = new ResponseMeta();
         try{
-            SbEquipmentT sbEquipmentT = sbEquipmentTService.findSbEquipmentByKey(id);
+            SbEquipmentT sbEquipmentT = sbEquipmentTService.findById(id);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"编辑通用设备信息成功");
             responseMeta.setData(sbEquipmentT);
         }catch (Exception e){
@@ -74,12 +68,11 @@ public class SbEquipmentTController {
         return responseMeta;
     }
 
-    @ApiOperation("delete shebei t by id")
-    @RequestMapping(value = "/delete")
-    public ResponseMeta deleteSbEquipmentByKey(Long id){
+    @RequestMapping(value = "/delete/{id}",method = RequestMethod.DELETE)
+    public ResponseMeta deleteById(@PathVariable("id") Long id){
         ResponseMeta responseMeta = new ResponseMeta();
         try{
-            sbEquipmentTService.deleteSbEquipmentByKey(id);
+            sbEquipmentTService.deleteById(id);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"删除通用设备信息成功");
         }catch (Exception e){
             responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"删除通用设备信息失败");
@@ -88,12 +81,11 @@ public class SbEquipmentTController {
         return responseMeta;
     }
 
-    @ApiOperation("list shebei t")
-    @RequestMapping(value = "/list")
-    public ResponseMeta listSbEquipments(SbEquipmentT sbEquipmentT,int pageNum,int pageSize){
+    @RequestMapping(value = "/list",method = RequestMethod.GET)
+    public ResponseMeta list(SbEquipmentT sbEquipmentT,int pageNum,int pageSize){
         ResponseMeta responseMeta = new ResponseMeta();
         try{
-            PageInfo<SbEquipmentT> pageInfo = sbEquipmentTService.listAll(sbEquipmentT,pageNum,pageSize);
+            PageInfo<SbEquipmentT> pageInfo = sbEquipmentTService.list(sbEquipmentT,pageNum,pageSize);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"查询通用设备列表成功");
             responseMeta.setData(pageInfo);
         }catch (Exception e){

@@ -10,28 +10,24 @@ import io.swagger.annotations.ApiOperation;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
-@Api
 @CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("/v1/sbtype")
 public class SbTypeController {
 
-    @RpcConsumer(version = "0.0.1",check = "false")
-    private SbTypeService sbTypeService;
+    @RpcConsumer
+    SbTypeService sbTypeService;
 
-    @ApiOperation("select all shebei types")
-    @RequestMapping(value = "/list")
-    public ResponseMeta listSbTypes(){
+    @RequestMapping(value = "/list",method = RequestMethod.GET)
+    public ResponseMeta list(){
         ResponseMeta responseMeta = new ResponseMeta();
         try{
-            List<SbType> list = sbTypeService.listSbTypes();
+            List<SbType> list = sbTypeService.list();
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"查询设备类型成功");
             responseMeta.setData(list);
         }catch (Exception e){
@@ -41,15 +37,14 @@ public class SbTypeController {
         return responseMeta;
     }
 
-    @ApiOperation("create shebei record")
-    @RequestMapping(value = "/create")
-    public ResponseMeta createSbType(@Valid SbType sbType, SbTypeInfo sbTypeInfo, BindingResult bindingResult){
+    @RequestMapping(value = "/create",method = RequestMethod.POST)
+    public ResponseMeta create(@Valid SbType sbType, SbTypeInfo sbTypeInfo, BindingResult bindingResult){
         ResponseMeta responseMeta = new ResponseMeta();
         try{
             if (bindingResult.hasErrors()){
                 return responseMeta.setMeta(Constants.RESPONSE_ERROR,bindingResult.getAllErrors().get(0).getDefaultMessage());
             }
-            sbTypeService.createSbType(sbType,sbTypeInfo);
+            sbTypeService.create(sbType,sbTypeInfo);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"创建设备类型及信息成功");
         }catch (Exception e){
             responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"创建设备类型及信息失败");
@@ -58,12 +53,11 @@ public class SbTypeController {
         return responseMeta;
     }
 
-    @ApiOperation("delete shebei type by id")
-    @RequestMapping(value = "/delete")
-    public ResponseMeta deleteSbTypeByKey(Long id){
+    @RequestMapping(value = "/delete/{id}",method = RequestMethod.DELETE)
+    public ResponseMeta deleteById(@PathVariable("id") Long id){
         ResponseMeta responseMeta = new ResponseMeta();
         try{
-            sbTypeService.deleteSbTypeByKey(id);
+            sbTypeService.deleteById(id);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"删除设备类型信息成功");
         }catch (Exception e){
             responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"删除设备类型信息失败");
@@ -72,12 +66,11 @@ public class SbTypeController {
         return responseMeta;
     }
 
-    @ApiOperation("select shebei types by pcode or level")
-    @RequestMapping(value = "/listByCondition")
-    public ResponseMeta listSbTypesByPcodeOrLevel(String pcode,int level){
+    @RequestMapping(value = "/listByPcodeOrLevel",method = RequestMethod.GET)
+    public ResponseMeta listByPcodeOrLevel(String pcode,int level){
         ResponseMeta responseMeta = new ResponseMeta();
         try{
-            List<SbType> list = sbTypeService.listSbTypesByPcodeOrLevel(pcode,level);
+            List<SbType> list = sbTypeService.listByPcodeOrLevel(pcode,level);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"查询设备类型成功");
             responseMeta.setData(list);
         }catch (Exception e){

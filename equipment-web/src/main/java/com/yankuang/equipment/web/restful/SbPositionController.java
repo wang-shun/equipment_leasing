@@ -10,31 +10,27 @@ import io.swagger.annotations.ApiOperation;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
-@Api
 @CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("/v1/sbposition")
 public class SbPositionController {
 
-    @RpcConsumer(version = "0.0.1",check = "false")
-    private SbPositionService sbPositionService;
+    @RpcConsumer
+    SbPositionService sbPositionService;
 
-    @ApiOperation("create shebei Position")
-    @RequestMapping(value = "/create")
-    public ResponseMeta createSbPosition(@Valid SbPosition sbPosition, BindingResult bindingResult){
+    @RequestMapping(value = "/create",method = RequestMethod.POST)
+    public ResponseMeta create(@Valid SbPosition sbPosition, BindingResult bindingResult){
         ResponseMeta responseMeta = new ResponseMeta();
         try{
             if (bindingResult.hasErrors()){
                 return responseMeta.setMeta(Constants.RESPONSE_ERROR,bindingResult.getAllErrors().get(0).getDefaultMessage());
             }
-            sbPositionService.createSbPosition(sbPosition);
+            sbPositionService.create(sbPosition);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"创建设备位置成功");
         }catch (Exception e){
             responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"创建设备位置失败");
@@ -43,15 +39,14 @@ public class SbPositionController {
         return responseMeta;
     }
 
-    @ApiOperation("update shebei Position")
-    @RequestMapping(value = "/update")
-    public ResponseMeta updateSbPosition(@Valid SbPosition sbPosition, BindingResult bindingResult){
+    @RequestMapping(value = "/update",method = RequestMethod.PUT)
+    public ResponseMeta update(@Valid SbPosition sbPosition, BindingResult bindingResult){
         ResponseMeta responseMeta = new ResponseMeta();
         try{
             if (bindingResult.hasErrors()){
                 return responseMeta.setMeta(Constants.RESPONSE_ERROR,bindingResult.getAllErrors().get(0).getDefaultMessage());
             }
-            sbPositionService.updateSbPosition(sbPosition);
+            sbPositionService.update(sbPosition);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"创建设备位置成功");
         }catch (Exception e){
             responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"创建设备位置失败");
@@ -60,27 +55,25 @@ public class SbPositionController {
         return responseMeta;
     }
 
-    @ApiOperation("find shebei Position by id")
-    @RequestMapping(value = "/find")
-    public ResponseMeta findSbPositionByKey(Long id){
+    @RequestMapping(value = "/find/{id}",method = RequestMethod.GET)
+    public ResponseMeta findById(@PathVariable("id") Long id){
         ResponseMeta responseMeta = new ResponseMeta();
         try{
-            SbPosition sbPosition = sbPositionService.findSbPositionByKey(id);
-            responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"查询设备位置信息成功");
+            SbPosition sbPosition = sbPositionService.findById(id);
+            responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"查询设备位置信息成功!");
             responseMeta.setData(sbPosition);
         }catch (Exception e){
-            responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"查询设备位置信息失败");
+            responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"查询设备位置信息失败!");
             responseMeta.setData(ExceptionUtils.getStackTrace(e));
         }
         return responseMeta;
     }
 
-    @ApiOperation("delete shebei Position by id")
-    @RequestMapping(value = "/delete")
-    public ResponseMeta deleteSbPositionByKey(Long id){
+    @RequestMapping(value = "/delete/{id}",method = RequestMethod.DELETE)
+    public ResponseMeta deleteById(@PathVariable("id") Long id){
         ResponseMeta responseMeta = new ResponseMeta();
         try{
-            sbPositionService.deleteSbPositionByKey(id);
+            sbPositionService.deleteById(id);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"删除设备位置信息成功");
         }catch (Exception e){
             responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"删除设备位置信息失败");
@@ -89,12 +82,11 @@ public class SbPositionController {
         return responseMeta;
     }
 
-    @ApiOperation("list shebei position")
-    @RequestMapping(value = "/list")
-    public ResponseMeta listSbPositions(String code,String name,int pageNum,int pageSize){
+    @RequestMapping(value = "/list",method = RequestMethod.GET)
+    public ResponseMeta list(String code,String name,int pageNum,int pageSize){
         ResponseMeta responseMeta = new ResponseMeta();
         try{
-            PageInfo<SbPosition> list = sbPositionService.listAll(code,name,pageNum,pageSize);
+            PageInfo<SbPosition> list = sbPositionService.list(code,name,pageNum,pageSize);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"查询设备功能位置列表成功");
             responseMeta.setData(list);
         }catch (Exception e){

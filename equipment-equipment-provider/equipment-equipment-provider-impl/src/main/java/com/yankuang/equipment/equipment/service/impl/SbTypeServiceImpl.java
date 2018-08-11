@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@RpcProvider(version = "0.0.1")
+@RpcProvider
 public class SbTypeServiceImpl implements SbTypeService {
 
     @Autowired
@@ -21,21 +21,21 @@ public class SbTypeServiceImpl implements SbTypeService {
     @Autowired
     private SbTypeInfoMapper sbTypeInfoMapper;
 
-    public List<SbType> listSbTypes() {
-        return sbTypeMapper.selectAllSbTypes();
+    public List<SbType> list() {
+        return sbTypeMapper.list();
     }
 
-    public void createSbType(SbType record, SbTypeInfo sbTypeInfo){
-        sbTypeMapper.insert(record);
+    public void create(SbType record, SbTypeInfo sbTypeInfo){
+        sbTypeMapper.create(record);
         sbTypeInfo.setTypeId(record.getId());
-        sbTypeInfoMapper.insert(sbTypeInfo);
+        sbTypeInfoMapper.create(sbTypeInfo);
     }
 
-    public void deleteSbTypeByKey(Long id) {
-        sbTypeMapper.deleteByPrimaryKey(id);
+    public void deleteById(Long id) {
+        sbTypeMapper.deleteById(id);
     }
 
-    public List<SbType> listSbTypesByPcodeOrLevel(String pcode, int level) {
-        return sbTypeMapper.listSbTypesByPcodeOrLevel(pcode,level);
+    public List<SbType> listByPcodeOrLevel(String pcode, int level) {
+        return sbTypeMapper.listByPcodeOrLevel(pcode,level);
     }
 }

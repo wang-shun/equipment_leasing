@@ -25,17 +25,17 @@
     id, code, name, state, type, org, position, isuse, isrfid, remark, status, create_by, 
     create_at, update_by, update_at, version
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
     from sb_position
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+  <delete id="deleteById" parameterType="java.lang.Long" >
     delete from sb_position
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.yankuang.equipment.equipment.model.SbPosition" >
+  <insert id="create" parameterType="com.yankuang.equipment.equipment.model.SbPosition" >
     insert into sb_position (code, name,
       state, type, org, position, 
       isuse, isrfid, remark, 
@@ -49,161 +49,8 @@
       #{updateBy,jdbcType=VARCHAR}, #{updateAt,jdbcType=TIMESTAMP}, #{version,jdbcType=BIGINT}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.yankuang.equipment.equipment.model.SbPosition" >
-    insert into sb_position
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="code != null" >
-        code,
-      </if>
-      <if test="name != null" >
-        name,
-      </if>
-      <if test="state != null" >
-        state,
-      </if>
-      <if test="type != null" >
-        type,
-      </if>
-      <if test="org != null" >
-        org,
-      </if>
-      <if test="position != null" >
-        position,
-      </if>
-      <if test="isuse != null" >
-        isuse,
-      </if>
-      <if test="isrfid != null" >
-        isrfid,
-      </if>
-      <if test="remark != null" >
-        remark,
-      </if>
-      <if test="status != null" >
-        status,
-      </if>
-      <if test="createBy != null" >
-        create_by,
-      </if>
-      <if test="createAt != null" >
-        create_at,
-      </if>
-      <if test="updateBy != null" >
-        update_by,
-      </if>
-      <if test="updateAt != null" >
-        update_at,
-      </if>
-      <if test="version != null" >
-        version,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=BIGINT},
-      </if>
-      <if test="code != null" >
-        #{code,jdbcType=VARCHAR},
-      </if>
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="state != null" >
-        #{state,jdbcType=VARCHAR},
-      </if>
-      <if test="type != null" >
-        #{type,jdbcType=VARCHAR},
-      </if>
-      <if test="org != null" >
-        #{org,jdbcType=VARCHAR},
-      </if>
-      <if test="position != null" >
-        #{position,jdbcType=VARCHAR},
-      </if>
-      <if test="isuse != null" >
-        #{isuse,jdbcType=TINYINT},
-      </if>
-      <if test="isrfid != null" >
-        #{isrfid,jdbcType=TINYINT},
-      </if>
-      <if test="remark != null" >
-        #{remark,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null" >
-        #{status,jdbcType=TINYINT},
-      </if>
-      <if test="createBy != null" >
-        #{createBy,jdbcType=VARCHAR},
-      </if>
-      <if test="createAt != null" >
-        #{createAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateBy != null" >
-        #{updateBy,jdbcType=VARCHAR},
-      </if>
-      <if test="updateAt != null" >
-        #{updateAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="version != null" >
-        #{version,jdbcType=BIGINT},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.yankuang.equipment.equipment.model.SbPosition" >
-    update sb_position
-    <set >
-      <if test="code != null" >
-        code = #{code,jdbcType=VARCHAR},
-      </if>
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="state != null" >
-        state = #{state,jdbcType=VARCHAR},
-      </if>
-      <if test="type != null" >
-        type = #{type,jdbcType=VARCHAR},
-      </if>
-      <if test="org != null" >
-        org = #{org,jdbcType=VARCHAR},
-      </if>
-      <if test="position != null" >
-        position = #{position,jdbcType=VARCHAR},
-      </if>
-      <if test="isuse != null" >
-        isuse = #{isuse,jdbcType=TINYINT},
-      </if>
-      <if test="isrfid != null" >
-        isrfid = #{isrfid,jdbcType=TINYINT},
-      </if>
-      <if test="remark != null" >
-        remark = #{remark,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null" >
-        status = #{status,jdbcType=TINYINT},
-      </if>
-      <if test="createBy != null" >
-        create_by = #{createBy,jdbcType=VARCHAR},
-      </if>
-      <if test="createAt != null" >
-        create_at = #{createAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateBy != null" >
-        update_by = #{updateBy,jdbcType=VARCHAR},
-      </if>
-      <if test="updateAt != null" >
-        update_at = #{updateAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="version != null" >
-        version = #{version,jdbcType=BIGINT},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.yankuang.equipment.equipment.model.SbPosition" >
+
+  <update id="update" parameterType="com.yankuang.equipment.equipment.model.SbPosition" >
     update sb_position
     set code = #{code,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
@@ -223,7 +70,7 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
 
-  <select id="listAll" resultMap="BaseResultMap">
+  <select id="list" resultMap="BaseResultMap">
     select t.*,t1.name as state_name,t2.name as type_name
     from sb_position t
     left join sys_config t1 on t.state=t1.code and t1.type='sb_position_status' and t1.status = 1

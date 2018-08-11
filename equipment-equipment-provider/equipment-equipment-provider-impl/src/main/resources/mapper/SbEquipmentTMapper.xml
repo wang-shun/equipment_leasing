@@ -46,17 +46,17 @@
     license, arrive_date, use_date, comp, contranct, buy_price, is_new, ware, is_rfid, 
     asset_code, status, create_by, create_at, update_by, update_at, version
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
     from sb_equipment_t
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+  <delete id="deleteById" parameterType="java.lang.Long" >
     delete from sb_equipment_t
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.yankuang.equipment.equipment.model.SbEquipmentT" >
+  <insert id="create" parameterType="com.yankuang.equipment.equipment.model.SbEquipmentT" >
     insert into sb_equipment_t (code, name,
       is_lease, sbtype_one, sbtype_two, 
       sbtype_three, sbmodel_code, tech_code, 
@@ -82,314 +82,8 @@
       #{updateBy,jdbcType=VARCHAR}, #{updateAt,jdbcType=TIMESTAMP}, #{version,jdbcType=BIGINT}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.yankuang.equipment.equipment.model.SbEquipmentT" >
-    insert into sb_equipment_t
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="code != null" >
-        code,
-      </if>
-      <if test="name != null" >
-        name,
-      </if>
-      <if test="isLease != null" >
-        is_lease,
-      </if>
-      <if test="sbtypeOne != null" >
-        sbtype_one,
-      </if>
-      <if test="sbtypeTwo != null" >
-        sbtype_two,
-      </if>
-      <if test="sbtypeThree != null" >
-        sbtype_three,
-      </if>
-      <if test="sbmodelCode != null" >
-        sbmodel_code,
-      </if>
-      <if test="techCode != null" >
-        tech_code,
-      </if>
-      <if test="factory != null" >
-        factory,
-      </if>
-      <if test="prodDate != null" >
-        prod_date,
-      </if>
-      <if test="prodCode != null" >
-        prod_code,
-      </if>
-      <if test="maCode != null" >
-        ma_code,
-      </if>
-      <if test="maStartDate != null" >
-        ma_start_date,
-      </if>
-      <if test="maEndDate != null" >
-        ma_end_date,
-      </if>
-      <if test="proof != null" >
-        proof,
-      </if>
-      <if test="proofCode != null" >
-        proof_code,
-      </if>
-      <if test="license != null" >
-        license,
-      </if>
-      <if test="arriveDate != null" >
-        arrive_date,
-      </if>
-      <if test="useDate != null" >
-        use_date,
-      </if>
-      <if test="comp != null" >
-        comp,
-      </if>
-      <if test="contranct != null" >
-        contranct,
-      </if>
-      <if test="buyPrice != null" >
-        buy_price,
-      </if>
-      <if test="isNew != null" >
-        is_new,
-      </if>
-      <if test="ware != null" >
-        ware,
-      </if>
-      <if test="isRfid != null" >
-        is_rfid,
-      </if>
-      <if test="assetCode != null" >
-        asset_code,
-      </if>
-      <if test="status != null" >
-        status,
-      </if>
-      <if test="createBy != null" >
-        create_by,
-      </if>
-      <if test="createAt != null" >
-        create_at,
-      </if>
-      <if test="updateBy != null" >
-        update_by,
-      </if>
-      <if test="updateAt != null" >
-        update_at,
-      </if>
-      <if test="version != null" >
-        version,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=BIGINT},
-      </if>
-      <if test="code != null" >
-        #{code,jdbcType=VARCHAR},
-      </if>
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="isLease != null" >
-        #{isLease,jdbcType=TINYINT},
-      </if>
-      <if test="sbtypeOne != null" >
-        #{sbtypeOne,jdbcType=VARCHAR},
-      </if>
-      <if test="sbtypeTwo != null" >
-        #{sbtypeTwo,jdbcType=VARCHAR},
-      </if>
-      <if test="sbtypeThree != null" >
-        #{sbtypeThree,jdbcType=VARCHAR},
-      </if>
-      <if test="sbmodelCode != null" >
-        #{sbmodelCode,jdbcType=VARCHAR},
-      </if>
-      <if test="techCode != null" >
-        #{techCode,jdbcType=VARCHAR},
-      </if>
-      <if test="factory != null" >
-        #{factory,jdbcType=VARCHAR},
-      </if>
-      <if test="prodDate != null" >
-        #{prodDate,jdbcType=DATE},
-      </if>
-      <if test="prodCode != null" >
-        #{prodCode,jdbcType=VARCHAR},
-      </if>
-      <if test="maCode != null" >
-        #{maCode,jdbcType=VARCHAR},
-      </if>
-      <if test="maStartDate != null" >
-        #{maStartDate,jdbcType=DATE},
-      </if>
-      <if test="maEndDate != null" >
-        #{maEndDate,jdbcType=DATE},
-      </if>
-      <if test="proof != null" >
-        #{proof,jdbcType=VARCHAR},
-      </if>
-      <if test="proofCode != null" >
-        #{proofCode,jdbcType=VARCHAR},
-      </if>
-      <if test="license != null" >
-        #{license,jdbcType=VARCHAR},
-      </if>
-      <if test="arriveDate != null" >
-        #{arriveDate,jdbcType=DATE},
-      </if>
-      <if test="useDate != null" >
-        #{useDate,jdbcType=DATE},
-      </if>
-      <if test="comp != null" >
-        #{comp,jdbcType=VARCHAR},
-      </if>
-      <if test="contranct != null" >
-        #{contranct,jdbcType=VARCHAR},
-      </if>
-      <if test="buyPrice != null" >
-        #{buyPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="isNew != null" >
-        #{isNew,jdbcType=TINYINT},
-      </if>
-      <if test="ware != null" >
-        #{ware,jdbcType=VARCHAR},
-      </if>
-      <if test="isRfid != null" >
-        #{isRfid,jdbcType=TINYINT},
-      </if>
-      <if test="assetCode != null" >
-        #{assetCode,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null" >
-        #{status,jdbcType=TINYINT},
-      </if>
-      <if test="createBy != null" >
-        #{createBy,jdbcType=VARCHAR},
-      </if>
-      <if test="createAt != null" >
-        #{createAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateBy != null" >
-        #{updateBy,jdbcType=VARCHAR},
-      </if>
-      <if test="updateAt != null" >
-        #{updateAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="version != null" >
-        #{version,jdbcType=BIGINT},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.yankuang.equipment.equipment.model.SbEquipmentT" >
-    update sb_equipment_t
-    <set >
-      <if test="code != null" >
-        code = #{code,jdbcType=VARCHAR},
-      </if>
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="isLease != null" >
-        is_lease = #{isLease,jdbcType=TINYINT},
-      </if>
-      <if test="sbtypeOne != null" >
-        sbtype_one = #{sbtypeOne,jdbcType=VARCHAR},
-      </if>
-      <if test="sbtypeTwo != null" >
-        sbtype_two = #{sbtypeTwo,jdbcType=VARCHAR},
-      </if>
-      <if test="sbtypeThree != null" >
-        sbtype_three = #{sbtypeThree,jdbcType=VARCHAR},
-      </if>
-      <if test="sbmodelCode != null" >
-        sbmodel_code = #{sbmodelCode,jdbcType=VARCHAR},
-      </if>
-      <if test="techCode != null" >
-        tech_code = #{techCode,jdbcType=VARCHAR},
-      </if>
-      <if test="factory != null" >
-        factory = #{factory,jdbcType=VARCHAR},
-      </if>
-      <if test="prodDate != null" >
-        prod_date = #{prodDate,jdbcType=DATE},
-      </if>
-      <if test="prodCode != null" >
-        prod_code = #{prodCode,jdbcType=VARCHAR},
-      </if>
-      <if test="maCode != null" >
-        ma_code = #{maCode,jdbcType=VARCHAR},
-      </if>
-      <if test="maStartDate != null" >
-        ma_start_date = #{maStartDate,jdbcType=DATE},
-      </if>
-      <if test="maEndDate != null" >
-        ma_end_date = #{maEndDate,jdbcType=DATE},
-      </if>
-      <if test="proof != null" >
-        proof = #{proof,jdbcType=VARCHAR},
-      </if>
-      <if test="proofCode != null" >
-        proof_code = #{proofCode,jdbcType=VARCHAR},
-      </if>
-      <if test="license != null" >
-        license = #{license,jdbcType=VARCHAR},
-      </if>
-      <if test="arriveDate != null" >
-        arrive_date = #{arriveDate,jdbcType=DATE},
-      </if>
-      <if test="useDate != null" >
-        use_date = #{useDate,jdbcType=DATE},
-      </if>
-      <if test="comp != null" >
-        comp = #{comp,jdbcType=VARCHAR},
-      </if>
-      <if test="contranct != null" >
-        contranct = #{contranct,jdbcType=VARCHAR},
-      </if>
-      <if test="buyPrice != null" >
-        buy_price = #{buyPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="isNew != null" >
-        is_new = #{isNew,jdbcType=TINYINT},
-      </if>
-      <if test="ware != null" >
-        ware = #{ware,jdbcType=VARCHAR},
-      </if>
-      <if test="isRfid != null" >
-        is_rfid = #{isRfid,jdbcType=TINYINT},
-      </if>
-      <if test="assetCode != null" >
-        asset_code = #{assetCode,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null" >
-        status = #{status,jdbcType=TINYINT},
-      </if>
-      <if test="createBy != null" >
-        create_by = #{createBy,jdbcType=VARCHAR},
-      </if>
-      <if test="createAt != null" >
-        create_at = #{createAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateBy != null" >
-        update_by = #{updateBy,jdbcType=VARCHAR},
-      </if>
-      <if test="updateAt != null" >
-        update_at = #{updateAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="version != null" >
-        version = #{version,jdbcType=BIGINT},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.yankuang.equipment.equipment.model.SbEquipmentT" >
+
+  <update id="update" parameterType="com.yankuang.equipment.equipment.model.SbEquipmentT" >
     update sb_equipment_t
     set code = #{code,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
@@ -426,7 +120,7 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
 
-  <select id="listAll" resultMap="BaseResultMap">
+  <select id="list" resultMap="BaseResultMap">
     select t.*,t1.name as sbtype_one_name,t2.name as sbtype_two_name,t3.name as sbtype_three_name,t4.name as sbmodel_name
     from sb_equipment_t t
     left join sb_type t1 on t.sbtype_one=t1.code and t1.status=1
