@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ELOre" >
+    <resultMap id="BaseResultMap" type="ELOre" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="code" property="code" jdbcType="VARCHAR" />
+        <result column="p_id" property="pId" jdbcType="BIGINT" />
+        <result column="level" property="level" jdbcType="BIGINT" />
+        <result column="sorting" property="sorting" jdbcType="BIGINT" />
+        <result column="status" property="status" jdbcType="TINYINT" />
+        <result column="type" property="type" jdbcType="TINYINT" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="version" property="version" jdbcType="BIGINT" />
+        <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+        <result column="update_at" property="updateAt" jdbcType="BIGINT" />
+        <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+        <result column="create_at" property="createAt" jdbcType="BIGINT" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,name,code,p_id,level,sorting,status,type,remark,version,update_by,update_at,create_by,create_at
+    </sql>
+    <select id="findById" resultMap="BaseResultMap" parameterType="Long">
+        SELECT
+          <include refid="Base_Column_List"/>
+        FROM el_ore
+        WHERE id = #{id}
+    </select>
+    <insert id="create" parameterType="ELOre">
+        INSERT INTO el_ore
+        <include refid="Base_Column_List"/>
+        VALUES(#{id},#{name},#{code},#{pId},
+        #{level},#{sorting},#{status},#{type},#{remark},#{version},#{updateBy},
+        unix_timestamp(now()),#{createBy},unix_timestamp(now()))
+    </insert>
+</mapper>
