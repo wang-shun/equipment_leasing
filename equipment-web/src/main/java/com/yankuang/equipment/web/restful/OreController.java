@@ -24,10 +24,10 @@ public class OreController {
      */
     @PostMapping
     public CommonResponse create(@RequestBody String jsonString){
-        if (StringUtils.isEmpty(jsonString) == false){
+        if (StringUtils.isEmpty(jsonString) == true){
             return CommonResponse.errorTokenMsg("参数不能为空");
         }
-
+        //将json转化成对象
         ElOre elOre = JsonUtils.jsonToPojo(jsonString,ElOre.class);
 
         if (elOre.getName() == null || " ".equals(elOre)){
@@ -53,4 +53,6 @@ public class OreController {
 
         return CommonResponse.ok(oreService.create(elOre));
     }
+
+
 }
