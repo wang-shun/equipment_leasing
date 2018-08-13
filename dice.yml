@@ -31,9 +31,12 @@ endpoints:
       bp_args:
         - USE_AGENT=true
     depends:
-      - equipment-authority-provider
-      - equipment-equipment-provider
-      - equipment-syslog-provider
+#      - equipment-authority-provider
+#      - equipment-equipment-provider
+#      - equipment-syslog-provider
+      - eq-authority-pro
+      - eq-equipment-pro
+      - eq-syslog-pro
 
 services:
 #  equipment-authority-provider:
