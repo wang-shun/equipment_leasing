@@ -31,12 +31,16 @@ endpoints:
       bp_args:
         - USE_AGENT=true
     depends:
-      - equipment-authority-provider
-      - equipment-equipment-provider
-      - equipment-syslog-provider
+#      - equipment-authority-provider
+#      - equipment-equipment-provider
+#      - equipment-syslog-provider
+      - eq-authority-pro
+      - eq-equipment-pro
+      - eq-syslog-pro
 
 services:
-  equipment-authority-provider:
+#  equipment-authority-provider:
+  eq-authority-pro:
     module_path: equipment-authority-provider/equipment-authority-provider-impl
     context: .
     ports:
@@ -50,7 +54,8 @@ services:
       bp_args:
         - USE_AGENT=true
 
-  equipment-equipment-provider:
+#  equipment-equipment-provider:
+  eq-equipment-pro:
     module_path: equipment-equipment-provider/equipment-equipment-provider-impl
     context: .
     ports:
@@ -64,7 +69,8 @@ services:
       bp_args:
         - USE_AGENT=true
 
-  equipment-syslog-provider:
+#  equipment-syslog-provider:
+  eq-syslog-pro:
     module_path: equipment-syslog-provider/equipment-syslog-provider-impl
     context: .
     ports:
