@@ -79,4 +79,18 @@
         WHERE status != 99
         AND id = #{id}
     </update>
+
+    <update id="delete" parameterType="Long">
+        UPDATE el_ore
+        SET status = 99,
+        update_at = unix_timestamp(now())
+        WHERE id = #{id}
+    </update>
+    
+    <select id="findType" parameterType="Long" resultType="Byte">
+        SELECT type
+        FROM el_ore
+        WHERE id = #{id}
+        where status != 99
+    </select>
 </mapper>

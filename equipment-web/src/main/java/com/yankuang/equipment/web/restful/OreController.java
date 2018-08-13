@@ -9,6 +9,8 @@ import io.netty.util.internal.StringUtil;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/v1/ores")
 public class OreController {
@@ -70,5 +72,27 @@ public class OreController {
         }
 
         return CommonResponse.ok(oreService.update(elOre));
+    }
+
+    /**
+     * @method 矿组织删除功能
+     * @param jsonString
+     * @return
+     */
+    @DeleteMapping
+    public CommonResponse delete(@RequestBody String jsonString){
+        if (StringUtils.isEmpty(jsonString)){
+            return CommonResponse.errorTokenMsg("参数不能为空");
+        }
+
+        List<Long> ids = JsonUtils.jsonToList(jsonString,Long.class);
+
+        for (Long id:ids){
+            if (oreService.delete(id) == false){
+                return CommonResponse.build(200,"删除失败",id);
+            }
+        }
+
+        return CommonResponse.ok();
     }
 }

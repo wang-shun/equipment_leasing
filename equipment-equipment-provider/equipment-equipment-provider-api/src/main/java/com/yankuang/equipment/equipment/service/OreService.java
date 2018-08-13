@@ -20,4 +20,11 @@ public interface OreService {
      * @return
      */
     Boolean update(ElOre elOre);
+
+    /**
+     * @method 删除矿组织
+     * @param id
+     * @return
+     */
+    Boolean delete(Long id);
 }

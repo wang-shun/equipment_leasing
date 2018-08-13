@@ -24,4 +24,8 @@ public class OreServiceImpl implements OreService{
     public Boolean update(ElOre elOre){
         return oreMapper.update(elOre);
     }
+
+    public Boolean delete(Long id){
+        return oreMapper.delete(id);
+    }
 }
