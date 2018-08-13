@@ -155,7 +155,7 @@
   </update>
 
   <update id="update" parameterType="DeptUser">
-  UPDATE el_role_user_mapping
+  UPDATE el_department_user_mapping
     <set >
       <if test="departmentId != null" >
         department_id = #{departmentId},
@@ -180,6 +180,6 @@
       </if>
       update_at = unix_timestamp(now())
     </set>
-    WHERE id = #{id}
+    WHERE user_id = #{userId}
   </update>
 </mapper>
