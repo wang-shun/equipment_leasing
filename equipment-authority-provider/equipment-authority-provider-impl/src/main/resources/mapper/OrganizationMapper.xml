@@ -81,7 +81,7 @@
   <update id="updatedel" parameterType="long">
     UPDATE el_organization
     <set>
-      status = 99.
+      status = 99,
       update_at = unix_timestamp(now())
     </set>
     WHERE id = #{id}
