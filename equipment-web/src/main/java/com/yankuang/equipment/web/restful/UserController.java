@@ -271,6 +271,22 @@ public class UserController {
             return CommonResponse.errorTokenMsg("请填写用户名");
         }
 
+        if(orgRoleDTO.getSex() == null){
+            return CommonResponse.errorTokenMsg("请选择性别");
+        }
+
+        if (orgRoleDTO.getOrgId() == null){
+            return CommonResponse.errorTokenMsg("请选择公司");
+        }
+
+        if (orgRoleDTO.getRoleId() == null){
+            return CommonResponse.errorTokenMsg("请选择角色");
+        }
+
+        if (orgRoleDTO.getDeptId() == null){
+            return CommonResponse.errorTokenMsg("请选择部门");
+        }
+
         User user = new User();
 
         if (userService.findUserName(orgRoleDTO.getAccount()) <= 0){
@@ -318,7 +334,7 @@ public class UserController {
 
         deptUserService.create(deptUser);
 
-        return CommonResponse.build(200, "更新成功", null);
+        return CommonResponse.build(200, "添加成功", null);
     }
 
     /**
@@ -414,26 +430,31 @@ public class UserController {
             }
         }
 
-        //将信息添加到用户角色关系表
-        RoleUser roleUser = new RoleUser();
-        roleUser.setUserId(userService.findUserIds(orgRoleDTO.getAccount()));
-        roleUser.setCreateBy("admin");//TODO 暂未开发完，先写死
-        roleUser.setUpdateBy("admin");
-        roleUser.setStatus((byte)1);
-        roleUser.setRoleId(orgRoleDTO.getRoleId());
-        roleUser.setVersion(1L);
+        if (orgRoleDTO.getRoleId() != null) {
+            //将信息添加到用户角色关系表
+            RoleUser roleUser = new RoleUser();
+            roleUser.setUserId(userService.findUserIds(orgRoleDTO.getAccount()));
+            roleUser.setCreateBy("admin");//TODO 暂未开发完，先写死
+            roleUser.setUpdateBy("admin");
+            roleUser.setStatus((byte) 1);
+            roleUser.setRoleId(orgRoleDTO.getRoleId());
+            roleUser.setVersion(1L);
 
-        roleUserService.update(roleUser);
-        //将信息添加到部门用户关系表
-        DeptUser deptUser = new DeptUser();
-        deptUser.setCreateBy("admin");//TODO 暂未开发完，先写死
-        deptUser.setUpdateBy("admin");
-        deptUser.setStatus((byte)1);
-        deptUser.setDepartmentId(orgRoleDTO.getDeptId());
-        deptUser.setUserId(userService.findUserIds(orgRoleDTO.getAccount()));
-        deptUser.setVersion(1L);
+            roleUserService.update(roleUser);
+        }
 
-        deptUserService.update(deptUser);
+        if (orgRoleDTO.getDeptId() != null) {
+            //将信息添加到部门用户关系表
+            DeptUser deptUser = new DeptUser();
+            deptUser.setCreateBy("admin");//TODO 暂未开发完，先写死
+            deptUser.setUpdateBy("admin");
+            deptUser.setStatus((byte) 1);
+            deptUser.setDepartmentId(orgRoleDTO.getDeptId());
+            deptUser.setUserId(userService.findUserIds(orgRoleDTO.getAccount()));
+            deptUser.setVersion(1L);
+
+            deptUserService.update(deptUser);
+        }
 
         return CommonResponse.ok();
     }

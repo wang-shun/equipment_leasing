@@ -317,8 +317,13 @@ public class DeptController {
      */
     @GetMapping("/findpageOrgDept")
     public CommonResponse getPageOrgDept(@RequestParam int page,@RequestParam int limit ){
-        Integer startPage = limit * (page - 1);
-        Integer endPage = limit * page;
+        Integer startPage;
+        Integer endPage;
+        if (page <= 0 || limit <= 0 ){
+            return CommonResponse.errorTokenMsg("输入的页号要大于0");
+        }
+        startPage = limit * (page - 1);
+        endPage = limit * page;
         OrgDepartment orgDepartment = new OrgDepartment();
         orgDepartment.setStartPage(startPage);
         orgDepartment.setEndPage(endPage);
