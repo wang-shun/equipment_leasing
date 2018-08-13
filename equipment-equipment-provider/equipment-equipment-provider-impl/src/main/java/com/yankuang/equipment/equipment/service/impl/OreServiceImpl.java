@@ -20,4 +20,8 @@ public class OreServiceImpl implements OreService{
     public Boolean create(ElOre elOre){
         return oreMapper.create(elOre);
     }
+
+    public Boolean update(ElOre elOre){
+        return oreMapper.update(elOre);
+    }
 }

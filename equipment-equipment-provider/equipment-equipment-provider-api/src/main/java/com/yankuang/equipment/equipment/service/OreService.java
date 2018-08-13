@@ -13,4 +13,11 @@ public interface OreService {
      * @return
      */
     Boolean create(ElOre elOre);
+
+    /**
+     * @method 更新矿组织信息
+     * @param elOre
+     * @return
+     */
+    Boolean update(ElOre elOre);
 }

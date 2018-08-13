@@ -21,20 +21,6 @@
         id,name,code,p_id,level,sorting,status,type,remark,version,update_by,update_at,create_by,create_at
     </sql>
 
-    <sql id = "Base_Column_Set">
-        <set>
-            1=1
-            <if test="id != null">
-                AND id = #{id}
-            </if>
-            <if test="name != null">
-                AND name = #{name}
-            </if>
-            <if test="code != null">
-                AND code = #{code}
-            </if>
-        </set>
-    </sql>
     <select id="findById" resultMap="BaseResultMap" parameterType="Long">
         SELECT
           <include refid="Base_Column_List"/>
@@ -51,7 +37,45 @@
 
     <update id="update" parameterType="ElOre">
         UPDATE el_ore
-
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="code != null">
+                code = #{code},
+            </if>
+            <if test="pId != null">
+                p_id = #{pId},
+            </if>
+            <if test="level != null">
+                level = #{level},
+            </if>
+            <if test="sorting != null">
+                sorting = #{sorting},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+            <if test="version != null">
+                version = #{version},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy},
+            </if>
+            <if test="createAt != null">
+                create_at = #{createAt},
+            </if>
+            update_at = unix_timestamp(now())
+        </set>
         WHERE status != 99
         AND id = #{id}
     </update>
