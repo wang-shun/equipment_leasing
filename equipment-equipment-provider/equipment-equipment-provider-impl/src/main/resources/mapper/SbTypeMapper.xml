@@ -30,34 +30,25 @@
     delete from sb_type
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="create" parameterType="com.yankuang.equipment.equipment.model.SbType">
+  <insert id="create" keyProperty="id" useGeneratedKeys="true" parameterType="com.yankuang.equipment.equipment.model.SbType">
     insert into sb_type (code, name,
       pcode, sorting, level,
-      status, remark, create_by,
-      create_at, update_by, update_at,
-      version)
+      remark, create_by,
+      create_at, update_by, update_at
+      )
     values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
       #{pcode,jdbcType=VARCHAR}, #{sorting,jdbcType=BIGINT}, #{level,jdbcType=BIGINT},
-      #{status,jdbcType=TINYINT}, #{remark,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR},
-      #{createAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateAt,jdbcType=TIMESTAMP},
-      #{version,jdbcType=BIGINT})
+      #{remark,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR},
+      #{createAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateAt,jdbcType=TIMESTAMP}
+      )
   </insert>
 
-  <update id="update" parameterType="com.yankuang.equipment.equipment.model.SbType">
+  <update id="update" parameterType="com.yankuang.equipment.equipment.model.SbTypeInfo">
     update sb_type
-    set code = #{code,jdbcType=VARCHAR},
-      name = #{name,jdbcType=VARCHAR},
-      pcode = #{pcode,jdbcType=VARCHAR},
-      sorting = #{sorting,jdbcType=BIGINT},
-      level = #{level,jdbcType=BIGINT},
-      status = #{status,jdbcType=TINYINT},
-      remark = #{remark,jdbcType=VARCHAR},
-      create_by = #{createBy,jdbcType=VARCHAR},
-      create_at = #{createAt,jdbcType=TIMESTAMP},
+    set name = #{typeName,jdbcType=VARCHAR},
       update_by = #{updateBy,jdbcType=VARCHAR},
-      update_at = #{updateAt,jdbcType=TIMESTAMP},
-      version = #{version,jdbcType=BIGINT}
-    where id = #{id,jdbcType=BIGINT}
+      update_at = #{updateAt,jdbcType=TIMESTAMP}
+    where id = #{typeId,jdbcType=BIGINT}
   </update>
 
     <select id="list" resultMap="BaseResultMap">
@@ -73,12 +64,8 @@
     <include refid="Base_Column_List"/>
     from sb_type t
     where t.status = '1'
-      <if test="pcode != null">
-        and t.pcode = #{pcode}
-      </if>
-      <if test="level != null">
-        and t.level = #{level}
-      </if>
+        and t.pcode = #{p_code,jdbcType=VARCHAR}
+        and t.level = #{p_level,jdbcType=BIGINT}
     order by t.level,code
   </select>
 </mapper>

@@ -20,173 +20,38 @@
     id, code, name, pcode, sorting, level, status, remark, create_by, create_at, update_by, 
     update_at, version
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  <select id="findById" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from sb_type
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+  <delete id="deleteById" parameterType="java.lang.Long">
     delete from sb_type
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.yankuang.equipment.equipment.model.SbType" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+  <insert id="create" keyProperty="id" useGeneratedKeys="true" parameterType="com.yankuang.equipment.equipment.model.SbType">
     insert into sb_type (code, name,
-      pcode, sorting, level, 
-      status, remark, create_by, 
-      create_at, update_by, update_at, 
-      version)
+      pcode, sorting, level,
+      remark, create_by,
+      create_at, update_by, update_at
+      )
     values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
-      #{pcode,jdbcType=VARCHAR}, #{sorting,jdbcType=BIGINT}, #{level,jdbcType=BIGINT}, 
-      #{status,jdbcType=TINYINT}, #{remark,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, 
-      #{createAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateAt,jdbcType=TIMESTAMP},
-      #{version,jdbcType=BIGINT})
+      #{pcode,jdbcType=VARCHAR}, #{sorting,jdbcType=BIGINT}, #{level,jdbcType=BIGINT},
+      #{remark,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR},
+      #{createAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateAt,jdbcType=TIMESTAMP}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.yankuang.equipment.equipment.model.SbType">
-    insert into sb_type
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="code != null">
-        code,
-      </if>
-      <if test="name != null">
-        name,
-      </if>
-      <if test="pcode != null">
-        pcode,
-      </if>
-      <if test="sorting != null">
-        sorting,
-      </if>
-      <if test="level != null">
-        level,
-      </if>
-      <if test="status != null">
-        status,
-      </if>
-      <if test="remark != null">
-        remark,
-      </if>
-      <if test="createBy != null">
-        create_by,
-      </if>
-      <if test="createAt != null">
-        create_at,
-      </if>
-      <if test="updateBy != null">
-        update_by,
-      </if>
-      <if test="updateAt != null">
-        update_at,
-      </if>
-      <if test="version != null">
-        version,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=BIGINT},
-      </if>
-      <if test="code != null">
-        #{code,jdbcType=VARCHAR},
-      </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="pcode != null">
-        #{pcode,jdbcType=VARCHAR},
-      </if>
-      <if test="sorting != null">
-        #{sorting,jdbcType=BIGINT},
-      </if>
-      <if test="level != null">
-        #{level,jdbcType=BIGINT},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=TINYINT},
-      </if>
-      <if test="remark != null">
-        #{remark,jdbcType=VARCHAR},
-      </if>
-      <if test="createBy != null">
-        #{createBy,jdbcType=VARCHAR},
-      </if>
-      <if test="createAt != null">
-        #{createAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateBy != null">
-        #{updateBy,jdbcType=VARCHAR},
-      </if>
-      <if test="updateAt != null">
-        #{updateAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="version != null">
-        #{version,jdbcType=BIGINT},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.yankuang.equipment.equipment.model.SbType">
+
+  <update id="update" parameterType="com.yankuang.equipment.equipment.model.SbTypeInfo">
     update sb_type
-    <set>
-      <if test="code != null">
-        code = #{code,jdbcType=VARCHAR},
-      </if>
-      <if test="name != null">
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="pcode != null">
-        pcode = #{pcode,jdbcType=VARCHAR},
-      </if>
-      <if test="sorting != null">
-        sorting = #{sorting,jdbcType=BIGINT},
-      </if>
-      <if test="level != null">
-        level = #{level,jdbcType=BIGINT},
-      </if>
-      <if test="status != null">
-        status = #{status,jdbcType=TINYINT},
-      </if>
-      <if test="remark != null">
-        remark = #{remark,jdbcType=VARCHAR},
-      </if>
-      <if test="createBy != null">
-        create_by = #{createBy,jdbcType=VARCHAR},
-      </if>
-      <if test="createAt != null">
-        create_at = #{createAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateBy != null">
-        update_by = #{updateBy,jdbcType=VARCHAR},
-      </if>
-      <if test="updateAt != null">
-        update_at = #{updateAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="version != null">
-        version = #{version,jdbcType=BIGINT},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.yankuang.equipment.equipment.model.SbType">
-    update sb_type
-    set code = #{code,jdbcType=VARCHAR},
-      name = #{name,jdbcType=VARCHAR},
-      pcode = #{pcode,jdbcType=VARCHAR},
-      sorting = #{sorting,jdbcType=BIGINT},
-      level = #{level,jdbcType=BIGINT},
-      status = #{status,jdbcType=TINYINT},
-      remark = #{remark,jdbcType=VARCHAR},
-      create_by = #{createBy,jdbcType=VARCHAR},
-      create_at = #{createAt,jdbcType=TIMESTAMP},
+    set name = #{typeName,jdbcType=VARCHAR},
       update_by = #{updateBy,jdbcType=VARCHAR},
-      update_at = #{updateAt,jdbcType=TIMESTAMP},
-      version = #{version,jdbcType=BIGINT}
-    where id = #{id,jdbcType=BIGINT}
+      update_at = #{updateAt,jdbcType=TIMESTAMP}
+    where id = #{typeId,jdbcType=BIGINT}
   </update>
 
-    <select id="selectAllSbTypes" resultMap="BaseResultMap">
+    <select id="list" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
         from sb_type t
@@ -194,17 +59,13 @@
         order by t.level,code
     </select>
 
-  <select id="listSbTypesByPcodeOrLevel" resultMap="BaseResultMap">
+  <select id="listByPcodeOrLevel" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
     from sb_type t
     where t.status = '1'
-      <if test="pcode != null">
-        and t.pcode = #{pcode}
-      </if>
-      <if test="level != null">
-        and t.level = #{level}
-      </if>
+        and t.pcode = #{p_code,jdbcType=VARCHAR}
+        and t.level = #{p_level,jdbcType=BIGINT}
     order by t.level,code
   </select>
 </mapper>
