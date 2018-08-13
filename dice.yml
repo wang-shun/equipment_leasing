@@ -1,5 +1,5 @@
-name: yankuang-equipmen-new
-description: yankuang-equipmen-new
+name: yankuang-equipment
+description: yankuang-equipment
 repository: http://gittar.app.terminus.io/dcos-terminus/yankuang-equipment
 
 endpoints:
@@ -33,6 +33,7 @@ endpoints:
     depends:
       - equipment-authority-provider
       - equipment-equipment-provider
+      - equipment-syslog-provider
 
 services:
   equipment-authority-provider:
@@ -51,6 +52,20 @@ services:
 
   equipment-equipment-provider:
     module_path: equipment-equipment-provider/equipment-equipment-provider-impl
+    context: .
+    ports:
+      - 20880
+    resources:
+      cpu: 0.1
+      mem: 512
+    buildpack:
+      bp_repo: http://git.terminus.io/buildpacks/dice-bpack-termjava.git
+      bp_ver: master
+      bp_args:
+        - USE_AGENT=true
+
+  equipment-syslog-provider:
+    module_path: equipment-syslog-provider/equipment-syslog-provider-impl
     context: .
     ports:
       - 20880

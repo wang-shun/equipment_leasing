@@ -6,10 +6,6 @@ spring:
     url: jdbc:mysql://${MYSQL_HOST:47.94.211.172}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:yankuang_equipment}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=CTT&useSSL=false
     username: ${MYSQL_USERNAME:root}
     password: ${MYSQL_PASSWORD:uAiqwVwjJ8-i}
-#  redis:
-#    host: ${REDIS_HOST:47.94.211.172}
-#    port: ${REDIS_PORT:6379}
-#    password: ${REDIS_PASSWORD:738788}
 rpc:
   mode: true
   dubbo:
