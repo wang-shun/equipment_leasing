@@ -2,19 +2,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>equipment-parent</artifactId>
+        <groupId>com.yankuang.equipment</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.yankuang.equipment</groupId>
-    <artifactId>equipment-parent</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <modules>
-        <module>equipment-authority-provider</module>
-        <module>equipment-common</module>
-        <module>equipment-web</module>
-        <module>equipment-equipment-provider</module>
-        <module>equipment-syslog-provider</module>
-    </modules>
+    <artifactId>equipment-syslog-provider</artifactId>
     <packaging>pom</packaging>
+    <modules>
+        <module>equipment-syslog-provider-api</module>
+        <module>equipment-syslog-provider-impl</module>
+    </modules>
 
     <properties>
         <spring.boot.version>2.0.3.RELEASE</spring.boot.version>
@@ -22,16 +22,16 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.hibernate.validator</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>6.0.7.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.pagehelper</groupId>
-            <artifactId>pagehelper-spring-boot-starter</artifactId>
-            <version>1.2.3</version>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.16</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -46,4 +46,6 @@
             </plugin>
         </plugins>
     </build>
+
+
 </project>
