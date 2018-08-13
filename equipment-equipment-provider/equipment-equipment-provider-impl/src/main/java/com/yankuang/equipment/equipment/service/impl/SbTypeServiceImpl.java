@@ -26,16 +26,17 @@ public class SbTypeServiceImpl implements SbTypeService {
     }
 
     public void create(SbType record, SbTypeInfo sbTypeInfo){
-        sbTypeMapper.create(record);
+        int num = Integer.parseInt(sbTypeMapper.create(record)+"");
         sbTypeInfo.setTypeId(record.getId());
         sbTypeInfoMapper.create(sbTypeInfo);
     }
 
     public void deleteById(Long id) {
+        sbTypeInfoMapper.deleteByTypeId(id);
         sbTypeMapper.deleteById(id);
     }
 
-    public List<SbType> listByPcodeOrLevel(String pcode, int level) {
-        return sbTypeMapper.listByPcodeOrLevel(pcode,level);
+    public List<SbType> listByPcodeOrLevel(String p_code, int level) {
+        return sbTypeMapper.listByPcodeOrLevel(p_code,level);
     }
 }

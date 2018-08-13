@@ -46,6 +46,10 @@
     delete from sb_type_info
     where id = #{id,jdbcType=BIGINT}
   </delete>
+  <delete id="deleteByTypeId" parameterType="java.lang.Long" >
+    delete from sb_type_info
+    where type_id = #{id,jdbcType=BIGINT}
+  </delete>
   <insert id="create" parameterType="com.yankuang.equipment.equipment.model.SbTypeInfo" >
     insert into sb_type_info (type_id, main_para,
       main_para_type, def_para1, def_para1_type, 
@@ -54,8 +58,8 @@
       def_para5, def_para5_type, def_para6, 
       def_para6_type, def_para7, def_para7_type, 
       def_para8, def_para8_type,create_by,
-      create_at, update_by, update_at,
-      version)
+      create_at, update_by, update_at
+      )
     values (#{typeId,jdbcType=BIGINT}, #{mainPara,jdbcType=VARCHAR},
       #{mainParaType,jdbcType=VARCHAR}, #{defPara1,jdbcType=VARCHAR}, #{defPara1Type,jdbcType=VARCHAR}, 
       #{defPara2,jdbcType=VARCHAR}, #{defPara2Type,jdbcType=VARCHAR}, #{defPara3,jdbcType=VARCHAR}, 
@@ -63,14 +67,13 @@
       #{defPara5,jdbcType=VARCHAR}, #{defPara5Type,jdbcType=VARCHAR}, #{defPara6,jdbcType=VARCHAR}, 
       #{defPara6Type,jdbcType=VARCHAR}, #{defPara7,jdbcType=VARCHAR}, #{defPara7Type,jdbcType=VARCHAR}, 
       #{defPara8,jdbcType=VARCHAR}, #{defPara8Type,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR},
-      #{createAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateAt,jdbcType=TIMESTAMP},
-      #{version,jdbcType=BIGINT})
+      #{createAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateAt,jdbcType=TIMESTAMP}
+      )
   </insert>
 
   <update id="update" parameterType="com.yankuang.equipment.equipment.model.SbTypeInfo" >
     update sb_type_info
-    set type_id = #{typeId,jdbcType=BIGINT},
-      main_para = #{mainPara,jdbcType=VARCHAR},
+    set main_para = #{mainPara,jdbcType=VARCHAR},
       main_para_type = #{mainParaType,jdbcType=VARCHAR},
       def_para1 = #{defPara1,jdbcType=VARCHAR},
       def_para1_type = #{defPara1Type,jdbcType=VARCHAR},
@@ -88,11 +91,8 @@
       def_para7_type = #{defPara7Type,jdbcType=VARCHAR},
       def_para8 = #{defPara8,jdbcType=VARCHAR},
       def_para8_type = #{defPara8Type,jdbcType=VARCHAR},
-      create_by = #{createBy,jdbcType=VARCHAR},
-      create_at = #{createAt,jdbcType=TIMESTAMP},
       update_by = #{updateBy,jdbcType=VARCHAR},
-      update_at = #{updateAt,jdbcType=TIMESTAMP},
-      version = #{version,jdbcType=BIGINT}
+      update_at = #{updateAt,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

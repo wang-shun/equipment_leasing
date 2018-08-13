@@ -67,10 +67,10 @@ public class SbTypeController {
     }
 
     @RequestMapping(value = "/listByPcodeOrLevel",method = RequestMethod.GET)
-    public ResponseMeta listByPcodeOrLevel(String pcode,int level){
+    public ResponseMeta listByPcodeOrLevel(@RequestParam String p_code,@RequestParam int level){
         ResponseMeta responseMeta = new ResponseMeta();
         try{
-            List<SbType> list = sbTypeService.listByPcodeOrLevel(pcode,level);
+            List<SbType> list = sbTypeService.listByPcodeOrLevel(p_code,level);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"查询设备类型成功");
             responseMeta.setData(list);
         }catch (Exception e){
