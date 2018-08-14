@@ -1,20 +1,25 @@
 package com.yankuang.equipment.authority.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.yankuang.equipment.authority.mapper.RoleMapper;
+import com.yankuang.equipment.authority.mapper.RolePlusMapper;
 import com.yankuang.equipment.authority.model.Role;
 import com.yankuang.equipment.authority.service.RoleService;
 import io.terminus.boot.rpc.common.annotation.RpcProvider;
-import io.terminus.common.model.Paging;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RpcProvider
 public class RoleServiceImpl implements RoleService {
     @Autowired
     RoleMapper roleMapper;
+    @Autowired
+    RolePlusMapper rolePlusMapper;
 
     public Role getById(Long id) {
         return roleMapper.findById(id);
@@ -33,20 +38,22 @@ public class RoleServiceImpl implements RoleService {
     }
 
     public Role findByName(String name){
-        return roleMapper.findByName(name);
+        return rolePlusMapper.findByName(name);
     }
 
     public List<Role> getAll( ){
-        return roleMapper.getAll( );
+        return rolePlusMapper.getAll( );
     }
 
-    public Paging<Role> paging(Integer page, Integer size, Role role){
-        Integer offset = (page - 1) * size;
-        Integer limit = size;
-        return  roleMapper.paging(offset, limit, role);
+    public PageInfo<Role> list(Integer page, Integer size, Map roleMap) {
+        PageHelper.startPage(page,size);
+        List<Role> roles = rolePlusMapper.list(roleMap);
+        PageInfo<Role> pageInfo = new PageInfo<Role>(roles);
+        return pageInfo;
     }
 
     public Role findRoles(Long roleId){
-        return roleMapper.findRoles(roleId);
+        return rolePlusMapper.findRoles(roleId);
     }
+
 }

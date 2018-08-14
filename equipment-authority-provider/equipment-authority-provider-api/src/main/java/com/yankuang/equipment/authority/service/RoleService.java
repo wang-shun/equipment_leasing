@@ -1,10 +1,11 @@
 package com.yankuang.equipment.authority.service;
 
 
+import com.github.pagehelper.PageInfo;
 import com.yankuang.equipment.authority.model.Role;
-import io.terminus.common.model.Paging;
 
 import java.util.List;
+import java.util.Map;
 
 public interface RoleService {
     Role getById(Long id);
@@ -14,6 +15,6 @@ public interface RoleService {
     Role findByName(String name);
     List<Role> getAll( );
     Role findRoles(Long roleId);
-    Paging paging(Integer page, Integer size, Role role);
+    PageInfo<Role> list(Integer page, Integer size, Map role);
 
 }

@@ -4,10 +4,7 @@ import com.yankuang.equipment.authority.model.AuthorityGroupMapping;
 import com.yankuang.equipment.authority.model.DeptRole;
 import com.yankuang.equipment.authority.model.Role;
 import com.yankuang.equipment.authority.model.RoleAuthority;
-import com.yankuang.equipment.authority.service.AuthorityGroupMappingService;
-import com.yankuang.equipment.authority.service.DeptRoleService;
-import com.yankuang.equipment.authority.service.RoleAuthorityService;
-import com.yankuang.equipment.authority.service.RoleService;
+import com.yankuang.equipment.authority.service.*;
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.web.dto.DeptRoleDTO;
@@ -151,7 +148,7 @@ public class RoleController {
     }
 
     /**
-     * @param id
+     * @param jsonString
      * @return
      * @method 删除
      */
@@ -179,11 +176,11 @@ public class RoleController {
      * @method 分页查询
      */
     @GetMapping
-    CommonResponse paging(@RequestParam(value = "page", defaultValue = "1") Integer page,
+    CommonResponse findListByPage(@RequestParam(value = "page", defaultValue = "1") Integer page,
                           @RequestParam(value = "size", defaultValue = "20") Integer size,
                           @RequestParam String searchInput) {
-        Role role = new Role();
-        return CommonResponse.ok(roleService.paging(page, size, role));
+        Map roleMap = new HashMap();
+        return CommonResponse.ok(roleService.list(page, size, roleMap));
     }
 
     /**
