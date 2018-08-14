@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 public interface SbTypeInfoMapper {
     int deleteById(Long id);
 
+    int deleteByTypeId(Long typeId);
+
     int create(SbTypeInfo record);
 
     SbTypeInfo findById(Long id);

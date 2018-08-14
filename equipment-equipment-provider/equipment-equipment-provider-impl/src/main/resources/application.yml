@@ -1,26 +1,20 @@
 spring:
   application:
-    name: equipment-equipment-provider
-#  datasource:
-#    driver-class-name: com.mysql.jdbc.Driver
-#    url: jdbc:mysql://47.94.211.172:3306/yankuang_equipment?useUnicode=true&characterEncoding=UTF8
-#    username: root
-#    password: uAiqwVwjJ8-i
+#    name: equipment-equipment-provider
+    name: eq-equipment-pro
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://${MYSQL_HOST:47.94.211.172}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:yankuang_equipment}?useUnicode=true&characterEncoding=UTF8
     username: ${MYSQL_USERNAME:root}
     password: ${MYSQL_PASSWORD:uAiqwVwjJ8-i}
-#  redis:
-#    host: ${REDIS_HOST:47.94.211.172}
-#    port: ${REDIS_PORT:6379}
-#    password: ${REDIS_PASSWORD:738788}
 rpc:
   mode: true
   dubbo:
-    module: equipment-equipment-provider
+#    module: equipment-equipment-provider
+    module: eq-equipment-pro
     registryAddress: ${ZOOKEEPER_HOST:127.0.0.1}:${ZOOKEEPER_PORT:2181}
     port: 20881
+#    port: 20880
 
 mybatis:
   mapper-locations: classpath*:mapper/*Mapper.xml

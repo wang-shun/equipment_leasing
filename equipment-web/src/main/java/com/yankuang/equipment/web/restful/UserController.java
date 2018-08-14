@@ -7,12 +7,14 @@ import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.common.util.UuidUtils;
 import com.yankuang.equipment.web.dto.OrgRoleDTO;
 import com.yankuang.equipment.web.dto.UserDTO;
+import com.yankuang.equipment.web.dto.UserIn;
 import com.yankuang.equipment.web.util.CodeUtil;
 import com.yankuang.equipment.web.util.RedisOperator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import io.terminus.common.model.Paging;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +30,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/users")
 public class UserController {
+
+    public static final Logger log = Logger.getLogger(UserController.class);
 
     @Autowired
     RedisOperator redis;
@@ -60,15 +64,27 @@ public class UserController {
 
     /**
      * 用户登录.
-     * @param userName
-     * @param password
+     * @param jsonString
+     * @param request
      * @return
      */
     @ApiOperation("user login")
     @PostMapping(value = "/login")
-    CommonResponse login(@RequestParam(defaultValue = "") String userName,
-                                     @RequestParam(defaultValue = "") String password,
+    CommonResponse login(@RequestBody String jsonString,
                                      HttpServletRequest request) {
+        if (jsonString == null || "".equals(jsonString)) {
+            return CommonResponse.errorMsg("参数不能为空");
+        }
+        UserIn user = JsonUtils.jsonToPojo(jsonString,UserIn.class);
+        String username = user.getUsername();
+        if (StringUtils.isEmpty(username)) {
+            return CommonResponse.errorMsg("用户名不能为空");
+        }
+        String password = user.getPassword();
+        if (StringUtils.isEmpty(password)) {
+            return CommonResponse.errorMsg("密码不能为空");
+        }
+        log.info("--------- 用户登录信息:" + username + ":" + password);
         UserDTO userDTO = new UserDTO();
         List<Long> authorityIds = new ArrayList<Long>();
         List<Long> roleIds = new ArrayList<Long>();
@@ -88,15 +104,12 @@ public class UserController {
 //            return CommonResponse.ok(token);
 //        }
 
-        if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)) {
-            return CommonResponse.errorTokenMsg("用户名和密码不能为空");
-        }
-        User loginUser =  userService.login(userName);
+        User loginUser =  userService.login(username);
         if (loginUser != null && !password.equals(loginUser.getPassword())) {
             return CommonResponse.errorTokenMsg("密码错误");
         }
         if (loginUser != null && password.equals(loginUser.getPassword())) {
-            System.out.println(loginUser);
+            log.info(loginUser.toString());
             String result = getUserDTO(userDTO, authorityIds, roleIds, loginUser);
             token = CodeUtil.getCode();
 
@@ -107,7 +120,7 @@ public class UserController {
                 final byte[] textByte = result.getBytes("UTF-8");
                 // 加密
                 encodedResult = encoder.encodeToString(textByte);
-                System.out.println(encodedResult);
+                log.info(encodedResult);
 
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();

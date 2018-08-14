@@ -3,6 +3,7 @@ package com.yankuang.equipment.web.log;
 import com.yankuang.equipment.syslog.model.SysLog;
 import com.yankuang.equipment.syslog.service.SysLogService;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
+import net.sf.json.JSONObject;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
@@ -35,7 +36,7 @@ public class WebLogAspect {
     @Pointcut("execution(public * com.yankuang.*..*.*(..))")
     public void webLog(){}
 
-    @Pointcut("execution(public * com.yankuang.*..*.*(..)) && !execution(* com.yankuang.*..*.add*(..)) && !execution(* com.yankuang.*..*.update*(..)) " +
+    @Pointcut("execution( * com.yankuang.*..*.*(..)) && !execution(* com.yankuang.*..*.add*(..)) && !execution(* com.yankuang.*..*.update*(..)) " +
             "&& !execution(* com.yankuang.*..*.delete*(..)) && !execution(* com.yankuang.*..*.find*(..))")
     public void sysLog(){}
 
@@ -105,7 +106,9 @@ public class WebLogAspect {
         syslog.setContent(opContent(joinPoint));
         syslog.setCreate_date(DateUtils());
         syslog.setIp_address(InetAddress.getLocalHost().toString().substring(InetAddress.getLocalHost().toString().lastIndexOf("/")+1));
-        syslog.setReturned_content("返回内容为：" + object);
+        JSONObject json = JSONObject.fromObject(object);//将java对象转换为json对象
+        String str = String.valueOf(json);//将json对象转换为字符串
+        syslog.setReturned_content("返回内容为：" + str);
         sysLogService.add(syslog);
     }
 
@@ -126,7 +129,8 @@ public class WebLogAspect {
         syslog.setCreate_date(DateUtils());
         syslog.setOperation("添加");
         syslog.setIp_address(InetAddress.getLocalHost().toString().substring(InetAddress.getLocalHost().toString().lastIndexOf("/")+1));
-        syslog.setReturned_content("返回内容为：" + object);
+        JSONObject json = JSONObject.fromObject(object);//将java对象转换为json对象
+        syslog.setReturned_content("返回内容为：" + String.valueOf(json));
         sysLogService.add(syslog);
     }
 
@@ -149,7 +153,9 @@ public class WebLogAspect {
         syslog.setCreate_date(DateUtils());
         syslog.setOperation("删除");
         syslog.setIp_address(InetAddress.getLocalHost().toString().substring(InetAddress.getLocalHost().toString().lastIndexOf("/")+1));
-        syslog.setReturned_content("返回内容为：" + object);
+        JSONObject json = JSONObject.fromObject(object);//将java对象转换为json对象
+        String str = String.valueOf(json);//将json对象转换为字符串
+        syslog.setReturned_content("返回内容为：" + str);
         sysLogService.add(syslog);
     }
 
@@ -172,7 +178,8 @@ public class WebLogAspect {
         syslog.setCreate_date(DateUtils());
         syslog.setOperation("修改");
         syslog.setIp_address(InetAddress.getLocalHost().toString().substring(InetAddress.getLocalHost().toString().lastIndexOf("/")+1));
-        syslog.setReturned_content("返回内容为：" + object);
+        JSONObject json = JSONObject.fromObject(object);//将java对象转换为json对象
+        syslog.setReturned_content("返回内容为：" + String.valueOf(json));
         sysLogService.add(syslog);
     }
 
@@ -196,7 +203,8 @@ public class WebLogAspect {
         syslog.setCreate_date(DateUtils());
         syslog.setOperation("查询");
         syslog.setIp_address(InetAddress.getLocalHost().toString().substring(InetAddress.getLocalHost().toString().lastIndexOf("/")+1));
-        syslog.setReturned_content("返回内容为：" + object);
+        JSONObject json = JSONObject.fromObject(object);//将java对象转换为json对象
+        syslog.setReturned_content("返回内容为：" + String.valueOf(json));
         sysLogService.add(syslog);
     }
 

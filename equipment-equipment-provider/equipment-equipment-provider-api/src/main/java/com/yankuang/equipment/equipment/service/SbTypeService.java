@@ -27,9 +27,9 @@ public interface SbTypeService {
 
     /**
      * 根据父编码、级别查询设备类型
-     * @param pcode
+     * @param p_code
      * @param level
      * @return
      */
-    public List<SbType> listByPcodeOrLevel(String pcode,int level);
+    public List<SbType> listByPcodeOrLevel(String p_code,int level);
 }

@@ -1,19 +1,17 @@
 spring:
   application:
-    name: equipment-authority-provider
+#    name: equipment-authority-provider
+    name: eq-authority-pro
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://${MYSQL_HOST:47.94.211.172}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:yankuang_equipment}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=CTT&useSSL=false
     username: ${MYSQL_USERNAME:root}
     password: ${MYSQL_PASSWORD:uAiqwVwjJ8-i}
-#  redis:
-#    host: ${REDIS_HOST:47.94.211.172}
-#    port: ${REDIS_PORT:6379}
-#    password: ${REDIS_PASSWORD:738788}
 rpc:
   mode: true
   dubbo:
-    module: equipment-authority-provider
+#    module: equipment-authority-provider
+    module: eq-authority-pro
     registryAddress: ${ZOOKEEPER_HOST:127.0.0.1}:${ZOOKEEPER_PORT:2181}
     port: 20880
 

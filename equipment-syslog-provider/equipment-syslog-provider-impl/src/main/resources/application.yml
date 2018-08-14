@@ -1,21 +1,20 @@
 spring:
   application:
-    name: equipment-log-provider
+#    name: equipment-syslog-provider
+    name: eq-syslog-pro
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://${MYSQL_HOST:47.94.211.172}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:yankuang_equipment}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=CTT&useSSL=false
     username: ${MYSQL_USERNAME:root}
     password: ${MYSQL_PASSWORD:uAiqwVwjJ8-i}
-#  redis:
-#    host: ${REDIS_HOST:47.94.211.172}
-#    port: ${REDIS_PORT:6379}
-#    password: ${REDIS_PASSWORD:738788}
 rpc:
   mode: true
   dubbo:
-    module: equipment-log-provider
-    registryAddress: ${ZK_HOST:127.0.0.1}:${ZK_PORT:2181}
+#    module: equipment-syslog-provider
+    module: eq-syslog-pro
+    registryAddress: ${ZOOKEEPER_HOST:127.0.0.1}:${ZOOKEEPER_PORT:2181}
     port: 20883
+#    port: 20880
 
 mybatis:
   mapper-locations: classpath*:mapper/*Mapper.xml
