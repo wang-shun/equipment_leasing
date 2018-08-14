@@ -34,6 +34,7 @@ public class OreController {
             return CommonResponse.errorTokenMsg("名字不能为空");
         }
 
+        //判断是否有一下值没有赋默认值
         String code = (elOre.getCode() == null || " ".equals(elOre.getCode()))?"1":elOre.getCode();
         elOre.setCode(code);
         Long level = elOre.getLevel() == null?1:elOre.getLevel();
@@ -88,11 +89,56 @@ public class OreController {
         List<Long> ids = JsonUtils.jsonToList(jsonString,Long.class);
 
         for (Long id:ids){
-            if (oreService.delete(id) == false){
-                return CommonResponse.build(200,"删除失败",id);
+            //判断矿类型
+            if (oreService.findType(id) == (byte)1){
+                List<Long> pids = oreService.getId(id);
+                for (Long pid:pids){
+                    if (oreService.deleteOre(pid) == false){
+                        return CommonResponse.build(200,"删除失败",pid);
+                    }
+                    if (oreService.delete(pid) == false) {
+                        return CommonResponse.build(200, "删除失败", pid);
+                    }
+                }
+            }
+            if (oreService.findType(id) == (byte)2){
+                if (oreService.deleteOre(id) == false){
+                    return CommonResponse.build(200,"删除失败",id);
+                }
+            }
+            if (oreService.delete(id) == false) {
+                return CommonResponse.build(200, "删除失败", id);
             }
         }
 
         return CommonResponse.ok();
+    }
+
+    /**
+     * @method 通过id查找
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    public CommonResponse findById(@PathVariable Long id){
+        if (id == null){
+            return CommonResponse.errorTokenMsg("id不能为空");
+        }
+        return CommonResponse.ok(oreService.findById(id));
+    }
+
+    /**
+     * @method 通过p_id查询列表
+     * @param id
+     * @return
+     */
+    @GetMapping("/findByPId/{id}")
+    public CommonResponse findByPId(@PathVariable Long id){
+        if (id == null){
+            return CommonResponse.errorTokenMsg("id不能为空");
+        }
+
+        List<ElOre> ElOres = oreService.findByPId(id);
+        return CommonResponse.ok(ElOres);
     }
 }

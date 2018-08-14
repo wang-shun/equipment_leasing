@@ -21,6 +21,10 @@
         id,name,code,p_id,level,sorting,status,type,remark,version,update_by,update_at,create_by,create_at
     </sql>
 
+    <resultMap id="getOreId" type="Long" >
+        <result column="id" property="id" jdbcType="BIGINT" />
+    </resultMap>
+
     <select id="findById" resultMap="BaseResultMap" parameterType="Long">
         SELECT
           <include refid="Base_Column_List"/>
@@ -91,6 +95,29 @@
         SELECT type
         FROM el_ore
         WHERE id = #{id}
-        where status != 99
+        AND status != 99
+    </select>
+
+    <update id="deleteOre" parameterType="Long">
+        UPDATE el_ore
+        SET status = 99,
+        update_at = unix_timestamp(now())
+        WHERE p_id = #{id}
+    </update>
+
+    <select id="getId" parameterType="Long" resultType="Long">
+        SELECT id
+        FROM el_ore
+        WHERE p_id = #{id}
+        AND status != 99
+        ORDER BY create_at
+    </select>
+
+    <select id="findByPId" parameterType="Long" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM el_ore
+        WHERE p_id = #{id}
+        AND status != 99
+        ORDER BY create_at
     </select>
 </mapper>
