@@ -231,4 +231,16 @@ public class ElPlan implements Serializable {
     public void setPlanVersion(String planVersion) {
         this.planVersion = planVersion == null ? null : planVersion.trim();
     }
+
+    public @NotNull( message = "提出人姓名不得为空" ) String getPlanCreatorName() {
+        return planCreatorName;
+    }
+
+    public String getPlanApproverName() {
+        return planApproverName;
+    }
+
+    public String getPlanUpdatorName() {
+        return planUpdatorName;
+    }
 }
