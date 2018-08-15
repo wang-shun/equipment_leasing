@@ -1,16 +1,20 @@
 package com.yankuang.equipment.equipment.model;
 
-import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Date;
 
 public class SbModel implements Serializable {
     private Long id;
 
-    @NotNull(message = "设备型号编码不能为空!")
+    @NotEmpty(message = "设备型号编码不能为空!")
+    @Length(min = 1,max = 200,message = "设备型号编码长度超出范围!")
     private String code;
 
-    @NotNull(message = "设备型号名称不能为空!")
+    @NotEmpty(message = "设备型号名称不能为空!")
+    @Length(min = 1,max = 200,message = "设备型号名称长度超出范围!")
     private String name;
 
     private String sbtypeOne;

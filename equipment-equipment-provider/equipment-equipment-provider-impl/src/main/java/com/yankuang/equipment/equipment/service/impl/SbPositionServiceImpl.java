@@ -23,8 +23,8 @@ public class SbPositionServiceImpl implements SbPositionService {
         if(sbPosition1==null){
             sbPosition.setCode("01013100001");
         }else{
-            Integer code = Integer.parseInt(sbPosition.getCode());
-            sbPosition.setCode(String.valueOf(code+1));
+            Integer code = Integer.parseInt(sbPosition1.getCode());
+            sbPosition.setCode(String.valueOf(code+1).length()<sbPosition1.getCode().length()?'0'+String.valueOf(code+1):String.valueOf(code+1));
         }
         sbPositionMapper.create(sbPosition);
     }

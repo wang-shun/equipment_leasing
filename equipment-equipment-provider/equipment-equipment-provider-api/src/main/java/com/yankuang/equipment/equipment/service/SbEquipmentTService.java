@@ -32,10 +32,11 @@ public interface SbEquipmentTService {
 
     /**
      * 分页查询通用设备
-     * @param equipmentT
+     * @param code
+     * @param name
      * @param pageNum
      * @param pageSize
      * @return
      */
-    public PageInfo<SbEquipmentT> list(SbEquipmentT equipmentT, int pageNum, int pageSize);
+    public PageInfo<SbEquipmentT> list(String code,String name, int pageNum, int pageSize);
 }

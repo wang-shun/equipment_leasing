@@ -34,9 +34,9 @@ public class SbEquipmentTServiceImpl implements SbEquipmentTService {
         sbEquipmentTMapper.deleteById(id);
     }
 
-    public PageInfo<SbEquipmentT> list(SbEquipmentT equipmentT, int pageNum, int pageSize) {
+    public PageInfo<SbEquipmentT> list(String code,String name, int pageNum, int pageSize) {
         PageHelper.startPage(pageNum,pageSize);
-        List<SbEquipmentT> list = sbEquipmentTMapper.list(equipmentT);
+        List<SbEquipmentT> list = sbEquipmentTMapper.list(code,name);
         PageInfo<SbEquipmentT> pageInfo = new PageInfo<SbEquipmentT>(list);
         return pageInfo;
     }
