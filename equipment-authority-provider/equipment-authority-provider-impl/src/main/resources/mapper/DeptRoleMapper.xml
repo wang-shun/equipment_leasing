@@ -89,7 +89,7 @@
     </set>
     where id = #{id}
   </update>
-
+<!--删除部门组织关系表-->
   <update id="updatedelDR" parameterType="long">
     UPDATE yankuang_equipment.el_department_role_mapping
     <set>
@@ -98,7 +98,7 @@
     </set>
     WHERE id = #{id}
   </update>
-
+<!--根据部门id通过关系表查询角色id-->
   <select id="findRoleId" parameterType="Long" resultMap="getRoleId">
     SELECT role_id
     FROM el_department_role_mapping
