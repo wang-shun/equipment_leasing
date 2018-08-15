@@ -38,67 +38,6 @@
         unix_timestamp(now()), 1, 1
       )
   </insert>
-  <insert id="insertSelective" parameterType="OrgDept" >
-    insert into el_organization_department_mapping
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="departmentId != null" >
-        department_id,
-      </if>
-      <if test="organizationId != null" >
-        organization_id,
-      </if>
-      <if test="createBy != null" >
-        create_by,
-      </if>
-      <if test="updateAt != null" >
-        update_at,
-      </if>
-      <if test="updateBy != null" >
-        update_by,
-      </if>
-      <if test="createAt != null" >
-        create_at,
-      </if>
-      <if test="version != null" >
-        version,
-      </if>
-      <if test="status != null" >
-        status,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id},
-      </if>
-      <if test="departmentId != null" >
-        #{departmentId},
-      </if>
-      <if test="organizationId != null" >
-        #{organizationId},
-      </if>
-      <if test="createBy != null" >
-        #{createBy},
-      </if>
-      <if test="updateAt != null" >
-        #{updateAt},
-      </if>
-      <if test="updateBy != null" >
-        #{updateBy},
-      </if>
-      <if test="createAt != null" >
-        #{createAt},
-      </if>
-      <if test="version != null" >
-        #{version},
-      </if>
-      <if test="status != null" >
-        #{status},
-      </if>
-    </trim>
-  </insert>
   <update id="update" parameterType="OrgDept" >
     update el_organization_department_mapping
     <set >
@@ -127,18 +66,6 @@
         status = #{status},
       </if>
     </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="OrgDept" >
-    update el_organization_department_mapping
-    set department_id = #{departmentId,jdbcType=BIGINT},
-      organization_id = #{organizationId,jdbcType=BIGINT},
-      create_by = #{createBy,jdbcType=VARCHAR},
-      update_at = #{updateAt,jdbcType=BIGINT},
-      update_by = #{updateBy,jdbcType=VARCHAR},
-      create_at = #{createAt,jdbcType=BIGINT},
-      version = #{version,jdbcType=BIGINT},
-      status = #{status,jdbcType=TINYINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 
