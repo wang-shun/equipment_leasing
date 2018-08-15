@@ -3,7 +3,6 @@ package com.yankuang.equipment.authority.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yankuang.equipment.authority.mapper.RoleMapper;
-import com.yankuang.equipment.authority.mapper.RolePlusMapper;
 import com.yankuang.equipment.authority.model.Role;
 import com.yankuang.equipment.authority.service.RoleService;
 import io.terminus.boot.rpc.common.annotation.RpcProvider;
@@ -18,42 +17,36 @@ import java.util.Map;
 public class RoleServiceImpl implements RoleService {
     @Autowired
     RoleMapper roleMapper;
-    @Autowired
-    RolePlusMapper rolePlusMapper;
 
-    public Role getById(Long id) {
+    public Role findById(Long id) {
         return roleMapper.findById(id);
     }
 
-    public boolean update(Role role){
+    public boolean update(Role role) {
         return roleMapper.update(role);
     }
 
-    public boolean create(Role role){
+    public boolean create(Role role) {
         return roleMapper.create(role);
     }
 
-    public boolean delete(Long id){
-        return  roleMapper.delete(id);
+    public boolean delete(Long id) {
+        return roleMapper.delete(id);
     }
 
-    public Role findByName(String name){
-        return rolePlusMapper.findByName(name);
+    public Role findByName(String name) {
+        return roleMapper.findByName(name);
     }
 
-    public List<Role> getAll( ){
-        return rolePlusMapper.getAll( );
+    public List<Role> getAll() {
+        return roleMapper.getAll();
     }
 
     public PageInfo<Role> list(Integer page, Integer size, Map roleMap) {
-        PageHelper.startPage(page,size);
-        List<Role> roles = rolePlusMapper.list(roleMap);
+        PageHelper.startPage(page, size);
+        List<Role> roles = roleMapper.list(roleMap);
         PageInfo<Role> pageInfo = new PageInfo<Role>(roles);
         return pageInfo;
-    }
-
-    public Role findRoles(Long roleId){
-        return rolePlusMapper.findRoles(roleId);
     }
 
 }

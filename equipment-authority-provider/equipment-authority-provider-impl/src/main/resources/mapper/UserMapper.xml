@@ -68,7 +68,7 @@
         <if test="code != null">AND code = #{code}</if>
     </sql>
 
-    <insert id="create" parameterType="User">
+    <insert id="create" parameterType="User" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO el_user
         (<include refid="cols_all" />)
         VALUES

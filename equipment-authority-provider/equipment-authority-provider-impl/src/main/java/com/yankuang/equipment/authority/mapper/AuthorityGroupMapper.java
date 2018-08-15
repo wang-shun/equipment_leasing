@@ -1,18 +1,22 @@
 package com.yankuang.equipment.authority.mapper;
 
 import com.yankuang.equipment.authority.model.AuthorityGroup;
-import io.terminus.common.mysql.dao.MyBatisDao;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Map;
+
 @Repository
-public class AuthorityGroupMapper extends MyBatisDao<AuthorityGroup> {
+public interface AuthorityGroupMapper {
+    AuthorityGroup findByName(String name);
 
-    public AuthorityGroup findByName(String name) {
-        return getSqlSession().selectOne("com.yankuang.equipment.authority.mapper.AuthorityGroupMapper.findByName", name);
-    }
+    Boolean delete(Long id);
 
-    public Boolean create(AuthorityGroup t) {
-        return getSqlSession().insert("com.yankuang.equipment.authority.mapper.AuthorityGroupMapper.create", t) == 1;
-    }
+    Boolean create(AuthorityGroup t);
 
+    Boolean update(AuthorityGroup t);
+
+    AuthorityGroup findById(Long id);
+
+    List<AuthorityGroup> list(Map<?, ?> criteria);
 }
