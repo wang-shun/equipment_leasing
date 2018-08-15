@@ -1,16 +1,16 @@
 package com.yankuang.equipment.authority.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.yankuang.equipment.authority.mapper.OrganizationMapper;
 import com.yankuang.equipment.authority.model.Organization;
 import com.yankuang.equipment.authority.service.OrganizationService;
-import com.yankuang.equipment.common.util.UuidUtils;
 import io.terminus.boot.rpc.common.annotation.RpcProvider;
-import io.terminus.common.model.Paging;
-import jdk.nashorn.internal.ir.annotations.Reference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -20,37 +20,35 @@ public class OrganizationServiceImpl implements OrganizationService {
     @Autowired
     OrganizationMapper organizationMapper;
 
-    public Organization getById(Long id) {
+    public Organization findById(Long id) {
         return organizationMapper.findById(id);
     }
 
-    public boolean add(Organization organization){
+    public boolean create(Organization organization) {
         return organizationMapper.create(organization);
     }
 
-    public boolean update(Organization organization){
+    public boolean update(Organization organization) {
         return organizationMapper.update(organization);
     }
 
-    public boolean del(Long id){
-        return  organizationMapper.updatedel(id);
+    public boolean delete(Long id) {
+        return organizationMapper.delete(id);
     }
 
-    public Organization getByName(String name){
+    public Organization findByName(String name) {
         return organizationMapper.findByName(name);
     }
 
-    public List<Organization> getAll( ){
-        return organizationMapper.getAll( );
+    public List<Organization> findAll() {
+        return organizationMapper.findAll();
     }
 
-    public Paging findpage(int pageSize, int pageNum, Organization organization){
-        int maxResult = (pageNum - 1) * pageSize;
-        Paging page = organizationMapper.paging(maxResult, pageNum, organization);
-        return page;
+    public PageInfo<Organization> findByPage(int page, int size, Map orgMap) {
+        PageHelper.startPage(page, size);
+        List<Organization> organizations = organizationMapper.list(orgMap);
+        PageInfo<Organization> pageInfo = new PageInfo<Organization>(organizations);
+        return pageInfo;
     }
 
-    public List<String> findName(){
-        return organizationMapper.getName();
-    }
 }

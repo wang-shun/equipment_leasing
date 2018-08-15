@@ -7,6 +7,8 @@ import java.io.Serializable;
 public class Organization implements Serializable {
     private Long id;
 
+    private Long pId;
+
     private String name;
 
     private String pcode;
@@ -133,5 +135,13 @@ public class Organization implements Serializable {
 
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    public Long getpId() {
+        return pId;
+    }
+
+    public void setpId(Long pId) {
+        this.pId = pId;
     }
 }

@@ -1,25 +1,25 @@
 package com.yankuang.equipment.authority.mapper;
 
 import com.yankuang.equipment.authority.model.Organization;
-import io.terminus.common.mysql.dao.MyBatisDao;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
-public class OrganizationMapper extends MyBatisDao<Organization> {
+public interface OrganizationMapper {
 
-    public Boolean updatedel(Long id) {
-        return this.sqlSession.update(this.sqlId("updatedel"), id) == 1;
-    }
+    Organization findById(Long id);
 
-    public Organization findByName(String name) {
-        return getSqlSession().selectOne("findByNameO", name);
-    }
-    public List<Organization> getAll( ){
-        return getSqlSession().selectList("findAllO");
-    }
-    public List<String> getName(){
-        return getSqlSession().selectList("orgFindName");
-    }
+    boolean create(Organization organization);
+
+    boolean update(Organization organization);
+
+    List<Organization> findAll();
+
+    List<Organization> list(Map map);
+
+    Boolean delete(Long id);
+
+    Organization findByName(String name);
 }
