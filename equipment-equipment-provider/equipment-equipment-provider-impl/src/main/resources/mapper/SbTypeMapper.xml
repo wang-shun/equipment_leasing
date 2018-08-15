@@ -27,7 +27,8 @@
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteById" parameterType="java.lang.Long">
-    delete from sb_type
+    update sb_type
+    set status = 99
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="create" keyProperty="id" useGeneratedKeys="true" parameterType="com.yankuang.equipment.equipment.model.SbType">
@@ -39,7 +40,7 @@
     values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
       #{pcode,jdbcType=VARCHAR}, #{sorting,jdbcType=BIGINT}, #{level,jdbcType=BIGINT},
       #{remark,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR},
-      #{createAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateAt,jdbcType=TIMESTAMP}
+      CURRENT_TIMESTAMP(), #{updateBy,jdbcType=VARCHAR}, CURRENT_TIMESTAMP()
       )
   </insert>
 
@@ -47,7 +48,7 @@
     update sb_type
     set name = #{typeName,jdbcType=VARCHAR},
       update_by = #{updateBy,jdbcType=VARCHAR},
-      update_at = #{updateAt,jdbcType=TIMESTAMP}
+      update_at = CURRENT_TIMESTAMP()
     where id = #{typeId,jdbcType=BIGINT}
   </update>
 
@@ -64,8 +65,12 @@
     <include refid="Base_Column_List"/>
     from sb_type t
     where t.status = '1'
+    <if test="p_code!=null">
         and t.pcode = #{p_code,jdbcType=VARCHAR}
+    </if>
+    <if test="p_level!=null">
         and t.level = #{p_level,jdbcType=BIGINT}
+    </if>
     order by t.level,code
   </select>
 </mapper>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.yankuang.equipment.equipment.mapper.SbEquipmentTMapper" >
-  <resultMap id="BaseResultMap" type="com.yankuang.equipment.equipment.model.SbEquipmentT" >
+<mapper namespace="com.yankuang.equipment.equipment.mapper.SbEquipmentZMapper" >
+  <resultMap id="BaseResultMap" type="com.yankuang.equipment.equipment.model.SbEquipmentZ" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="code" property="code" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
@@ -39,26 +39,37 @@
     <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
     <result column="version" property="version" jdbcType="BIGINT" />
+    <result column="position_code" property="positionCode" jdbcType="VARCHAR" />
+    <result column="state_code" property="stateCode" jdbcType="VARCHAR" />
+    <result column="cost_years" property="costYears" jdbcType="TINYINT" />
+    <result column="lease_rate" property="leaseRate" jdbcType="DOUBLE" />
+    <result column="repair_ratio" property="repairRatio" jdbcType="DOUBLE" />
+    <result column="manage_fee_ratio" property="manageFeeRatio" jdbcType="DOUBLE" />
+    <result column="equipment_use_ratio" property="equipmentUseRatio" jdbcType="DOUBLE" />
+    <result column="day_lease_fee" property="dayLeaseFee" jdbcType="DOUBLE" />
+    <result column="new_ratio" property="newRatio" jdbcType="DOUBLE" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, code, name, is_lease, sbtype_one, sbtype_two, sbtype_three, sbmodel_code, tech_code, 
     factory, prod_date, prod_code, ma_code, ma_start_date, ma_end_date, proof, proof_code, 
     license, arrive_date, use_date, comp, contranct, buy_price, is_new, ware, is_rfid, 
-    asset_code, status, create_by, create_at, update_by, update_at, version
+    asset_code, status, create_by, create_at, update_by, update_at, version, position_code, 
+    state_code, cost_years, lease_rate, repair_ratio, manage_fee_ratio, equipment_use_ratio, 
+    day_lease_fee, new_ratio
   </sql>
   <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
-    from sb_equipment_t
+    from sb_equipment_z
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteById" parameterType="java.lang.Long" >
-    update sb_equipment_t
+    update sb_equipment_z
     set status = 99
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="create" parameterType="com.yankuang.equipment.equipment.model.SbEquipmentT" >
-    insert into sb_equipment_t (code, name,
+  <insert id="create" parameterType="com.yankuang.equipment.equipment.model.SbEquipmentZ" >
+    insert into sb_equipment_z (code, name,
       is_lease, sbtype_one, sbtype_two, 
       sbtype_three, sbmodel_code, tech_code, 
       factory, prod_date, prod_code, 
@@ -68,7 +79,10 @@
       contranct, buy_price, is_new, 
       ware, is_rfid, asset_code, 
       create_by, create_at,
-      update_by, update_at
+      update_by, update_at,
+      position_code, state_code, cost_years, 
+      lease_rate, repair_ratio, manage_fee_ratio, 
+      equipment_use_ratio, day_lease_fee, new_ratio
       )
     values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
       #{isLease,jdbcType=TINYINT}, #{sbtypeOne,jdbcType=VARCHAR}, #{sbtypeTwo,jdbcType=VARCHAR}, 
@@ -80,12 +94,14 @@
       #{contranct,jdbcType=VARCHAR}, #{buyPrice,jdbcType=DECIMAL}, #{isNew,jdbcType=TINYINT}, 
       #{ware,jdbcType=VARCHAR}, #{isRfid,jdbcType=TINYINT}, #{assetCode,jdbcType=VARCHAR}, 
       #{createBy,jdbcType=VARCHAR}, CURRENT_TIMESTAMP(),
-      #{updateBy,jdbcType=VARCHAR}, CURRENT_TIMESTAMP()
+      #{updateBy,jdbcType=VARCHAR}, CURRENT_TIMESTAMP(),
+      #{positionCode,jdbcType=VARCHAR}, #{stateCode,jdbcType=VARCHAR}, #{costYears,jdbcType=TINYINT}, 
+      #{leaseRate,jdbcType=DOUBLE}, #{repairRatio,jdbcType=DOUBLE}, #{manageFeeRatio,jdbcType=DOUBLE}, 
+      #{equipmentUseRatio,jdbcType=DOUBLE}, #{dayLeaseFee,jdbcType=DOUBLE}, #{newRatio,jdbcType=DOUBLE}
       )
   </insert>
-
-  <update id="update" parameterType="com.yankuang.equipment.equipment.model.SbEquipmentT" >
-    update sb_equipment_t
+  <update id="update" parameterType="com.yankuang.equipment.equipment.model.SbEquipmentZ" >
+    update sb_equipment_z
     set code = #{code,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       is_lease = #{isLease,jdbcType=TINYINT},
@@ -113,13 +129,22 @@
       is_rfid = #{isRfid,jdbcType=TINYINT},
       asset_code = #{assetCode,jdbcType=VARCHAR},
       update_by = #{updateBy,jdbcType=VARCHAR},
-      update_at = CURRENT_TIMESTAMP()
+      update_at = CURRENT_TIMESTAMP(),
+      position_code = #{positionCode,jdbcType=VARCHAR},
+      state_code = #{stateCode,jdbcType=VARCHAR},
+      cost_years = #{costYears,jdbcType=TINYINT},
+      lease_rate = #{leaseRate,jdbcType=DOUBLE},
+      repair_ratio = #{repairRatio,jdbcType=DOUBLE},
+      manage_fee_ratio = #{manageFeeRatio,jdbcType=DOUBLE},
+      equipment_use_ratio = #{equipmentUseRatio,jdbcType=DOUBLE},
+      day_lease_fee = #{dayLeaseFee,jdbcType=DOUBLE},
+      new_ratio = #{newRatio,jdbcType=DOUBLE}
     where id = #{id,jdbcType=BIGINT}
   </update>
 
   <select id="list" resultMap="BaseResultMap">
     select t.*,t1.name as sbtype_one_name,t2.name as sbtype_two_name,t3.name as sbtype_three_name,t4.name as sbmodel_name
-    from sb_equipment_t t
+    from sb_equipment_z t
     left join sb_type t1 on t.sbtype_one=t1.code and t1.status='1'
     left join sb_type t2 on t.sbtype_two=t2.code and t2.status='1'
     left join sb_type t3 on t.sbtype_three=t3.code and t3.status='1'

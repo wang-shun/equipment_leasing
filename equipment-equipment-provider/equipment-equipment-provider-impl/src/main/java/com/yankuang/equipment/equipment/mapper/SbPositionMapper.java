@@ -1,6 +1,7 @@
 package com.yankuang.equipment.equipment.mapper;
 
 import com.yankuang.equipment.equipment.model.SbPosition;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public interface SbPositionMapper {
 
     int update(SbPosition record);
 
-    List<SbPosition> list(String code,String name);
+    List<SbPosition> list(@Param("p_code") String code, @Param("p_name") String name);
 
     SbPosition selectByMaxId();
 }

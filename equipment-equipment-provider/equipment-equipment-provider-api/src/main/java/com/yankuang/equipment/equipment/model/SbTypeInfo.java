@@ -1,5 +1,7 @@
 package com.yankuang.equipment.equipment.model;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
@@ -10,8 +12,10 @@ public class SbTypeInfo implements Serializable {
     @NotNull
     private Long typeId;
 
+    @Length(min = 1,max = 200,message = "主要技术参数长度超出范围!")
     private String mainPara;
 
+    @Length(min = 1,max = 200,message = "参数类型长度超出范围!")
     private String mainParaType;
 
     private String defPara1;

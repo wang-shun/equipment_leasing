@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class SbEquipmentT implements Serializable {
+public class SbEquipmentZ implements Serializable {
     private Long id;
 
     @NotEmpty(message = "设备识别码不能为空!")
@@ -84,6 +84,24 @@ public class SbEquipmentT implements Serializable {
 
     private Long version;
 
+    private String positionCode;
+
+    private String stateCode;
+
+    private Byte costYears;
+
+    private Double leaseRate;
+
+    private Double repairRatio;
+
+    private Double manageFeeRatio;
+
+    private Double equipmentUseRatio;
+
+    private Double dayLeaseFee;
+
+    private Double newRatio;
+
     public Long getId() {
         return id;
     }
@@ -138,38 +156,6 @@ public class SbEquipmentT implements Serializable {
 
     public void setSbtypeThree(String sbtypeThree) {
         this.sbtypeThree = sbtypeThree == null ? null : sbtypeThree.trim();
-    }
-
-    public String getSbtypeOneName() {
-        return sbtypeOneName;
-    }
-
-    public void setSbtypeOneName(String sbtypeOneName) {
-        this.sbtypeOneName = sbtypeOneName;
-    }
-
-    public String getSbtypeTwoName() {
-        return sbtypeTwoName;
-    }
-
-    public void setSbtypeTwoName(String sbtypeTwoName) {
-        this.sbtypeTwoName = sbtypeTwoName;
-    }
-
-    public String getSbtypeThreeName() {
-        return sbtypeThreeName;
-    }
-
-    public void setSbtypeThreeName(String sbtypeThreeName) {
-        this.sbtypeThreeName = sbtypeThreeName;
-    }
-
-    public String getSbmodelName() {
-        return sbmodelName;
-    }
-
-    public void setSbmodelName(String sbmodelName) {
-        this.sbmodelName = sbmodelName;
     }
 
     public String getSbmodelCode() {
@@ -378,5 +364,109 @@ public class SbEquipmentT implements Serializable {
 
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    public String getPositionCode() {
+        return positionCode;
+    }
+
+    public void setPositionCode(String positionCode) {
+        this.positionCode = positionCode == null ? null : positionCode.trim();
+    }
+
+    public String getStateCode() {
+        return stateCode;
+    }
+
+    public void setStateCode(String stateCode) {
+        this.stateCode = stateCode == null ? null : stateCode.trim();
+    }
+
+    public Byte getCostYears() {
+        return costYears;
+    }
+
+    public void setCostYears(Byte costYears) {
+        this.costYears = costYears;
+    }
+
+    public Double getLeaseRate() {
+        return leaseRate;
+    }
+
+    public void setLeaseRate(Double leaseRate) {
+        this.leaseRate = leaseRate;
+    }
+
+    public Double getRepairRatio() {
+        return repairRatio;
+    }
+
+    public void setRepairRatio(Double repairRatio) {
+        this.repairRatio = repairRatio;
+    }
+
+    public Double getManageFeeRatio() {
+        return manageFeeRatio;
+    }
+
+    public void setManageFeeRatio(Double manageFeeRatio) {
+        this.manageFeeRatio = manageFeeRatio;
+    }
+
+    public Double getEquipmentUseRatio() {
+        return equipmentUseRatio;
+    }
+
+    public void setEquipmentUseRatio(Double equipmentUseRatio) {
+        this.equipmentUseRatio = equipmentUseRatio;
+    }
+
+    public Double getDayLeaseFee() {
+        return dayLeaseFee;
+    }
+
+    public void setDayLeaseFee(Double dayLeaseFee) {
+        this.dayLeaseFee = dayLeaseFee;
+    }
+
+    public Double getNewRatio() {
+        return newRatio;
+    }
+
+    public void setNewRatio(Double newRatio) {
+        this.newRatio = newRatio;
+    }
+
+    public String getSbtypeOneName() {
+        return sbtypeOneName;
+    }
+
+    public void setSbtypeOneName(String sbtypeOneName) {
+        this.sbtypeOneName = sbtypeOneName;
+    }
+
+    public String getSbtypeTwoName() {
+        return sbtypeTwoName;
+    }
+
+    public void setSbtypeTwoName(String sbtypeTwoName) {
+        this.sbtypeTwoName = sbtypeTwoName;
+    }
+
+    public String getSbtypeThreeName() {
+        return sbtypeThreeName;
+    }
+
+    public void setSbtypeThreeName(String sbtypeThreeName) {
+        this.sbtypeThreeName = sbtypeThreeName;
+    }
+
+    public String getSbmodelName() {
+        return sbmodelName;
+    }
+
+    public void setSbmodelName(String sbmodelName) {
+        this.sbmodelName = sbmodelName;
     }
 }
