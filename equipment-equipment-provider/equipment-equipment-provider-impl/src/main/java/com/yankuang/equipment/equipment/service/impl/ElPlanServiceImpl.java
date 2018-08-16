@@ -132,7 +132,6 @@ public class ElPlanServiceImpl implements ElPlanService {
             logger.info("update elPlan exception: "+JSON.toJSONString(elPlan));
             return res;
         }
-
     }
 
     public Boolean deletePlan(String planId) {
