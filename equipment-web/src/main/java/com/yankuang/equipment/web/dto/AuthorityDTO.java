@@ -7,6 +7,8 @@ public class AuthorityDTO implements Serializable {
 
     private String name;
 
+    private String code;
+
     private Long pId;
 
     private Long type;
@@ -17,10 +19,11 @@ public class AuthorityDTO implements Serializable {
         return "{AuthorityDTO:{" +
                 "id:" + id +
                 ", name:'" + name + '\'' +
+                ", code:'" + code + '\'' +
                 ", pId:" + pId +
                 ", type:" + type +
                 ", sorting:" + sorting +
-                '}'+"}";
+                '}' + "}";
     }
 
     public Long getId() {
@@ -37,6 +40,14 @@ public class AuthorityDTO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public Long getpId() {
