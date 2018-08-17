@@ -17,6 +17,8 @@ public class User implements Serializable {
 
     private String name;
 
+    private String token;
+
     private String telephone;
 
     private String mail;
@@ -171,5 +173,13 @@ public class User implements Serializable {
 
     public void setAccount(String account) {
         this.account = account;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

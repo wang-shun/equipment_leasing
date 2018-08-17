@@ -5,11 +5,33 @@ import java.util.List;
 
 public class UserDTO implements Serializable {
 
+    private Long id;
+
     private String name;
 
-    private List<Long> roleIds;
+    private String token;
 
-    private List<Long> authorityIds;
+    private List<RoleDTO> roles;
+
+    private List<AuthorityDTO> authoritys;
+
+    public String toJsonString() {
+        return "{UserDTO:{" +
+                "id:" + id +
+                ", name:'" + name + '\'' +
+                ", token:'" + token + '\'' +
+                ", roles:" + roles.toString() +
+                ", authoritys:" + authoritys.toString() +
+                '}'+"}";
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -19,29 +41,27 @@ public class UserDTO implements Serializable {
         this.name = name;
     }
 
-    public List<Long> getRoleIds() {
-        return roleIds;
+    public String getToken() {
+        return token;
     }
 
-    public void setRoleIds(List<Long> roleIds) {
-        this.roleIds = roleIds;
+    public void setToken(String token) {
+        this.token = token;
     }
 
-    public List<Long> getAuthorityIds() {
-        return authorityIds;
+    public List<RoleDTO> getRoles() {
+        return roles;
     }
 
-    public void setAuthorityIds(List<Long> authorityIds) {
-        this.authorityIds = authorityIds;
+    public void setRoles(List<RoleDTO> roles) {
+        this.roles = roles;
     }
 
-    @Override
-    public String toString() {
-        return "{UserDTO{" +
-                "name='" + name + '\'' +
-                ", roleIds=" + roleIds +
-                ", authorityIds=" + authorityIds +
-                '}' + '}';
+    public List<AuthorityDTO> getAuthoritys() {
+        return authoritys;
     }
 
+    public void setAuthoritys(List<AuthorityDTO> authoritys) {
+        this.authoritys = authoritys;
+    }
 }
