@@ -31,4 +31,7 @@ public class SbTypeInfoServiceImpl implements SbTypeInfoService {
         sbTypeInfoMapper.update(record);
     }
 
+    public SbTypeInfo findMainParaBySbtypeThree(String sbtypeThree){
+        return sbTypeInfoMapper.findMainParaBySbtypeThree(sbtypeThree);
+    }
 }

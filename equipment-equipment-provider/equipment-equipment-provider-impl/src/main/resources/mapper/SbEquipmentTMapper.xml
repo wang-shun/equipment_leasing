@@ -39,12 +39,32 @@
     <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
     <result column="version" property="version" jdbcType="BIGINT" />
+    <result column="position_code" property="positionCode" jdbcType="VARCHAR" />
+    <result column="state_code" property="stateCode" jdbcType="VARCHAR" />
+    <result column="cost_years" property="costYears" jdbcType="TINYINT" />
+    <result column="lease_rate" property="leaseRate" jdbcType="DOUBLE" />
+    <result column="repair_ratio" property="repairRatio" jdbcType="DOUBLE" />
+    <result column="manage_fee_ratio" property="manageFeeRatio" jdbcType="DOUBLE" />
+    <result column="equipment_use_ratio" property="equipmentUseRatio" jdbcType="DOUBLE" />
+    <result column="day_lease_fee" property="dayLeaseFee" jdbcType="DOUBLE" />
+    <result column="new_ratio" property="newRatio" jdbcType="DOUBLE" />
+    <result column="main_para" property="mainPara" jdbcType="VARCHAR" />
+    <result column="para1" property="para1" jdbcType="VARCHAR" />
+    <result column="para2" property="para2" jdbcType="VARCHAR" />
+    <result column="para3" property="para3" jdbcType="VARCHAR" />
+    <result column="para4" property="para4" jdbcType="VARCHAR" />
+    <result column="para5" property="para5" jdbcType="VARCHAR" />
+    <result column="para6" property="para6" jdbcType="VARCHAR" />
+    <result column="para7" property="para7" jdbcType="VARCHAR" />
+    <result column="para8" property="para8" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, code, name, is_lease, sbtype_one, sbtype_two, sbtype_three, sbmodel_code, tech_code, 
     factory, prod_date, prod_code, ma_code, ma_start_date, ma_end_date, proof, proof_code, 
     license, arrive_date, use_date, comp, contranct, buy_price, is_new, ware, is_rfid, 
-    asset_code, status, create_by, create_at, update_by, update_at, version
+    asset_code, status, create_by, create_at, update_by, update_at, version, position_code,
+    state_code, cost_years, lease_rate, repair_ratio, manage_fee_ratio, equipment_use_ratio,
+    day_lease_fee, new_ratio, main_para, para1, para2, para3, para4, para5, para6, para7, para8
   </sql>
   <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -52,10 +72,24 @@
     from sb_equipment_t
     where id = #{id,jdbcType=BIGINT}
   </select>
+  <select id="findByCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from sb_equipment_t
+    where code = #{code,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteById" parameterType="java.lang.Long" >
     update sb_equipment_t
     set status = 99
     where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deletes" parameterType="java.util.List">
+    update sb_equipment_t
+    set status = 99
+    where id in
+    <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+      #{item}
+    </foreach>
   </delete>
   <insert id="create" parameterType="com.yankuang.equipment.equipment.model.SbEquipmentT" >
     insert into sb_equipment_t (code, name,
@@ -68,7 +102,11 @@
       contranct, buy_price, is_new, 
       ware, is_rfid, asset_code, 
       create_by, create_at,
-      update_by, update_at
+      update_by, update_at,
+      position_code, state_code, cost_years,
+      lease_rate, repair_ratio, manage_fee_ratio,
+      equipment_use_ratio, day_lease_fee, new_ratio,
+      main_para, para1, para2, para3, para4, para5, para6, para7, para8
       )
     values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
       #{isLease,jdbcType=TINYINT}, #{sbtypeOne,jdbcType=VARCHAR}, #{sbtypeTwo,jdbcType=VARCHAR}, 
@@ -80,14 +118,19 @@
       #{contranct,jdbcType=VARCHAR}, #{buyPrice,jdbcType=DECIMAL}, #{isNew,jdbcType=TINYINT}, 
       #{ware,jdbcType=VARCHAR}, #{isRfid,jdbcType=TINYINT}, #{assetCode,jdbcType=VARCHAR}, 
       #{createBy,jdbcType=VARCHAR}, CURRENT_TIMESTAMP(),
-      #{updateBy,jdbcType=VARCHAR}, CURRENT_TIMESTAMP()
+      #{updateBy,jdbcType=VARCHAR}, CURRENT_TIMESTAMP(),
+      #{positionCode,jdbcType=VARCHAR}, #{stateCode,jdbcType=VARCHAR}, #{costYears,jdbcType=TINYINT},
+      #{leaseRate,jdbcType=DOUBLE}, #{repairRatio,jdbcType=DOUBLE}, #{manageFeeRatio,jdbcType=DOUBLE},
+      #{equipmentUseRatio,jdbcType=DOUBLE}, #{dayLeaseFee,jdbcType=DOUBLE}, #{newRatio,jdbcType=DOUBLE},
+      #{mainPara,jdbcType=VARCHAR},#{para1,jdbcType=VARCHAR},#{para2,jdbcType=VARCHAR},
+      #{para3,jdbcType=VARCHAR},#{para4,jdbcType=VARCHAR},#{para5,jdbcType=VARCHAR},
+      #{para6,jdbcType=VARCHAR},#{para7,jdbcType=VARCHAR},#{para8,jdbcType=VARCHAR}
       )
   </insert>
 
   <update id="update" parameterType="com.yankuang.equipment.equipment.model.SbEquipmentT" >
     update sb_equipment_t
-    set code = #{code,jdbcType=VARCHAR},
-      name = #{name,jdbcType=VARCHAR},
+    set name = #{name,jdbcType=VARCHAR},
       is_lease = #{isLease,jdbcType=TINYINT},
       sbtype_one = #{sbtypeOne,jdbcType=VARCHAR},
       sbtype_two = #{sbtypeTwo,jdbcType=VARCHAR},
@@ -113,7 +156,25 @@
       is_rfid = #{isRfid,jdbcType=TINYINT},
       asset_code = #{assetCode,jdbcType=VARCHAR},
       update_by = #{updateBy,jdbcType=VARCHAR},
-      update_at = CURRENT_TIMESTAMP()
+      update_at = CURRENT_TIMESTAMP(),
+      position_code = #{positionCode,jdbcType=VARCHAR},
+      state_code = #{stateCode,jdbcType=VARCHAR},
+      cost_years = #{costYears,jdbcType=TINYINT},
+      lease_rate = #{leaseRate,jdbcType=DOUBLE},
+      repair_ratio = #{repairRatio,jdbcType=DOUBLE},
+      manage_fee_ratio = #{manageFeeRatio,jdbcType=DOUBLE},
+      equipment_use_ratio = #{equipmentUseRatio,jdbcType=DOUBLE},
+      day_lease_fee = #{dayLeaseFee,jdbcType=DOUBLE},
+      new_ratio = #{newRatio,jdbcType=DOUBLE},
+      main_para = #{mainPara,jdbcType=VARCHAR},
+      para1 = #{para1,jdbcType=VARCHAR},
+      para2 = #{para2,jdbcType=VARCHAR},
+      para3 = #{para3,jdbcType=VARCHAR},
+      para4 = #{para4,jdbcType=VARCHAR},
+      para5 = #{para5,jdbcType=VARCHAR},
+      para6 = #{para6,jdbcType=VARCHAR},
+      para7 = #{para7,jdbcType=VARCHAR},
+      para8 = #{para8,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 
@@ -126,11 +187,23 @@
     left join sb_model t4 on t.sbmodel_code=t4.code and t4.status='1'
     <where>
       1=1 and t.status = '1'
-      <if test="p_code != null" >
-        AND t.code like '%' #{p_code} '%'
+      <if test="code != null" >
+        AND t.code like '%' #{code} '%'
       </if>
-      <if test="p_name != null" >
-        AND t.name like '%' #{p_name} '%'
+      <if test="name != null" >
+        AND t.name like '%' #{name} '%'
+      </if>
+      <if test="sbtypeOne != null" >
+        AND t.sbtype_one =  #{sbtypeOne}
+      </if>
+      <if test="sbtypeTwo != null" >
+        AND t.sbtype_two =  #{sbtypeTwo}
+      </if>
+      <if test="sbtypeThree != null" >
+        AND t.sbtype_three =  #{sbtypeThree}
+      </if>
+      <if test="sbmodelCode != null" >
+        AND t.sbmodel_code = #{sbmodelCode}
       </if>
     </where>
   </select>

@@ -2,15 +2,18 @@ package com.yankuang.equipment.web.restful;
 
 import com.github.pagehelper.PageInfo;
 import com.yankuang.equipment.common.util.Constants;
+import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.common.util.ResponseMeta;
 import com.yankuang.equipment.equipment.model.SbEquipmentZ;
 import com.yankuang.equipment.equipment.service.SbEquipmentZService;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @CrossOrigin(maxAge = 3600)
 @RestController
@@ -27,6 +30,11 @@ public class SbEquipmentZController {
             if (bindingResult.hasErrors()){
                 return responseMeta.setMeta(Constants.RESPONSE_ERROR,bindingResult.getAllErrors().get(0).getDefaultMessage());
             }
+            SbEquipmentZ equipmentZ = sbEquipmentZService.findByCode(sbEquipmentZ.getCode());
+            if(equipmentZ!=null){
+                return responseMeta.setMeta(Constants.RESPONSE_ERROR,"设备识别码已存在!");
+            }
+
             sbEquipmentZService.create(sbEquipmentZ);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"创建综机设备成功");
         }catch (Exception e){
@@ -80,10 +88,10 @@ public class SbEquipmentZController {
     }
 
     @RequestMapping(value = "/list",method = RequestMethod.GET)
-    public ResponseMeta list(String code,String name,int pageNum,int pageSize){
+    public ResponseMeta list(SbEquipmentZ sbEquipmentZ,int pageNum,int pageSize){
         ResponseMeta responseMeta = new ResponseMeta();
         try{
-            PageInfo<SbEquipmentZ> pageInfo = sbEquipmentZService.list(code,name,pageNum,pageSize);
+            PageInfo<SbEquipmentZ> pageInfo = sbEquipmentZService.list(sbEquipmentZ,pageNum,pageSize);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"查询综机设备列表成功");
             responseMeta.setData(pageInfo);
         }catch (Exception e){
@@ -93,4 +101,21 @@ public class SbEquipmentZController {
         return responseMeta;
     }
 
+    @RequestMapping(value = "/deletes",method = RequestMethod.DELETE)
+    public ResponseMeta deletes(@RequestBody String jsonString){
+        ResponseMeta responseMeta = new ResponseMeta();
+        if(StringUtils.isEmpty(jsonString)){
+            responseMeta.setMeta(Constants.RESPONSE_ERROR,"参数不能为空!");
+            return responseMeta;
+        }
+        List<Long> ids = JsonUtils.jsonToList(jsonString,Long.class);
+        try{
+            sbEquipmentZService.deletes(ids);
+            responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"删除综机设备信息成功");
+        }catch (Exception e){
+            responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"删除综机设备信息失败");
+            responseMeta.setData(ExceptionUtils.getStackTrace(e));
+        }
+        return responseMeta;
+    }
 }

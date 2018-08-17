@@ -9,8 +9,6 @@ import java.util.Date;
 public class SbModel implements Serializable {
     private Long id;
 
-    @NotEmpty(message = "设备型号编码不能为空!")
-    @Length(min = 1,max = 200,message = "设备型号编码长度超出范围!")
     private String code;
 
     @NotEmpty(message = "设备型号名称不能为空!")
