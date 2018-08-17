@@ -294,6 +294,7 @@ public class WebLogAspect {
         if (StringUtils.isEmpty(userRedis)) {
             return CommonResponse.errorTokenMsg("登陆超时，请重新登录！");
         }
+        // 解密redis中获取的用户信息
         final Base64.Decoder decoder = Base64.getDecoder();
         String decoderResult = null;
         try {
@@ -304,7 +305,16 @@ public class WebLogAspect {
         logger.info("----- 解码后内容 : " + decoderResult + "------------");
         // 刷新token时长
         redis.expire(token, 1800);
-        return CommonResponse.ok(JsonUtils.jsonToPojo(decoderResult, UserDTO.class));
+        // json转对象
+        UserDTO userFromRedis = JsonUtils.jsonToPojo(decoderResult, UserDTO.class);
+        // 打印日志信息
+        logger.info("访问用户，{}",userFromRedis.toString());
+        //TODO 获取请求路径url,验证权限
+
+        // 登录跟验证权限通过，接受相应方法返回值（可做相应处理），返回前端
+        CommonResponse result = (CommonResponse)joinPoint.proceed();
+
+        return result;
     }
 
 }

@@ -92,28 +92,38 @@ public class UserController {
         final Base64.Decoder decoder = Base64.getDecoder();
         String token = "";
         User loginUser =  userService.login(username);
+        log.info("根据用户名查询的用户信息"+loginUser.toString());
         if (loginUser != null && !password.equals(loginUser.getPassword())) {
             return CommonResponse.errorTokenMsg("密码错误");
         }
         if (loginUser != null && password.equals(loginUser.getPassword())) {
             log.info(loginUser.toString());
+            // 登录验证成功，获取用户基本信息，角色信息，权限信息
             UserDTO userDTO1 = getUserDTO(authoritys, roles, loginUser);
-            String result = JsonUtils.objectToJson(userDTO1);
+            // redis中存放的key
             token = CodeUtil.getCode();
-
+            userDTO1.setToken(token);
+            // user对象信息转json加密base64作为值存放redis
             final Base64.Encoder encoder = Base64.getEncoder();
             String encodedResult = "";
             try {
-                final byte[] textByte = result.getBytes("UTF-8");
+                // 转字节
+                final byte[] textByte = JsonUtils.objectToJson(userDTO1).getBytes("UTF-8");
                 // 加密
                 encodedResult = encoder.encodeToString(textByte);
                 log.info(encodedResult);
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
+            // 存放redis
             redis.set(token, encodedResult, 1800);
-
-            return CommonResponse.ok(token);
+            // TODO 更新user数据库表，记录最新一次登录保存的redis的key(token)
+            User u = new User();
+            u.setId(loginUser.getId());
+            u.setToken(token);
+            userService.update(u);
+            // 返回加密用户信息包含token
+            return CommonResponse.ok(encodedResult);
         }
         return CommonResponse.errorTokenMsg("用户不存在");
     }
@@ -125,7 +135,8 @@ public class UserController {
         if (roleUsers == null || roleUsers.size() == 0) {
             return userDTO;
         }
-
+        userDTO.setId(loginUser.getId());
+        userDTO.setName(loginUser.getName());
         // 遍历用户角色列表
         for (RoleUser roleUser : roleUsers) {
             Long roleId = roleUser.getRoleId();

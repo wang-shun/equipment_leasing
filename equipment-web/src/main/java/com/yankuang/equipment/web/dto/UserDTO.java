@@ -9,6 +9,8 @@ public class UserDTO implements Serializable {
 
     private String name;
 
+    private String token;
+
     private List<RoleDTO> roles;
 
     private List<AuthorityDTO> authoritys;
@@ -17,6 +19,7 @@ public class UserDTO implements Serializable {
         return "{UserDTO:{" +
                 "id:" + id +
                 ", name:'" + name + '\'' +
+                ", token:'" + token + '\'' +
                 ", roles:" + roles.toString() +
                 ", authoritys:" + authoritys.toString() +
                 '}'+"}";
@@ -36,6 +39,14 @@ public class UserDTO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public List<RoleDTO> getRoles() {
