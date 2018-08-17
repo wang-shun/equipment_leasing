@@ -34,14 +34,14 @@ public class ElUseItemServiceImpl implements ElUseItemService{
     public PageInfo<ElUseItem> list(Integer page, Integer size,Map elUseItemMap){
         PageHelper.startPage(page,size);
         List<ElUseItem> elUseItems = elUseItemMapper.list(elUseItemMap);
-        if (elUseItems == null){
-            return null;
-        }
-        //分页查询将设备信息添加上
-        for (ElUseItem elUseItem:elUseItems){
-            SbEquipmentT sbEquipmentT = sbEquipmentTMapper.findById(elUseItem.getEquipmentId());
-            elUseItem.setSbEquipmentT(sbEquipmentT);
-        }
+//        if (elUseItems == null){
+//            return null;
+//        }
+//        //分页查询将设备信息添加上
+//        for (ElUseItem elUseItem:elUseItems){
+//            SbEquipmentT sbEquipmentT = sbEquipmentTMapper.findById(elUseItem.getEquipmentId());
+//            elUseItem.setSbEquipmentT(sbEquipmentT);
+//        }
         PageInfo<ElUseItem> pageInfo = new PageInfo<ElUseItem>(elUseItems);
         return pageInfo;
     }

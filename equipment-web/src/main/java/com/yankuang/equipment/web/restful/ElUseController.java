@@ -5,8 +5,10 @@ import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.common.util.StringUtils;
 import com.yankuang.equipment.equipment.model.ElUse;
 import com.yankuang.equipment.equipment.model.ElUseItem;
+import com.yankuang.equipment.equipment.model.SbEquipmentT;
 import com.yankuang.equipment.equipment.service.ElUseItemService;
 import com.yankuang.equipment.equipment.service.ElUseService;
+import com.yankuang.equipment.equipment.service.SbEquipmentTService;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +25,9 @@ public class ElUseController {
 
     @RpcConsumer
     ElUseItemService elUseItemService;
+
+    @RpcConsumer
+    SbEquipmentTService sbEquipmentTService;
 
     /**
      * @method 领用申请添加功能
@@ -160,8 +165,13 @@ public class ElUseController {
         if (itemId == null){
             return CommonResponse.errorMsg("id不能为空");
         }
-
-        return CommonResponse.ok(elUseItemService.findById(itemId));
+        ElUseItem elUseItem = elUseItemService.findById(itemId);
+        if (elUseItem == null){
+            return CommonResponse.errorMsg("该记录不存在");
+        }
+        SbEquipmentT sbEquipmentT = sbEquipmentTService.findById(elUseItem.getEquipmentId());
+        elUseItem.setSbEquipmentT(sbEquipmentT);
+        return CommonResponse.ok(elUseItem);
     }
 
     /**
