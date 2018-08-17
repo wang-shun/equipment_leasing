@@ -14,6 +14,8 @@ public interface SbPositionMapper {
 
     SbPosition findById(Long id);
 
+    List<SbPosition> findByPosition(String position);
+
     int update(SbPosition record);
 
     List<SbPosition> list(@Param("p_code") String code, @Param("p_name") String name);

@@ -28,6 +28,12 @@
     from sb_model
     where id = #{id,jdbcType=BIGINT}
   </select>
+  <select id="findByName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from sb_model
+    where name = #{name,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteById" parameterType="java.lang.Long" >
     update sb_model
     set status = 99

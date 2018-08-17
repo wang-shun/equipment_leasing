@@ -18,4 +18,6 @@ public interface SbEquipmentTMapper {
     int update(SbEquipmentT record);
 
     List<SbEquipmentT> list(@Param("p_code") String code,@Param("p_name") String name);
+
+    List<SbEquipmentT> listByCondition(SbEquipmentT sbEquipmentT);
 }

@@ -20,12 +20,12 @@
     <result column="version" property="version" jdbcType="BIGINT" />
     <result column="backup1" property="backup1" jdbcType="VARCHAR" />
     <result column="backup2" property="backup2" jdbcType="VARCHAR" />
-    <result column="backup3" property="backup3" jdbcType="VARCHAR" />
+    <result column="position_id" property="positionId" jdbcType="BIGINT" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, center_year, center_month, plan_type, plan_id, plan_item_id, equipment_id, sorting, 
     status, is_del, remarks, create_by, create_at, update_by, update_at, version, backup1, 
-    backup2, backup3
+    backup2, position_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -44,14 +44,14 @@
       is_del, remarks, create_by, 
       create_at, update_by, update_at, 
       version, backup1, backup2, 
-      backup3)
+      position_id)
     values (#{id,jdbcType=BIGINT}, #{centerYear,jdbcType=INTEGER}, #{centerMonth,jdbcType=INTEGER}, 
       #{planType,jdbcType=VARCHAR}, #{planId,jdbcType=VARCHAR}, #{planItemId,jdbcType=VARCHAR}, 
       #{equipmentId,jdbcType=BIGINT}, #{sorting,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
       #{isDel,jdbcType=TINYINT}, #{remarks,jdbcType=VARCHAR}, #{createBy,jdbcType=BIGINT}, 
       #{createAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=BIGINT}, #{updateAt,jdbcType=TIMESTAMP}, 
       #{version,jdbcType=BIGINT}, #{backup1,jdbcType=VARCHAR}, #{backup2,jdbcType=VARCHAR}, 
-      #{backup3,jdbcType=VARCHAR})
+      #{positionId,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.yankuang.equipment.equipment.model.ElPlanUse" >
     insert into el_plan_use
@@ -110,8 +110,8 @@
       <if test="backup2 != null" >
         backup2,
       </if>
-      <if test="backup3 != null" >
-        backup3,
+      <if test="positionId != null" >
+        position_id,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -169,8 +169,8 @@
       <if test="backup2 != null" >
         #{backup2,jdbcType=VARCHAR},
       </if>
-      <if test="backup3 != null" >
-        #{backup3,jdbcType=VARCHAR},
+      <if test="positionId != null" >
+        #{positionId,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
@@ -228,8 +228,8 @@
       <if test="backup2 != null" >
         backup2 = #{backup2,jdbcType=VARCHAR},
       </if>
-      <if test="backup3 != null" >
-        backup3 = #{backup3,jdbcType=VARCHAR},
+      <if test="positionId != null" >
+        position_id = #{positionId,jdbcType=BIGINT},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -253,7 +253,7 @@
       version = #{version,jdbcType=BIGINT},
       backup1 = #{backup1,jdbcType=VARCHAR},
       backup2 = #{backup2,jdbcType=VARCHAR},
-      backup3 = #{backup3,jdbcType=VARCHAR}
+      position_id = #{positionId,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

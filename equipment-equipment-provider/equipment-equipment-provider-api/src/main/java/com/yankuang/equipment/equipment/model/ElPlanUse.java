@@ -4,11 +4,12 @@ import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Date;
 @Data
 @Entity
 @Table(name = "el_plan_use")
-public class ElPlanUse {
+public class ElPlanUse implements Serializable {
     private Long id;
 
     private Integer centerYear;
@@ -45,6 +46,6 @@ public class ElPlanUse {
 
     private String backup2;
 
-    private String backup3;
+    private Long positionId;
 
 }

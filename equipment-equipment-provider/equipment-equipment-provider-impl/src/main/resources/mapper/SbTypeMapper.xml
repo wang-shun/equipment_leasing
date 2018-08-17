@@ -26,6 +26,12 @@
     from sb_type
     where id = #{id,jdbcType=BIGINT}
   </select>
+  <select id="findByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sb_type
+    where name = #{name,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteById" parameterType="java.lang.Long">
     update sb_type
     set status = 99

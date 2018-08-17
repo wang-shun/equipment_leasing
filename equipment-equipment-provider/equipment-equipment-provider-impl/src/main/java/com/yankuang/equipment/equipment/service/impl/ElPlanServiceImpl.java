@@ -3,22 +3,23 @@ package com.yankuang.equipment.equipment.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yankuang.equipment.authority.mapper.DeptMapper;
+import com.yankuang.equipment.authority.model.Dept;
 import com.yankuang.equipment.common.util.Constants;
+import com.yankuang.equipment.equipment.mapper.*;
+import com.yankuang.equipment.equipment.model.*;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.StringUtils;
 import com.yankuang.equipment.common.util.UuidUtils;
-import com.yankuang.equipment.equipment.mapper.ElPlanItemMapper;
-import com.yankuang.equipment.equipment.mapper.ElPlanMapper;
-import com.yankuang.equipment.equipment.model.ElPlan;
-import com.yankuang.equipment.equipment.model.ElPlanItem;
 import com.yankuang.equipment.equipment.service.ElPlanService;
 import io.terminus.boot.rpc.common.annotation.RpcProvider;
 import io.terminus.common.model.Paging;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,9 +34,21 @@ public class ElPlanServiceImpl implements ElPlanService {
     public static final Logger logger = Logger.getLogger(ElPlanServiceImpl.class);
 
     @Autowired
-    private ElPlanMapper elPlanMapper;
+    ElPlanMapper elPlanMapper;
     @Autowired
-    private ElPlanItemMapper elPlanItemMapper;
+    ElPlanItemMapper elPlanItemMapper;
+    @Autowired
+    DeptMapper deptMapper;
+    @Autowired
+    SbPositionMapper sbPositionMapper;
+    @Autowired
+    SbTypeMapper sbTypeMapper;
+    @Autowired
+    SbModelMapper sbModelMapper;
+    @Autowired
+    SbEquipmentTMapper sbEquipmentTMapper;
+    @Autowired
+    ElPlanUseMapper elPlanUseMapper;
 
     public Boolean create (ElPlan elPlan) {
         Boolean res = false;
@@ -196,7 +209,97 @@ public class ElPlanServiceImpl implements ElPlanService {
 
         try {
             logger.info("approve elPlan: "+JSON.toJSONString(elPlan));
-            boolean res = elPlanMapper.updateByPrimarykey(elPlan) > 0;
+
+            // 租赁计划审核通过，仓库开始备货
+            Boolean resT = false;
+            if (Constants.PLANSTATUS_PASSED.equals(elPlan.getPlanStatus())
+                    && !StringUtils.isEmpty(elPlan.getPlanId())) {
+                ElPlan plan = elPlanMapper.findById(elPlan.getPlanId());
+                List<ElPlanItem> itemList = plan.getElPlanItemList();
+                if (itemList == null || itemList.size() == 0) {
+                    // TODO
+                }
+                for (ElPlanItem item : itemList) {
+                    // 设备集合
+                    List<SbEquipmentT> sbList = new ArrayList<SbEquipmentT>();
+
+                    // 获取矿分区信息
+                    Long deptId = null;
+                    String itemPosition = item.getItemPosition();
+                    if (!StringUtils.isEmpty(itemPosition)) {
+                        Dept dept = deptMapper.findByName(itemPosition);
+                        deptId = dept.getId();
+                    } else {
+                        // TODO 备货异常
+                    }
+                    // 获取设备小类
+                    String smallType = item.getEquipmentSmallType();
+                    Long sbTypeId =null;
+                    if (!StringUtils.isEmpty(smallType)) {
+                        SbType sbType = sbTypeMapper.findByName(smallType);
+                        sbTypeId = sbType.getId();
+                    } else {
+                        // TODO 备货异常
+                    }
+                    // 获取设备规格号
+                    String sbModelStr = item.getEquipmentSpecification();
+                    Long sbModelId = null;
+                    if (!StringUtils.isEmpty(sbModelStr)) {
+                        SbModel sbModel = sbModelMapper.findByName(sbModelStr);
+                        sbModelId = sbModel.getId();
+                    }
+                    // 设备主要参数值
+                    Integer paramValue = item.getEquipmentParamValue();
+                    if (paramValue == null || paramValue == 0) {
+                        paramValue = null;
+                    }
+                    // 设备名称
+                    String equipmentName = item.getEquipmentName();
+                    if (StringUtils.isEmpty(equipmentName)) {
+                        equipmentName = null;
+                    }
+                    List<SbPosition> sbPositions = sbPositionMapper.findByPosition(deptId.toString());
+                    for (SbPosition sbPosition : sbPositions) {
+                        SbEquipmentT sbEquipmentT = new SbEquipmentT();
+                        if (!StringUtils.isEmpty(sbPosition.getCode())) {
+                            sbEquipmentT.setWare(sbPosition.getCode());
+                        }
+                        if (!StringUtils.isEmpty(sbTypeId)) {
+                            sbEquipmentT.setSbtypeThree(sbTypeId.toString());
+                        }
+                        if (!StringUtils.isEmpty(sbModelId)) {
+                            sbEquipmentT.setSbmodelName(sbModelId.toString());
+                        }
+                        if (!StringUtils.isEmpty(paramValue)) {
+                            // TODO
+                            // sbEquipmentT.setMainPara(paramValue);
+                        }
+                        if (!StringUtils.isEmpty(equipmentName)) {
+                            sbEquipmentT.setName(equipmentName);
+                        }
+                        List<SbEquipmentT> sbListT = sbEquipmentTMapper.listByCondition(sbEquipmentT);
+                        if (sbListT != null && sbListT.size() > 0) {
+                            sbList.addAll(sbListT);
+                        }
+                    }
+                    for (SbEquipmentT sbT : sbList) {
+                        ElPlanUse elPlanUse = new ElPlanUse();
+                        elPlanUse.setCenterYear(plan.getPlanYear());
+                        elPlanUse.setCenterMonth(plan.getPlanMonth());
+                        elPlanUse.setPositionId(deptId);
+                        elPlanUse.setPlanType(plan.getPlanType());
+                        elPlanUse.setPlanId(plan.getPlanId());
+                        elPlanUse.setPlanItemId(item.getItemId());
+                        elPlanUse.setCreateAt(new Date());
+                        elPlanUse.setIsDel((byte)1);
+                        elPlanUse.setVersion(0l);
+                        elPlanUse.setEquipmentId(sbT.getId());
+                        resT = elPlanUseMapper.insert(elPlanUse) > 0;
+                    }
+                }
+            }
+
+            boolean res = elPlanMapper.updateByPrimarykey(elPlan) > 0 && resT;
             if (!res) {
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             }
@@ -208,4 +311,6 @@ public class ElPlanServiceImpl implements ElPlanService {
             return false;
         }
     }
+
+
 }

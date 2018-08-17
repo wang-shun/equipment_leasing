@@ -134,4 +134,31 @@
       </if>
     </where>
   </select>
+
+  <select id="listByCondition" resultMap="BaseResultMap">
+    select t.*,t1.name as sbtype_one_name,t2.name as sbtype_two_name,t3.name as sbtype_three_name,t4.name as sbmodel_name
+    from sb_equipment_t t
+    left join sb_type t1 on t.sbtype_one=t1.code and t1.status='1'
+    left join sb_type t2 on t.sbtype_two=t2.code and t2.status='1'
+    left join sb_type t3 on t.sbtype_three=t3.code and t3.status='1'
+    left join sb_model t4 on t.sbmodel_code=t4.code and t4.status='1'
+    <where>
+      1=1 and t.status = '1'
+      <if test="ware != null" >
+        AND t.ware = #{ware}
+      </if>
+      <if test="sbtypeThree != null" >
+        AND t.sbtype_three = #{sbtypeThree}
+      </if>
+        <if test="sbmodelCode != null" >
+            AND t.sbmodel_code = #{sbmodelCode}
+        </if>
+        <if test="mainPara != null" >
+            AND t.main_para = #{mainPara}
+        </if>
+        <if test="name != null" >
+            AND t.name = #{name}
+        </if>
+    </where>
+  </select>
 </mapper>
