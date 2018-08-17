@@ -38,6 +38,8 @@ public class ElUseItem implements Serializable{
 
     private String backup3;
 
+    private SbEquipmentT sbEquipmentT;
+
     public Long getItemId() {
         return itemId;
     }
@@ -148,5 +150,13 @@ public class ElUseItem implements Serializable{
 
     public void setBackup3(String backup3) {
         this.backup3 = backup3 == null ? null : backup3.trim();
+    }
+
+    public SbEquipmentT getSbEquipmentT() {
+        return sbEquipmentT;
+    }
+
+    public void setSbEquipmentT(SbEquipmentT sbEquipmentT) {
+        this.sbEquipmentT = sbEquipmentT;
     }
 }

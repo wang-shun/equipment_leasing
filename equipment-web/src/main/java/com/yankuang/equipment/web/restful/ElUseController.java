@@ -56,6 +56,9 @@ public class ElUseController {
             return CommonResponse.errorMsg("参数不能为空");
         }
         ElUse elUse = JsonUtils.jsonToPojo(jsonString,ElUse.class);
+        if (elUse == null){
+            return CommonResponse.errorMsg("不存在该记录");
+        }
         if (elUse.getId() == null){
             return CommonResponse.errorMsg("id不能为空");
         }
@@ -64,31 +67,22 @@ public class ElUseController {
             return CommonResponse.build(500,"更新失败",null);
         }
 
+        List<ElUseItem> elUseItems = elUse.getElUseItems();
+
+        if (elUseItems == null){
+            return CommonResponse.ok();
+        }
+        //更新领用明细表
+        for (ElUseItem elUseItem:elUseItems){
+            if (elUseItem.getItemId() == null){
+                return CommonResponse.build(520,"id不能为空",null);
+            }
+
+            if (elUseItemService.update(elUseItem) == false){
+                return CommonResponse.build(500,"更新失败",null);
+            }
+        }
         return CommonResponse.ok();
-    }
-
-    /**
-     * @method 更新领用设备明细表
-     * @param jsonString
-     * @return
-     */
-    @PutMapping("/elUseUpdate")
-    CommonResponse updateElUseItem(@RequestBody String jsonString){
-
-        if (StringUtils.isEmpty(jsonString)){
-            return CommonResponse.errorMsg("参数不能为空");
-        }
-
-       ElUseItem elUseItem =  JsonUtils.jsonToPojo(jsonString,ElUseItem.class);
-
-        if (elUseItem.getItemId() == null){
-            return CommonResponse.build(520,"id不能为空",null);
-        }
-
-        if (elUseItemService.update(elUseItem) == false){
-            return CommonResponse.build(500,"更新失败",null);
-        }
-        return CommonResponse.ok("更新成功");
     }
 
     /**
@@ -170,6 +164,11 @@ public class ElUseController {
         return CommonResponse.ok(elUseItemService.findById(itemId));
     }
 
+    /**
+     * @method 删除设备明细表记录功能
+     * @param jsonString
+     * @return
+     */
     @DeleteMapping("/deleteById")
     CommonResponse deleteById(@RequestBody String jsonString){
         if (StringUtils.isEmpty(jsonString)){
