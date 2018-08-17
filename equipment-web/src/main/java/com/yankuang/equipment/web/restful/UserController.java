@@ -5,9 +5,7 @@ import com.yankuang.equipment.authority.service.*;
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.common.util.UuidUtils;
-import com.yankuang.equipment.web.dto.OrgRoleDTO;
-import com.yankuang.equipment.web.dto.UserDTO;
-import com.yankuang.equipment.web.dto.UserIn;
+import com.yankuang.equipment.web.dto.*;
 import com.yankuang.equipment.web.util.CodeUtil;
 import com.yankuang.equipment.web.util.RedisOperator;
 import io.swagger.annotations.Api;
@@ -51,6 +49,12 @@ public class UserController {
     @RpcConsumer
     OrgDeptRoleUserService orgDeptRoleUserService;
 
+    @RpcConsumer
+    RoleService roleService;
+
+    @RpcConsumer
+    AuthorityService authorityService;
+
     /**
      * 用户退出登录.
      */
@@ -65,13 +69,11 @@ public class UserController {
     /**
      * 用户登录.
      * @param jsonString
-     * @param request
      * @return
      */
     @ApiOperation("user login")
     @PostMapping(value = "/login")
-    CommonResponse login(@RequestBody String jsonString,
-                                     HttpServletRequest request) {
+    CommonResponse login(@RequestBody String jsonString) {
         if (jsonString == null || "".equals(jsonString)) {
             return CommonResponse.errorMsg("参数不能为空");
         }
@@ -85,43 +87,27 @@ public class UserController {
             return CommonResponse.errorMsg("密码不能为空");
         }
         log.info("--------- 用户登录信息:" + username + ":" + password);
-        UserDTO userDTO = new UserDTO();
-        List<Long> authorityIds = new ArrayList<Long>();
-        List<Long> roleIds = new ArrayList<Long>();
+        List<AuthorityDTO> authoritys = new ArrayList();
+        List<RoleDTO> roles = new ArrayList();
         final Base64.Decoder decoder = Base64.getDecoder();
-        // 登录先去redis中查看登陆状态
-        String token = request.getHeader("token");
-//        String userJson = redis.get(token);
-//        if (!StringUtils.isEmpty(userJson)) {
-//            redis.expire(token, 1800);
-//            // 解密
-//            try {
-//                String decoderResult = new String(decoder.decode(userJson), "UTF-8");
-//                System.out.println(decoderResult);
-//            } catch (UnsupportedEncodingException e) {
-//                e.printStackTrace();
-//            }
-//            return CommonResponse.ok(token);
-//        }
-
+        String token = "";
         User loginUser =  userService.login(username);
         if (loginUser != null && !password.equals(loginUser.getPassword())) {
             return CommonResponse.errorTokenMsg("密码错误");
         }
         if (loginUser != null && password.equals(loginUser.getPassword())) {
             log.info(loginUser.toString());
-            String result = getUserDTO(userDTO, authorityIds, roleIds, loginUser);
+            UserDTO userDTO1 = getUserDTO(authoritys, roles, loginUser);
+            String result = JsonUtils.objectToJson(userDTO1);
             token = CodeUtil.getCode();
 
             final Base64.Encoder encoder = Base64.getEncoder();
             String encodedResult = "";
             try {
-
                 final byte[] textByte = result.getBytes("UTF-8");
                 // 加密
                 encodedResult = encoder.encodeToString(textByte);
                 log.info(encodedResult);
-
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
@@ -132,30 +118,45 @@ public class UserController {
         return CommonResponse.errorTokenMsg("用户不存在");
     }
 
-    private String getUserDTO(UserDTO userDTO, List<Long> authorityIds, List<Long> roleIds, User loginUser) {
-
+    private UserDTO getUserDTO( List<AuthorityDTO> authoritys, List<RoleDTO> roles, User loginUser) {
+        UserDTO userDTO = new UserDTO();
         // 用户角色列表
         List<RoleUser> roleUsers = roleUserService.findByUserId(loginUser.getId());
         if (roleUsers == null || roleUsers.size() == 0) {
-            return "";
+            return userDTO;
         }
 
         // 遍历用户角色列表
         for (RoleUser roleUser : roleUsers) {
-            roleIds.add(roleUser.getRoleId());
-            // 用户角色idlist
-            userDTO.setRoleIds(roleIds);
+            Long roleId = roleUser.getRoleId();
+            //根据roleId查询角色信息
+            Role role = roleService.findById(roleId);
+            RoleDTO roleDTO = new RoleDTO();
+            roleDTO.setId(role.getId());
+            roleDTO.setName(role.getName());
+            roles.add(roleDTO);
             // 角色权限
             List<RoleAuthority> roleAuthorities =
                     roleAuthorityService.findByRoleId(roleUser.getRoleId());
+            //遍历角色权限列表
             for (RoleAuthority roleAuthority : roleAuthorities) {
-                authorityIds.add(roleAuthority.getAuthorityId());
+                Authority  authority = authorityService.findById(roleAuthority.getId());
+                AuthorityDTO authorityDTO = new AuthorityDTO();
+                authorityDTO.setId(authority.getId());
+                authorityDTO.setName(authority.getName());
+                authorityDTO.setpId(authority.getpId());
+                authorityDTO.setType(authority.getType());
+                authorityDTO.setSorting(authority.getSorting());
+
+                authoritys.add(authorityDTO);
             }
         }
+        // 用户角色列表
+        userDTO.setRoles(roles);
         // 用户角色idlist
-        userDTO.setAuthorityIds(authorityIds);
-        System.out.println(userDTO.toString());
-        return userDTO.toString();
+        userDTO.setAuthoritys(authoritys);
+        System.out.println(userDTO.toJsonString());
+        return userDTO;
     }
 
     /**

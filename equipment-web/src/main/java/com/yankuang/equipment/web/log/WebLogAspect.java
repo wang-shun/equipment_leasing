@@ -1,22 +1,31 @@
 package com.yankuang.equipment.web.log;
 
+import com.yankuang.equipment.common.util.CommonResponse;
+import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.syslog.model.SysLog;
 import com.yankuang.equipment.syslog.service.SysLogService;
+import com.yankuang.equipment.web.dto.UserDTO;
+import com.yankuang.equipment.web.util.RedisOperator;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import net.sf.json.JSONObject;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Date;
 
 /**
@@ -33,10 +42,17 @@ public class WebLogAspect {
     @RpcConsumer
     SysLogService sysLogService;
 
-    @Pointcut("execution(public * com.yankuang.*..*.*(..))")
+    @Autowired
+    RedisOperator redis;
+
+    @Pointcut("execution(* com.yankuang.*..*Controller.*(..)) && !execution(* com.yankuang.*..*.login*(..))")
+    public void login(){}
+
+
+    @Pointcut("execution(* com.yankuang.*..*Controller.*(..))")
     public void webLog(){}
 
-    @Pointcut("execution( * com.yankuang.*..*.*(..)) && !execution(* com.yankuang.*..*.add*(..)) && !execution(* com.yankuang.*..*.update*(..)) " +
+    @Pointcut("execution( * com.yankuang.*..*Controller.*(..)) && !execution(* com.yankuang.*..*.add*(..)) && !execution(* com.yankuang.*..*.update*(..)) " +
             "&& !execution(* com.yankuang.*..*.delete*(..)) && !execution(* com.yankuang.*..*.find*(..))")
     public void sysLog(){}
 
@@ -71,7 +87,7 @@ public class WebLogAspect {
     /**
      * 拦截异常处理
      */
-    @Pointcut("execution(* com.yankuang.*..*.*(..))") //切点
+    @Pointcut("execution(* com.yankuang.*..restful.*Controller(..))") //切点
     public void webExceptionLog(){}
 
 
@@ -258,5 +274,38 @@ public class WebLogAspect {
         String dateNowStr = sdf.format(d);
         return dateNowStr;
     }
+
+    /**
+     * 接口拦截验证
+     *
+     * @param joinPoint
+     * @throws Throwable
+     */
+    @Around("login()")
+    public CommonResponse loginVerify(ProceedingJoinPoint joinPoint) throws Throwable {
+        HttpServletRequest request =
+                ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+
+        String token = request.getHeader("token");
+        if (StringUtils.isEmpty(token)) {
+            return CommonResponse.errorTokenMsg("token不能为空，请登录");
+        }
+        String userRedis = (String) redis.get(token);
+        if (StringUtils.isEmpty(userRedis)) {
+            return CommonResponse.errorTokenMsg("登陆超时，请重新登录！");
+        }
+        final Base64.Decoder decoder = Base64.getDecoder();
+        String decoderResult = null;
+        try {
+            decoderResult = new String(decoder.decode(userRedis), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        logger.info("----- 解码后内容 : " + decoderResult + "------------");
+        // 刷新token时长
+        redis.expire(token, 1800);
+        return CommonResponse.ok(JsonUtils.jsonToPojo(decoderResult, UserDTO.class));
+    }
+
 }
 

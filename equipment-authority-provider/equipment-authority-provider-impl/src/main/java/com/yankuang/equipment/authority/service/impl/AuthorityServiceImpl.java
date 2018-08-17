@@ -1,5 +1,7 @@
 package com.yankuang.equipment.authority.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.yankuang.equipment.authority.mapper.AuthorityMapper;
 import com.yankuang.equipment.authority.model.Authority;
 import com.yankuang.equipment.authority.service.AuthorityService;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RpcProvider
@@ -17,7 +20,7 @@ public class AuthorityServiceImpl implements AuthorityService{
     @Autowired
     AuthorityMapper authorityMapper;
 
-    public Authority getById(Long id) {
+    public Authority findById(Long id) {
         return authorityMapper.findById(id);
     }
 
@@ -25,7 +28,7 @@ public class AuthorityServiceImpl implements AuthorityService{
         return authorityMapper.update(authority);
     }
 
-    public boolean add(Authority authority){
+    public boolean create(Authority authority){
         return authorityMapper.create(authority);
     }
 
@@ -41,10 +44,11 @@ public class AuthorityServiceImpl implements AuthorityService{
         return authorityMapper.findAll();
     }
 
-    public Paging paging(Integer pageSize, Integer pageNum, Authority authority) {
-            int maxResult = (pageNum - 1) * pageSize;
-            Paging page = authorityMapper.paging(maxResult, pageNum, authority);
-            return page;
+    public PageInfo<Authority> findByPage(Integer page, Integer size, Map authority) {
+        PageHelper.startPage(page, size);
+        List<Authority> authorities = authorityMapper.list(authority);
+        PageInfo<Authority> pageInfo = new PageInfo<Authority>(authorities);
+        return pageInfo;
     }
 
 }
