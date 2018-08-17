@@ -4,8 +4,6 @@ import com.yankuang.equipment.common.util.Constants;
 import com.yankuang.equipment.common.util.ResponseMeta;
 import com.yankuang.equipment.equipment.model.SbTypeInfo;
 import com.yankuang.equipment.equipment.service.SbTypeInfoService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.validation.BindingResult;
@@ -67,4 +65,18 @@ public class SbTypeInfoController {
         return responseMeta;
     }
 
+    @RequestMapping(value = "/findMainParaBySbtypeThree",method = RequestMethod.GET)
+    public ResponseMeta findMainParaBySbtypeThree(String sbtypeThree){
+        ResponseMeta responseMeta = new ResponseMeta();
+        try{
+            SbTypeInfo typeInfo = sbTypeInfoService.findMainParaBySbtypeThree(sbtypeThree);
+            responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"查询设备主要技术参数成功");
+            responseMeta.setData(typeInfo);
+        }catch (Exception e){
+            responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"查询设备主要技术参数失败");
+            responseMeta.setData(ExceptionUtils.getStackTrace(e));
+        }
+
+        return responseMeta;
+    }
 }

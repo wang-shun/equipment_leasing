@@ -16,6 +16,8 @@ public interface SbTypeMapper {
 
     SbType findById(Long id);
 
+    SbType findByCode(String code);
+
     int update(SbTypeInfo record);
 
     List<SbType> list();

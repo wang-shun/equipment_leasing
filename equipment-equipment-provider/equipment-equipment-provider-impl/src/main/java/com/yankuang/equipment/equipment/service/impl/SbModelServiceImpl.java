@@ -47,4 +47,12 @@ public class SbModelServiceImpl implements SbModelService {
         PageInfo<SbModel> pageInfo = new PageInfo<SbModel>(list);
         return pageInfo;
     }
+
+    public void deletes(List<Long> ids){
+        sbModelMapper.deletes(ids);
+    }
+
+    public List<SbModel> listBySbtypeThree(String sbtypeThree){
+        return sbModelMapper.listBySbtypeThree(sbtypeThree);
+    }
 }

@@ -16,7 +16,9 @@ public interface SbPositionMapper {
 
     int update(SbPosition record);
 
-    List<SbPosition> list(@Param("p_code") String code, @Param("p_name") String name);
+    List<SbPosition> list(SbPosition sbPosition);
 
     SbPosition selectByMaxId();
+
+    int deletes(@Param("ids") List<Long> ids);
 }

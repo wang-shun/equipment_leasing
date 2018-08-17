@@ -21,4 +21,11 @@ public interface SbTypeInfoService {
      * @param record
      */
     public void update(SbTypeInfo record);
+
+    /**
+     * 根据设备小类查询主要技术参数
+     * @param sbtypeThree
+     * @return
+     */
+    public SbTypeInfo findMainParaBySbtypeThree(String sbtypeThree);
 }

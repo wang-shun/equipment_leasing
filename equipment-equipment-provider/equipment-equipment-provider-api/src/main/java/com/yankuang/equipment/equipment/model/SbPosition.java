@@ -9,8 +9,6 @@ import java.util.Date;
 public class SbPosition implements Serializable {
     private Long id;
 
-    @NotEmpty(message = "位置编码不能为空!")
-    @Length(min = 1,max = 200,message = "位置编码长度超出范围!")
     private String code;
 
     @NotEmpty(message = "位置名称不能为空!")

@@ -50,6 +50,8 @@ public class SbTypeInfo implements Serializable {
 
     private String defPara8Type;
 
+    private Byte status;
+
     private String createBy;
 
     private Date createAt;
@@ -223,6 +225,14 @@ public class SbTypeInfo implements Serializable {
     public void setDefPara8Type(String defPara8Type) {
         this.defPara8Type = defPara8Type == null ? null : defPara8Type.trim();
     }
+    public Byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(Byte status) {
+        this.status = status;
+    }
+
     public String getCreateBy() {
         return createBy;
     }
