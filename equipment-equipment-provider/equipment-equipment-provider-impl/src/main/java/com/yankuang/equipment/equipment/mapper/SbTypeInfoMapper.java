@@ -15,4 +15,6 @@ public interface SbTypeInfoMapper {
     SbTypeInfo findById(Long id);
 
     int update(SbTypeInfo record);
+
+    SbTypeInfo findMainParaBySbtypeThree(String sbtypeThree);
 }

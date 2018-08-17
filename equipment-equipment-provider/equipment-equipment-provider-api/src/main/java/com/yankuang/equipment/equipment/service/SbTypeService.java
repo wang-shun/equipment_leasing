@@ -19,6 +19,8 @@ public interface SbTypeService {
      */
     public void create(SbType record, SbTypeInfo sbTypeInfo);
 
+    public SbType findByCode(String code);
+
     /**
      * 根据id删除设备类型
      * @param id

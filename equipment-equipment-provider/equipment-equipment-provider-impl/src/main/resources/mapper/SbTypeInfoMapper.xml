@@ -22,6 +22,7 @@
     <result column="def_para7_type" property="defPara7Type" jdbcType="VARCHAR" />
     <result column="def_para8" property="defPara8" jdbcType="VARCHAR" />
     <result column="def_para8_type" property="defPara8Type" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
     <result column="create_by" property="createBy" jdbcType="VARCHAR" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
@@ -34,7 +35,7 @@
     id, type_id, main_para, main_para_type, def_para1, def_para1_type, def_para2, def_para2_type, 
     def_para3, def_para3_type, def_para4, def_para4_type, def_para5, def_para5_type, 
     def_para6, def_para6_type, def_para7, def_para7_type, def_para8, def_para8_type,
-    create_by, create_at, update_by, update_at, version
+    status, create_by, create_at, update_by, update_at, version
   </sql>
   <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select t1.code,t1.name,t2.*
@@ -97,4 +98,10 @@
       update_at = CURRENT_TIMESTAMP()
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="findMainParaBySbtypeThree" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select *
+    FROM sb_type_info
+    where type_id = (select id from sb_type where status = '1' and code = #{sbtypeThree,jdbcType=VARCHAR})
+  </select>
 </mapper>

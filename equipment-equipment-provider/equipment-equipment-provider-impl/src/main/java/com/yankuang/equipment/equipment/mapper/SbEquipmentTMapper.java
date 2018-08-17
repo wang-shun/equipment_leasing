@@ -15,7 +15,12 @@ public interface SbEquipmentTMapper {
 
     SbEquipmentT findById(Long id);
 
+    SbEquipmentT findByCode(String code);
+
     int update(SbEquipmentT record);
 
-    List<SbEquipmentT> list(@Param("p_code") String code,@Param("p_name") String name);
+    List<SbEquipmentT> list(SbEquipmentT sbEquipmentT);
+
+    int deletes(@Param("ids") List<Long> ids);
+
 }
