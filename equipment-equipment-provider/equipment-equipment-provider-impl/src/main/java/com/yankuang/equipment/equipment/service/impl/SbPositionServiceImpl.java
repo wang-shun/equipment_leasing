@@ -41,10 +41,14 @@ public class SbPositionServiceImpl implements SbPositionService {
         sbPositionMapper.deleteById(id);
     }
 
-    public PageInfo<SbPosition> list(String code,String name,int pageNum, int pageSize){
+    public PageInfo<SbPosition> list(SbPosition sbPosition,int pageNum, int pageSize){
         PageHelper.startPage(pageNum,pageSize);
-        List<SbPosition> list = sbPositionMapper.list(code,name);
+        List<SbPosition> list = sbPositionMapper.list(sbPosition);
         PageInfo<SbPosition> pageInfo = new PageInfo<SbPosition>(list);
         return pageInfo;
+    }
+
+    public void deletes(List<Long> ids){
+        sbPositionMapper.deletes(ids);
     }
 }

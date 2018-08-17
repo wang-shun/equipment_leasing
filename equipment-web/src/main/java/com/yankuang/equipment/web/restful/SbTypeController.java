@@ -5,8 +5,6 @@ import com.yankuang.equipment.common.util.ResponseMeta;
 import com.yankuang.equipment.equipment.model.SbType;
 import com.yankuang.equipment.equipment.model.SbTypeInfo;
 import com.yankuang.equipment.equipment.service.SbTypeService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.validation.BindingResult;
@@ -44,6 +42,12 @@ public class SbTypeController {
             if (bindingResult.hasErrors()){
                 return responseMeta.setMeta(Constants.RESPONSE_ERROR,bindingResult.getAllErrors().get(0).getDefaultMessage());
             }
+
+            SbType type = sbTypeService.findByCode(sbType.getCode());
+            if(type != null){
+                return responseMeta.setMeta(Constants.RESPONSE_ERROR,"设备类型编码已存在!");
+            }
+
             sbTypeService.create(sbType,sbTypeInfo);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"创建设备类型及信息成功");
         }catch (Exception e){

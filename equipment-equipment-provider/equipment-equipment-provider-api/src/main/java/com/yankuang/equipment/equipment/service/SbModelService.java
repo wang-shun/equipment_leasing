@@ -3,6 +3,8 @@ package com.yankuang.equipment.equipment.service;
 import com.github.pagehelper.PageInfo;
 import com.yankuang.equipment.equipment.model.SbModel;
 
+import java.util.List;
+
 public interface SbModelService {
 
     /**
@@ -39,4 +41,17 @@ public interface SbModelService {
      * @return
      */
     public PageInfo<SbModel> list(String code,String name,int pageNum, int pageSize);
+
+    /**
+     * 批量删除设备规格型号
+     * @param ids
+     */
+    public void deletes(List<Long> ids);
+
+    /**
+     * 根据设备小类查询设备规格型号列表
+     * @param sbtypeThree
+     * @return
+     */
+    public List<SbModel> listBySbtypeThree(String sbtypeThree);
 }

@@ -3,6 +3,8 @@ package com.yankuang.equipment.equipment.service;
 import com.github.pagehelper.PageInfo;
 import com.yankuang.equipment.equipment.model.SbPosition;
 
+import java.util.List;
+
 public interface SbPositionService {
 
     /**
@@ -32,11 +34,16 @@ public interface SbPositionService {
 
     /**
      * 查询设备功能位置列表
-     * @param code
-     * @param name
+     * @param sbPosition
      * @param pageNum
      * @param pageSize
      * @return
      */
-    public PageInfo<SbPosition> list(String code,String name,int pageNum, int pageSize);
+    public PageInfo<SbPosition> list(SbPosition sbPosition,int pageNum, int pageSize);
+
+    /**
+     * 批量删除设备功能位置
+     * @param ids
+     */
+    public void deletes(List<Long> ids);
 }
