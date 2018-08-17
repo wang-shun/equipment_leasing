@@ -2,6 +2,7 @@ package com.yankuang.equipment.equipment.mapper;
 
 
 import com.yankuang.equipment.equipment.model.SbEquipmentT;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,5 +17,5 @@ public interface SbEquipmentTMapper {
 
     int update(SbEquipmentT record);
 
-    List<SbEquipmentT> list(SbEquipmentT sbEquipmentT);
+    List<SbEquipmentT> list(@Param("p_code") String code,@Param("p_name") String name);
 }

@@ -53,7 +53,7 @@ public class ElPlanServiceImpl implements ElPlanService {
             elPlan.setPlanUpdatorName(elPlan.getPlanCreatorName());
             elPlan.setPlanStatus(Constants.PLANSTATUS_UNCOMMITED);
             elPlan.setPlanCode(UuidUtils.newUuid());
-            elPlan.setPlanVersion(UuidUtils.newUuid());
+            elPlan.setPlanVersion("1");
             List<ElPlanItem> elPlanItemList = elPlan.getElPlanItemList();
             boolean itemRes = true;
             if (elPlanItemList != null) {
@@ -67,6 +67,9 @@ public class ElPlanServiceImpl implements ElPlanService {
                 }
             }
             res = elPlanMapper.insertByPrimaryKey(elPlan) > 0 && itemRes;
+            if (!res) {
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            }
             logger.info("create ElPlan:"+JSON.toJSONString(elPlan));
             return res;
         } catch (Exception e) {
@@ -98,7 +101,6 @@ public class ElPlanServiceImpl implements ElPlanService {
     public Boolean update (ElPlan elPlan) {
 
         Boolean res = false;
-
         try {
             String planId = elPlan.getPlanId();
             if (StringUtils.isEmpty(planId)) {
@@ -106,15 +108,23 @@ public class ElPlanServiceImpl implements ElPlanService {
             }
             elPlanMapper.deletePlanItemByPlanId(planId);
             elPlan.setPlanUpdateTime(new Date().getTime());
+            boolean itemRes = true;
             if (elPlan.getElPlanItemList() != null) {
                 for (ElPlanItem elPlanItem : elPlan.getElPlanItemList()) {
                     elPlanItem.setItemId(UuidUtils.newUuid());
                     elPlanItem.setPlanId(elPlan.getPlanId());
+                    itemRes = elPlanItemMapper.saveByPrimaryKey(elPlanItem) > 0;
+                    if (!itemRes) {
+                        break;
+                    }
                 }
             }
-            elPlanMapper.savePlanItemByPlanId(elPlan);
+            //elPlanMapper.savePlanItemByPlanId(elPlan);
             logger.info("update elPlan: "+JSON.toJSONString(elPlan));
-            res = elPlanMapper.updateByPrimarykey(elPlan) > 0;
+            res = elPlanMapper.updateByPrimarykey(elPlan) > 0 && itemRes;
+            if (!res) {
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            }
             return res;
         } catch (Exception e) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -122,7 +132,6 @@ public class ElPlanServiceImpl implements ElPlanService {
             logger.info("update elPlan exception: "+JSON.toJSONString(elPlan));
             return res;
         }
-
     }
 
     public Boolean deletePlan(String planId) {
@@ -130,6 +139,7 @@ public class ElPlanServiceImpl implements ElPlanService {
         try {
             int res = elPlanMapper.deletePlanByPlanId(planId);
             if (res <= 0) {
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 return false;
             }
             logger.info("delete elPlan byID: "+planId);
@@ -187,6 +197,9 @@ public class ElPlanServiceImpl implements ElPlanService {
         try {
             logger.info("approve elPlan: "+JSON.toJSONString(elPlan));
             boolean res = elPlanMapper.updateByPrimarykey(elPlan) > 0;
+            if (!res) {
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            }
             return res;
         } catch (Exception e) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();

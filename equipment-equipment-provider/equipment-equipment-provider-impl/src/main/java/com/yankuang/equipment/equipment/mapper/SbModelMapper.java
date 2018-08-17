@@ -1,6 +1,7 @@
 package com.yankuang.equipment.equipment.mapper;
 
 import com.yankuang.equipment.equipment.model.SbModel;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public interface SbModelMapper {
 
     int update(SbModel record);
 
-    List<SbModel> list(String code,String name);
+    List<SbModel> list(@Param("p_code") String code,@Param("p_name") String name);
 
-    SbModel selectByMaxId();
+    SbModel selectByMaxId(@Param("sbtypeThree") String sbtypeThree);
 }

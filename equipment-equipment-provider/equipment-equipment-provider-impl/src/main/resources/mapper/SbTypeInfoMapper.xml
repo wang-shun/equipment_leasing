@@ -43,11 +43,13 @@
     WHERE t1.status = '1' and t1.id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteById" parameterType="java.lang.Long" >
-    delete from sb_type_info
+    update sb_type_info
+    set status = 99
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <delete id="deleteByTypeId" parameterType="java.lang.Long" >
-    delete from sb_type_info
+    update sb_type_info
+    set status = 99
     where type_id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="create" parameterType="com.yankuang.equipment.equipment.model.SbTypeInfo" >
@@ -67,7 +69,7 @@
       #{defPara5,jdbcType=VARCHAR}, #{defPara5Type,jdbcType=VARCHAR}, #{defPara6,jdbcType=VARCHAR}, 
       #{defPara6Type,jdbcType=VARCHAR}, #{defPara7,jdbcType=VARCHAR}, #{defPara7Type,jdbcType=VARCHAR}, 
       #{defPara8,jdbcType=VARCHAR}, #{defPara8Type,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR},
-      #{createAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateAt,jdbcType=TIMESTAMP}
+      CURRENT_TIMESTAMP(), #{updateBy,jdbcType=VARCHAR}, CURRENT_TIMESTAMP()
       )
   </insert>
 
@@ -92,7 +94,7 @@
       def_para8 = #{defPara8,jdbcType=VARCHAR},
       def_para8_type = #{defPara8Type,jdbcType=VARCHAR},
       update_by = #{updateBy,jdbcType=VARCHAR},
-      update_at = #{updateAt,jdbcType=TIMESTAMP}
+      update_at = CURRENT_TIMESTAMP()
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

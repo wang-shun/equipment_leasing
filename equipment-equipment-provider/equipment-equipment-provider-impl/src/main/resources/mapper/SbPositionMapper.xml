@@ -32,21 +32,22 @@
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteById" parameterType="java.lang.Long" >
-    delete from sb_position
+    update sb_position
+    set status = 99
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="create" parameterType="com.yankuang.equipment.equipment.model.SbPosition" >
     insert into sb_position (code, name,
       state, type, org, position, 
       isuse, isrfid, remark, 
-      status, create_by, create_at, 
-      update_by, update_at, version
+      create_by, create_at,
+      update_by, update_at
       )
     values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
       #{state,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{org,jdbcType=VARCHAR}, #{position,jdbcType=VARCHAR}, 
       #{isuse,jdbcType=TINYINT}, #{isrfid,jdbcType=TINYINT}, #{remark,jdbcType=VARCHAR}, 
-      #{status,jdbcType=TINYINT}, #{createBy,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, 
-      #{updateBy,jdbcType=VARCHAR}, #{updateAt,jdbcType=TIMESTAMP}, #{version,jdbcType=BIGINT}
+      #{createBy,jdbcType=VARCHAR}, CURRENT_TIMESTAMP(),
+      #{updateBy,jdbcType=VARCHAR}, CURRENT_TIMESTAMP()
       )
   </insert>
 
@@ -61,27 +62,23 @@
       isuse = #{isuse,jdbcType=TINYINT},
       isrfid = #{isrfid,jdbcType=TINYINT},
       remark = #{remark,jdbcType=VARCHAR},
-      status = #{status,jdbcType=TINYINT},
-      create_by = #{createBy,jdbcType=VARCHAR},
-      create_at = #{createAt,jdbcType=TIMESTAMP},
       update_by = #{updateBy,jdbcType=VARCHAR},
-      update_at = #{updateAt,jdbcType=TIMESTAMP},
-      version = #{version,jdbcType=BIGINT}
+      update_at = CURRENT_TIMESTAMP()
     where id = #{id,jdbcType=BIGINT}
   </update>
 
   <select id="list" resultMap="BaseResultMap">
     select t.*,t1.name as state_name,t2.name as type_name
     from sb_position t
-    left join sys_config t1 on t.state=t1.code and t1.type='sb_position_status' and t1.status = 1
-    left join sys_config t2 on t.state=t2.code and t2.type='sb_position_type' and t2.status = 1
+    left join sys_config t1 on t.state=t1.code and t1.type='sb_position_status' and t1.status = '1'
+    left join sys_config t2 on t.state=t2.code and t2.type='sb_position_type' and t2.status = '1'
     <where>
-      1=1 and t.status = 1
-      <if test="code != null" >
-        AND t.code like '%#{code}%'
+      1=1 and t.status = '1'
+      <if test="p_code!=null">
+        and t.code like '%' #{p_code,jdbcType=VARCHAR} '%'
       </if>
-      <if test="name != null" >
-        AND t.name like '%#{name}%'
+      <if test="p_name!=null">
+        and t.name like '%' #{p_name,jdbcType=VARCHAR} '%'
       </if>
     </where>
   </select>

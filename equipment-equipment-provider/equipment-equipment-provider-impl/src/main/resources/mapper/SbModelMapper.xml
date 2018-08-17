@@ -29,19 +29,20 @@
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteById" parameterType="java.lang.Long" >
-    delete from sb_model
+    update sb_model
+    set status = 99
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="create" parameterType="com.yankuang.equipment.equipment.model.SbModel" >
     insert into sb_model (code, name,
       sbtype_one, sbtype_two, sbtype_three, 
-      status, create_by, create_at, 
-      update_by, update_at, version
+      create_by, create_at,
+      update_by, update_at
       )
     values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
       #{sbtypeOne,jdbcType=VARCHAR}, #{sbtypeTwo,jdbcType=VARCHAR}, #{sbtypeThree,jdbcType=VARCHAR}, 
-      #{status,jdbcType=TINYINT}, #{createBy,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, 
-      #{updateBy,jdbcType=VARCHAR}, #{updateAt,jdbcType=TIMESTAMP}, #{version,jdbcType=BIGINT}
+      #{createBy,jdbcType=VARCHAR}, CURRENT_TIMESTAMP(),
+      #{updateBy,jdbcType=VARCHAR}, CURRENT_TIMESTAMP()
       )
   </insert>
 
@@ -52,28 +53,24 @@
       sbtype_one = #{sbtypeOne,jdbcType=VARCHAR},
       sbtype_two = #{sbtypeTwo,jdbcType=VARCHAR},
       sbtype_three = #{sbtypeThree,jdbcType=VARCHAR},
-      status = #{status,jdbcType=TINYINT},
-      create_by = #{createBy,jdbcType=VARCHAR},
-      create_at = #{createAt,jdbcType=TIMESTAMP},
       update_by = #{updateBy,jdbcType=VARCHAR},
-      update_at = #{updateAt,jdbcType=TIMESTAMP},
-      version = #{version,jdbcType=BIGINT}
+      update_at = CURRENT_TIMESTAMP()
     where id = #{id,jdbcType=BIGINT}
   </update>
   
   <select id="list" resultMap="BaseResultMap">
     select t.*,t1.name as sbtype_one_name,t2.name as sbtype_two_name,t3.name as sbtype_three_name
     from sb_model t
-    left JOIN sb_type t1 on t.sbtype_one=t1.code and t1.status=1
-    left JOIN sb_type t2 on t.sbtype_two=t2.code and t2.status=1
-    left JOIN sb_type t3 on t.sbtype_three=t3.code and t3.status=1
+    left JOIN sb_type t1 on t.sbtype_one=t1.code and t1.status='1'
+    left JOIN sb_type t2 on t.sbtype_two=t2.code and t2.status='1'
+    left JOIN sb_type t3 on t.sbtype_three=t3.code and t3.status='1'
     <where>
-      1=1 and t.status = 1
-      <if test="code != null" >
-        AND t.code like '%#{code}%'
+      1=1 and t.status = '1'
+      <if test="p_code != null" >
+        AND t.code like '%' #{p_code,jdbcType=VARCHAR} '%'
       </if>
-      <if test="name != null" >
-        AND t.name like '%#{name}%'
+      <if test="p_name != null" >
+        AND t.name like '%' #{p_name,jdbcType=VARCHAR} '%'
       </if>
     </where>
   </select>
@@ -82,6 +79,6 @@
     select
     <include refid="Base_Column_List" />
     from sb_model
-    where id=(select MAX(id) from sb_model where sbtype_three = #{sbtypeThree})
+    where id=(select MAX(id) from sb_model where sbtype_three = #{sbtypeThree,jdbcType=VARCHAR})
   </select>
 </mapper>
