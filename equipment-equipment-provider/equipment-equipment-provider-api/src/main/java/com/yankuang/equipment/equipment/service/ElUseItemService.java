@@ -3,6 +3,7 @@ package com.yankuang.equipment.equipment.service;
 import com.github.pagehelper.PageInfo;
 import com.yankuang.equipment.equipment.model.ElUseItem;
 
+import java.util.List;
 import java.util.Map;
 
 public interface ElUseItemService {
@@ -49,4 +50,11 @@ public interface ElUseItemService {
      * @return
      */
     Boolean deleteById(Long itemId);
+
+    /**
+     * @method 查询是否存在该使用设备
+     * @param itemId
+     * @return
+     */
+    List<ElUseItem> findByUseId(Long itemId);
 }

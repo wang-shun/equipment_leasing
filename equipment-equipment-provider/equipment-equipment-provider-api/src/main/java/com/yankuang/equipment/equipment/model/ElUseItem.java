@@ -32,7 +32,7 @@ public class ElUseItem implements Serializable{
 
     private String code;
 
-    private String backup1;
+    private Long planUseId;
 
     private String backup2;
 
@@ -128,35 +128,19 @@ public class ElUseItem implements Serializable{
         this.code = code == null ? null : code.trim();
     }
 
-    public String getBackup1() {
-        return backup1;
-    }
-
-    public void setBackup1(String backup1) {
-        this.backup1 = backup1 == null ? null : backup1.trim();
-    }
-
-    public String getBackup2() {
-        return backup2;
-    }
-
-    public void setBackup2(String backup2) {
-        this.backup2 = backup2 == null ? null : backup2.trim();
-    }
-
-    public String getBackup3() {
-        return backup3;
-    }
-
-    public void setBackup3(String backup3) {
-        this.backup3 = backup3 == null ? null : backup3.trim();
-    }
-
     public SbEquipmentT getSbEquipmentT() {
         return sbEquipmentT;
     }
 
     public void setSbEquipmentT(SbEquipmentT sbEquipmentT) {
         this.sbEquipmentT = sbEquipmentT;
+    }
+
+    public Long getPlanUseId() {
+        return planUseId;
+    }
+
+    public void setPlanUseId(Long planUseId) {
+        this.planUseId = planUseId;
     }
 }

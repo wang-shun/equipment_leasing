@@ -2,7 +2,7 @@ package com.yankuang.equipment.equipment.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.sun.org.apache.xpath.internal.operations.Bool;
+import com.yankuang.equipment.common.util.UuidUtils;
 import com.yankuang.equipment.equipment.mapper.ElUseItemMapper;
 import com.yankuang.equipment.equipment.mapper.ElUseMapper;
 import com.yankuang.equipment.equipment.model.ElUse;
@@ -33,7 +33,7 @@ public class ElUseServiceImpl implements ElUseService{
             return false;
         }
         elUse.setApproveCode("111111");//TODO 这个暂时写死，等后续有相应的申请编码生成规则在改写
-        String code = (elUse.getCode() == null || " ".equals(elUse.getCode()))?"1":elUse.getCode();
+        String code = (elUse.getCode() == null || " ".equals(elUse.getCode()))? UuidUtils.newUuid():elUse.getCode();
         elUse.setCode(code);
         String sorting = (elUse.getSorting() == null || " ".equals(elUse.getSorting()))?"0":elUse.getSorting();
         elUse.setSorting(sorting);
@@ -62,6 +62,9 @@ public class ElUseServiceImpl implements ElUseService{
                 return false;
             }
             if (elUseItem.getEquipmentEffect() == null || " ".equals(elUseItem.getEquipmentEffect())){
+                return false;
+            }
+            if (elUseItem.getPlanUseId() == null){
                 return false;
             }
             Integer equipmentNum = elUseItem.getEquipmentNum() == null?1:elUseItem.getEquipmentNum();

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yankuang.equipment.equipment.mapper.ElPlanUseMapper" >
+  <resultMap id="BaseResultMap" type="com.yankuang.equipment.equipment.model.ElPlanUse" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="center_year" property="centerYear" jdbcType="INTEGER" />
+    <result column="center_month" property="centerMonth" jdbcType="INTEGER" />
+    <result column="plan_type" property="planType" jdbcType="VARCHAR" />
+    <result column="plan_id" property="planId" jdbcType="VARCHAR" />
+    <result column="plan_item_id" property="planItemId" jdbcType="VARCHAR" />
+    <result column="equipment_id" property="equipmentId" jdbcType="BIGINT" />
+    <result column="sorting" property="sorting" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="is_del" property="isDel" jdbcType="TINYINT" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="create_by" property="createBy" jdbcType="BIGINT" />
+    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="BIGINT" />
+    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+    <result column="version" property="version" jdbcType="BIGINT" />
+    <result column="backup1" property="backup1" jdbcType="VARCHAR" />
+    <result column="equipment_type" property="equipmentType" jdbcType="VARCHAR" />
+    <result column="position_id" property="positionId" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, center_year, center_month, plan_type, plan_id, plan_item_id, equipment_id, sorting, 
+    status, is_del, remarks, create_by, create_at, update_by, update_at, version, backup1, 
+    equipment_type, position_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from el_plan_use
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteById" parameterType="java.lang.Long" >
+    delete from el_plan_use
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yankuang.equipment.equipment.model.ElPlanUse" >
+    insert into el_plan_use (id, center_year, center_month, 
+      plan_type, plan_id, plan_item_id, 
+      equipment_id, sorting, status, 
+      is_del, remarks, create_by, 
+      create_at, update_by, update_at, 
+      version, backup1, equipment_type,
+      position_id)
+    values (#{id,jdbcType=BIGINT}, #{centerYear,jdbcType=INTEGER}, #{centerMonth,jdbcType=INTEGER}, 
+      #{planType,jdbcType=VARCHAR}, #{planId,jdbcType=VARCHAR}, #{planItemId,jdbcType=VARCHAR}, 
+      #{equipmentId,jdbcType=BIGINT}, #{sorting,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{isDel,jdbcType=TINYINT}, #{remarks,jdbcType=VARCHAR}, #{createBy,jdbcType=BIGINT}, 
+      #{createAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=BIGINT}, #{updateAt,jdbcType=TIMESTAMP}, 
+      #{version,jdbcType=BIGINT}, #{backup1,jdbcType=VARCHAR}, #{equipmentType,jdbcType=VARCHAR},
+      #{positionId,jdbcType=BIGINT})
+  </insert>
+  <update id="update" parameterType="com.yankuang.equipment.equipment.model.ElPlanUse" >
+    update el_plan_use
+    <set >
+      <if test="centerYear != null" >
+        center_year = #{centerYear,jdbcType=INTEGER},
+      </if>
+      <if test="centerMonth != null" >
+        center_month = #{centerMonth,jdbcType=INTEGER},
+      </if>
+      <if test="planType != null" >
+        plan_type = #{planType,jdbcType=VARCHAR},
+      </if>
+      <if test="planId != null" >
+        plan_id = #{planId,jdbcType=VARCHAR},
+      </if>
+      <if test="planItemId != null" >
+        plan_item_id = #{planItemId,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentId != null" >
+        equipment_id = #{equipmentId,jdbcType=BIGINT},
+      </if>
+      <if test="sorting != null" >
+        sorting = #{sorting,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null" >
+        is_del = #{isDel,jdbcType=TINYINT},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=BIGINT},
+      </if>
+      <if test="createAt != null" >
+        create_at = #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=BIGINT},
+      </if>
+      <if test="updateAt != null" >
+        update_at = #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=BIGINT},
+      </if>
+      <if test="backup1 != null" >
+        backup1 = #{backup1,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentType != null" >
+        equipment_type = #{equipmentType,jdbcType=VARCHAR},
+      </if>
+      <if test="positionId != null" >
+        position_id = #{positionId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+    <select id="findByCondition" parameterType="com.yankuang.equipment.equipment.model.ElPlanUse" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        from el_plan_use
+        where 1 = 1 AND is_del = 1
+        <if test="centerYear != null">
+            AND center_year = #{centerYear}
+        </if>
+        <if test="centerMonth != null">
+            AND center_month = #{centerMonth}
+        </if>
+        <if test="planType != null">
+            AND plan_type = #{planType}
+        </if>
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+        <if test="positionId != null">
+            AND position_id = #{positionId}
+        </if>
+        <if test="backup1 != null">
+            AND backup1 = #{backup1}
+        </if>
+    </select>
+</mapper>
