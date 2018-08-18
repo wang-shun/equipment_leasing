@@ -290,8 +290,8 @@ public class WebLogAspect {
      * @param joinPoint
      * @throws Throwable
      */
-    @Around("login()")
-    public CommonResponse loginVerify(ProceedingJoinPoint joinPoint) throws Throwable {
+    @Around("login()")  // CommonResponse
+    public Object loginVerify(ProceedingJoinPoint joinPoint) throws Throwable {
         HttpServletRequest request =
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 
@@ -337,10 +337,10 @@ public class WebLogAspect {
             }
         }
         // 登录跟验证权限通过，接受相应方法返回值（可做相应处理），返回前端
-        CommonResponse result = (CommonResponse) joinPoint.proceed();
+//        CommonResponse result = (CommonResponse) joinPoint.proceed();
 
 
-        return result;
+        return joinPoint.proceed();
     }
 
 }
