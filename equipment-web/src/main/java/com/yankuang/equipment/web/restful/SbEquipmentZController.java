@@ -24,7 +24,7 @@ public class SbEquipmentZController {
     SbEquipmentZService sbEquipmentZService;
 
     @RequestMapping(value = "/create",method = RequestMethod.POST)
-    public ResponseMeta create(@Valid SbEquipmentZ sbEquipmentZ, BindingResult bindingResult){
+    public ResponseMeta create(@Valid @RequestBody SbEquipmentZ sbEquipmentZ, BindingResult bindingResult){
         ResponseMeta responseMeta = new ResponseMeta();
         try{
             if (bindingResult.hasErrors()){
@@ -45,7 +45,7 @@ public class SbEquipmentZController {
     }
 
     @RequestMapping(value = "/update",method = RequestMethod.PUT)
-    public ResponseMeta update(@Valid SbEquipmentZ sbEquipmentZ, BindingResult bindingResult){
+    public ResponseMeta update(@Valid @RequestBody SbEquipmentZ sbEquipmentZ, BindingResult bindingResult){
         ResponseMeta responseMeta = new ResponseMeta();
         try{
             if (bindingResult.hasErrors()){
