@@ -26,6 +26,12 @@
     from sb_type
     where id = #{id,jdbcType=BIGINT}
   </select>
+  <select id="findByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sb_type
+    where status = '1' and code = #{code,jdbcType=BIGINT}
+  </select>
   <select id="findByName" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

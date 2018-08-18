@@ -42,6 +42,14 @@
     set status = 99
     where id = #{id,jdbcType=BIGINT}
   </delete>
+  <delete id="deletes" parameterType="java.util.List">
+    update sb_position
+    set status = 99
+    where id in 
+    <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
   <insert id="create" parameterType="com.yankuang.equipment.equipment.model.SbPosition" >
     insert into sb_position (code, name,
       state, type, org, position, 
@@ -80,11 +88,20 @@
     left join sys_config t2 on t.state=t2.code and t2.type='sb_position_type' and t2.status = '1'
     <where>
       1=1 and t.status = '1'
-      <if test="p_code!=null">
-        and t.code like '%' #{p_code,jdbcType=VARCHAR} '%'
+      <if test="code!=null">
+        and t.code like '%' #{code,jdbcType=VARCHAR} '%'
       </if>
-      <if test="p_name!=null">
-        and t.name like '%' #{p_name,jdbcType=VARCHAR} '%'
+      <if test="name!=null">
+        and t.name like '%' #{name,jdbcType=VARCHAR} '%'
+      </if>
+      <if test="type!=null">
+        and t.type = #{type,jdbcType=VARCHAR}
+      </if>
+      <if test="org!=null">
+        and t.org = #{org,jdbcType=VARCHAR}
+      </if>
+      <if test="position!=null">
+        and t.position = #{position,jdbcType=VARCHAR}
       </if>
     </where>
   </select>

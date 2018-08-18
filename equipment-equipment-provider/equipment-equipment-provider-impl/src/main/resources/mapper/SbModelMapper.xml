@@ -39,6 +39,14 @@
     set status = 99
     where id = #{id,jdbcType=BIGINT}
   </delete>
+  <delete id="deletes" parameterType="java.util.List">
+    update sb_model
+    set status = 99
+    where id in
+    <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
   <insert id="create" parameterType="com.yankuang.equipment.equipment.model.SbModel" >
     insert into sb_model (code, name,
       sbtype_one, sbtype_two, sbtype_three, 
@@ -86,5 +94,12 @@
     <include refid="Base_Column_List" />
     from sb_model
     where id=(select MAX(id) from sb_model where sbtype_three = #{sbtypeThree,jdbcType=VARCHAR})
+  </select>
+
+  <select id="listBySbtypeThree" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sb_model
+    where status = '1' and sbtype_three = #{sbtypeThree,jdbcType=VARCHAR}
   </select>
 </mapper>

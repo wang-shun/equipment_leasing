@@ -3,6 +3,8 @@ package com.yankuang.equipment.equipment.service;
 import com.github.pagehelper.PageInfo;
 import com.yankuang.equipment.equipment.model.SbEquipmentT;
 
+import java.util.List;
+
 public interface SbEquipmentTService {
 
     /**
@@ -25,6 +27,13 @@ public interface SbEquipmentTService {
     public SbEquipmentT findById(Long id);
 
     /**
+     * 根据识别码查询设备
+     * @param code
+     * @return
+     */
+    public SbEquipmentT findByCode(String code);
+
+    /**
      * 根据主键删除通用设备
      * @param id
      */
@@ -32,11 +41,16 @@ public interface SbEquipmentTService {
 
     /**
      * 分页查询通用设备
-     * @param code
-     * @param name
+     * @param sbEquipmentT
      * @param pageNum
      * @param pageSize
      * @return
      */
-    public PageInfo<SbEquipmentT> list(String code,String name, int pageNum, int pageSize);
+    public PageInfo<SbEquipmentT> list(SbEquipmentT sbEquipmentT, int pageNum, int pageSize);
+
+    /**
+     * 批量删除通用设备
+     * @param ids
+     */
+    public void deletes(List<Long> ids);
 }

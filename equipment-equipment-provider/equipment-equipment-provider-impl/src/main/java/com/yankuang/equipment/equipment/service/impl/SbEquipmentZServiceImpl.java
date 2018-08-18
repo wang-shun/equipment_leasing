@@ -30,14 +30,22 @@ public class SbEquipmentZServiceImpl implements SbEquipmentZService {
         return sbEquipmentZMapper.findById(id);
     }
 
+    public SbEquipmentZ findByCode(String code){
+        return sbEquipmentZMapper.findByCode(code);
+    }
+
     public void deleteById(Long id) {
         sbEquipmentZMapper.deleteById(id);
     }
 
-    public PageInfo<SbEquipmentZ> list(String code,String name, int pageNum, int pageSize) {
+    public PageInfo<SbEquipmentZ> list(SbEquipmentZ sbEquipmentZ, int pageNum, int pageSize) {
         PageHelper.startPage(pageNum,pageSize);
-        List<SbEquipmentZ> list = sbEquipmentZMapper.list(code,name);
+        List<SbEquipmentZ> list = sbEquipmentZMapper.list(sbEquipmentZ);
         PageInfo<SbEquipmentZ> pageInfo = new PageInfo<SbEquipmentZ>(list);
         return pageInfo;
+    }
+
+    public void deletes(List<Long> ids){
+        sbEquipmentZMapper.deletes(ids);
     }
 }

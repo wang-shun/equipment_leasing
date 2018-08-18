@@ -3,6 +3,7 @@ package com.yankuang.equipment.equipment.model;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -61,7 +62,7 @@ public class SbEquipmentT implements Serializable {
 
     private String contranct;
 
-    @Range(min = 0,max = 9999999,message = "数值必须在0~9999999之间!")
+    @Range(min = 0,max = 9999999,message = "购置价值必须在0~9999999之间!")
     private BigDecimal buyPrice;
 
     private Byte isNew;
@@ -83,6 +84,35 @@ public class SbEquipmentT implements Serializable {
     private Date updateAt;
 
     private Long version;
+
+    private String positionCode;
+
+    private String stateCode;
+
+    @Range(min = 0,max = 99,message = "财务费用折旧年限必须在0~99之间!")
+    private Byte costYears;
+
+    private Double leaseRate;
+
+    private Double repairRatio;
+
+    private Double manageFeeRatio;
+
+    private Double equipmentUseRatio;
+
+    private Double dayLeaseFee;
+
+    private Double newRatio;
+
+    private String mainPara;
+    private String para1;
+    private String para2;
+    private String para3;
+    private String para4;
+    private String para5;
+    private String para6;
+    private String para7;
+    private String para8;
 
     public Long getId() {
         return id;
@@ -378,5 +408,149 @@ public class SbEquipmentT implements Serializable {
 
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    public String getPositionCode() {
+        return positionCode;
+    }
+
+    public void setPositionCode(String positionCode) {
+        this.positionCode = positionCode;
+    }
+
+    public String getStateCode() {
+        return stateCode;
+    }
+
+    public void setStateCode(String stateCode) {
+        this.stateCode = stateCode;
+    }
+
+    public Byte getCostYears() {
+        return costYears;
+    }
+
+    public void setCostYears(Byte costYears) {
+        this.costYears = costYears;
+    }
+
+    public Double getLeaseRate() {
+        return leaseRate;
+    }
+
+    public void setLeaseRate(Double leaseRate) {
+        this.leaseRate = leaseRate;
+    }
+
+    public Double getRepairRatio() {
+        return repairRatio;
+    }
+
+    public void setRepairRatio(Double repairRatio) {
+        this.repairRatio = repairRatio;
+    }
+
+    public Double getManageFeeRatio() {
+        return manageFeeRatio;
+    }
+
+    public void setManageFeeRatio(Double manageFeeRatio) {
+        this.manageFeeRatio = manageFeeRatio;
+    }
+
+    public Double getEquipmentUseRatio() {
+        return equipmentUseRatio;
+    }
+
+    public void setEquipmentUseRatio(Double equipmentUseRatio) {
+        this.equipmentUseRatio = equipmentUseRatio;
+    }
+
+    public Double getDayLeaseFee() {
+        return dayLeaseFee;
+    }
+
+    public void setDayLeaseFee(Double dayLeaseFee) {
+        this.dayLeaseFee = dayLeaseFee;
+    }
+
+    public Double getNewRatio() {
+        return newRatio;
+    }
+
+    public void setNewRatio(Double newRatio) {
+        this.newRatio = newRatio;
+    }
+
+    public String getMainPara() {
+        return mainPara;
+    }
+
+    public void setMainPara(String mainPara) {
+        this.mainPara = mainPara;
+    }
+
+    public String getPara1() {
+        return para1;
+    }
+
+    public void setPara1(String para1) {
+        this.para1 = para1;
+    }
+
+    public String getPara2() {
+        return para2;
+    }
+
+    public void setPara2(String para2) {
+        this.para2 = para2;
+    }
+
+    public String getPara3() {
+        return para3;
+    }
+
+    public void setPara3(String para3) {
+        this.para3 = para3;
+    }
+
+    public String getPara4() {
+        return para4;
+    }
+
+    public void setPara4(String para4) {
+        this.para4 = para4;
+    }
+
+    public String getPara5() {
+        return para5;
+    }
+
+    public void setPara5(String para5) {
+        this.para5 = para5;
+    }
+
+    public String getPara6() {
+        return para6;
+    }
+
+    public void setPara6(String para6) {
+        this.para6 = para6;
+    }
+
+    public String getPara7() {
+        return para7;
+    }
+
+    public void setPara7(String para7) {
+        this.para7 = para7;
+    }
+
+    public String getPara8() {
+        return para8;
+    }
+
+    public void setPara8(String para8) {
+        this.para8 = para8;
     }
 }

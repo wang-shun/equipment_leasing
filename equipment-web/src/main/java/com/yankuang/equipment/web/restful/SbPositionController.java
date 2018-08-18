@@ -1,14 +1,15 @@
 package com.yankuang.equipment.web.restful;
 
 import com.github.pagehelper.PageInfo;
+import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.Constants;
+import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.common.util.ResponseMeta;
 import com.yankuang.equipment.equipment.model.SbPosition;
 import com.yankuang.equipment.equipment.service.SbPositionService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -83,14 +84,32 @@ public class SbPositionController {
     }
 
     @RequestMapping(value = "/list",method = RequestMethod.GET)
-    public ResponseMeta list(String code,String name,int pageNum,int pageSize){
+    public ResponseMeta list(SbPosition sbPosition,int pageNum,int pageSize){
         ResponseMeta responseMeta = new ResponseMeta();
         try{
-            PageInfo<SbPosition> list = sbPositionService.list(code,name,pageNum,pageSize);
+            PageInfo<SbPosition> list = sbPositionService.list(sbPosition,pageNum,pageSize);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"查询设备功能位置列表成功");
             responseMeta.setData(list);
         }catch (Exception e){
             responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"查询设备功能位置列表失败");
+            responseMeta.setData(ExceptionUtils.getStackTrace(e));
+        }
+        return responseMeta;
+    }
+
+    @RequestMapping(value = "/deletes",method = RequestMethod.DELETE)
+    public ResponseMeta deletes(@RequestBody String jsonString){
+        ResponseMeta responseMeta = new ResponseMeta();
+        if(StringUtils.isEmpty(jsonString)){
+            responseMeta.setMeta(Constants.RESPONSE_ERROR,"参数不能为空!");
+            return responseMeta;
+        }
+        List<Long> ids = JsonUtils.jsonToList(jsonString,Long.class);
+        try{
+            sbPositionService.deletes(ids);
+            responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"删除设备功能位置信息成功");
+        }catch (Exception e){
+            responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"删除设备功能位置信息失败");
             responseMeta.setData(ExceptionUtils.getStackTrace(e));
         }
         return responseMeta;

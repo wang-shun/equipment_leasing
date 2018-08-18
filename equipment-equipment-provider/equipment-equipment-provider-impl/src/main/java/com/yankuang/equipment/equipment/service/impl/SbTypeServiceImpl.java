@@ -31,6 +31,10 @@ public class SbTypeServiceImpl implements SbTypeService {
         sbTypeInfoMapper.create(sbTypeInfo);
     }
 
+    public SbType findByCode(String code){
+        return sbTypeMapper.findByCode(code);
+    }
+
     public void deleteById(Long id) {
         sbTypeInfoMapper.deleteByTypeId(id);
         sbTypeMapper.deleteById(id);
