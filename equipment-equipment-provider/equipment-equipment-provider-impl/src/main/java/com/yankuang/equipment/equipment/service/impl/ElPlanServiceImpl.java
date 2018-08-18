@@ -312,5 +312,8 @@ public class ElPlanServiceImpl implements ElPlanService {
         }
     }
 
+    public List<ElPlanUse> findElPlanUse(ElPlanUse elPlanUse) {
 
+        return elPlanUseMapper.findByCondition(elPlanUse);
+    }
 }

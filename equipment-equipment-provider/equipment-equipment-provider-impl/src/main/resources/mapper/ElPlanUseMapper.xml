@@ -256,4 +256,28 @@
       position_id = #{positionId,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+    <select id="findByCondition" parameterType="com.yankuang.equipment.equipment.model.ElPlanUse" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        from el_plan_use
+        where 1 = 1 AND is_del = 1
+        <if test="centerYear != null">
+            AND center_year = #{centerYear}
+        </if>
+        <if test="centerMonth != null">
+            AND center_month = #{centerMonth}
+        </if>
+        <if test="planType != null">
+            AND plan_type = #{planType}
+        </if>
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+        <if test="positionId != null">
+            AND position_id = #{positionId}
+        </if>
+        <if test="backup1 != null">
+            AND backup1 = #{backup1}
+        </if>
+    </select>
 </mapper>

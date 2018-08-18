@@ -3,6 +3,8 @@ package com.yankuang.equipment.equipment.mapper;
 import com.yankuang.equipment.equipment.model.ElPlanUse;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ElPlanUseMapper {
     int deleteByPrimaryKey(Long id);
@@ -16,4 +18,6 @@ public interface ElPlanUseMapper {
     int updateByPrimaryKeySelective(ElPlanUse record);
 
     int updateByPrimaryKey(ElPlanUse record);
+
+    List<ElPlanUse> findByCondition(ElPlanUse elPlanUse);
 }

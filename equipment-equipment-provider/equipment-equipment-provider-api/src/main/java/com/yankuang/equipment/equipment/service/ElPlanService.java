@@ -1,7 +1,10 @@
 package com.yankuang.equipment.equipment.service;
 
 import com.yankuang.equipment.equipment.model.ElPlan;
+import com.yankuang.equipment.equipment.model.ElPlanUse;
 import io.terminus.common.model.Paging;
+
+import java.util.List;
 
 /**
  * Created by zhouy on 2018/7/30.
@@ -51,4 +54,9 @@ public interface ElPlanService {
      * @return
      */
     boolean approve(ElPlan elPlan);
+
+    /**
+     * 租赁计划设备list
+     */
+    List<ElPlanUse> findElPlanUse(ElPlanUse elPlanUse);
 }
