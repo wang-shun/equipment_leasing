@@ -5,7 +5,9 @@ import com.yankuang.equipment.common.util.ResponseMeta;
 import com.yankuang.equipment.equipment.model.SbType;
 import com.yankuang.equipment.equipment.model.SbTypeInfo;
 import com.yankuang.equipment.equipment.service.SbTypeService;
+import com.yankuang.equipment.web.dto.SbTypeDTO;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -36,18 +38,22 @@ public class SbTypeController {
     }
 
     @RequestMapping(value = "/create",method = RequestMethod.POST)
-    public ResponseMeta create(@Valid @RequestBody SbType sbType, SbTypeInfo sbTypeInfo, BindingResult bindingResult){
+    public ResponseMeta create(@Valid @RequestBody SbTypeDTO sbTypeDTO, BindingResult bindingResult){
         ResponseMeta responseMeta = new ResponseMeta();
         try{
             if (bindingResult.hasErrors()){
                 return responseMeta.setMeta(Constants.RESPONSE_ERROR,bindingResult.getAllErrors().get(0).getDefaultMessage());
             }
 
-            SbType type = sbTypeService.findByCode(sbType.getCode());
+            SbType type = sbTypeService.findByCode(sbTypeDTO.getCode());
             if(type != null){
                 return responseMeta.setMeta(Constants.RESPONSE_ERROR,"设备类型编码已存在!");
             }
 
+            SbType sbType = new SbType();
+            BeanUtils.copyProperties(sbType,sbTypeDTO);
+            SbTypeInfo sbTypeInfo = new SbTypeInfo();
+            BeanUtils.copyProperties(sbTypeInfo,sbTypeDTO);
             sbTypeService.create(sbType,sbTypeInfo);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"创建设备类型及信息成功");
         }catch (Exception e){

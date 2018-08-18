@@ -25,7 +25,7 @@ public class SbPositionController {
     SbPositionService sbPositionService;
 
     @RequestMapping(value = "/create",method = RequestMethod.POST)
-    public ResponseMeta create(@Valid SbPosition sbPosition, BindingResult bindingResult){
+    public ResponseMeta create(@Valid @RequestBody SbPosition sbPosition, BindingResult bindingResult){
         ResponseMeta responseMeta = new ResponseMeta();
         try{
             if (bindingResult.hasErrors()){
@@ -41,16 +41,16 @@ public class SbPositionController {
     }
 
     @RequestMapping(value = "/update",method = RequestMethod.PUT)
-    public ResponseMeta update(@Valid SbPosition sbPosition, BindingResult bindingResult){
+    public ResponseMeta update(@Valid @RequestBody SbPosition sbPosition, BindingResult bindingResult){
         ResponseMeta responseMeta = new ResponseMeta();
         try{
             if (bindingResult.hasErrors()){
                 return responseMeta.setMeta(Constants.RESPONSE_ERROR,bindingResult.getAllErrors().get(0).getDefaultMessage());
             }
             sbPositionService.update(sbPosition);
-            responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"创建设备位置成功");
+            responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"更新设备位置成功");
         }catch (Exception e){
-            responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"创建设备位置失败");
+            responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"更新设备位置失败");
             responseMeta.setData(ExceptionUtils.getStackTrace(e));
         }
         return responseMeta;
