@@ -44,7 +44,7 @@ public class ElPlanUse implements Serializable {
 
     private String backup1;
 
-    private String backup2;
+    private String equipmentType;
 
     private Long positionId;
 

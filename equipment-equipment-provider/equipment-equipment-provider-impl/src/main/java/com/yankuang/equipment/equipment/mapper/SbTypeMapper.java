@@ -18,8 +18,6 @@ public interface SbTypeMapper {
 
     SbType findByCode(String code);
 
-    SbType findByName(String name);
-
     int update(SbTypeInfo record);
 
     List<SbType> list();

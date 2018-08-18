@@ -47,4 +47,12 @@ public class ElPlanItem implements Serializable {
 
     private String itemRemarks;
 
+    private String bigTypeCode;
+
+    private String middleTypeCode;
+
+    private String smallTypeCode;
+
+    private String specificationCode;
+
 }

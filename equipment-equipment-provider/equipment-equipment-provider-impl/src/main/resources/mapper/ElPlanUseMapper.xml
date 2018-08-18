@@ -19,13 +19,13 @@
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
     <result column="version" property="version" jdbcType="BIGINT" />
     <result column="backup1" property="backup1" jdbcType="VARCHAR" />
-    <result column="backup2" property="backup2" jdbcType="VARCHAR" />
+    <result column="equipment_type" property="equipmentType" jdbcType="VARCHAR" />
     <result column="position_id" property="positionId" jdbcType="BIGINT" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, center_year, center_month, plan_type, plan_id, plan_item_id, equipment_id, sorting, 
     status, is_del, remarks, create_by, create_at, update_by, update_at, version, backup1, 
-    backup2, position_id
+    equipment_type, position_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -43,14 +43,14 @@
       equipment_id, sorting, status, 
       is_del, remarks, create_by, 
       create_at, update_by, update_at, 
-      version, backup1, backup2, 
+      version, backup1, equipment_type,
       position_id)
     values (#{id,jdbcType=BIGINT}, #{centerYear,jdbcType=INTEGER}, #{centerMonth,jdbcType=INTEGER}, 
       #{planType,jdbcType=VARCHAR}, #{planId,jdbcType=VARCHAR}, #{planItemId,jdbcType=VARCHAR}, 
       #{equipmentId,jdbcType=BIGINT}, #{sorting,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
       #{isDel,jdbcType=TINYINT}, #{remarks,jdbcType=VARCHAR}, #{createBy,jdbcType=BIGINT}, 
       #{createAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=BIGINT}, #{updateAt,jdbcType=TIMESTAMP}, 
-      #{version,jdbcType=BIGINT}, #{backup1,jdbcType=VARCHAR}, #{backup2,jdbcType=VARCHAR}, 
+      #{version,jdbcType=BIGINT}, #{backup1,jdbcType=VARCHAR}, #{equipmentType,jdbcType=VARCHAR},
       #{positionId,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.yankuang.equipment.equipment.model.ElPlanUse" >
@@ -107,8 +107,8 @@
       <if test="backup1 != null" >
         backup1,
       </if>
-      <if test="backup2 != null" >
-        backup2,
+      <if test="equipmentType != null" >
+        equipment_type,
       </if>
       <if test="positionId != null" >
         position_id,
@@ -166,8 +166,8 @@
       <if test="backup1 != null" >
         #{backup1,jdbcType=VARCHAR},
       </if>
-      <if test="backup2 != null" >
-        #{backup2,jdbcType=VARCHAR},
+      <if test="equipmentType != null" >
+        #{equipmentType,jdbcType=VARCHAR},
       </if>
       <if test="positionId != null" >
         #{positionId,jdbcType=BIGINT},
@@ -225,8 +225,8 @@
       <if test="backup1 != null" >
         backup1 = #{backup1,jdbcType=VARCHAR},
       </if>
-      <if test="backup2 != null" >
-        backup2 = #{backup2,jdbcType=VARCHAR},
+      <if test="equipmentType != null" >
+        equipment_type = #{equipmentType,jdbcType=VARCHAR},
       </if>
       <if test="positionId != null" >
         position_id = #{positionId,jdbcType=BIGINT},
@@ -252,7 +252,7 @@
       update_at = #{updateAt,jdbcType=TIMESTAMP},
       version = #{version,jdbcType=BIGINT},
       backup1 = #{backup1,jdbcType=VARCHAR},
-      backup2 = #{backup2,jdbcType=VARCHAR},
+      equipment_type = #{equipmentType,jdbcType=VARCHAR},
       position_id = #{positionId,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>

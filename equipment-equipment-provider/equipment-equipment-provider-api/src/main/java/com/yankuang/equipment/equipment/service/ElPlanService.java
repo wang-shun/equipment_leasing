@@ -1,5 +1,6 @@
 package com.yankuang.equipment.equipment.service;
 
+import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.equipment.model.ElPlan;
 import com.yankuang.equipment.equipment.model.ElPlanUse;
 import io.terminus.common.model.Paging;
@@ -53,7 +54,7 @@ public interface ElPlanService {
      * @param elPlan
      * @return
      */
-    boolean approve(ElPlan elPlan);
+    CommonResponse approve(ElPlan elPlan);
 
     /**
      * 租赁计划设备list

@@ -16,6 +16,10 @@
     <result column="equipment_param_name" property="equipmentParamName" jdbcType="VARCHAR" />
     <result column="equipment_param_value" property="equipmentParamValue" jdbcType="INTEGER" />
     <result column="item_remarks" property="itemRemarks" jdbcType="VARCHAR" />
+      <result column="big_type_code" property="bigTypeCode" jdbcType="VARCHAR" />
+      <result column="middle_type_code" property="middleTypeCode" jdbcType="VARCHAR" />
+      <result column="small_type_code" property="smallTypeCode" jdbcType="VARCHAR" />
+      <result column="specification_code" property="specificationCode" jdbcType="VARCHAR" />
   </resultMap>
 
   <sql id="tb">
@@ -29,7 +33,7 @@
   <sql id="cols_exclude_id">
     plan_id, backup1, equipment_name, equipment_num, item_position, item_effect,
         equipment_big_type, equipment_middle_type, equipment_small_type, equipment_specification,
-        equipment_param_name, equipment_param_value, item_remarks
+        equipment_param_name, equipment_param_value, item_remarks,big_type_code,middle_type_code,small_type_code,specification_code
   </sql>
 
   <sql id="vals">
@@ -46,7 +50,11 @@
     #{equipmentSpecification},
     #{equipmentParamName},
     #{equipmentParamValue},
-    #{itemRemarks}
+    #{itemRemarks},
+    #{bigTypeCode},
+    #{middleTypeCode},
+    #{smallTypeCode},
+    #{specificationCode}
   </sql>
 
   <sql id="criteria">
@@ -94,72 +102,25 @@
       AND item_remarks = #{itemRemarks}
     </if>
 
+      <if test="bigTypeCode != null" >
+          AND big_type_code = #{bigTypeCode}
+      </if>
+      <if test="middleTypeCode != null" >
+          AND middle_type_code = #{middleTypeCode}
+      </if>
+      <if test="smallTypeCode != null" >
+          AND small_type_code = #{smallTypeCode}
+      </if>
+      <if test="specificationCode != null" >
+          AND specification_code = #{specificationCode}
+      </if>
   </sql>
 
   <sql id="Base_Column_List" >
     item_id, plan_id, backup1, equipment_name, equipment_num, item_position, item_effect,
     equipment_big_type, equipment_middle_type, equipment_small_type, equipment_specification,
-    equipment_param_name, equipment_param_value, item_remarks
+    equipment_param_name, equipment_param_value, item_remarks,big_type_code,middle_type_code,small_type_code,specification_code
   </sql>
-
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select
-    <include refid="Base_Column_List" />
-    from el_plan_item
-    where item_id = #{itemId,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
-    delete from el_plan_item
-    where item_id = #{itemId,jdbcType=VARCHAR}
-  </delete>
-  <delete id="delete" parameterType="long">
-    DELETE FROM <include refid="tb"/>
-    WHERE item_plan_id = #{itemPlanId}
-  </delete>
-  <insert id="insert" parameterType="com.yankuang.equipment.equipment.model.ElPlanItem" >
-    insert into el_plan_item (item_id, plan_id, backup1,
-      equipment_name, equipment_num, item_position,
-      item_effect, equipment_big_type, equipment_middle_type,
-      equipment_small_type, equipment_specification,
-      equipment_param_name, equipment_param_value,
-      item_remarks)
-    values (#{itemId,jdbcType=VARCHAR}, #{planId,jdbcType=VARCHAR}, #{backup1,jdbcType=VARCHAR},
-      #{equipmentName,jdbcType=VARCHAR}, #{equipmentNum,jdbcType=INTEGER}, #{itemPosition,jdbcType=VARCHAR},
-      #{itemEffect,jdbcType=VARCHAR}, #{equipmentBigType,jdbcType=VARCHAR}, #{equipmentMiddleType,jdbcType=VARCHAR},
-      #{equipmentSmallType,jdbcType=VARCHAR}, #{equipmentSpecification,jdbcType=VARCHAR},
-      #{equipmentParamName,jdbcType=VARCHAR}, #{equipmentParamValue,jdbcType=INTEGER},
-      #{itemRemarks,jdbcType=VARCHAR})
-  </insert>
-
-  <select id="findById" parameterType="long" resultMap="BaseResultMap" >
-    SELECT <include refid="cols_all" /> FROM <include refid="tb" />
-    WHERE item_plan_id = #{itemPlanId}
-  </select>
-
-  <select id="list" parameterType="map" resultMap="BaseResultMap">
-    SELECT <include refid="cols_all"/> FROM <include refid="tb"/>
-    <where>
-      1 = 1
-      <include refid="criteria"/>
-    </where>
-  </select>
-
-  <select id="count" parameterType="map" resultType="long">
-    SELECT count(1) FROM <include refid="tb"/>
-    <where>
-      1 = 1
-      <include refid="criteria"/>
-    </where>
-  </select>
-
-  <select id="paging" parameterType="map" resultMap="BaseResultMap">
-    SELECT <include refid="cols_all"/> FROM <include refid="tb"/>
-    <where>
-      1 = 1
-      <include refid="criteria"/>
-    </where>
-    LIMIT #{offset}, #{limit}
-  </select>
 
   <insert id="saveByPrimaryKey" parameterType="com.yankuang.equipment.equipment.model.ElPlanItem" >
     insert into el_plan_item
@@ -206,6 +167,18 @@
       <if test="itemRemarks != null" >
         item_remarks,
       </if>
+        <if test="bigTypeCode != null" >
+            big_type_code,
+        </if>
+        <if test="middleTypeCode != null" >
+            middle_type_code,
+        </if>
+        <if test="smallTypeCode != null" >
+            small_type_code,
+        </if>
+        <if test="specificationCode != null" >
+            specification_code,
+        </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="itemId != null" >
@@ -250,71 +223,21 @@
       <if test="itemRemarks != null" >
         #{itemRemarks,jdbcType=VARCHAR},
       </if>
+        <if test="bigTypeCode != null" >
+            #{bigTypeCode},
+        </if>
+        <if test="middleTypeCode != null" >
+            #{middleTypeCode},
+        </if>
+        <if test="smallTypeCode != null" >
+            #{smallTypeCode},
+        </if>
+        <if test="specificationCode != null" >
+            #{specificationCode}
+        </if>
     </trim>
   </insert>
 
-  <update id="update" parameterType="com.yankuang.equipment.equipment.model.ElPlanItem" >
-    update el_plan_item
-    <set >
-      <if test="planId != null" >
-        plan_id = #{planId,jdbcType=VARCHAR},
-      </if>
-      <if test="backup1 != null" >
-        backup1 = #{backup1,jdbcType=VARCHAR},
-      </if>
-      <if test="equipmentName != null" >
-        equipment_name = #{equipmentName,jdbcType=VARCHAR},
-      </if>
-      <if test="equipmentNum != null" >
-        equipment_num = #{equipmentNum,jdbcType=INTEGER},
-      </if>
-      <if test="itemPosition != null" >
-        item_position = #{itemPosition,jdbcType=VARCHAR},
-      </if>
-      <if test="itemEffect != null" >
-        item_effect = #{itemEffect,jdbcType=VARCHAR},
-      </if>
-      <if test="equipmentBigType != null" >
-        equipment_big_type = #{equipmentBigType,jdbcType=VARCHAR},
-      </if>
-      <if test="equipmentMiddleType != null" >
-        equipment_middle_type = #{equipmentMiddleType,jdbcType=VARCHAR},
-      </if>
-      <if test="equipmentSmallType != null" >
-        equipment_small_type = #{equipmentSmallType,jdbcType=VARCHAR},
-      </if>
-      <if test="equipmentSpecification != null" >
-        equipment_specification = #{equipmentSpecification,jdbcType=VARCHAR},
-      </if>
-      <if test="equipmentParamName != null" >
-        equipment_param_name = #{equipmentParamName,jdbcType=VARCHAR},
-      </if>
-      <if test="equipmentParamValue != null" >
-        equipment_param_value = #{equipmentParamValue,jdbcType=INTEGER},
-      </if>
-      <if test="itemRemarks != null" >
-        item_remarks = #{itemRemarks,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where item_id = #{itemId,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.yankuang.equipment.equipment.model.ElPlanItem" >
-    update el_plan_item
-    set plan_id = #{planId,jdbcType=VARCHAR},
-      backup1 = #{backup1,jdbcType=VARCHAR},
-      equipment_name = #{equipmentName,jdbcType=VARCHAR},
-      equipment_num = #{equipmentNum,jdbcType=INTEGER},
-      item_position = #{itemPosition,jdbcType=VARCHAR},
-      item_effect = #{itemEffect,jdbcType=VARCHAR},
-      equipment_big_type = #{equipmentBigType,jdbcType=VARCHAR},
-      equipment_middle_type = #{equipmentMiddleType,jdbcType=VARCHAR},
-      equipment_small_type = #{equipmentSmallType,jdbcType=VARCHAR},
-      equipment_specification = #{equipmentSpecification,jdbcType=VARCHAR},
-      equipment_param_name = #{equipmentParamName,jdbcType=VARCHAR},
-      equipment_param_value = #{equipmentParamValue,jdbcType=INTEGER},
-      item_remarks = #{itemRemarks,jdbcType=VARCHAR}
-    where item_id = #{itemId,jdbcType=VARCHAR}
-  </update>
   <select id="findByPlanId" parameterType="java.lang.String" resultMap="BaseResultMap">
     SELECT <include refid="cols_all"/> FROM <include refid="tb"/>
     WHERE plan_id = #{planId}

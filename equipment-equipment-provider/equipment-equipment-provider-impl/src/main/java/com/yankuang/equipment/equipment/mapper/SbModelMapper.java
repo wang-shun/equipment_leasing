@@ -16,8 +16,6 @@ public interface SbModelMapper {
 
     SbModel findById(Long id);
 
-    SbModel findByName(String name);
-
     int update(SbModel record);
 
     List<SbModel> list(@Param("p_code") String code,@Param("p_name") String name);

@@ -31,12 +31,6 @@
     from sb_position
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <select id="findByPosition" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select
-    <include refid="Base_Column_List" />
-    from sb_position
-    where position = #{position,jdbcType=VARCHAR}
-  </select>
   <delete id="deleteById" parameterType="java.lang.Long" >
     update sb_position
     set status = 99

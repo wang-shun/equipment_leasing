@@ -14,8 +14,6 @@ public interface SbPositionMapper {
 
     SbPosition findById(Long id);
 
-    List<SbPosition> findByPosition(String position);
-
     int update(SbPosition record);
 
     List<SbPosition> list(SbPosition sbPosition);
