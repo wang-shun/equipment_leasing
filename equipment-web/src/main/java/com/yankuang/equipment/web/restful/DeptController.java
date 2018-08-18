@@ -289,6 +289,9 @@ public class DeptController {
 
         if (departmentId == null){
             orgDept = orgDeptService.selOrgDept(id);
+            if (orgDept == null){
+                return CommonResponse.errorMsg("此对象不存在");
+            }
             dept.setId(orgDept.getDepartmentId());
             dept.setName(name);
             deptService.update(dept);
