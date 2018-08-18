@@ -24,7 +24,7 @@ public class SbModelController {
     SbModelService sbModelService;
 
     @RequestMapping(value = "/create",method = RequestMethod.POST)
-    public ResponseMeta create(@Valid SbModel sbModel, BindingResult bindingResult){
+    public ResponseMeta create(@Valid @RequestBody SbModel sbModel, BindingResult bindingResult){
         ResponseMeta responseMeta = new ResponseMeta();
         try{
             if (bindingResult.hasErrors()){
@@ -40,7 +40,7 @@ public class SbModelController {
     }
 
     @RequestMapping(value = "/update",method = RequestMethod.PUT)
-    public ResponseMeta update(@Valid SbModel sbModel, BindingResult bindingResult){
+    public ResponseMeta update(@Valid @RequestBody SbModel sbModel, BindingResult bindingResult){
         ResponseMeta responseMeta = new ResponseMeta();
         try{
             if (bindingResult.hasErrors()){

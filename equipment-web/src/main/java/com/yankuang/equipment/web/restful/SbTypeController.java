@@ -36,7 +36,7 @@ public class SbTypeController {
     }
 
     @RequestMapping(value = "/create",method = RequestMethod.POST)
-    public ResponseMeta create(@Valid SbType sbType, SbTypeInfo sbTypeInfo, BindingResult bindingResult){
+    public ResponseMeta create(@Valid @RequestBody SbType sbType, SbTypeInfo sbTypeInfo, BindingResult bindingResult){
         ResponseMeta responseMeta = new ResponseMeta();
         try{
             if (bindingResult.hasErrors()){
