@@ -152,7 +152,7 @@ public class UserController {
                     roleAuthorityService.findByRoleId(roleUser.getRoleId());
             //遍历角色权限列表
             for (RoleAuthority roleAuthority : roleAuthorities) {
-                Authority authority = authorityService.findById(roleAuthority.getId());
+                Authority authority = authorityService.findById(roleAuthority.getAuthorityId());
                 AuthorityDTO authorityDTO = new AuthorityDTO();
                 authorityDTO.setId(authority.getId());
                 authorityDTO.setName(authority.getName());
@@ -172,7 +172,7 @@ public class UserController {
     }
 
     /**
-     * 根据id查询用户.
+     * 根据id查询用户....
      *
      * @param id
      * @return
