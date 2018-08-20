@@ -117,7 +117,7 @@ public class UserController {
                 e.printStackTrace();
             }
             // 存放redis
-            redis.set(token, encodedResult, 1800);
+            redis.set(token, encodedResult, 259200);
             // TODO 更新user数据库表，记录最新一次登录保存的redis的key(token)
             User u = new User();
             u.setId(loginUser.getId());
