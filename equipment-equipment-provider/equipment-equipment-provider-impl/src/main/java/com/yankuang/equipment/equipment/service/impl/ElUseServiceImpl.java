@@ -2,7 +2,6 @@ package com.yankuang.equipment.equipment.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.yankuang.equipment.equipment.mapper.ElUseItemMapper;
 import com.yankuang.equipment.equipment.mapper.ElUseMapper;
 import com.yankuang.equipment.equipment.model.ElUse;

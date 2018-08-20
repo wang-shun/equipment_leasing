@@ -75,18 +75,6 @@
             <artifactId>equipment-common</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.yankuang.equipment</groupId>
-            <artifactId>equipment-authority-provider-impl</artifactId>
-            <version>${project.version}</version>
-            <!--<scope>compile</scope>-->
-        </dependency>
-        <dependency>
-            <groupId>com.yankuang.equipment</groupId>
-            <artifactId>equipment-authority-provider-api</artifactId>
-            <version>${project.version}</version>
-            <!--<scope>compile</scope>-->
-        </dependency>
     </dependencies>
 
     <build>

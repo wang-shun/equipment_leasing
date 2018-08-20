@@ -43,7 +43,7 @@ public class ElPlanItem implements Serializable {
     private String equipmentParamName;
 
     @NotNull(message = "主要技术参数值不得为空")
-    private Integer equipmentParamValue;
+    private String equipmentParamValue;
 
     private String itemRemarks;
 

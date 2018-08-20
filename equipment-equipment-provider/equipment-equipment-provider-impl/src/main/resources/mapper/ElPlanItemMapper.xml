@@ -14,7 +14,7 @@
     <result column="equipment_small_type" property="equipmentSmallType" jdbcType="VARCHAR" />
     <result column="equipment_specification" property="equipmentSpecification" jdbcType="VARCHAR" />
     <result column="equipment_param_name" property="equipmentParamName" jdbcType="VARCHAR" />
-    <result column="equipment_param_value" property="equipmentParamValue" jdbcType="INTEGER" />
+    <result column="equipment_param_value" property="equipmentParamValue" jdbcType="VARCHAR" />
     <result column="item_remarks" property="itemRemarks" jdbcType="VARCHAR" />
       <result column="big_type_code" property="bigTypeCode" jdbcType="VARCHAR" />
       <result column="middle_type_code" property="middleTypeCode" jdbcType="VARCHAR" />
@@ -218,7 +218,7 @@
         #{equipmentParamName,jdbcType=VARCHAR},
       </if>
       <if test="equipmentParamValue != null" >
-        #{equipmentParamValue,jdbcType=INTEGER},
+        #{equipmentParamValue,jdbcType=VARCHAR},
       </if>
       <if test="itemRemarks != null" >
         #{itemRemarks,jdbcType=VARCHAR},

@@ -56,8 +56,4 @@ public interface ElPlanService {
      */
     CommonResponse approve(ElPlan elPlan);
 
-    /**
-     * 租赁计划设备list
-     */
-    List<ElPlanUse> findElPlanUse(ElPlanUse elPlanUse);
 }
