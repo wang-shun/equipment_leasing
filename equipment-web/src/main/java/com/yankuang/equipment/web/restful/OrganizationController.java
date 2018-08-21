@@ -7,13 +7,12 @@ import com.yankuang.equipment.authority.service.OrganizationService;
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.common.util.UuidUtils;
+import com.yankuang.equipment.web.dto.TreeDTO;
+import com.yankuang.equipment.web.util.TreeUtils;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author boms
@@ -140,4 +139,23 @@ public class OrganizationController {
         return CommonResponse.ok(organizationService.findByPage(page, size, orgMap));
     }
 
+    /**
+     * @method 查询单位功能
+     * @return
+     */
+    @GetMapping("/findList")
+    public CommonResponse findList(){
+        List<Organization> organizations = organizationService.findByPId();
+        List<TreeDTO> treeDTOS = new ArrayList<>();
+        for (Organization organization : organizations) {
+            TreeDTO treeDTO = new TreeDTO();
+            treeDTO.setId(organization.getId());
+            treeDTO.setpId(0l);
+            treeDTO.setName(organization.getName());
+            treeDTOS.add(treeDTO);
+        }
+        TreeUtils treeUtils = new TreeUtils();
+        List<Object> list = treeUtils.menuList(treeDTOS);
+        return CommonResponse.ok(list);
+    }
 }

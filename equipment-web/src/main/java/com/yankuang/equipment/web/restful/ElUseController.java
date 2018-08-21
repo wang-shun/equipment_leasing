@@ -6,7 +6,6 @@ import com.yankuang.equipment.common.util.StringUtils;
 import com.yankuang.equipment.equipment.model.*;
 import com.yankuang.equipment.equipment.service.*;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
-import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -220,6 +219,11 @@ public class ElUseController {
         return CommonResponse.ok(elUseService.open(id));
     }
 
+    /**
+     * @method 申请成功
+     * @param jsonString
+     * @return
+     */
     @PutMapping("/successStatus")
     @Transactional
     CommonResponse successStatus(@RequestBody String jsonString){

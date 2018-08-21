@@ -154,5 +154,11 @@
     AND status != 99
     order by create_at desc
   </select>
-
+  <select id="findByPId" resultMap="BaseResultMap">
+    SELECT <include refid="all_clos"/>
+    FROM yankuang_equipment.el_organization
+    WHERE status != 99
+    AND level > 2
+    ORDER BY create_at DESC
+  </select>
 </mapper>
