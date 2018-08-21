@@ -5,7 +5,6 @@ import com.github.pagehelper.PageInfo;
 import com.yankuang.equipment.equipment.mapper.ElUseItemMapper;
 import com.yankuang.equipment.equipment.mapper.SbEquipmentTMapper;
 import com.yankuang.equipment.equipment.model.ElUseItem;
-import com.yankuang.equipment.equipment.model.SbEquipmentT;
 import com.yankuang.equipment.equipment.service.ElUseItemService;
 import io.terminus.boot.rpc.common.annotation.RpcProvider;
 import org.springframework.beans.factory.annotation.Autowired;

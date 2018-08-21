@@ -15,7 +15,7 @@ public class ElPlanItem implements Serializable {
 
     private String planId;
 
-    private String backup1;
+    private String positionId;
 
     private String equipmentName;
 
@@ -54,5 +54,7 @@ public class ElPlanItem implements Serializable {
     private String smallTypeCode;
 
     private String specificationCode;
+
+    private String effectCode;
 
 }

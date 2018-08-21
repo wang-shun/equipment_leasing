@@ -7,6 +7,7 @@ import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.Constants;
 import com.yankuang.equipment.equipment.model.*;
 import com.yankuang.equipment.equipment.service.*;
+import com.yankuang.equipment.web.dto.ElPlanUseDTO;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
@@ -54,8 +55,8 @@ public class ElPlanPlusService {
                 }
                 for (ElPlanItem item : itemList) {
                     // 设备集合
-                    List<SbEquipmentT> sbListT = new ArrayList<SbEquipmentT>();
-                    List<SbEquipmentZ> sbListZ = new ArrayList<SbEquipmentZ>();
+                    List<SbEquipmentT> sbListT = new ArrayList<>();
+                    List<SbEquipmentZ> sbListZ = new ArrayList<>();
 
                     // 获取矿分区信息
                     Long deptId = null;
@@ -106,7 +107,12 @@ public class ElPlanPlusService {
                                 sbListT.addAll(sbListTI);
                             }
                         }
-                        for (SbEquipmentT sbT : sbListT) {
+                        int num = item.getEquipmentNum().intValue();
+                        List<SbEquipmentT> resultT = sbListT;
+                        if (sbListT.size() > num) {
+                            resultT = sbListT.subList(0, num);
+                        }
+                        for (SbEquipmentT sbT : resultT) {
                             ElPlanUse elPlanUse = new ElPlanUse();
                             elPlanUse.setCenterYear(plan.getPlanYear());
                             elPlanUse.setCenterMonth(plan.getPlanMonth());
@@ -124,6 +130,14 @@ public class ElPlanPlusService {
                             elPlanUse.setCreateBy(0L);
                             elPlanUse.setUpdateBy(0L);
                             elPlanUse.setRemarks("");
+                            elPlanUse.setBigTypeCode(sbT.getSbtypeOne());
+                            elPlanUse.setMiddleTypeCode(sbT.getSbtypeTwo());
+                            elPlanUse.setSmallTypeCode(sbT.getSbtypeThree());
+                            elPlanUse.setEquipmentCode(sbT.getCode());
+                            elPlanUse.setEquipmentName(sbT.getName());
+                            elPlanUse.setEffectCode(item.getEffectCode());
+                            elPlanUse.setEquipmentModel(item.getSpecificationCode());
+                            elPlanUse.setEquipmentFactory(sbT.getFactory());
                             resT = elPlanUseService.create(elPlanUse) > 0;
                         }
                     }
@@ -144,7 +158,7 @@ public class ElPlanPlusService {
                                 sbEquipmentZ.setSbmodelCode(sbModelStr);
                             }
                             if (!StringUtils.isEmpty(paramValue)) {
-                                sbEquipmentZ.setMainPara(paramValue.toString());
+                                sbEquipmentZ.setMainPara(paramValue);
                             }
                             if (!StringUtils.isEmpty(equipmentName)) {
                                 sbEquipmentZ.setName(equipmentName);
@@ -154,7 +168,12 @@ public class ElPlanPlusService {
                                 sbListZ.addAll(sbListZI);
                             }
                         }
-                        for (SbEquipmentZ sbZ : sbListZ) {
+                        int num = item.getEquipmentNum().intValue();
+                        List<SbEquipmentZ> resultZ = sbListZ;
+                        if (sbListZ.size() > num) {
+                            resultZ = sbListZ.subList(0, num);
+                        }
+                        for (SbEquipmentZ sbZ : resultZ) {
                             ElPlanUse elPlanUse = new ElPlanUse();
                             elPlanUse.setCenterYear(plan.getPlanYear());
                             elPlanUse.setCenterMonth(plan.getPlanMonth());
@@ -172,6 +191,14 @@ public class ElPlanPlusService {
                             elPlanUse.setEquipmentId(sbZ.getId());
                             elPlanUse.setEquipmentType(Constants.PLANEQUIPMENTTYPE_INTEGRATED);
                             elPlanUse.setStatus("1");
+                            elPlanUse.setBigTypeCode(sbZ.getSbtypeOne());
+                            elPlanUse.setMiddleTypeCode(sbZ.getSbtypeTwo());
+                            elPlanUse.setSmallTypeCode(sbZ.getSbtypeThree());
+                            elPlanUse.setEquipmentCode(sbZ.getCode());
+                            elPlanUse.setEquipmentName(sbZ.getName());
+                            elPlanUse.setEffectCode(item.getEffectCode());
+                            elPlanUse.setEquipmentModel(item.getSpecificationCode());
+                            elPlanUse.setEquipmentFactory(sbZ.getFactory());
                             resT = elPlanUseService.create(elPlanUse) > 0;
                         }
                     }
@@ -188,5 +215,76 @@ public class ElPlanPlusService {
             logger.info("approve elPlan exception: " + JSON.toJSONString(elPlan));
             return CommonResponse.errorException("服务异常");
         }
+    }
+
+    public List<ElPlanUseDTO> findElPlanUseList(ElPlanUse elPlanUse) {
+
+        // 设置状态为备用
+        elPlanUse.setStatus("1");
+
+        List<ElPlanUseDTO> elPlanUseDTOS = new ArrayList<>();
+        List<ElPlanUse> elPlanUses = elPlanUseService.findElPlanUse(elPlanUse);
+        for (ElPlanUse use : elPlanUses) {
+            ElPlanUseDTO elPlanUseDTO = new ElPlanUseDTO();
+            if ("1".equals(use.getEquipmentType()) && use != null) {
+                SbEquipmentT sbT = sbEquipmentTService.findById(use.getEquipmentId());
+                elPlanUseDTO.setTeachCode(sbT.getTechCode());
+                elPlanUseDTO.setEquipmentName(sbT.getName());
+                ElPlanItem elPlanItem = elPlanService.findEPlanItemByItemId(use.getPlanItemId());
+                if (elPlanItem == null) {
+                    continue;
+                }
+                String modelName = elPlanItem.getEquipmentSpecification();
+                elPlanUseDTO.setModelName(modelName);
+                elPlanUseDTO.setFactoryName(sbT.getFactory());
+                String paramName = elPlanItem.getEquipmentParamName();
+                elPlanUseDTO.setMainParamName(paramName);
+                String paramValue = elPlanItem.getEquipmentParamValue();
+                elPlanUseDTO.setMainParamValue(paramValue);
+                elPlanUseDTO.setEquipmentCode(sbT.getCode());
+                elPlanUseDTO.setAssetCode(sbT.getAssetCode());
+                String bigType = elPlanItem.getEquipmentBigType();
+                String middleType = elPlanItem.getEquipmentMiddleType();
+                String smallType = elPlanItem.getEquipmentSmallType();
+                elPlanUseDTO.setBigTypeName(bigType);
+                elPlanUseDTO.setMiddleTypeName(middleType);
+                elPlanUseDTO.setSmallTypeName(smallType);
+                String effectName = elPlanItem.getItemEffect();
+                elPlanUseDTO.setEffectName(effectName);
+                elPlanUseDTO.setStatus("备用");
+                elPlanUseDTO.setPlanUseId(use.getId().toString());
+                elPlanUseDTOS.add(elPlanUseDTO);
+            }
+            if ("2".equals(use.getEquipmentType()) && use != null) {
+                SbEquipmentZ sbZ = sbEquipmentZService.findById(use.getEquipmentId());
+                elPlanUseDTO.setTeachCode(sbZ.getTechCode());
+                elPlanUseDTO.setEquipmentName(sbZ.getName());
+                ElPlanItem elPlanItem = elPlanService.findEPlanItemByItemId(use.getPlanItemId());
+                if (elPlanItem == null) {
+                    continue;
+                }
+                String modelName = elPlanItem.getEquipmentSpecification();
+                elPlanUseDTO.setModelName(modelName);
+                elPlanUseDTO.setFactoryName(sbZ.getFactory());
+                String paramName = elPlanItem.getEquipmentParamName();
+                elPlanUseDTO.setMainParamName(paramName);
+                String paramValue = elPlanItem.getEquipmentParamValue();
+                elPlanUseDTO.setMainParamValue(paramValue);
+                elPlanUseDTO.setEquipmentCode(sbZ.getCode());
+                elPlanUseDTO.setAssetCode(sbZ.getAssetCode());
+                String bigType = elPlanItem.getEquipmentBigType();
+                String middleType = elPlanItem.getEquipmentMiddleType();
+                String smallType = elPlanItem.getEquipmentSmallType();
+                elPlanUseDTO.setBigTypeName(bigType);
+                elPlanUseDTO.setMiddleTypeName(middleType);
+                elPlanUseDTO.setSmallTypeName(smallType);
+                String effectName = elPlanItem.getItemEffect();
+                elPlanUseDTO.setEffectName(effectName);
+                elPlanUseDTO.setStatus("备用");
+                elPlanUseDTO.setPlanUseId(use.getId().toString());
+                elPlanUseDTOS.add(elPlanUseDTO);
+            }
+        }
+        return elPlanUseDTOS;
     }
 }

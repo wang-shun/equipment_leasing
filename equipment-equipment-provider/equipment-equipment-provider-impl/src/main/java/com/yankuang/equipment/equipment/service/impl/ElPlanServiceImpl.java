@@ -38,6 +38,16 @@ public class ElPlanServiceImpl implements ElPlanService {
     @Autowired
     ElPlanUseMapper elPlanUseMapper;
 
+    public ElPlanItem findEPlanItemByItemId(String itemId) {
+        try {
+            ElPlanItem elPlanItem = elPlanItemMapper.findByItemId(itemId);
+            return elPlanItem;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public Boolean create(ElPlan elPlan) {
         Boolean res = false;
         try {
@@ -107,14 +117,18 @@ public class ElPlanServiceImpl implements ElPlanService {
             if (StringUtils.isEmpty(planId)) {
                 return res;
             }
-            elPlanMapper.deletePlanItemByPlanId(planId);
+            //elPlanMapper.deletePlanItemByPlanId(planId);
             elPlan.setPlanUpdateTime(new Date().getTime());
             boolean itemRes = true;
             if (elPlan.getElPlanItemList() != null) {
                 for (ElPlanItem elPlanItem : elPlan.getElPlanItemList()) {
-                    elPlanItem.setItemId(UuidUtils.newUuid());
-                    elPlanItem.setPlanId(elPlan.getPlanId());
-                    itemRes = elPlanItemMapper.saveByPrimaryKey(elPlanItem) > 0;
+                    String itemId = elPlanItem.getItemId();
+                    if (StringUtils.isEmpty(itemId)) {
+                        elPlanItem.setItemId(UuidUtils.newUuid());
+                        elPlanItem.setPlanId(elPlan.getPlanId());
+                        itemRes = elPlanItemMapper.saveByPrimaryKey(elPlanItem) > 0;
+                    }
+                    itemRes = elPlanItemMapper.updateById(elPlanItem) >= 0;
                     if (!itemRes) {
                         break;
                     }
