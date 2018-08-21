@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="User">
-    <resultMap id="UserMap" type="User">
+<mapper namespace="com.yankuang.equipment.authority.mapper.UserMapper">
+    <resultMap id="UserMap" type="com.yankuang.equipment.authority.model.User">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="account" property="account" jdbcType="VARCHAR" />
         <result column="token" property="token" jdbcType="VARCHAR" />
         <result column="sex" property="sex" jdbcType="TINYINT" />
         <result column="telephone" property="telephone" jdbcType="VARCHAR" />
@@ -52,10 +53,10 @@
         #{sex},
         #{telephone},
         #{mail},
-        #{status},
+        1,
         #{remark},
         #{sorting},
-        #{version},
+        0,
         #{updateBy},
         #{createBy},
         unix_timestamp(now()),
@@ -64,12 +65,13 @@
     </sql>
 
     <sql id="criteria">
-        <if test="id != null">AND id = #{id}</if>
-        <if test="name != null">AND name = #{name}</if>
-        <if test="code != null">AND code = #{code}</if>
+        <if test="id != null and id != ''">AND id = #{id}</if>
+        <if test="name != null and name != ''">AND name = #{name}</if>
+        <if test="code != null and code != ''">AND code = #{code}</if>
     </sql>
 
-    <insert id="create" parameterType="User" keyProperty="id" useGeneratedKeys="true">
+    <insert id="create" parameterType="com.yankuang.equipment.authority.model.User"
+            keyProperty="id" useGeneratedKeys="true">
         INSERT INTO el_user
         (<include refid="cols_all" />)
         VALUES
@@ -82,19 +84,19 @@
         WHERE id = #{id}
     </select>
 
-    <update id="update" parameterType="User">
+    <update id="update" parameterType="com.yankuang.equipment.authority.model.User">
         UPDATE el_user
         <set>
-            <if test="name != null">name = #{name},</if>
-            <if test="token != null">token = #{token},</if>
-            <if test="sex != null">sex = #{sex},</if>
-            <if test="password != null">password = #{password},</if>
-            <if test="telephone != null">telephone = #{telephone},</if>
-            <if test="mail != null">mail = #{mail},</if>
-            <if test="remark != null">remark = #{remark},</if>
-            <if test="sorting != null">sorting = #{sorting},</if>
-            <if test="version != null">version = #{version},</if>
-            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="token != null and token != ''">token = #{token},</if>
+            <if test="sex != null and sex != ''">sex = #{sex},</if>
+            <if test="password != null and password != ''">password = #{password},</if>
+            <if test="telephone != null and telephone != ''">telephone = #{telephone},</if>
+            <if test="mail != null and mail != ''">mail = #{mail},</if>
+            <if test="remark != null and remark != ''">remark = #{remark},</if>
+            <if test="sorting != null and sorting != ''">sorting = #{sorting},</if>
+            <if test="version != null and version != ''">version = #{version},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
             update_at=unix_timestamp(now())
         </set>
         WHERE id = #{id}
@@ -117,83 +119,28 @@
         ORDER BY create_at DESC
     </select>
 
-    <select id="count" parameterType="map" resultType="long">
-        SELECT count(1)
-        FROM el_user
-        <where>
-            1 = 1
-            and status != 99
-            <include refid="criteria"/>
-        </where>
-    </select>
-
-    <select id="paging" parameterType="map" resultMap="UserMap">
-        SELECT <include refid="cols_all"/>
-        FROM el_user
-        <where>
-            1 = 1
-            and status != 99
-            <include refid="criteria"/>
-        </where>
-        order by create_at desc LIMIT #{offset}, #{limit}
-    </select>
-
-    <select id="login" parameterType="String" resultMap="UserMap">
+    <select id="findByName" parameterType="String" resultMap="UserMap">
         select <include refid="cols_all"/>
         from  el_user
         where name = #{name}
     </select>
 
-    <select id="findByCode" parameterType="String" resultMap="UserMap" >
-        SELECT <include refid="cols_exclude_id_password" />
-        FROM el_user
-        WHERE code = #{code}
+    <select id="findByAccount" parameterType="String" resultMap="UserMap">
+        select <include refid="cols_all"/>
+        from  el_user
+        where account = #{account}
     </select>
 
-    <select id="findUserName" resultType="Long" parameterType="String">
-        SELECT count(1)
-        FROM el_user
-        WHERE status != 99
-        AND account = #{account}
-    </select>
-
-    <select id="findUserIds" parameterType="String" resultType="Long">
-        SELECT id
-        FROM el_user
-        WHERE status != 99
-        AND account = #{account}
-    </select>
-
-    <update id="closeStatusUser" parameterType="Long">
+    <update id="stop" parameterType="Long">
         UPDATE el_user
         SET status = 2
         WHERE id = #{id}
     </update>
 
-    <update id="openStatusUser" parameterType="Long">
+    <update id="start" parameterType="Long">
         UPDATE el_user
         SET status = 1
         WHERE id = #{id}
     </update>
 
-    <update id="updateAccount" parameterType="User">
-        UPDATE el_user
-        SET account = #{account}
-        WHERE id = #{id}
-    </update>
-
-    <select id="findUserAccount" resultType="Long" parameterType="String">
-        SELECT count(1)
-        FROM el_user
-        WHERE status != 99
-        AND name = #{name}
-    </select>
-
-    <select id="findUserSex" resultType="Long" parameterType="Byte">
-        SELECT count(1)
-        FROM el_user
-        WHERE status != 99
-        AND sex = #{sex}
-        AND id = #{id}
-    </select>
 </mapper>

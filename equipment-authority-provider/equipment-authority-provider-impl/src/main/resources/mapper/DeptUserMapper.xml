@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="DeptUser" >
-  <resultMap id="BaseResultMap" type="DeptUser" >
+<mapper namespace="com.yankuang.equipment.authority.mapper.DeptUserMapper" >
+  <resultMap id="BaseResultMap" type="com.yankuang.equipment.authority.model.DeptUser" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="department_id" property="departmentId" jdbcType="BIGINT" />
     <result column="user_id" property="userId" jdbcType="BIGINT" />
@@ -19,55 +19,50 @@
   </sql>
 
   <insert id="create" parameterType="DeptUser" >
-    insert into el_department_user_mapping (id, department_id, user_id,
+    insert into el_department_user_mapping (department_id, user_id,
       create_by, update_at, update_by,
       create_at, version, status
       )
-    values (#{id}, #{departmentId}, #{userId},
+    values (#{departmentId}, #{userId},
       #{createBy}, unix_timestamp(now()), #{updateBy},
-      unix_timestamp(now()), #{version}, #{status}
+      unix_timestamp(now()), 0, 1
       )
   </insert>
 
-  <select id="findDeptIds" resultType="Long" parameterType="Long">
-    SELECT count(1)
-    FROM el_department_user_mapping
-    WHERE user_id = #{userId}
-    AND status != 99
-  </select>
-<!--通过用户id删除-->
   <update id="deleteByUserId" parameterType="Long">
     UPDATE el_department_user_mapping
     SET status = 99
     WHERE user_id = #{userId}
   </update>
 
-  <update id="update" parameterType="DeptUser">
-  UPDATE el_department_user_mapping
-    <set >
-      <if test="departmentId != null" >
-        department_id = #{departmentId},
-      </if>
-      <if test="userId != null" >
-        user_id = #{userId},
-      </if>
-      <if test="createBy != null" >
-        create_by = #{createBy},
-      </if>
-      <if test="updateBy != null" >
-        update_by = #{updateBy},
-      </if>
-      <if test="createAt != null" >
-        create_at = #{createAt},
-      </if>
-      <if test="version != null" >
-        version = #{version},
-      </if>
-      <if test="status != null" >
-        status = #{status},
-      </if>
-      update_at = unix_timestamp(now())
-    </set>
-    WHERE user_id = #{userId}
+  <update id="deleteByDeptId" parameterType="Long">
+    UPDATE el_department_user_mapping
+    SET status = 99
+    WHERE department_id = #{deptId}
   </update>
+
+  <select id="findByDeptId" resultMap="BaseResultMap" parameterType="Long">
+    SELECT <include refid="Base_Column_List"/>
+    FROM el_department_user_mapping
+    WHERE department_id = #{deptId}
+    AND status != 99
+  </select>
+
+  <select id="findByUserId" resultMap="BaseResultMap" parameterType="Long">
+    SELECT <include refid="Base_Column_List"/>
+    FROM el_department_user_mapping
+    WHERE user_id = #{userId}
+    AND status != 99
+  </select>
+
+  <select id="findByDeptIdAndUserId" resultMap="BaseResultMap" parameterType="Map">
+    select
+    <include refid="Base_Column_List"/>
+    from el_department_role_mapping
+    where department_id = #{deptId}
+    and user_id = #{userId}
+    and status != 99
+  </select>
+
+
 </mapper>

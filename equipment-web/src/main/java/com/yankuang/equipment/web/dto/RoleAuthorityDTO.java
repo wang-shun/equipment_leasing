@@ -7,7 +7,7 @@ public class RoleAuthorityDTO implements Serializable {
 
     private Long roleId;
 
-    private List<Long> groupIds;
+    private List<Long> authorityIds;
 
     public Long getRoleId() {
         return roleId;
@@ -17,19 +17,19 @@ public class RoleAuthorityDTO implements Serializable {
         this.roleId = roleId;
     }
 
-    public List<Long> getGroupIds() {
-        return groupIds;
+    public List<Long> getAuthorityIds() {
+        return authorityIds;
     }
 
-    public void setGroupIds(List<Long> groupIds) {
-        this.groupIds = groupIds;
+    public void setAuthorityIds(List<Long> authorityIds) {
+        this.authorityIds = authorityIds;
     }
 
     @Override
     public String toString() {
         return "{RoleAuthorityDTO:{" +
                 "roleId=" + roleId +
-                ", groupIds=" + groupIds +
+                ", authorityIds=" + authorityIds.toString() +
                 '}' + '}';
     }
 }

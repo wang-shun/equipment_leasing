@@ -2,13 +2,21 @@ package com.yankuang.equipment.authority.service;
 
 import com.yankuang.equipment.authority.model.DeptUser;
 
-public interface DeptUserService {
+import java.util.List;
+import java.util.Map;
 
-    Long findDeptId(Long userId);
+public interface DeptUserService {
 
     Boolean create(DeptUser deptUser);
 
-    Boolean deleteByUserId(Long userId);
+    Boolean deleteByUserId(Long id);
 
-    Boolean update(DeptUser deptUser);
+    Boolean deleteByDeptId(Long id);
+
+    DeptUser findByUserId(Long id);
+
+    List<DeptUser> findByDeptId(Long id);
+
+    List<DeptUser> findByDeptIdAndUserId(Map map);
+
 }

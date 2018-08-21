@@ -1,44 +1,32 @@
 package com.yankuang.equipment.authority.mapper;
 
-import io.terminus.common.mysql.dao.MyBatisDao;
 import com.yankuang.equipment.authority.model.User;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Map;
+
 @Repository
-public class UserMapper extends MyBatisDao<User> {
-    public User login(String name) {
-        return getSqlSession().selectOne("login", name);
-    }
+public interface UserMapper {
 
-    public User findByCode(String code){
-        return getSqlSession().selectOne("findByCode", code);
-    }
+    Boolean create(User user);
 
-    public Long findUserName(String account){
-        return getSqlSession().selectOne("findUserName",account);
-    }
+    Boolean delete(Long id);
 
-    public Long findUserIds(String account){
-        return getSqlSession().selectOne("findUserIds",account);
-    }
+    Boolean update(User user);
 
-    public Boolean closeStatusUser(Long id){
-        return this.getSqlSession().update("closeStatusUser",id) == 1;
-    }
+    User findByName(String name);
 
-    public Boolean openStatusUser(Long id){
-        return this.getSqlSession().update("openStatusUser",id) == 1;
-    }
+    User findByAccount(String account);
 
-    public Boolean updateAccount(User user){
-        return this.getSqlSession().update("updateAccount",user) == 1;
-    }
+    User findById(Long account);
 
-    public Long findUserAccount(String name){
-        return this.getSqlSession().selectOne("findUserAccount",name);
-    }
+    List<User> list(Map map);
 
-    public Long findUserSex(Byte sex){
-        return this.getSqlSession().selectOne("findUserSex",sex);
-    }
+    List<User> findAll();
+
+    Boolean stop(Long id);
+
+    Boolean start(Long id);
+
 }
