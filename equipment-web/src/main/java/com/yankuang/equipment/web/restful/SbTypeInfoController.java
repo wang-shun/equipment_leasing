@@ -34,7 +34,7 @@ public class SbTypeInfoController {
     }
 
     @RequestMapping(value = "/create",method = RequestMethod.POST)
-    public ResponseMeta create(@Valid SbTypeInfo sbTypeInfo, BindingResult bindingResult){
+    public ResponseMeta create(@Valid @RequestBody SbTypeInfo sbTypeInfo, BindingResult bindingResult){
         ResponseMeta responseMeta = new ResponseMeta();
         try{
             if (bindingResult.hasErrors()){
@@ -50,7 +50,7 @@ public class SbTypeInfoController {
     }
 
     @RequestMapping(value = "/update",method = RequestMethod.PUT)
-    public ResponseMeta update(@Valid SbTypeInfo sbTypeInfo,BindingResult bindingResult){
+    public ResponseMeta update(@Valid @RequestBody SbTypeInfo sbTypeInfo,BindingResult bindingResult){
         ResponseMeta responseMeta = new ResponseMeta();
         try{
             if (bindingResult.hasErrors()){

@@ -47,8 +47,8 @@ public class AuthorityController {
      * @return
      */
     @GetMapping(value = "/{id}")
-    public CommonResponse getById(@PathVariable Long id) {
-        return CommonResponse.ok(authorityService.getById(id));
+    public CommonResponse findById(@PathVariable Long id) {
+        return CommonResponse.ok(authorityService.findById(id));
     }
 
     /**
@@ -78,7 +78,7 @@ public class AuthorityController {
      */
     @PostMapping
     @Transactional
-    CommonResponse add(@RequestBody String jsonString) {
+    CommonResponse create(@RequestBody String jsonString) {
         if (jsonString == null || "".equals(jsonString)) {
             return CommonResponse.errorMsg("参数不能为空");
         }
@@ -174,35 +174,12 @@ public class AuthorityController {
         return CommonResponse.ok();
     }
 
-//    /**
-//     * @author boms
-//     * @method 删除
-//     */
-//    @DeleteMapping("/{id}")
-//    CommonResponse deleteById(@PathVariable Long id) {
-//        return CommonResponse.ok(authorityService.delete(id));
-//    }
-
-    /**
-     * @param name
-     * @return
-     * @author boms
-     * @method 通过名字查询
-     */
-    @GetMapping
-    CommonResponse getByName(@RequestParam String name) {
-        if (StringUtils.isEmpty(name)) {
-            return CommonResponse.errorMsg("权限名称不能为空");
-        }
-        return CommonResponse.ok(authorityService.findByName(name));
-    }
-
     /**
      * @return
      * @method 查询权限菜单(type = 1)
      */
     @GetMapping(value = "/all")
-    CommonResponse getAll() {
+    CommonResponse findAll() {
 
         List<Authority> authorities = authorityService.findAll();
         List<TreeDTO> trees = new ArrayList<>();

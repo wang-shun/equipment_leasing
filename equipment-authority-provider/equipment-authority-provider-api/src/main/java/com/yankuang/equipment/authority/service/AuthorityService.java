@@ -1,16 +1,25 @@
 package com.yankuang.equipment.authority.service;
 
+import com.github.pagehelper.PageInfo;
 import com.yankuang.equipment.authority.model.Authority;
 import io.terminus.common.model.Paging;
 
 import java.util.List;
+import java.util.Map;
 
 public interface AuthorityService {
-    Authority getById(Long id);
-    boolean update(Authority authority);
-    boolean add(Authority authority);
-    boolean delete(Long id);
+
+    PageInfo<Authority> findByPage(Integer page, Integer size, Map map);
+
     Authority findByName(String name);
+
     List<Authority> findAll();
-    Paging paging(Integer page, Integer size,Authority authority);
+
+    Authority findById(Long id);
+
+    boolean update(Authority authority);
+
+    boolean create(Authority authority);
+
+    boolean delete(Long id);
 }

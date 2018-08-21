@@ -15,6 +15,7 @@ import java.util.Date;
 /**
  * Created by zhouy on 2018/7/31.
  */
+@CrossOrigin(maxAge = 3600)
 @Controller
 @RequestMapping("/v1/elplan")
 public class ElPlanController {
