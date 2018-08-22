@@ -105,7 +105,7 @@
             update_at = unix_timestamp(now())
         </set>
         WHERE id in
-        <foreach collection="ids" item="id" separator="," open="(" close=")">
+        <foreach collection="list" item="id" separator="," open="(" close=")">
             #{id}
         </foreach>
     </update>

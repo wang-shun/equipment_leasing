@@ -4,6 +4,7 @@ import com.yankuang.equipment.authority.model.Authority;
 import com.yankuang.equipment.authority.service.AuthorityService;
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.JsonUtils;
+import com.yankuang.equipment.web.dto.IdsDTO;
 import com.yankuang.equipment.web.dto.TreeDTO;
 import com.yankuang.equipment.web.util.CodeUtil;
 import com.yankuang.equipment.web.util.TreeUtils;
@@ -130,7 +131,8 @@ public class AuthorityController {
         if (StringUtils.isEmpty(jsonString)) {
             return CommonResponse.errorTokenMsg("选择要删除的数据");
         }
-        List<Long> ids = JsonUtils.jsonToList(jsonString, Long.class);
+        IdsDTO idsDTO = JsonUtils.jsonToPojo(jsonString, IdsDTO.class);
+        List<Long> ids = idsDTO.getIds();
         Boolean b = authorityService.deletes(ids);
         if (!b) {
             return CommonResponse.errorMsg("批量删除失败");

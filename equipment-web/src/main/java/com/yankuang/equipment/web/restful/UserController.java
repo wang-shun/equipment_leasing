@@ -223,6 +223,13 @@ public class UserController {
         User user1 = new User();
         user1.setCode(CodeUtil.getCode());
         user1.setPassword("123456");
+        user1.setAccount(user.getAccount());
+        user1.setName(user.getName());
+        user1.setMail(user.getMail());
+        user1.setSex(user.getSex());
+        user1.setSorting(user.getSorting());
+        user1.setTelephone(user.getTelephone());
+        user1.setRemark(user.getRemark());
         //TODO 从redis中获取登陆人姓名
         user1.setUpdateBy("admin");
         user1.setCreateBy("admin");
@@ -231,10 +238,12 @@ public class UserController {
             return CommonResponse.errorMsg("添加失败");
         }
         // TODO 用户部门关系表添加
-        User user2 = userService.findByName(user.getAccount());
+        User user2 = userService.findByAccount(user.getAccount());
         DeptUser deptUser = new DeptUser();
         deptUser.setDepartmentId(deptId);
         deptUser.setUserId(user2.getId());
+        deptUser.setCreateBy("admin");
+        deptUser.setUpdateBy("admin");
         Boolean b1 = deptUserService.create(deptUser);
         if (!b1){
             return CommonResponse.errorMsg("用户关联部门失败");
@@ -243,6 +252,8 @@ public class UserController {
         RoleUser roleUser = new RoleUser();
         roleUser.setRoleId(roleId);
         roleUser.setUserId(user2.getId());
+        roleUser.setCreateBy("admin");
+        roleUser.setUpdateBy("admin");
         Boolean b3 = roleUserService.create(roleUser);
         if (!b3) {
             return CommonResponse.errorMsg("用户关联角色失败");
