@@ -1,10 +1,10 @@
 package com.yankuang.equipment.equipment.model;
 
 import lombok.Data;
-
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @Entity
@@ -34,9 +34,9 @@ public class ElUseItem implements Serializable{
 
     private Long planUseId;
 
-    private String backup2;
+    private Date useAt;
 
-    private String backup3;
+    private Byte isUse;
 
     private SbEquipmentT sbEquipmentT;
 
@@ -142,5 +142,21 @@ public class ElUseItem implements Serializable{
 
     public void setPlanUseId(Long planUseId) {
         this.planUseId = planUseId;
+    }
+
+    public Date getUseAt() {
+        return useAt;
+    }
+
+    public void setUseAt(Date useAt) {
+        this.useAt = useAt;
+    }
+
+    public Byte getIsUse() {
+        return isUse;
+    }
+
+    public void setIsUse(Byte isUse) {
+        this.isUse = isUse;
     }
 }

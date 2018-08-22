@@ -31,4 +31,8 @@ public class ElPlanMapper extends MyBatisDao<ElPlan> {
 
     public int updateByPrimarykey(ElPlan elPlan) {return sqlSession.update("updateByPrimarykey", elPlan);}
 
+    public List<ElPlan> findByCreatorId(ElPlan elPlan){
+        return sqlSession.selectList("findByCreatorId",elPlan);
+    }
+
 }

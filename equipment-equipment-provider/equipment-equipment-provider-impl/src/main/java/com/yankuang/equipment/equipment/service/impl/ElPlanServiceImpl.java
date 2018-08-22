@@ -208,4 +208,17 @@ public class ElPlanServiceImpl implements ElPlanService {
             return false;
         }
     }
+
+    public List<ElPlan> findByCreatorId(ElPlan elPlan){
+        try{
+            logger.info("findByCreatorId elPlan exception: "+JSON.toJSONString(elPlan));
+            elPlan.setPlanCreatorId("2e3d4e5f3c4g3s3e7c5f");//TODO 该数据后期需要从redis中获取，暂写死)
+            List<ElPlan> elPlans = elPlanMapper.findByCreatorId(elPlan);
+            return elPlans;
+        } catch(Exception e){
+            e.printStackTrace();
+            logger.info("findByCreatorId elPlan exception: "+JSON.toJSONString(elPlan));
+            return null;
+        }
+    }
 }

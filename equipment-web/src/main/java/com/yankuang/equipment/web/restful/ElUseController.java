@@ -239,6 +239,9 @@ public class ElUseController {
         elUse.setApproveBy(1L);//TODO 待redis开发完，先写死
         elUse.setApproveAt(new Date());
         elUse.setUpdateAt(new Date());
+        if (elUse.getStatus() != "2"){
+            return CommonResponse.errorMsg("未进入审核状态");
+        }
         elUse.setStatus("4");
         List<ElUseItem> elUseItems = elUseItemService.findByUseId(elUse.getId());
         ElPlanUse elPlanUse = new ElPlanUse();

@@ -11,6 +11,7 @@ import com.yankuang.equipment.equipment.service.ElUseService;
 import io.terminus.boot.rpc.common.annotation.RpcProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.management.snmp.jvminstr.JvmThreadInstanceEntryImpl;
 
 import java.util.Date;
 import java.util.List;
@@ -48,6 +49,7 @@ public class ElUseServiceImpl implements ElUseService{
         String version = (elUse.getVersion() == null || " ".equals(elUse.getVersion()))?"1":elUse.getVersion();
         elUse.setVersion(version);
         elUse.setUpdateBy(1L);
+        elUse.setIsUse((byte)1);
         int num = Integer.parseInt(elUseMapper.create(elUse)+"");
         List<ElUseItem> elUseItems = elUse.getElUseItems();
         if (elUseItems == null){
@@ -75,6 +77,8 @@ public class ElUseServiceImpl implements ElUseService{
             elUseItem.setEquipmentPosition(elUse.getUsePosition());
             elUseItem.setEquipmentNum(equipmentNum);
             elUseItem.setUseId(elUse.getId());
+            elUseItem.setUseAt(elUse.getUseAt());
+            elUseItem.setIsUse((byte)1);
             elUseItemMapper.create(elUseItem);
         }
         return num > 0;
@@ -94,6 +98,7 @@ public class ElUseServiceImpl implements ElUseService{
 
     public PageInfo<ElUse> list(Integer page, Integer size, Map elUseMap){
         PageHelper.startPage(page, size);
+        elUseMap.put("isUse",(byte)1);
         List<ElUse> elUses = elUseMapper.list(elUseMap);
         PageInfo<ElUse> pageInfo = new PageInfo<ElUse>(elUses);
         return pageInfo;

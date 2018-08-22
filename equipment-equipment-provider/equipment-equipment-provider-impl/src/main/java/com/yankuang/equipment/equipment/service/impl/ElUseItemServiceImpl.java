@@ -32,6 +32,7 @@ public class ElUseItemServiceImpl implements ElUseItemService{
 
     public PageInfo<ElUseItem> list(Integer page, Integer size,Map elUseItemMap){
         PageHelper.startPage(page,size);
+        elUseItemMap.put("isUse",(byte)1);
         List<ElUseItem> elUseItems = elUseItemMapper.list(elUseItemMap);
 //        if (elUseItems == null){
 //            return null;

@@ -18,22 +18,20 @@
     <result column="update_by" property="updateBy" jdbcType="BIGINT" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
     <result column="version" property="version" jdbcType="BIGINT" />
-    <result column="backup1" property="backup1" jdbcType="VARCHAR" />
     <result column="equipment_type" property="equipmentType" jdbcType="VARCHAR" />
     <result column="position_id" property="positionId" jdbcType="BIGINT" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, center_year, center_month, plan_type, plan_id, plan_item_id, equipment_id, sorting, 
-    status, is_del, remarks, create_by, create_at, update_by, update_at, version, backup1, 
-    equipment_type, position_id
+    status, is_del, remarks, create_by, create_at, update_by, update_at, version,equipment_type, position_id
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
+  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
     <include refid="Base_Column_List" />
     from el_plan_use
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteById" parameterType="java.lang.Long" >
+  <delete id="delete" parameterType="java.lang.Long" >
     delete from el_plan_use
     where id = #{id,jdbcType=BIGINT}
   </delete>
@@ -43,14 +41,14 @@
       equipment_id, sorting, status, 
       is_del, remarks, create_by, 
       create_at, update_by, update_at, 
-      version, backup1, equipment_type,
+      version, equipment_type,
       position_id)
     values (#{id,jdbcType=BIGINT}, #{centerYear,jdbcType=INTEGER}, #{centerMonth,jdbcType=INTEGER}, 
       #{planType,jdbcType=VARCHAR}, #{planId,jdbcType=VARCHAR}, #{planItemId,jdbcType=VARCHAR}, 
       #{equipmentId,jdbcType=BIGINT}, #{sorting,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
       #{isDel,jdbcType=TINYINT}, #{remarks,jdbcType=VARCHAR}, #{createBy,jdbcType=BIGINT}, 
       #{createAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=BIGINT}, #{updateAt,jdbcType=TIMESTAMP}, 
-      #{version,jdbcType=BIGINT}, #{backup1,jdbcType=VARCHAR}, #{equipmentType,jdbcType=VARCHAR},
+      #{version,jdbcType=BIGINT}, #{equipmentType,jdbcType=VARCHAR},
       #{positionId,jdbcType=BIGINT})
   </insert>
   <update id="update" parameterType="com.yankuang.equipment.equipment.model.ElPlanUse" >
@@ -101,9 +99,6 @@
       <if test="version != null" >
         version = #{version,jdbcType=BIGINT},
       </if>
-      <if test="backup1 != null" >
-        backup1 = #{backup1,jdbcType=VARCHAR},
-      </if>
       <if test="equipmentType != null" >
         equipment_type = #{equipmentType,jdbcType=VARCHAR},
       </if>
@@ -114,27 +109,15 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
 
-    <select id="findByCondition" parameterType="com.yankuang.equipment.equipment.model.ElPlanUse" resultMap="BaseResultMap">
+    <select id="list" parameterType="map" resultMap="BaseResultMap">
         SELECT <include refid="Base_Column_List" />
-        from el_plan_use
-        where 1 = 1 AND is_del = 1
-        <if test="centerYear != null">
-            AND center_year = #{centerYear}
-        </if>
-        <if test="centerMonth != null">
-            AND center_month = #{centerMonth}
-        </if>
-        <if test="planType != null">
-            AND plan_type = #{planType}
-        </if>
-        <if test="status != null">
-            AND status = #{status}
-        </if>
-        <if test="positionId != null">
-            AND position_id = #{positionId}
-        </if>
-        <if test="backup1 != null">
-            AND backup1 = #{backup1}
-        </if>
+        FROM el_plan_use
+        WHERE plan_id IN
+        <foreach item="ids" index="planId" collection="planId"
+                 open="(" separator="," close=")">
+         #{ids}
+        </foreach>
+        AND status = 2
+        AND is_del = 1
     </select>
 </mapper>

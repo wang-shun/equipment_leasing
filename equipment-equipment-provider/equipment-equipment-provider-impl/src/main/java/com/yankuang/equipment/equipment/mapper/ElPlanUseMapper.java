@@ -4,16 +4,17 @@ import com.yankuang.equipment.equipment.model.ElPlanUse;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface ElPlanUseMapper {
-    int deleteByPrimaryKey(Long id);
+    int delete(Long id);
 
     int insert(ElPlanUse elPlanUse);
 
-    ElPlanUse selectById(Long id);
+    ElPlanUse findById(Long id);
 
     int update(ElPlanUse record);
 
-    List<ElPlanUse> findByCondition(ElPlanUse elPlanUse);
+    List<ElPlanUse> list(Map elPlanUseMap);
 }

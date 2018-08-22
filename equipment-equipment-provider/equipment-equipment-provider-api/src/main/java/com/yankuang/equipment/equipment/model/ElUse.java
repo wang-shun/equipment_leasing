@@ -51,7 +51,7 @@ public class ElUse implements Serializable{
 
     private String remarks;
 
-    private String backup1;
+    private Byte isUse;
 
     private String backup2;
 

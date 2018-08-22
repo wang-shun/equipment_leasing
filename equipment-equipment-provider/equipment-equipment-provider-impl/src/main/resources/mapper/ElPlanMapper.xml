@@ -505,4 +505,79 @@
             </if>
         </trim>
     </insert>
+<!--根据多条件查询计划对象-->
+    <select id="findByCreatorId" parameterType="ElPlan" resultMap="ElPlanMap">
+        SELECT <include refid="cols_all"/>
+        FROM el_plan
+        WHERE
+        1=1
+        <if test="planId != null" >
+            AND plan_id = #{planId}
+        </if>
+        <if test="planYear != null" >
+            AND plan_year = #{planYear}
+        </if>
+        <if test="planMonth != null" >
+            AND plan_month = #{planMonth}
+        </if>
+        <if test="planQuarter != null" >
+            AND plan_quarter = #{planQuarter}
+        </if>
+        <if test="planPosition != null" >
+            AND plan_position = #{planPosition}
+        </if>
+        <if test="planRemarks != null" >
+            AND plan_remarks = #{planRemarks}
+        </if>
+        <if test="planOpinion != null" >
+            AND plan_opinion = #{planOpinion}
+        </if>
+        <if test="planCreatorId != null" >
+            AND plan_creator_id = #{planCreatorId}
+        </if>
+        <if test="planCreatorName != null" >
+            AND plan_creator_name = #{planCreatorName}
+        </if>
+        <if test="planStatus != null" >
+            AND plan_status = #{planStatus}
+        </if>
+        <if test="planApproveTime != null" >
+            AND plan_approve_time = #{planApproveTime}
+        </if>
+        <if test="planApproverId != null" >
+            AND plan_approver_id = #{planApproverId}
+        </if>
+        <if test="planApproverName != null" >
+            AND plan_approver_name = #{planApproverName}
+        </if>
+        <if test="planEquipmentType != null" >
+            AND plan_equipment_type = #{planEquipmentType}
+        </if>
+        <if test="planType != null" >
+            AND plan_type = #{planType}
+        </if>
+        <if test="planCreateTime != null" >
+            AND plan_create_time = #{planCreateTime}
+        </if>
+        <if test="planUpdateTime != null" >
+            AND plan_update_time = #{planUpdateTime}
+        </if>
+        <if test="planCode != null" >
+            AND plan_code = #{planCode}
+        </if>
+        <if test="planUpdatorId != null" >
+            AND plan_updator_id = #{planUpdatorId}
+        </if>
+        <if test="planUpdatorName != null" >
+            AND plan_updator_name = #{planUpdatorName}
+        </if>
+        <if test="planSorting != null" >
+            AND plan_sorting = #{planSorting}
+        </if>
+        <if test="planVersion != null" >
+            AND plan_version = #{planVersion}
+        </if>
+        AND plan_is_del != 99
+        ORDER BY plan_create_time DESC
+    </select>
 </mapper>

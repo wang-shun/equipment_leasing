@@ -15,11 +15,12 @@
     <result column="code" jdbcType="VARCHAR" property="code" />
     <result column="update_at" jdbcType="BIGINT" property="updateAt" />
     <result column="version" jdbcType="BIGINT" property="version" />
+    <result column="type_id" jdbcType="BIGINT" property="typeId"/>
   </resultMap>
 
   <sql id="all_clos">
     id, p_id, name, pcode, level, sorting, remark, create_by, create_at, update_by, code, update_at,
-    version, status
+    version, status,type_id
   </sql>
 
   <select id="findById" parameterType="long" resultMap="BaseResultMap" >
@@ -36,7 +37,7 @@
     VALUES(#{id},#{pId}, #{name}, #{pcode},
     #{level}, #{sorting}, #{remark},
     #{createBy},unix_timestamp(now()), #{updateBy},
-    #{code}, unix_timestamp(now()), #{version},1
+    #{code}, unix_timestamp(now()), #{version},1, #{typeId}
     )
   </insert>
 
@@ -78,6 +79,9 @@
       </if>
       <if test="status != null" >
         version = #{status},
+      </if>
+      <if test="typeId != null" >
+        type_id = #{typeId},
       </if>
       update_at = unix_timestamp(now())
     </set>
@@ -150,6 +154,9 @@
     </if>
     <if test="status != null" >
       AND version = #{status}
+    </if>
+    <if test="typeId != null">
+      AND type_id = #{typeId}
     </if>
     AND status != 99
     order by create_at desc
