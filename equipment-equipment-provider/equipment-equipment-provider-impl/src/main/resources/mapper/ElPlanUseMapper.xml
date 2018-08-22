@@ -151,46 +151,46 @@
         SELECT <include refid="Base_Column_List" />
         from el_plan_use
         where 1 = 1 AND is_del = 1
-        <if test="centerYear != null">
+        <if test="centerYear != null and centerYear != '' ">
             AND center_year = #{centerYear}
         </if>
-        <if test="centerMonth != null">
+        <if test="centerMonth != null and centerMonth != '' ">
             AND center_month = #{centerMonth}
         </if>
-        <if test="planType != null">
+        <if test="planType != null and planType != '' ">
             AND plan_type = #{planType}
         </if>
-        <if test="status != null">
+        <if test="status != null and status != '' ">
             AND status = #{status}
         </if>
-        <if test="positionId != null">
+        <if test="positionId != null and positionId != '' ">
             AND position_id = #{positionId}
         </if>
-        <if test="equipmentType != null">
+        <if test="equipmentType != null and equipmentType != '' ">
             AND equipment_type = #{equipmentType}
         </if>
-        <if test="bigTypeCode != null">
+        <if test="bigTypeCode != null and bigTypeCode != '' ">
             AND big_type_code = #{bigTypeCode}
         </if>
-        <if test="middleTypeCode != null">
+        <if test="middleTypeCode != null and middleTypeCode != '' ">
             AND middle_type_code = #{middleTypeCode}
         </if>
-        <if test="smallTypeCode != null">
+        <if test="smallTypeCode != null and smallTypeCode != '' ">
             AND small_type_code = #{smallTypeCode}
         </if>
-        <if test="equipmentCode != null" >
+        <if test="equipmentCode != null and equipmentCode != '' " >
             AND equipment_code = #{equipmentCode}
         </if>
-        <if test="equipmentName != null" >
+        <if test="equipmentName != null and equipmentName != '' " >
             AND equipment_name = #{equipmentName}
         </if>
-        <if test="effectCode != null" >
+        <if test="effectCode != null and effectCode != '' " >
             AND effect_code = #{effectCode}
         </if>
-        <if test="equipmentModel != null" >
+        <if test="equipmentModel != null and equipmentModel != '' " >
             AND equipment_model = #{equipmentModel}
         </if>
-        <if test="equipmentFactory != null" >
+        <if test="equipmentFactory != null and equipmentFactory != '' " >
             AND equipment_factory = #{equipmentFactory}
         </if>
     </select>

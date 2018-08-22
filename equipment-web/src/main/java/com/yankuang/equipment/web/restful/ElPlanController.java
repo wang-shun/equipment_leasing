@@ -11,7 +11,6 @@ import com.yankuang.equipment.web.service.ElPlanPlusService;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import io.terminus.common.model.Paging;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +21,7 @@ import java.util.List;
  * Created by zhouy on 2018/7/31.
  */
 @CrossOrigin(maxAge = 3600)
-@Controller
+@RestController
 @RequestMapping("/v1/elplan")
 public class ElPlanController {
 
