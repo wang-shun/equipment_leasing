@@ -11,9 +11,11 @@ import io.swagger.models.auth.In;
 import org.springframework.util.StringUtils;
 import com.yankuang.equipment.equipment.model.ElPlan;
 import com.yankuang.equipment.equipment.service.ElPlanService;
+import com.yankuang.equipment.web.dto.ElPlanUseDTO;
+import com.yankuang.equipment.web.service.ElPlanPlusService;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import io.terminus.common.model.Paging;
-import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -26,8 +28,11 @@ import java.util.*;
 @RequestMapping("/v1/elplan")
 public class ElPlanController {
 
-    @RpcConsumer(version = "0.0.1", check = "false")
-    private ElPlanService elPlanService;
+    @RpcConsumer
+    ElPlanService elPlanService;
+
+    @Autowired
+    ElPlanPlusService elPlanPlusService;
 
     @RpcConsumer
     ElPlanUseService elPlanUseService;
@@ -40,9 +45,7 @@ public class ElPlanController {
      * @param elPlan
      * @return
      */
-    @CrossOrigin(maxAge = 3600)
-    @ResponseBody
-    @RequestMapping(value = "/{equipmentType}/{planType}", method = RequestMethod.POST)
+    @PostMapping("/{equipmentType}/{planType}")
     public CommonResponse create (@PathVariable(value = "equipmentType") String equipmentType,
                                   @PathVariable(value = "planType") String planType,
                                   @RequestBody ElPlan elPlan) {
@@ -56,16 +59,16 @@ public class ElPlanController {
                 return CommonResponse.errorMsg("设备租赁计划url有误");
             }
             if (StringUtils.isEmpty(elPlan.getPlanCreatorId())) {
-                return CommonResponse.errorException("计划提出人ID不得为空");
+                return CommonResponse.errorMsg("计划提出人ID不得为空");
             }
             if (StringUtils.isEmpty(elPlan.getPlanCreatorName())) {
-                return CommonResponse.errorException("计划提出人姓名不得为空");
+                return CommonResponse.errorMsg("计划提出人姓名不得为空");
             }
             if (StringUtils.isEmpty(elPlan.getPlanYear())) {
-                return CommonResponse.errorException("需求年度不得为空");
+                return CommonResponse.errorMsg("需求年度不得为空");
             }
             if (StringUtils.isEmpty(elPlan.getPlanPosition())) {
-                return CommonResponse.errorException("提出单位不得为空");
+                return CommonResponse.errorMsg("提出单位不得为空");
             }
 
             // 获取租赁计划设备类型
@@ -79,19 +82,19 @@ public class ElPlanController {
             // 获取设备租赁计划类型
             if (!StringUtils.isEmpty(planType) && Constants.PLANTYPE_URGENT_VALUE.equals(planType)) {
                 if (StringUtils.isEmpty(elPlan.getPlanMonth())) {
-                    return CommonResponse.errorException("需求月度不得为空");
+                    return CommonResponse.errorMsg("需求月度不得为空");
                 }
                 elPlan.setPlanType(Constants.PLANTYPE_URGENT);
             }
             if (!StringUtils.isEmpty(planType) && Constants.PLANTYPE_MONTH_VALUE.equals(planType)) {
                 if (StringUtils.isEmpty(elPlan.getPlanMonth())) {
-                    return CommonResponse.errorException("需求月度不得为空");
+                    return CommonResponse.errorMsg("需求月度不得为空");
                 }
                 elPlan.setPlanType(Constants.PLANTYPE_MONTH);
             }
             if (!StringUtils.isEmpty(planType) && Constants.PLANTYPE_QUARTER_VALUE.equals(planType)) {
                 if (StringUtils.isEmpty(elPlan.getPlanQuarter())) {
-                    return CommonResponse.errorException("需求季度不得为空");
+                    return CommonResponse.errorMsg("需求季度不得为空");
                 }
                 elPlan.setPlanType(Constants.PLANTYPE_QUARTER);
             }
@@ -127,9 +130,7 @@ public class ElPlanController {
      * @param elPlan
      * @return
      */
-    @CrossOrigin(maxAge = 3600)
-    @ResponseBody
-    @RequestMapping(value = "", method = RequestMethod.PUT)
+    @PutMapping("")
     public CommonResponse update (@RequestBody ElPlan elPlan) {
 
         Boolean res = false;
@@ -138,12 +139,15 @@ public class ElPlanController {
                 return CommonResponse.errorMsg("通用设备租赁计划ID不得为空");
             }
             if (StringUtils.isEmpty(elPlan.getPlanUpdatorName())) {
-                return CommonResponse.errorException("编辑修改人ID不得为空");
+                return CommonResponse.errorMsg("编辑修改人ID不得为空");
             }
             if (StringUtils.isEmpty(elPlan.getPlanUpdatorId())) {
-                return CommonResponse.errorException("编辑修改人姓名不得为空");
+                return CommonResponse.errorMsg("编辑修改人姓名不得为空");
             }
             ElPlan plan = elPlanService.findElPlanById(elPlan.getPlanId());
+            if (plan == null) {
+                return CommonResponse.errorMsg("该条租赁计划已过期");
+            }
             if (Constants.PLANSTATUS_COMMITED.equals(plan.getPlanStatus())) {
                 return CommonResponse.errorMsg("该条租赁计划已提交，不能编辑修改");
             }
@@ -168,9 +172,7 @@ public class ElPlanController {
      * @param planId
      * @return
      */
-    @CrossOrigin(maxAge = 3600)
-    @ResponseBody
-    @RequestMapping(value = "/{planId}", method = RequestMethod.DELETE)
+    @DeleteMapping("/{planId}")
     public CommonResponse delete(@PathVariable(value = "planId") String planId) {
 
         Boolean res = false;
@@ -180,11 +182,11 @@ public class ElPlanController {
             }
             ElPlan elPlan = elPlanService.findElPlanById(planId);
             if (elPlan == null || !Constants.PLANSTATUS_UNCOMMITED.equals(elPlan.getPlanStatus())) {
-                return CommonResponse.errorException("设备租赁计划删除失败");
+                return CommonResponse.errorMsg("设备租赁计划删除失败");
             }
             res = elPlanService.deletePlan(planId);
             if (!res) {
-                return CommonResponse.errorException("设备租赁计划删除失败");
+                return CommonResponse.errorMsg("设备租赁计划删除失败");
             }
             return CommonResponse.ok();
         } catch (Exception e) {
@@ -199,9 +201,7 @@ public class ElPlanController {
      * @param planId
      * @return
      */
-    @CrossOrigin(maxAge = 3600)
-    @ResponseBody
-    @RequestMapping(value = "/{planId}",  method = RequestMethod.GET)
+    @GetMapping("/{planId}")
     public CommonResponse getElPlan (@PathVariable(value = "planId") String planId) {
 
         try {
@@ -228,10 +228,8 @@ public class ElPlanController {
      * @param planType
      * @return
      */
-    @CrossOrigin(maxAge = 3600)
-    @ResponseBody
-    @RequestMapping(value = "/list/{equipmentType}/{planType}", method = RequestMethod.POST)
-    public CommonResponse getElPlans(ElPlan elPlan, @RequestParam(value = "pageSize", defaultValue = "30") Integer pageSize,
+    @PostMapping("/list/{equipmentType}/{planType}")
+    public CommonResponse getElPlans(@RequestBody ElPlan elPlan, @RequestParam(value = "pageSize", defaultValue = "30") Integer pageSize,
                                      @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                      @PathVariable(value = "equipmentType") String equipmentType,
                                      @PathVariable(value = "planType") String planType) {
@@ -245,7 +243,7 @@ public class ElPlanController {
             }
             if (!Constants.PLANEQUIPMENTTYPE_GENERIC.equals(equipmentType)
                     && !Constants.PLANEQUIPMENTTYPE_INTEGRATED.equals(equipmentType)) {
-                return CommonResponse.errorException("请求路径书写有误");
+                return CommonResponse.errorMsg("请求路径书写有误");
             }
 
             // 租赁计划类型
@@ -265,7 +263,7 @@ public class ElPlanController {
                     && Constants.PLANTYPE_QUARTER.equals(planType)
                     && Constants.PLANTYPE_MONTH.equals(planType)
                     && Constants.PLANTYPE_URGENT.equals(planType)) {
-                return CommonResponse.errorException("请求路径书写有误");
+                return CommonResponse.errorMsg("请求路径书写有误");
             }
 
             // 查询数据
@@ -290,27 +288,32 @@ public class ElPlanController {
      * @param elPlan
      * @return
      */
-    @ResponseBody
-    @RequestMapping(value = "/approve/{approvalType}", method = RequestMethod.POST)
+    @PostMapping("/approve/{approvalType}")
     public CommonResponse approval(@PathVariable(value = "approvalType") String approvalType,
-                                   ElPlan elPlan) {
+                                   @RequestBody ElPlan elPlan) {
 
         try {
             // 数据验证
             if (StringUtils.isEmpty(approvalType)) {
-                return CommonResponse.errorException("请求路径书写有误");
+                return CommonResponse.errorMsg("请求路径书写有误");
             }
             if (elPlan == null || StringUtils.isEmpty(elPlan.getPlanId())) {
-                return CommonResponse.errorException("请补充租赁计划ID");
+                return CommonResponse.errorMsg("请补充租赁计划ID");
             }
 
             // 填充数据
             ElPlan plan = elPlanService.findElPlanById(elPlan.getPlanId());
+            if (plan == null ) {
+                return CommonResponse.errorMsg("该条租赁计划已过期");
+            }
+            if (plan.getElPlanItemList() != null) {
+                elPlan.setElPlanItemList(plan.getElPlanItemList());
+            }
             if ("submit".equals(approvalType)) {
                 if (Constants.PLANSTATUS_COMMITED.equals(plan.getPlanStatus())
                         || Constants.PLANSTATUS_PASSED.equals(plan.getPlanStatus())
                         || Constants.PLANSTATUS_FAILED.equals(plan.getPlanStatus())) {
-                    return CommonResponse.errorException("该条租赁计划已提交,不能重复提交");
+                    return CommonResponse.errorMsg("该条租赁计划已提交,不能重复提交");
                 }
                 elPlan.setPlanStatus(Constants.PLANSTATUS_COMMITED);
                 elPlan.setPlanUpdateTime(new Date().getTime());
@@ -351,11 +354,43 @@ public class ElPlanController {
             }
 
             // 保存数据
-            boolean res = elPlanService.approve(elPlan);
-            if (!res) {
-                return CommonResponse.errorException("操作失败");
+            CommonResponse result = elPlanPlusService.approve(elPlan);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return CommonResponse.errorException("服务异常");
+        }
+    }
+
+    /**
+     * 查询租赁计划备用设备
+     * @param elPlanUse
+     * @return
+     */
+    @PostMapping("/findElPlanUse")
+    public CommonResponse findElPlanUseList(@RequestBody ElPlanUse elPlanUse) {
+        try {
+
+            if (StringUtils.isEmpty(elPlanUse.getEquipmentType())) {
+                return CommonResponse.errorMsg("设备类型不得为空");
             }
-            return CommonResponse.ok();
+            if (StringUtils.isEmpty(elPlanUse.getCenterYear())) {
+                return CommonResponse.errorMsg("需求年度不得为空");
+            }
+            if ("1".equals(elPlanUse.getEquipmentType())) {
+                if (StringUtils.isEmpty(elPlanUse.getCenterMonth())) {
+                    return CommonResponse.errorMsg("需求月度不得为空");
+                }
+            }
+            if (StringUtils.isEmpty(elPlanUse.getPositionId())) {
+                return CommonResponse.errorMsg("使用单位不得为空");
+            }
+
+            List<ElPlanUseDTO> list = elPlanPlusService.findElPlanUseList(elPlanUse);
+            if (list == null || list.size() == 0) {
+                return CommonResponse.errorMsg("查询结果为空");
+            }
+            return CommonResponse.ok(list);
         } catch (Exception e) {
             e.printStackTrace();
             return CommonResponse.errorException("服务异常");

@@ -9,12 +9,14 @@ import io.terminus.boot.rpc.common.annotation.RpcProvider;
 import io.terminus.common.model.Paging;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 
 @Service
 @RpcProvider
+@Transactional
 public class AuthorityServiceImpl implements AuthorityService{
 
     @Autowired
@@ -34,6 +36,10 @@ public class AuthorityServiceImpl implements AuthorityService{
 
     public boolean delete(Long id){
         return  authorityMapper.delete(id);
+    }
+
+    public boolean deletes(List<Long> ids){
+        return  authorityMapper.deletes(ids);
     }
 
     public Authority findByName(String name){

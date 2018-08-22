@@ -1,6 +1,8 @@
 package com.yankuang.equipment.equipment.service;
 
+import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.equipment.model.ElPlan;
+import com.yankuang.equipment.equipment.model.ElPlanItem;
 import io.terminus.common.model.Paging;
 
 import java.util.List;
@@ -52,7 +54,14 @@ public interface ElPlanService {
      * @param elPlan
      * @return
      */
-    boolean approve(ElPlan elPlan);
+    CommonResponse approve(ElPlan elPlan);
+
+    /**
+     * 通过itemId查询
+     * @param itemId
+     * @return
+     */
+    ElPlanItem findEPlanItemByItemId(String itemId);
 
     /**
      * @method 多条件查询计划列表

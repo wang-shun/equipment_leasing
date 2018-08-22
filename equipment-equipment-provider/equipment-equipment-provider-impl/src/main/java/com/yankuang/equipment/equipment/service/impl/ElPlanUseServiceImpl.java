@@ -12,12 +12,21 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
-@RpcProvider
 @Service
-public class ElPlanUseServiceImpl implements ElPlanUseService{
+@RpcProvider
+public class ElPlanUseServiceImpl implements ElPlanUseService {
 
     @Autowired
     ElPlanUseMapper elPlanUseMapper;
+
+    public Integer create(ElPlanUse elPlanUse) {
+        return elPlanUseMapper.insert(elPlanUse);
+    }
+
+    public List<ElPlanUse> findElPlanUse(ElPlanUse elPlanUse) {
+
+        return elPlanUseMapper.findByCondition(elPlanUse);
+    }
 
     public Boolean update(ElPlanUse elPlanUse){
         return elPlanUseMapper.update(elPlanUse) >=0;

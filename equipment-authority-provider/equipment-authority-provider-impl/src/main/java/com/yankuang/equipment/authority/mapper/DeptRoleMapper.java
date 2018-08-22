@@ -1,25 +1,24 @@
 package com.yankuang.equipment.authority.mapper;
 
 import com.yankuang.equipment.authority.model.DeptRole;
-import io.terminus.common.mysql.dao.MyBatisDao;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
 
 @Repository
-public class DeptRoleMapper extends MyBatisDao<DeptRole> {
-    public DeptRole selectByDeptIdAndRoleId(Map map){
-        return getSqlSession().selectOne("selectByDeptIdAndRoleId", map);
-    }
+public interface DeptRoleMapper {
 
-    public Boolean updatedel(Long id) {
-        return this.sqlSession.insert(this.sqlId("updatedelDR"), id) == 1;
-    }
+    Boolean create(DeptRole t);
 
-    public List<Long> findRoleId(Long deptId){
-        return this.sqlSession.selectList("findRoleId",deptId);
-    }
+    DeptRole selectByDeptIdAndRoleId(Map map);
+
+    Boolean deleteByDeptId(Long id);
+
+    Boolean deleteByRoleId(Long id);
+
+    List<DeptRole> findByRoleId(Long deptId);
+
+    List<DeptRole> findByDeptId(Long deptId);
+
 }

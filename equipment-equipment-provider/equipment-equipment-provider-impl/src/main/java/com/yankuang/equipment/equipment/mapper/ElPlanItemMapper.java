@@ -17,6 +17,14 @@ public class ElPlanItemMapper extends MyBatisDao<ElPlanItem> {
         return sqlSession.selectList("findByPlanId", planId);
     }
 
+    public ElPlanItem findByItemId(String itemId) {
+        return sqlSession.selectOne("findByItemId", itemId);
+    }
+
+    public Integer updateById(ElPlanItem elPlanItem) {
+        return sqlSession.update("updateById", elPlanItem);
+    }
+
     public List<ElPlanItem> elPlanItemList(ElPlanItem elPlanItem){
         return sqlSession.selectList("elPlanItemList",elPlanItem);
     }

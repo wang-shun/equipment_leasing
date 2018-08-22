@@ -1,114 +1,199 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.yankuang.equipment.equipment.mapper.ElPlanUseMapper" >
-  <resultMap id="BaseResultMap" type="com.yankuang.equipment.equipment.model.ElPlanUse" >
-    <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="center_year" property="centerYear" jdbcType="INTEGER" />
-    <result column="center_month" property="centerMonth" jdbcType="INTEGER" />
-    <result column="plan_type" property="planType" jdbcType="VARCHAR" />
-    <result column="plan_id" property="planId" jdbcType="VARCHAR" />
-    <result column="plan_item_id" property="planItemId" jdbcType="VARCHAR" />
-    <result column="equipment_id" property="equipmentId" jdbcType="BIGINT" />
-    <result column="sorting" property="sorting" jdbcType="VARCHAR" />
-    <result column="status" property="status" jdbcType="VARCHAR" />
-    <result column="is_del" property="isDel" jdbcType="TINYINT" />
-    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
-    <result column="create_by" property="createBy" jdbcType="BIGINT" />
-    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
-    <result column="update_by" property="updateBy" jdbcType="BIGINT" />
-    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
-    <result column="version" property="version" jdbcType="BIGINT" />
-    <result column="equipment_type" property="equipmentType" jdbcType="VARCHAR" />
-    <result column="position_id" property="positionId" jdbcType="BIGINT" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    id, center_year, center_month, plan_type, plan_id, plan_item_id, equipment_id, sorting, 
-    status, is_del, remarks, create_by, create_at, update_by, update_at, version,equipment_type, position_id
+    <resultMap id="BaseResultMap" type="com.yankuang.equipment.equipment.model.ElPlanUse" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="center_year" property="centerYear" jdbcType="INTEGER" />
+        <result column="center_month" property="centerMonth" jdbcType="INTEGER" />
+        <result column="plan_type" property="planType" jdbcType="VARCHAR" />
+        <result column="plan_id" property="planId" jdbcType="VARCHAR" />
+        <result column="plan_item_id" property="planItemId" jdbcType="VARCHAR" />
+        <result column="equipment_id" property="equipmentId" jdbcType="BIGINT" />
+        <result column="sorting" property="sorting" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="VARCHAR" />
+        <result column="is_del" property="isDel" jdbcType="TINYINT" />
+        <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+        <result column="create_by" property="createBy" jdbcType="BIGINT" />
+        <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+        <result column="update_by" property="updateBy" jdbcType="BIGINT" />
+        <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+        <result column="version" property="version" jdbcType="BIGINT" />
+        <result column="equipment_type" property="equipmentType" jdbcType="VARCHAR" />
+        <result column="position_id" property="positionId" jdbcType="BIGINT" />
+        <result column="small_type_code" property="smallTypeCode" jdbcType="VARCHAR" />
+        <result column="middle_type_code" property="middleTypeCode" jdbcType="VARCHAR" />
+        <result column="big_type_code" property="bigTypeCode" jdbcType="VARCHAR" />
+        <result column="equipment_code" property="equipmentCode" jdbcType="VARCHAR" />
+        <result column="equipment_name" property="equipmentName" jdbcType="VARCHAR" />
+        <result column="equipment_model" property="equipmentModel" jdbcType="VARCHAR" />
+        <result column="effect_code" property="effectCode" jdbcType="VARCHAR" />
+        <result column="equipment_factory" property="equipmentFactory" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+    id, center_year, center_month, position_id, plan_type, plan_id, plan_item_id, equipment_type,
+    equipment_id, sorting, status, is_del, remarks, create_by, create_at, update_by,
+    update_at, version, small_type_code, middle_type_code, big_type_code, equipment_code,
+    equipment_name, equipment_model, effect_code, equipment_factory
   </sql>
-  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select
-    <include refid="Base_Column_List" />
-    from el_plan_use
-    where id = #{id,jdbcType=BIGINT}
-  </select>
-  <delete id="delete" parameterType="java.lang.Long" >
+    <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+        <include refid="Base_Column_List" />
+        from el_plan_use
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="delete" parameterType="java.lang.Long" >
     delete from el_plan_use
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.yankuang.equipment.equipment.model.ElPlanUse" >
-    insert into el_plan_use (id, center_year, center_month, 
-      plan_type, plan_id, plan_item_id, 
-      equipment_id, sorting, status, 
-      is_del, remarks, create_by, 
-      create_at, update_by, update_at, 
-      version, equipment_type,
-      position_id)
-    values (#{id,jdbcType=BIGINT}, #{centerYear,jdbcType=INTEGER}, #{centerMonth,jdbcType=INTEGER}, 
-      #{planType,jdbcType=VARCHAR}, #{planId,jdbcType=VARCHAR}, #{planItemId,jdbcType=VARCHAR}, 
-      #{equipmentId,jdbcType=BIGINT}, #{sorting,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
-      #{isDel,jdbcType=TINYINT}, #{remarks,jdbcType=VARCHAR}, #{createBy,jdbcType=BIGINT}, 
-      #{createAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=BIGINT}, #{updateAt,jdbcType=TIMESTAMP}, 
-      #{version,jdbcType=BIGINT}, #{equipmentType,jdbcType=VARCHAR},
-      #{positionId,jdbcType=BIGINT})
+    <insert id="insert" parameterType="com.yankuang.equipment.equipment.model.ElPlanUse" >
+    insert into el_plan_use (id, center_year, center_month,
+      position_id, plan_type, plan_id,
+      plan_item_id, equipment_type, equipment_id,
+      sorting, status, is_del,
+      remarks, create_by, create_at,
+      update_by, update_at, version,
+      small_type_code, middle_type_code, big_type_code,
+      equipment_code, equipment_name, equipment_model,
+      effect_code, equipment_factory)
+    values (#{id,jdbcType=BIGINT}, #{centerYear,jdbcType=INTEGER}, #{centerMonth,jdbcType=INTEGER},
+      #{positionId,jdbcType=BIGINT}, #{planType,jdbcType=VARCHAR}, #{planId,jdbcType=VARCHAR},
+      #{planItemId,jdbcType=VARCHAR}, #{equipmentType,jdbcType=VARCHAR}, #{equipmentId,jdbcType=BIGINT},
+      #{sorting,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{isDel,jdbcType=TINYINT},
+      #{remarks,jdbcType=VARCHAR}, #{createBy,jdbcType=BIGINT}, #{createAt,jdbcType=TIMESTAMP},
+      #{updateBy,jdbcType=BIGINT}, #{updateAt,jdbcType=TIMESTAMP}, #{version,jdbcType=BIGINT},
+      #{smallTypeCode,jdbcType=VARCHAR}, #{middleTypeCode,jdbcType=VARCHAR}, #{bigTypeCode,jdbcType=VARCHAR},
+      #{equipmentCode,jdbcType=VARCHAR}, #{equipmentName,jdbcType=VARCHAR}, #{equipmentModel,jdbcType=VARCHAR},
+      #{effectCode,jdbcType=VARCHAR}, #{equipmentFactory,jdbcType=VARCHAR})
   </insert>
-  <update id="update" parameterType="com.yankuang.equipment.equipment.model.ElPlanUse" >
-    update el_plan_use
-    <set >
-      <if test="centerYear != null" >
-        center_year = #{centerYear,jdbcType=INTEGER},
-      </if>
-      <if test="centerMonth != null" >
-        center_month = #{centerMonth,jdbcType=INTEGER},
-      </if>
-      <if test="planType != null" >
-        plan_type = #{planType,jdbcType=VARCHAR},
-      </if>
-      <if test="planId != null" >
-        plan_id = #{planId,jdbcType=VARCHAR},
-      </if>
-      <if test="planItemId != null" >
-        plan_item_id = #{planItemId,jdbcType=VARCHAR},
-      </if>
-      <if test="equipmentId != null" >
-        equipment_id = #{equipmentId,jdbcType=BIGINT},
-      </if>
-      <if test="sorting != null" >
-        sorting = #{sorting,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null" >
-        status = #{status,jdbcType=VARCHAR},
-      </if>
-      <if test="isDel != null" >
-        is_del = #{isDel,jdbcType=TINYINT},
-      </if>
-      <if test="remarks != null" >
-        remarks = #{remarks,jdbcType=VARCHAR},
-      </if>
-      <if test="createBy != null" >
-        create_by = #{createBy,jdbcType=BIGINT},
-      </if>
-      <if test="createAt != null" >
-        create_at = #{createAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateBy != null" >
-        update_by = #{updateBy,jdbcType=BIGINT},
-      </if>
-      <if test="updateAt != null" >
-        update_at = #{updateAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="version != null" >
-        version = #{version,jdbcType=BIGINT},
-      </if>
-      <if test="equipmentType != null" >
-        equipment_type = #{equipmentType,jdbcType=VARCHAR},
-      </if>
-      <if test="positionId != null" >
-        position_id = #{positionId,jdbcType=BIGINT},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
+    <update id="update" parameterType="com.yankuang.equipment.equipment.model.ElPlanUse" >
+        update el_plan_use
+        <set >
+            <if test="centerYear != null" >
+                center_year = #{centerYear,jdbcType=INTEGER},
+            </if>
+            <if test="centerMonth != null" >
+                center_month = #{centerMonth,jdbcType=INTEGER},
+            </if>
+            <if test="positionId != null" >
+                position_id = #{positionId,jdbcType=BIGINT},
+            </if>
+            <if test="planType != null" >
+                plan_type = #{planType,jdbcType=VARCHAR},
+            </if>
+            <if test="planId != null" >
+                plan_id = #{planId,jdbcType=VARCHAR},
+            </if>
+            <if test="planItemId != null" >
+                plan_item_id = #{planItemId,jdbcType=VARCHAR},
+            </if>
+            <if test="equipmentType != null" >
+                equipment_type = #{equipmentType,jdbcType=VARCHAR},
+            </if>
+            <if test="equipmentId != null" >
+                equipment_id = #{equipmentId,jdbcType=BIGINT},
+            </if>
+            <if test="sorting != null" >
+                sorting = #{sorting,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null" >
+                status = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="isDel != null" >
+                is_del = #{isDel,jdbcType=TINYINT},
+            </if>
+            <if test="remarks != null" >
+                remarks = #{remarks,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null" >
+                create_by = #{createBy,jdbcType=BIGINT},
+            </if>
+            <if test="createAt != null" >
+                create_at = #{createAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null" >
+                update_by = #{updateBy,jdbcType=BIGINT},
+            </if>
+            <if test="updateAt != null" >
+                update_at = #{updateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="version != null" >
+                version = #{version,jdbcType=BIGINT},
+            </if>
+            <if test="smallTypeCode != null" >
+                small_type_code = #{smallTypeCode,jdbcType=VARCHAR},
+            </if>
+            <if test="middleTypeCode != null" >
+                middle_type_code = #{middleTypeCode,jdbcType=VARCHAR},
+            </if>
+            <if test="bigTypeCode != null" >
+                big_type_code = #{bigTypeCode,jdbcType=VARCHAR},
+            </if>
+            <if test="equipmentCode != null" >
+                equipment_code = #{equipmentCode,jdbcType=VARCHAR},
+            </if>
+            <if test="equipmentName != null" >
+                equipment_name = #{equipmentName,jdbcType=VARCHAR},
+            </if>
+            <if test="equipmentModel != null" >
+                equipment_model = #{equipmentModel,jdbcType=VARCHAR},
+            </if>
+            <if test="effectCode != null" >
+                effect_code = #{effectCode,jdbcType=VARCHAR},
+            </if>
+            <if test="equipmentFactory != null" >
+                equipment_factory = #{equipmentFactory,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
 
+    <select id="findByCondition" parameterType="com.yankuang.equipment.equipment.model.ElPlanUse" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        from el_plan_use
+        where 1 = 1 AND is_del = 1
+        <if test="centerYear != null and centerYear != '' ">
+            AND center_year = #{centerYear}
+        </if>
+        <if test="centerMonth != null and centerMonth != '' ">
+            AND center_month = #{centerMonth}
+        </if>
+        <if test="planType != null and planType != '' ">
+            AND plan_type = #{planType}
+        </if>
+        <if test="status != null and status != '' ">
+            AND status = #{status}
+        </if>
+        <if test="positionId != null and positionId != '' ">
+            AND position_id = #{positionId}
+        </if>
+        <if test="equipmentType != null and equipmentType != '' ">
+            AND equipment_type = #{equipmentType}
+        </if>
+        <if test="bigTypeCode != null and bigTypeCode != '' ">
+            AND big_type_code = #{bigTypeCode}
+        </if>
+        <if test="middleTypeCode != null and middleTypeCode != '' ">
+            AND middle_type_code = #{middleTypeCode}
+        </if>
+        <if test="smallTypeCode != null and smallTypeCode != '' ">
+            AND small_type_code = #{smallTypeCode}
+        </if>
+        <if test="equipmentCode != null and equipmentCode != '' " >
+            AND equipment_code = #{equipmentCode}
+        </if>
+        <if test="equipmentName != null and equipmentName != '' " >
+            AND equipment_name = #{equipmentName}
+        </if>
+        <if test="effectCode != null and effectCode != '' " >
+            AND effect_code = #{effectCode}
+        </if>
+        <if test="equipmentModel != null and equipmentModel != '' " >
+            AND equipment_model = #{equipmentModel}
+        </if>
+        <if test="equipmentFactory != null and equipmentFactory != '' " >
+            AND equipment_factory = #{equipmentFactory}
+        </if>
+    </select>
     <select id="list" parameterType="map" resultMap="BaseResultMap">
         SELECT <include refid="Base_Column_List" />
         FROM el_plan_use

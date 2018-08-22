@@ -42,10 +42,23 @@ public class ElPlanUse implements Serializable {
 
     private Long version;
 
-    private String backup1;
-
     private String equipmentType;
 
     private Long positionId;
 
+    private String smallTypeCode;
+
+    private String middleTypeCode;
+
+    private String bigTypeCode;
+
+    private String equipmentCode;
+
+    private String equipmentName;
+
+    private String equipmentModel;
+
+    private String effectCode;
+
+    private String equipmentFactory;
 }

@@ -1,29 +1,22 @@
 package com.yankuang.equipment.authority.mapper;
 
 import com.yankuang.equipment.authority.model.RoleUser;
-import io.terminus.common.mysql.dao.MyBatisDao;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 
 @Repository
-public class RoleUserMapper extends MyBatisDao<RoleUser> {
+public interface RoleUserMapper {
 
-    public Boolean create(RoleUser roleUser){
-        return this.sqlSession.insert(this.sqlId("create"), roleUser) == 1;
-    }
+    Boolean create(RoleUser roleUser);
 
+    Boolean deleteByUserId(Long id);
 
-    public List<RoleUser> findByUserId(Long userId){
-        return this.sqlSession.selectList("findByUserId", userId);
-    }
+    Boolean deleteByRoleId(Long id);
 
-    public Long findUserId(Long userId){
-        return this.sqlSession.selectOne("findUserId",userId);
-    }
+    List<RoleUser> findByUserId(Long id);
 
-    public Boolean deleteByUserId(Long userId) {
-        return this.sqlSession.update(this.sqlId("deleteByUserId"), userId) == 1;
-    }
+    List<RoleUser> findByRoleId(Long id);
+
 }

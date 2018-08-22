@@ -6,6 +6,7 @@ import com.yankuang.equipment.equipment.model.SbTypeInfo;
 import com.yankuang.equipment.equipment.service.SbTypeInfoService;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.log4j.Logger;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,8 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/v1/sbtypeinfo")
 public class SbTypeInfoController {
+
+    public static final Logger logger = Logger.getLogger(SbTypeInfoController.class);
 
     @RpcConsumer
     SbTypeInfoService sbTypeInfoService;
@@ -27,6 +30,7 @@ public class SbTypeInfoController {
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"查询设备类型信息成功");
             responseMeta.setData(sbTypeInfo);
         }catch (Exception e){
+            logger.info("查询设备类型信息失败:"+ExceptionUtils.getStackTrace(e));
             responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"查询设备类型信息失败");
             responseMeta.setData(ExceptionUtils.getStackTrace(e));
         }
@@ -43,6 +47,7 @@ public class SbTypeInfoController {
             sbTypeInfoService.create(sbTypeInfo);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"创建设备类型信息成功");
         }catch (Exception e){
+            logger.info("创建设备类型信息失败:"+ExceptionUtils.getStackTrace(e));
             responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"创建设备类型信息失败");
             responseMeta.setData(ExceptionUtils.getStackTrace(e));
         }
@@ -59,6 +64,7 @@ public class SbTypeInfoController {
             sbTypeInfoService.update(sbTypeInfo);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"更新设备类型信息成功");
         }catch (Exception e){
+            logger.info("更新设备类型信息失败:"+ExceptionUtils.getStackTrace(e));
             responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"更新设备类型信息失败");
             responseMeta.setData(ExceptionUtils.getStackTrace(e));
         }
@@ -73,6 +79,7 @@ public class SbTypeInfoController {
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"查询设备主要技术参数成功");
             responseMeta.setData(typeInfo);
         }catch (Exception e){
+            logger.info("查询设备主要技术参数失败:"+ExceptionUtils.getStackTrace(e));
             responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"查询设备主要技术参数失败");
             responseMeta.setData(ExceptionUtils.getStackTrace(e));
         }

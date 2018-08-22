@@ -2,7 +2,6 @@ package com.yankuang.equipment.authority.service.impl;
 
 import com.yankuang.equipment.authority.mapper.DeptRoleMapper;
 import com.yankuang.equipment.authority.model.DeptRole;
-import com.yankuang.equipment.authority.mapper.DeptRoleMapper;
 import com.yankuang.equipment.authority.service.DeptRoleService;
 import io.terminus.boot.rpc.common.annotation.RpcProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +25,19 @@ public class DeptRoleServiceImpl implements DeptRoleService {
         return deptRoleMapper.selectByDeptIdAndRoleId(map);
     }
 
-    public boolean delById(Long id){
-        return deptRoleMapper.updatedel(id);
+    public Boolean deleteByDeptId(Long id) {
+        return deptRoleMapper.deleteByDeptId(id);
     }
 
+    public Boolean deleteByRoleId(Long id) {
+        return deptRoleMapper.deleteByRoleId(id);
+    }
 
-    public List<Long> findRoleId(Long deptId){
-        return deptRoleMapper.findRoleId(deptId);
+    public List<DeptRole> findByRoleId(Long id) {
+        return deptRoleMapper.findByRoleId(id);
+    }
+
+    public List<DeptRole> findByDeptId(Long id) {
+        return deptRoleMapper.findByDeptId(id);
     }
 }

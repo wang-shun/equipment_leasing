@@ -16,23 +16,23 @@ public class RoleUserServiceImpl implements RoleUserService {
     @Autowired
     RoleUserMapper roleUserMapper;
 
-    public boolean create(RoleUser roleAuthority) {
-        return roleUserMapper.create(roleAuthority);
+    public Boolean create(RoleUser roleUser) {
+        return roleUserMapper.create(roleUser);
     }
 
-    public List<RoleUser> findByUserId(Long userId) {
-        return roleUserMapper.findByUserId(userId);
+    public Boolean deleteByUserId(Long id) {
+        return roleUserMapper.deleteByUserId(id);
     }
 
-    public Long findUserId(Long userId){
-        return roleUserMapper.findUserId(userId);
+    public Boolean deleteByRoleId(Long id) {
+        return roleUserMapper.deleteByRoleId(id);
     }
 
-    public Boolean deleteByUserId(Long userId){
-        return roleUserMapper.deleteByUserId(userId);
+    public List<RoleUser> findByUserId(Long id) {
+        return roleUserMapper.findByUserId(id);
     }
 
-    public Boolean update(RoleUser roleUser){
-        return roleUserMapper.update(roleUser);
+    public List<RoleUser> findByRoleId(Long id) {
+        return roleUserMapper.findByRoleId(id);
     }
 }

@@ -3,21 +3,20 @@ package com.yankuang.equipment.equipment.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.Constants;
-import org.apache.log4j.Logger;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
-import org.springframework.util.StringUtils;
 import com.yankuang.equipment.common.util.UuidUtils;
-import com.yankuang.equipment.equipment.mapper.ElPlanItemMapper;
-import com.yankuang.equipment.equipment.mapper.ElPlanMapper;
-import com.yankuang.equipment.equipment.model.ElPlan;
-import com.yankuang.equipment.equipment.model.ElPlanItem;
+import com.yankuang.equipment.equipment.mapper.*;
+import com.yankuang.equipment.equipment.model.*;
 import com.yankuang.equipment.equipment.service.ElPlanService;
 import io.terminus.boot.rpc.common.annotation.RpcProvider;
 import io.terminus.common.model.Paging;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -26,18 +25,30 @@ import java.util.List;
  * Created by zhouy on 2018/7/30.
  */
 @Service
-@RpcProvider(version = "0.0.1")
+@RpcProvider
 @Transactional
 public class ElPlanServiceImpl implements ElPlanService {
 
     public static final Logger logger = Logger.getLogger(ElPlanServiceImpl.class);
 
     @Autowired
-    private ElPlanMapper elPlanMapper;
+    ElPlanMapper elPlanMapper;
     @Autowired
-    private ElPlanItemMapper elPlanItemMapper;
+    ElPlanItemMapper elPlanItemMapper;
+    @Autowired
+    ElPlanUseMapper elPlanUseMapper;
 
-    public Boolean create (ElPlan elPlan) {
+    public ElPlanItem findEPlanItemByItemId(String itemId) {
+        try {
+            ElPlanItem elPlanItem = elPlanItemMapper.findByItemId(itemId);
+            return elPlanItem;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Boolean create(ElPlan elPlan) {
         Boolean res = false;
         try {
             // 验证数据
@@ -70,17 +81,17 @@ public class ElPlanServiceImpl implements ElPlanService {
             if (!res) {
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             }
-            logger.info("create ElPlan:"+JSON.toJSONString(elPlan));
+            logger.info("create ElPlan:" + JSON.toJSONString(elPlan));
             return res;
         } catch (Exception e) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             e.printStackTrace();
-            logger.info("create ElPlan exception:"+JSON.toJSONString(elPlan));
+            logger.info("create ElPlan exception:" + JSON.toJSONString(elPlan));
             return res;
         }
     }
 
-    public ElPlan findElPlanById (String planId) {
+    public ElPlan findElPlanById(String planId) {
 
         try {
             ElPlan elPlan = elPlanMapper.findById(planId);
@@ -92,13 +103,13 @@ public class ElPlanServiceImpl implements ElPlanService {
             return elPlan;
         } catch (Exception e) {
             e.printStackTrace();
-            logger.info("planId: "+planId+";findElPlanById exception");
+            logger.info("planId: " + planId + ";findElPlanById exception");
             return null;
         }
 
     }
 
-    public Boolean update (ElPlan elPlan) {
+    public Boolean update(ElPlan elPlan) {
 
         Boolean res = false;
         try {
@@ -106,21 +117,25 @@ public class ElPlanServiceImpl implements ElPlanService {
             if (StringUtils.isEmpty(planId)) {
                 return res;
             }
-            elPlanMapper.deletePlanItemByPlanId(planId);
+            //elPlanMapper.deletePlanItemByPlanId(planId);
             elPlan.setPlanUpdateTime(new Date().getTime());
             boolean itemRes = true;
             if (elPlan.getElPlanItemList() != null) {
                 for (ElPlanItem elPlanItem : elPlan.getElPlanItemList()) {
-                    elPlanItem.setItemId(UuidUtils.newUuid());
-                    elPlanItem.setPlanId(elPlan.getPlanId());
-                    itemRes = elPlanItemMapper.saveByPrimaryKey(elPlanItem) > 0;
+                    String itemId = elPlanItem.getItemId();
+                    if (StringUtils.isEmpty(itemId)) {
+                        elPlanItem.setItemId(UuidUtils.newUuid());
+                        elPlanItem.setPlanId(elPlan.getPlanId());
+                        itemRes = elPlanItemMapper.saveByPrimaryKey(elPlanItem) > 0;
+                    }
+                    itemRes = elPlanItemMapper.updateById(elPlanItem) >= 0;
                     if (!itemRes) {
                         break;
                     }
                 }
             }
             //elPlanMapper.savePlanItemByPlanId(elPlan);
-            logger.info("update elPlan: "+JSON.toJSONString(elPlan));
+            logger.info("update elPlan: " + JSON.toJSONString(elPlan));
             res = elPlanMapper.updateByPrimarykey(elPlan) > 0 && itemRes;
             if (!res) {
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -129,7 +144,7 @@ public class ElPlanServiceImpl implements ElPlanService {
         } catch (Exception e) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             e.printStackTrace();
-            logger.info("update elPlan exception: "+JSON.toJSONString(elPlan));
+            logger.info("update elPlan exception: " + JSON.toJSONString(elPlan));
             return res;
         }
     }
@@ -142,12 +157,12 @@ public class ElPlanServiceImpl implements ElPlanService {
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 return false;
             }
-            logger.info("delete elPlan byID: "+planId);
+            logger.info("delete elPlan byID: " + planId);
             return true;
         } catch (Exception e) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             e.printStackTrace();
-            logger.info("delete elPlan exception: "+planId);
+            logger.info("delete elPlan exception: " + planId);
             return false;
         }
     }
@@ -182,30 +197,31 @@ public class ElPlanServiceImpl implements ElPlanService {
                 }
             }
 
-            logger.info("pageSize: "+pageSize+"; pageNum: "+pageNum+"; findElPlanByCondition: "+JSON.toJSONString(elPlan));
-            logger.info("findElPlanByCondition result: "+JSON.toJSONString(page));
+            logger.info("pageSize: " + pageSize + "; pageNum: " + pageNum + "; findElPlanByCondition: " + JSON.toJSONString(elPlan));
+            logger.info("findElPlanByCondition result: " + JSON.toJSONString(page));
             return page;
         } catch (Exception e) {
             e.printStackTrace();
-            logger.info("exception: pageSize: "+pageSize+"; pageNum: "+pageNum+"; findElPlanByCondition: "+JSON.toJSONString(elPlan));
+            logger.info("exception: pageSize: " + pageSize + "; pageNum: " + pageNum + "; findElPlanByCondition: " + JSON.toJSONString(elPlan));
             return null;
         }
     }
 
-    public boolean approve(ElPlan elPlan) {
+    public CommonResponse approve(ElPlan elPlan) {
 
         try {
-            logger.info("approve elPlan: "+JSON.toJSONString(elPlan));
+            logger.info("approve elPlan: " + JSON.toJSONString(elPlan));
+
             boolean res = elPlanMapper.updateByPrimarykey(elPlan) > 0;
             if (!res) {
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             }
-            return res;
+            return CommonResponse.ok();
         } catch (Exception e) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             e.printStackTrace();
-            logger.info("approve elPlan exception: "+JSON.toJSONString(elPlan));
-            return false;
+            logger.info("approve elPlan exception: " + JSON.toJSONString(elPlan));
+            return CommonResponse.errorException("服务异常");
         }
     }
 

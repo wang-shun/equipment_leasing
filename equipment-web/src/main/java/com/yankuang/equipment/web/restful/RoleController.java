@@ -1,6 +1,5 @@
 package com.yankuang.equipment.web.restful;
 
-import com.yankuang.equipment.authority.model.AuthorityGroupMapping;
 import com.yankuang.equipment.authority.model.DeptRole;
 import com.yankuang.equipment.authority.model.Role;
 import com.yankuang.equipment.authority.model.RoleAuthority;
@@ -35,19 +34,15 @@ public class RoleController {
     DeptRoleService deptRoleService;
 
     @RpcConsumer
-    AuthorityGroupMappingService authorityGroupMappingService;
-
-    @RpcConsumer
     RoleAuthorityService roleAuthorityService;
 
     /**
-     * @method 通过id查询
+     * 根据id查询角色.
      * @param id
      * @return
-     * @method 通过id查询
      */
     @GetMapping(value = "/{id}")
-    public CommonResponse getById(@PathVariable Long id) {
+    public CommonResponse findById(@PathVariable Long id) {
         if (StringUtils.isEmpty(id)){
             return CommonResponse.ok("角色id不能为空");
         }
@@ -55,12 +50,12 @@ public class RoleController {
     }
 
     /**
-     * @method 通过id更新
+     * @method 通过id更新角色.
      * @param jsonString
      * @return
      */
     @PutMapping
-    public CommonResponse updateById(@RequestBody String jsonString){
+    public CommonResponse update(@RequestBody String jsonString){
         if (StringUtils.isEmpty(jsonString)) {
             return CommonResponse.errorMsg("参数jsonString不能为空");
         }
@@ -77,12 +72,12 @@ public class RoleController {
     }
 
     /**
+     * 添加角色，关联部门.
      * @param jsonString
      * @return
-     * @method 添加角色，关联部门
      */
-    @PostMapping()
-    public CommonResponse add(@RequestBody String jsonString){
+    @PostMapping
+    public CommonResponse create(@RequestBody String jsonString){
 
         if (StringUtils.isEmpty(jsonString)) {
             return CommonResponse.errorMsg("参数jsonString不能为空");
@@ -148,34 +143,31 @@ public class RoleController {
     }
 
     /**
-     * @param jsonString
+     * 根据id删除角色.
+     * @param id
      * @return
-     * @method 删除
      */
-    @DeleteMapping("/dels")
-    public CommonResponse delete(@RequestBody String jsonString){
-        if(StringUtils.isEmpty(jsonString)){
-            return CommonResponse.errorMsg("参数不能为空");
+    @DeleteMapping("/{id}")
+    public CommonResponse delete(@PathVariable Long id){
+        if(StringUtils.isEmpty(id)){
+            return CommonResponse.errorMsg("参数id不能为空");
         }
-        List<Long> ids = JsonUtils.jsonToList(jsonString,Long.class);
-        for (Long id: ids){
-            boolean idB = roleService.delete(id);
-            if (idB == false){
-                return CommonResponse.errorTokenMsg("删除失败");
-            }
+        Boolean b = roleService.delete(id);
+        if (b) {
+            return CommonResponse.ok("删除成功");
         }
-        return  CommonResponse.ok();
+        return  CommonResponse.errorMsg("删除失败");
     }
 
     /**
+     * 角色分页查询.
      * @param page
      * @param size
      * @param searchInput
      * @return
-     * @method 分页查询
      */
     @GetMapping
-    public CommonResponse findListByPage(@RequestParam(value = "page", defaultValue = "1") Integer page,
+    public CommonResponse findByPage(@RequestParam(value = "page", defaultValue = "1") Integer page,
                           @RequestParam(value = "size", defaultValue = "20") Integer size,
                           @RequestParam String searchInput) {
         Map roleMap = new HashMap();
@@ -183,12 +175,9 @@ public class RoleController {
     }
 
     /**
-     * 角色授权，通过权限组groupIds，关联权限ids
-     * 1.遍历组groupIds
-     * 1.1 根据组id查询权限ids
-     * 1.2 遍历权限ids
-     * 1.2.1 根据权限id和角色id查重 角色和权限关联表
-     * 1.2.2 不存在就新增，存在不操作
+     * 角色授权.
+     * 权限ids
+     * 角色id
      */
     @PostMapping("/roleAuthority")
     public CommonResponse createRoleAuthority(@RequestBody String jsonString) {
@@ -198,51 +187,50 @@ public class RoleController {
         }
         RoleAuthorityDTO roleAuthorityDTO = JsonUtils.jsonToPojo(jsonString, RoleAuthorityDTO.class);
         Long roleId = roleAuthorityDTO.getRoleId();
-        List<Long> groupIds = roleAuthorityDTO.getGroupIds();
-        if (StringUtils.isEmpty(roleId) || StringUtils.isEmpty(groupIds)) {
-            return CommonResponse.errorMsg("参数roleId和groupIds不能为空");
+        if (StringUtils.isEmpty(roleId)) {
+            return CommonResponse.errorMsg("参数roleId不能为空");
         }
-        for (Long groupId : groupIds) {
-            // 根据组id查组和权限关联表，权限ids
-            List<AuthorityGroupMapping> authorityGroupMappings =
-                    authorityGroupMappingService.findByGroupId(groupId);
-            // 遍历ids,根据角色roleId查和权限id查重角色和权限关联表
-            for (AuthorityGroupMapping authorityGroupMapping : authorityGroupMappings) {
-                Long authorityId = authorityGroupMapping.getAuthorityId();
-                Map map = new HashMap();
-                map.put("roleId", roleId);
-                map.put("authorityId", authorityId);
-                RoleAuthority roleAuthority = roleAuthorityService.findByRoleIdAndAuthorityId(map);
-                if (StringUtils.isEmpty(roleAuthority)) {
-                    RoleAuthority roleAuthority1 = new RoleAuthority();
-                    roleAuthority1.setAuthorityId(authorityId);
-                    roleAuthority1.setRoleId(roleId);
-                    roleAuthority1.setCreateBy("admin");
-                    roleAuthority1.setUpdateBy("admin");
-                    Boolean b = roleAuthorityService.create(roleAuthority1);
-                    if (!b) {
-                        return CommonResponse.errorMsg("添加角色权限关联失败");
-                    }
+        List<Long> authorityIds = roleAuthorityDTO.getAuthorityIds();
+        if (StringUtils.isEmpty(authorityIds)) {
+            return CommonResponse.errorMsg("参数authorityIds不能为空");
+        }
+        // 遍历ids,根据角色roleId查和权限id查重角色和权限关联表
+        for (Long authorityId : authorityIds) {
+            Map map = new HashMap();
+            map.put("roleId", roleId);
+            map.put("authorityId", authorityId);
+            RoleAuthority roleAuthority = roleAuthorityService.findByRoleIdAndAuthorityId(map);
+            if (StringUtils.isEmpty(roleAuthority)) {
+                RoleAuthority roleAuthority1 = new RoleAuthority();
+                roleAuthority1.setAuthorityId(authorityId);
+                roleAuthority1.setRoleId(roleId);
+                roleAuthority1.setCreateBy("admin");
+                roleAuthority1.setUpdateBy("admin");
+                Boolean b = roleAuthorityService.create(roleAuthority1);
+                if (!b) {
+                    return CommonResponse.errorMsg("添加角色权限关联失败");
                 }
             }
         }
 
-        return CommonResponse.build(200, "添加成功", null);
+        return CommonResponse.build(200, "角色授权成功", null);
     }
 
     /**
      * @method
-     * 用户管理根据deptId获取角色列表
+     * 根据deptId获取角色列表
+     * 用户管理添加用户，角色下拉列表
      * @param deptId
      * @return
      */
-    @GetMapping("/findRoles")
-    public CommonResponse findRoles(@RequestParam Long deptId){
-        List<Role> deptList = new ArrayList<Role>();
-        List<Long> roleIds = deptRoleService.findRoleId(deptId);
-        for (Long roleId:roleIds){
-            deptList.add(roleService.findById(roleId));
+    @GetMapping("/byDeptId")
+    public CommonResponse findByDeptId(@RequestParam Long deptId){
+        List<Role> roles = new ArrayList<Role>();
+        List<DeptRole>  deptRoles = deptRoleService.findByDeptId(deptId);
+        for (DeptRole deptRole : deptRoles){
+            Role role = roleService.findById(deptRole.getRoleId());
+            roles.add(role);
         }
-        return CommonResponse.ok(deptList);
+        return CommonResponse.ok(roles);
     }
 }

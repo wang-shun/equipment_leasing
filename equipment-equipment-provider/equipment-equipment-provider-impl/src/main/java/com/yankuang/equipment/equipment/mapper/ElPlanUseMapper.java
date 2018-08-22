@@ -17,4 +17,6 @@ public interface ElPlanUseMapper {
     int update(ElPlanUse record);
 
     List<ElPlanUse> list(Map elPlanUseMap);
+
+    List<ElPlanUse> findByCondition(ElPlanUse elPlanUse);
 }

@@ -4,7 +4,9 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class SbType implements Serializable {
     private Long id;
@@ -36,6 +38,8 @@ public class SbType implements Serializable {
     private Date updateAt;
 
     private Long version;
+
+    private List<SbType> children = new ArrayList<SbType>();
 
     public Long getId() {
         return id;
@@ -139,5 +143,13 @@ public class SbType implements Serializable {
 
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    public List<SbType> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<SbType> children) {
+        this.children = children;
     }
 }
