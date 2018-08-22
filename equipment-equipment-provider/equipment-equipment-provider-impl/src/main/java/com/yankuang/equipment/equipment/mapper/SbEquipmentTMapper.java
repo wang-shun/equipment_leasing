@@ -22,5 +22,4 @@ public interface SbEquipmentTMapper {
     List<SbEquipmentT> list(SbEquipmentT sbEquipmentT);
 
     int deletes(@Param("ids") List<Long> ids);
-
 }

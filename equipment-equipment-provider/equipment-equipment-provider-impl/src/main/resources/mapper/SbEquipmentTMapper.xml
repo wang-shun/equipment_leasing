@@ -205,12 +205,13 @@
       <if test="sbmodelCode != null" >
         AND t.sbmodel_code = #{sbmodelCode}
       </if>
-      <if test="ware != null" >
-        AND t.ware = #{ware}
-      </if>
-      <if test="mainPara != null" >
-        AND t.main_para = #{mainPara}
-      </if>
+        <if test="ware != null" >
+            AND t.ware = #{ware}
+        </if>
+        <if test="mainPara != null" >
+            AND t.main_para = #{mainPara}
+        </if>
     </where>
   </select>
+
 </mapper>

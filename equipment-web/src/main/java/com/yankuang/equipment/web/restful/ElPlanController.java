@@ -339,11 +339,8 @@ public class ElPlanController {
             }
 
             // 保存数据
-            boolean res = elPlanService.approve(elPlan);
-            if (!res) {
-                return CommonResponse.errorException("操作失败");
-            }
-            return CommonResponse.ok();
+            CommonResponse result = elPlanService.approve(elPlan);
+            return result;
         } catch (Exception e) {
             e.printStackTrace();
             return CommonResponse.errorException("服务异常");
