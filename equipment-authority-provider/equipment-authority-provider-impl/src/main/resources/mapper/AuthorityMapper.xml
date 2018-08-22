@@ -169,7 +169,7 @@
                 AND id = #{id}
             </if>
             AND status != 99
-        order by create_at desc LIMIT #{offset}, #{limit}
+        order by create_at desc
     </select>
 
 

@@ -1,5 +1,6 @@
 package com.yankuang.equipment.web.restful;
 
+import com.github.pagehelper.PageInfo;
 import com.yankuang.equipment.authority.model.Authority;
 import com.yankuang.equipment.authority.service.AuthorityService;
 import com.yankuang.equipment.common.util.CommonResponse;
@@ -14,7 +15,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(maxAge = 3600)
 @RestController
@@ -44,6 +47,7 @@ public class AuthorityController {
         if (StringUtils.isEmpty(jsonString)) {
             return CommonResponse.errorTokenMsg("参数不能为空");
         }
+        //TODO 可能使用DTO
         Authority authority = JsonUtils.jsonToPojo(jsonString, Authority.class);
         if (StringUtils.isEmpty(authority.getId())) {
             return CommonResponse.errorTokenMsg("权限id不能为空");
@@ -161,6 +165,22 @@ public class AuthorityController {
         TreeUtils treeUtils = new TreeUtils();
         List<Object> list = treeUtils.menuList(trees);
         return CommonResponse.ok(list);
+    }
+
+    /**
+     * 权限分页查询.
+     * @param page
+     * @param size
+     * @param searchInput
+     * @return
+     */
+    @GetMapping
+    public CommonResponse findByPage(@RequestParam(value = "page", defaultValue = "1") Integer page,
+                                     @RequestParam(value = "size", defaultValue = "20") Integer size,
+                                     @RequestParam(value = "searchInput", defaultValue = "") String searchInput){
+        Map map = new HashMap();
+        PageInfo<Authority> authoritys = authorityService.findByPage(page, size, map);
+        return CommonResponse.ok(authoritys);
     }
 
 }
