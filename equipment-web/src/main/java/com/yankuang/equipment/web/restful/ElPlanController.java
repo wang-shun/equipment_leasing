@@ -2,15 +2,21 @@ package com.yankuang.equipment.web.restful;
 
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.Constants;
-import org.springframework.util.StringUtils;
 import com.yankuang.equipment.equipment.model.ElPlan;
+import com.yankuang.equipment.equipment.model.ElPlanUse;
 import com.yankuang.equipment.equipment.service.ElPlanService;
+import com.yankuang.equipment.equipment.service.ElPlanUseService;
+import com.yankuang.equipment.web.dto.ElPlanUseDTO;
+import com.yankuang.equipment.web.service.ElPlanPlusService;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import io.terminus.common.model.Paging;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by zhouy on 2018/7/31.
@@ -20,15 +26,20 @@ import java.util.Date;
 @RequestMapping("/v1/elplan")
 public class ElPlanController {
 
-    @RpcConsumer(version = "0.0.1", check = "false")
-    private ElPlanService elPlanService;
+    @RpcConsumer
+    ElPlanService elPlanService;
+
+    @Autowired
+    ElPlanPlusService elPlanPlusService;
+
+    @RpcConsumer
+    ElPlanUseService elPlanUseService;
 
     /**
      * 创建通用设备月度租赁计划
      * @param elPlan
      * @return
      */
-    @CrossOrigin(maxAge = 3600)
     @ResponseBody
     @RequestMapping(value = "/{equipmentType}/{planType}", method = RequestMethod.POST)
     public CommonResponse create (@PathVariable(value = "equipmentType") String equipmentType,
@@ -115,7 +126,6 @@ public class ElPlanController {
      * @param elPlan
      * @return
      */
-    @CrossOrigin(maxAge = 3600)
     @ResponseBody
     @RequestMapping(value = "", method = RequestMethod.PUT)
     public CommonResponse update (@RequestBody ElPlan elPlan) {
@@ -156,7 +166,6 @@ public class ElPlanController {
      * @param planId
      * @return
      */
-    @CrossOrigin(maxAge = 3600)
     @ResponseBody
     @RequestMapping(value = "/{planId}", method = RequestMethod.DELETE)
     public CommonResponse delete(@PathVariable(value = "planId") String planId) {
@@ -187,7 +196,6 @@ public class ElPlanController {
      * @param planId
      * @return
      */
-    @CrossOrigin(maxAge = 3600)
     @ResponseBody
     @RequestMapping(value = "/{planId}",  method = RequestMethod.GET)
     public CommonResponse getElPlan (@PathVariable(value = "planId") String planId) {
@@ -216,10 +224,9 @@ public class ElPlanController {
      * @param planType
      * @return
      */
-    @CrossOrigin(maxAge = 3600)
     @ResponseBody
     @RequestMapping(value = "/list/{equipmentType}/{planType}", method = RequestMethod.POST)
-    public CommonResponse getElPlans(ElPlan elPlan, @RequestParam(value = "pageSize", defaultValue = "30") Integer pageSize,
+    public CommonResponse getElPlans(@RequestBody ElPlan elPlan, @RequestParam(value = "pageSize", defaultValue = "30") Integer pageSize,
                                      @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                      @PathVariable(value = "equipmentType") String equipmentType,
                                      @PathVariable(value = "planType") String planType) {
@@ -281,7 +288,7 @@ public class ElPlanController {
     @ResponseBody
     @RequestMapping(value = "/approve/{approvalType}", method = RequestMethod.POST)
     public CommonResponse approval(@PathVariable(value = "approvalType") String approvalType,
-                                   ElPlan elPlan) {
+                                   @RequestBody ElPlan elPlan) {
 
         try {
             // 数据验证
@@ -294,6 +301,9 @@ public class ElPlanController {
 
             // 填充数据
             ElPlan plan = elPlanService.findElPlanById(elPlan.getPlanId());
+            if (plan.getElPlanItemList() != null) {
+                elPlan.setElPlanItemList(plan.getElPlanItemList());
+            }
             if ("submit".equals(approvalType)) {
                 if (Constants.PLANSTATUS_COMMITED.equals(plan.getPlanStatus())
                         || Constants.PLANSTATUS_PASSED.equals(plan.getPlanStatus())
@@ -339,11 +349,48 @@ public class ElPlanController {
             }
 
             // 保存数据
-            CommonResponse result = elPlanService.approve(elPlan);
+            CommonResponse result = elPlanPlusService.approve(elPlan);
             return result;
         } catch (Exception e) {
             e.printStackTrace();
             return CommonResponse.errorException("服务异常");
         }
     }
+
+    /**
+     * 查询租赁计划备用设备
+     * @param elPlanUse
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/findElPlanUse", method = RequestMethod.POST)
+    public CommonResponse findElPlanUseList(@RequestBody ElPlanUse elPlanUse) {
+        try {
+
+            if (StringUtils.isEmpty(elPlanUse.getEquipmentType())) {
+                return CommonResponse.errorMsg("设备类型不得为空");
+            }
+            if (StringUtils.isEmpty(elPlanUse.getCenterYear())) {
+                return CommonResponse.errorMsg("需求年度不得为空");
+            }
+            if ("1".equals(elPlanUse.getEquipmentType())) {
+                if (StringUtils.isEmpty(elPlanUse.getCenterMonth())) {
+                    return CommonResponse.errorException("需求月度不得为空");
+                }
+            }
+            if (StringUtils.isEmpty(elPlanUse.getPositionId())) {
+                return CommonResponse.errorException("使用单位不得为空");
+            }
+
+            List<ElPlanUseDTO> list = elPlanPlusService.findElPlanUseList(elPlanUse);
+            if (list == null || list.size() == 0) {
+                return CommonResponse.errorMsg("查询结果为空");
+            }
+            return CommonResponse.ok(list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return CommonResponse.errorMsg("服务异常");
+        }
+    }
+
 }

@@ -15,7 +15,7 @@ public class ElPlanItem implements Serializable {
 
     private String planId;
 
-    private String backup1;
+    private String positionId;
 
     private String equipmentName;
 
@@ -43,7 +43,7 @@ public class ElPlanItem implements Serializable {
     private String equipmentParamName;
 
     @NotNull(message = "主要技术参数值不得为空")
-    private Integer equipmentParamValue;
+    private String equipmentParamValue;
 
     private String itemRemarks;
 
@@ -54,5 +54,7 @@ public class ElPlanItem implements Serializable {
     private String smallTypeCode;
 
     private String specificationCode;
+
+    private String effectCode;
 
 }

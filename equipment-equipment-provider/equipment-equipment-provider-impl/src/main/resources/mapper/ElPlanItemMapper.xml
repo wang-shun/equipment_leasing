@@ -4,17 +4,18 @@
   <resultMap id="BaseResultMap" type="com.yankuang.equipment.equipment.model.ElPlanItem" >
     <id column="item_id" property="itemId" jdbcType="VARCHAR" />
     <result column="plan_id" property="planId" jdbcType="VARCHAR" />
-    <result column="backup1" property="backup1" jdbcType="VARCHAR" />
+    <result column="position_id" property="positionId" jdbcType="BIGINT" />
     <result column="equipment_name" property="equipmentName" jdbcType="VARCHAR" />
     <result column="equipment_num" property="equipmentNum" jdbcType="INTEGER" />
     <result column="item_position" property="itemPosition" jdbcType="VARCHAR" />
     <result column="item_effect" property="itemEffect" jdbcType="VARCHAR" />
+    <result column="effect_code" property="effectCode" jdbcType="VARCHAR" />
     <result column="equipment_big_type" property="equipmentBigType" jdbcType="VARCHAR" />
     <result column="equipment_middle_type" property="equipmentMiddleType" jdbcType="VARCHAR" />
     <result column="equipment_small_type" property="equipmentSmallType" jdbcType="VARCHAR" />
     <result column="equipment_specification" property="equipmentSpecification" jdbcType="VARCHAR" />
     <result column="equipment_param_name" property="equipmentParamName" jdbcType="VARCHAR" />
-    <result column="equipment_param_value" property="equipmentParamValue" jdbcType="INTEGER" />
+    <result column="equipment_param_value" property="equipmentParamValue" jdbcType="VARCHAR" />
     <result column="item_remarks" property="itemRemarks" jdbcType="VARCHAR" />
       <result column="big_type_code" property="bigTypeCode" jdbcType="VARCHAR" />
       <result column="middle_type_code" property="middleTypeCode" jdbcType="VARCHAR" />
@@ -31,7 +32,7 @@
   </sql>
 
   <sql id="cols_exclude_id">
-    plan_id, backup1, equipment_name, equipment_num, item_position, item_effect,
+    plan_id, position_id, equipment_name, equipment_num, item_position, item_effect,effect_code,
         equipment_big_type, equipment_middle_type, equipment_small_type, equipment_specification,
         equipment_param_name, equipment_param_value, item_remarks,big_type_code,middle_type_code,small_type_code,specification_code
   </sql>
@@ -39,11 +40,12 @@
   <sql id="vals">
     #{itemId},
     #{planId},
-    #{backup1},
+    #{positionId},
     #{equipmentName},
     #{equipmentNum},
     #{itemPosition},
     #{itemEffect},
+    #{effectCode},
     #{equipmentBigType},
     #{equipmentMiddleType},
     #{equipmentSmallType},
@@ -65,8 +67,8 @@
     <if test="planId != null" >
       AND plan_id = #{planId}
     </if>
-    <if test="backup1 != null" >
-      AND backup1 = #{backup1}
+    <if test="positionId != null" >
+      AND position_id = #{positionId}
     </if>
     <if test="equipmentName != null" >
       AND equipment_name = #{equipmentName}
@@ -79,6 +81,9 @@
     </if>
     <if test="itemEffect != null" >
       AND item_effect = #{itemEffect}
+    </if>
+    <if test="effectCode != null" >
+      AND effect_code = #{effectCode}
     </if>
     <if test="equipmentBigType != null" >
       AND equipment_big_type = #{equipmentBigType}
@@ -117,7 +122,7 @@
   </sql>
 
   <sql id="Base_Column_List" >
-    item_id, plan_id, backup1, equipment_name, equipment_num, item_position, item_effect,
+    item_id, plan_id, position_id, equipment_name, equipment_num, item_position, item_effect,effect_code,
     equipment_big_type, equipment_middle_type, equipment_small_type, equipment_specification,
     equipment_param_name, equipment_param_value, item_remarks,big_type_code,middle_type_code,small_type_code,specification_code
   </sql>
@@ -131,8 +136,8 @@
       <if test="planId != null" >
         plan_id,
       </if>
-      <if test="backup1 != null" >
-        backup1,
+      <if test="positionId != null" >
+        position_id,
       </if>
       <if test="equipmentName != null" >
         equipment_name,
@@ -145,6 +150,9 @@
       </if>
       <if test="itemEffect != null" >
         item_effect,
+      </if>
+      <if test="effectCode != null" >
+        effect_code,
       </if>
       <if test="equipmentBigType != null" >
         equipment_big_type,
@@ -187,8 +195,8 @@
       <if test="planId != null" >
         #{planId,jdbcType=VARCHAR},
       </if>
-      <if test="backup1 != null" >
-        #{backup1,jdbcType=VARCHAR},
+      <if test="positionId != null" >
+        #{positionId,jdbcType=VARCHAR},
       </if>
       <if test="equipmentName != null" >
         #{equipmentName,jdbcType=VARCHAR},
@@ -201,6 +209,9 @@
       </if>
       <if test="itemEffect != null" >
         #{itemEffect,jdbcType=VARCHAR},
+      </if>
+      <if test="effectCode != null" >
+        #{effectCode,jdbcType=VARCHAR},
       </if>
       <if test="equipmentBigType != null" >
         #{equipmentBigType,jdbcType=VARCHAR},
@@ -218,7 +229,7 @@
         #{equipmentParamName,jdbcType=VARCHAR},
       </if>
       <if test="equipmentParamValue != null" >
-        #{equipmentParamValue,jdbcType=INTEGER},
+        #{equipmentParamValue,jdbcType=VARCHAR},
       </if>
       <if test="itemRemarks != null" >
         #{itemRemarks,jdbcType=VARCHAR},
@@ -242,4 +253,68 @@
     SELECT <include refid="cols_all"/> FROM <include refid="tb"/>
     WHERE plan_id = #{planId}
   </select>
+  <select id="findByItemId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT <include refid="cols_all"/> FROM <include refid="tb"/>
+    WHERE item_id = #{itemId}
+  </select>
+    <update id="updateById" parameterType="com.yankuang.equipment.equipment.model.ElPlanItem" >
+        update el_plan_item
+        <set >
+            <if test="planId != null" >
+                plan_id = #{planId,jdbcType=VARCHAR},
+            </if>
+            <if test="positionId != null" >
+                position_id = #{positionId,jdbcType=BIGINT},
+            </if>
+            <if test="equipmentName != null" >
+                equipment_name = #{equipmentName,jdbcType=VARCHAR},
+            </if>
+            <if test="equipmentNum != null" >
+                equipment_num = #{equipmentNum,jdbcType=INTEGER},
+            </if>
+            <if test="itemPosition != null" >
+                item_position = #{itemPosition,jdbcType=VARCHAR},
+            </if>
+            <if test="itemEffect != null" >
+                item_effect = #{itemEffect,jdbcType=VARCHAR},
+            </if>
+            <if test="equipmentBigType != null" >
+                equipment_big_type = #{equipmentBigType,jdbcType=VARCHAR},
+            </if>
+            <if test="equipmentMiddleType != null" >
+                equipment_middle_type = #{equipmentMiddleType,jdbcType=VARCHAR},
+            </if>
+            <if test="equipmentSmallType != null" >
+                equipment_small_type = #{equipmentSmallType,jdbcType=VARCHAR},
+            </if>
+            <if test="equipmentSpecification != null" >
+                equipment_specification = #{equipmentSpecification,jdbcType=VARCHAR},
+            </if>
+            <if test="equipmentParamName != null" >
+                equipment_param_name = #{equipmentParamName,jdbcType=VARCHAR},
+            </if>
+            <if test="equipmentParamValue != null" >
+                equipment_param_value = #{equipmentParamValue,jdbcType=VARCHAR},
+            </if>
+            <if test="itemRemarks != null" >
+                item_remarks = #{itemRemarks,jdbcType=VARCHAR},
+            </if>
+            <if test="bigTypeCode != null" >
+                big_type_code = #{bigTypeCode,jdbcType=VARCHAR},
+            </if>
+            <if test="middleTypeCode != null" >
+                middle_type_code = #{middleTypeCode,jdbcType=VARCHAR},
+            </if>
+            <if test="smallTypeCode != null" >
+                small_type_code = #{smallTypeCode,jdbcType=VARCHAR},
+            </if>
+            <if test="specificationCode != null" >
+                specification_code = #{specificationCode,jdbcType=VARCHAR},
+            </if>
+            <if test="effectCode != null" >
+                effect_code = #{effectCode,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where item_id = #{itemId,jdbcType=VARCHAR}
+    </update>
 </mapper>
