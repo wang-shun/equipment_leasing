@@ -8,6 +8,7 @@ import com.yankuang.equipment.equipment.model.SbEquipmentZ;
 import com.yankuang.equipment.equipment.service.SbEquipmentZService;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.log4j.Logger;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,8 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/v1/sbequipmentz")
 public class SbEquipmentZController {
+
+    public static final Logger logger = Logger.getLogger(SbModelController.class);
 
     @RpcConsumer
     SbEquipmentZService sbEquipmentZService;
@@ -38,6 +41,7 @@ public class SbEquipmentZController {
             sbEquipmentZService.create(sbEquipmentZ);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"创建综机设备成功");
         }catch (Exception e){
+            logger.info("创建综机设备失败:"+ExceptionUtils.getStackTrace(e));
             responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"创建综机设备失败");
             responseMeta.setData(ExceptionUtils.getStackTrace(e));
         }
@@ -54,6 +58,7 @@ public class SbEquipmentZController {
             sbEquipmentZService.update(sbEquipmentZ);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"更新综机设备成功");
         }catch (Exception e){
+            logger.info("更新综机设备失败:"+ExceptionUtils.getStackTrace(e));
             responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"更新综机设备失败");
             responseMeta.setData(ExceptionUtils.getStackTrace(e));
         }
@@ -68,6 +73,7 @@ public class SbEquipmentZController {
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"编辑综机设备信息成功");
             responseMeta.setData(sbEquipmentZ);
         }catch (Exception e){
+            logger.info("编辑综机设备失败:"+ExceptionUtils.getStackTrace(e));
             responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"编辑综机设备信息失败");
             responseMeta.setData(ExceptionUtils.getStackTrace(e));
         }
@@ -81,6 +87,7 @@ public class SbEquipmentZController {
             sbEquipmentZService.deleteById(id);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"删除综机设备信息成功");
         }catch (Exception e){
+            logger.info("删除综机设备失败:"+ExceptionUtils.getStackTrace(e));
             responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"删除综机设备信息失败");
             responseMeta.setData(ExceptionUtils.getStackTrace(e));
         }
@@ -95,6 +102,7 @@ public class SbEquipmentZController {
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"查询综机设备列表成功");
             responseMeta.setData(pageInfo);
         }catch (Exception e){
+            logger.info("查询综机设备失败:"+ExceptionUtils.getStackTrace(e));
             responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"查询综机设备列表失败");
             responseMeta.setData(ExceptionUtils.getStackTrace(e));
         }
@@ -113,6 +121,7 @@ public class SbEquipmentZController {
             sbEquipmentZService.deletes(ids);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"删除综机设备信息成功");
         }catch (Exception e){
+            logger.info("删除综机设备失败:"+ExceptionUtils.getStackTrace(e));
             responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"删除综机设备信息失败");
             responseMeta.setData(ExceptionUtils.getStackTrace(e));
         }

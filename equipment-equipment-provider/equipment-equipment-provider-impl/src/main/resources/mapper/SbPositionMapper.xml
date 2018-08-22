@@ -82,19 +82,19 @@
     left join sys_config t2 on t.state=t2.code and t2.type='sb_position_type' and t2.status = '1'
     <where>
       1=1 and t.status = '1'
-      <if test="code!=null">
+      <if test="code!=null and code!=''">
         and t.code like '%' #{code,jdbcType=VARCHAR} '%'
       </if>
-      <if test="name!=null">
+      <if test="name!=null and name!=''">
         and t.name like '%' #{name,jdbcType=VARCHAR} '%'
       </if>
-      <if test="type!=null">
+      <if test="type!=null and type!=''">
         and t.type = #{type,jdbcType=VARCHAR}
       </if>
-      <if test="org!=null">
+      <if test="org!=null and org!=''">
         and t.org = #{org,jdbcType=VARCHAR}
       </if>
-      <if test="position!=null">
+      <if test="position!=null and position!=''">
         and t.position = #{position,jdbcType=VARCHAR}
       </if>
     </where>

@@ -1,7 +1,6 @@
 package com.yankuang.equipment.web.restful;
 
 import com.github.pagehelper.PageInfo;
-import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.Constants;
 import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.common.util.ResponseMeta;
@@ -9,6 +8,7 @@ import com.yankuang.equipment.equipment.model.SbPosition;
 import com.yankuang.equipment.equipment.service.SbPositionService;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.log4j.Logger;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +20,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/sbposition")
 public class SbPositionController {
+
+    public static final Logger logger = Logger.getLogger(SbPositionController.class);
 
     @RpcConsumer
     SbPositionService sbPositionService;
@@ -34,6 +36,7 @@ public class SbPositionController {
             sbPositionService.create(sbPosition);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"创建设备位置成功");
         }catch (Exception e){
+            logger.info("创建设备位置失败:"+ExceptionUtils.getStackTrace(e));
             responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"创建设备位置失败");
             responseMeta.setData(ExceptionUtils.getStackTrace(e));
         }
@@ -50,6 +53,7 @@ public class SbPositionController {
             sbPositionService.update(sbPosition);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"更新设备位置成功");
         }catch (Exception e){
+            logger.info("更新设备位置失败:"+ExceptionUtils.getStackTrace(e));
             responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"更新设备位置失败");
             responseMeta.setData(ExceptionUtils.getStackTrace(e));
         }
@@ -64,6 +68,7 @@ public class SbPositionController {
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"查询设备位置信息成功!");
             responseMeta.setData(sbPosition);
         }catch (Exception e){
+            logger.info("查询设备位置失败:"+ExceptionUtils.getStackTrace(e));
             responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"查询设备位置信息失败!");
             responseMeta.setData(ExceptionUtils.getStackTrace(e));
         }
@@ -77,6 +82,7 @@ public class SbPositionController {
             sbPositionService.deleteById(id);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"删除设备位置信息成功");
         }catch (Exception e){
+            logger.info("删除设备位置失败:"+ExceptionUtils.getStackTrace(e));
             responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"删除设备位置信息失败");
             responseMeta.setData(ExceptionUtils.getStackTrace(e));
         }
@@ -91,6 +97,7 @@ public class SbPositionController {
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"查询设备功能位置列表成功");
             responseMeta.setData(list);
         }catch (Exception e){
+            logger.info("查询设备功能位置列表失败:"+ExceptionUtils.getStackTrace(e));
             responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"查询设备功能位置列表失败");
             responseMeta.setData(ExceptionUtils.getStackTrace(e));
         }
@@ -109,6 +116,7 @@ public class SbPositionController {
             sbPositionService.deletes(ids);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"删除设备功能位置信息成功");
         }catch (Exception e){
+            logger.info("删除设备功能位置列表失败:"+ExceptionUtils.getStackTrace(e));
             responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"删除设备功能位置信息失败");
             responseMeta.setData(ExceptionUtils.getStackTrace(e));
         }
