@@ -109,7 +109,7 @@
     </delete>
 
     <select id="list" parameterType="map" resultMap="UserMap">
-        SELECT <include refid="cols_exclude_id_password"/>
+        SELECT <include refid="cols_exclude_password"/>
         FROM el_user
         <where>
             1 = 1
