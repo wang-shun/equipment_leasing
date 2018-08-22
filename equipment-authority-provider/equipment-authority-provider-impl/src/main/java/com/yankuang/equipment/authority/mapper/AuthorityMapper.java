@@ -1,7 +1,6 @@
 package com.yankuang.equipment.authority.mapper;
 
 import com.yankuang.equipment.authority.model.Authority;
-import io.terminus.common.mysql.dao.MyBatisDao;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -24,4 +23,5 @@ public interface AuthorityMapper {
 
     boolean delete(Long id);
 
+    boolean deletes(List<Long> ids);
 }

@@ -6,11 +6,14 @@ import java.util.List;
 
 public interface RoleUserService {
 
-    boolean create(RoleUser roleAuthority);
+    Boolean create(RoleUser roleUser);
 
-    List<RoleUser> findByUserId(Long userId);
+    Boolean deleteByUserId(Long id);
 
-    Long findUserId(Long userId);
-    Boolean deleteByUserId(Long userId);
-    Boolean update(RoleUser roleUser);
+    Boolean deleteByRoleId(Long id);
+
+    List<RoleUser> findByUserId(Long id);
+
+    List<RoleUser> findByRoleId(Long id);
+
 }

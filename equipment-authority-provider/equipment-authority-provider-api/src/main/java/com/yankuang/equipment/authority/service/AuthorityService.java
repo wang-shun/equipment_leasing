@@ -22,4 +22,6 @@ public interface AuthorityService {
     boolean create(Authority authority);
 
     boolean delete(Long id);
+
+    boolean deletes(List<Long> ids);
 }

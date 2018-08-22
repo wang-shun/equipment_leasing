@@ -98,6 +98,18 @@
         WHERE id = #{id}
     </update>
 
+    <update id="deletes" parameterType="java.util.List">
+        UPDATE yankuang_equipment.el_authority
+        <set>
+            status = 99,
+            update_at = unix_timestamp(now())
+        </set>
+        WHERE id in
+        <foreach collection="list" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </update>
+
     <select id="findByName" parameterType="String" resultMap="BaseResultMap" >
         SELECT <include refid="Base_Column_List" />
         FROM yankuang_equipment.el_authority
@@ -109,6 +121,9 @@
         SELECT <include refid="Base_Column_List" />
         FROM yankuang_equipment.el_authority
         WHERE status != 99
+        <if test="type != null" >
+            AND type = #{type}
+        </if>
         ORDER BY create_at DESC
     </select>
 

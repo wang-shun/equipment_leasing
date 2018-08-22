@@ -1,14 +1,10 @@
 package com.yankuang.equipment.web.restful;
 
 import com.yankuang.equipment.authority.model.Authority;
-import com.yankuang.equipment.authority.model.AuthorityGroup;
-import com.yankuang.equipment.authority.model.AuthorityGroupMapping;
-import com.yankuang.equipment.authority.service.AuthorityGroupMappingService;
-import com.yankuang.equipment.authority.service.AuthorityGroupService;
 import com.yankuang.equipment.authority.service.AuthorityService;
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.JsonUtils;
-import com.yankuang.equipment.web.dto.AuthorityGroupDTO;
+import com.yankuang.equipment.web.dto.IdsDTO;
 import com.yankuang.equipment.web.dto.TreeDTO;
 import com.yankuang.equipment.web.util.CodeUtil;
 import com.yankuang.equipment.web.util.TreeUtils;
@@ -17,32 +13,18 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-/**
- * @author boms
- * @createtime 2018/8/2
- */
 @CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("/v1/acls")
 public class AuthorityController {
     @RpcConsumer
     AuthorityService authorityService;
-    @RpcConsumer
-    AuthorityGroupService authorityGroupService;
-    @RpcConsumer
-    AuthorityGroupMappingService authorityGroupMappingService;
 
     /**
-     * @author boms
-     * @method 通过id查询
+     * 通过id查询.
      * @param id
      * @return
      */
@@ -52,15 +34,14 @@ public class AuthorityController {
     }
 
     /**
-     * @author boms
-     * @method 修改
+     * 根据id修改.
      * @param jsonString
      * @return
      */
     @PutMapping
-    public CommonResponse updateById(@RequestBody String jsonString){
+    public CommonResponse update(@RequestBody String jsonString) {
 
-        if (StringUtils.isEmpty(jsonString)){
+        if (StringUtils.isEmpty(jsonString)) {
             return CommonResponse.errorTokenMsg("参数不能为空");
         }
         Authority authority = JsonUtils.jsonToPojo(jsonString, Authority.class);
@@ -68,123 +49,110 @@ public class AuthorityController {
             return CommonResponse.errorTokenMsg("权限id不能为空");
         }
         authority.setUpdateBy("admin");
-        return CommonResponse.ok(authorityService.update(authority));
+        Boolean b = authorityService.update(authority);
+        if (b) {
+            return CommonResponse.build(200, "更新成功", null);
+        }
+        return CommonResponse.errorMsg("更新失败");
     }
 
     /**
+     *  添加权限.
+     *  type=1 添加权限菜单
+     *  rype=2 添加权限按钮
      * @param jsonString
      * @return
-     * @method 添加权限组
      */
     @PostMapping
     @Transactional
-    CommonResponse create(@RequestBody String jsonString) {
+    public CommonResponse create(@RequestBody String jsonString) {
         if (jsonString == null || "".equals(jsonString)) {
             return CommonResponse.errorMsg("参数不能为空");
         }
-        AuthorityGroupDTO authorityGroupDTO = JsonUtils.jsonToPojo(jsonString, AuthorityGroupDTO.class);
-        String groupName = authorityGroupDTO.getName();
-        if (StringUtils.isEmpty(groupName)) {
+        Authority authority = JsonUtils.jsonToPojo(jsonString, Authority.class);
+        String name = authority.getName();
+        if (StringUtils.isEmpty(name)) {
             return CommonResponse.errorTokenMsg("权限名称不能为空");
         }
-        List<Long> ids = authorityGroupDTO.getIds();
-        // 根据权限组名称查重
-        AuthorityGroup authorityGroup = authorityGroupService.findByName(groupName);
-        // 不存在 ，添加权限组，查询权限组id，查重，添加权限组id和权限idLists关联表(遍历)
-        if (StringUtils.isEmpty(authorityGroup)) {
-            AuthorityGroup authorityGroup1 = new AuthorityGroup();
-            authorityGroup1.setCode(CodeUtil.getCode());
-            authorityGroup1.setName(groupName);
-            authorityGroup1.setCreateBy("admin");
-            authorityGroup1.setUpdateBy("admin");
-            //添加组
-            Boolean b = authorityGroupService.create(authorityGroup1);
-            if (b) {
-                Long groupId = authorityGroupService.findByName(groupName).getId();
-                Boolean flag = this.checkMapping(ids, groupId);
-                if (!flag){
-                    return CommonResponse.errorMsg("权限组和权限关联表添加失败");
-                }
-                return CommonResponse.build(200, "权限添加成功", null);
+        Long type = authority.getType();
+        if (StringUtils.isEmpty(type)) {
+            return CommonResponse.errorTokenMsg("权限type类型不能为空");
+        }
+        Long pId = authority.getpId();
+        if (StringUtils.isEmpty(pId)) {
+            return CommonResponse.errorTokenMsg("权限pId不能为空");
+        }
+        // 根据权限名称查重
+        Authority au = authorityService.findByName(name);
+        // 不存在 ，添加权限
+        if (StringUtils.isEmpty(au)) {
+            Authority au1 = new Authority();
+            au1.setCode(CodeUtil.getCode());
+            au1.setName(name);
+            au1.setType(type);
+            au1.setpId(pId);
+            au1.setCreateBy("admin");
+            au1.setUpdateBy("admin");
+            //添加权限
+            Boolean b = authorityService.create(au1);
+            if (!b) {
+                return CommonResponse.errorMsg("权限添加失败");
             }
-            return CommonResponse.errorMsg("权限组添加失败");
+            return CommonResponse.build(200, "权限添加成功", null);
         }
-        // 存在，查出groupId,根据组id和权限id遍历查重，存在继续，不存在添加
-        Long groupId1 = authorityGroupService.findByName(groupName).getId();
-        Boolean flag = this.checkMapping(ids, groupId1);
-        if (!flag) {
-            return CommonResponse.errorMsg("权限组和权限关联表添加失败");
-        }
-        return CommonResponse.build(200, "权限添加成功", null);
+        // 存在
+        return CommonResponse.build(200, "权限已存在，请勿重复添加", null);
     }
 
     /**
-     * 根据权限组id和权限id列表查重，添加关联
-     * @param ids
-     * @param groupId
-     */
-    private Boolean checkMapping(List<Long> ids, Long groupId) {
-        for (Long id : ids) {
-            Map param = new HashMap();
-            param.put("groupId", groupId);
-            param.put("authorityId", id);
-            // 双id关联表查重，存在继续，不存在添加
-            AuthorityGroupMapping authorityGroupMapping =
-                    authorityGroupMappingService.selectByAuthorityIdAndGroupId(param);
-            if (StringUtils.isEmpty(authorityGroupMapping)) {
-                // 组和权限关联表添加
-                AuthorityGroupMapping authorityGroupMapping1 = new AuthorityGroupMapping();
-                authorityGroupMapping1.setGroupId(groupId);
-                authorityGroupMapping1.setAuthorityId(id);
-                authorityGroupMapping1.setCreateBy("admin");
-                authorityGroupMapping1.setUpdateBy("admin");
-                // 其他参数
-                Boolean b = authorityGroupMappingService.create(authorityGroupMapping1);
-                if (!b){
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    /**
+     * 根据id删除
      * @param id
      * @return
      */
     @DeleteMapping("/{id}")
-    public CommonResponse delete(@PathVariable Long id){
-        if (id == null || id == 0){
-            return CommonResponse.errorTokenMsg("系统错误");
+    public CommonResponse delete(@PathVariable Long id) {
+        if (id == null || id == 0) {
+            return CommonResponse.errorTokenMsg("权限id不能为空");
         }
-        return CommonResponse.ok(authorityService.delete(id));
+        Boolean b = authorityService.delete(id);
+        if (b) {
+            return CommonResponse.ok("权限删除成功");
+        }
+        return CommonResponse.errorMsg("权限删除失败");
     }
 
-    @DeleteMapping("/dels")
-    public CommonResponse deleteByIds(@RequestBody String jsonString){
-        if (StringUtils.isEmpty(jsonString)){
+    /**
+     * 根据id
+     * @param jsonString
+     * @return
+     */
+    @DeleteMapping("/byIds")
+    public CommonResponse deletes(@RequestBody String jsonString) {
+        if (StringUtils.isEmpty(jsonString)) {
             return CommonResponse.errorTokenMsg("选择要删除的数据");
         }
-       List<Long> ids = JsonUtils.jsonToList(jsonString,Long.class);
-        for (Long id: ids){
-            if (authorityService.delete(id) == false){
-                return CommonResponse.build(200,"删除失败",ids);
-            }
+        IdsDTO idsDTO = JsonUtils.jsonToPojo(jsonString, IdsDTO.class);
+        List<Long> ids = idsDTO.getIds();
+        Boolean b = authorityService.deletes(ids);
+        if (!b) {
+            return CommonResponse.errorMsg("批量删除失败");
         }
-        return CommonResponse.ok();
+        return CommonResponse.ok("批量删除成功");
     }
 
     /**
      * @return
-     * @method 查询权限菜单(type = 1)
+     * @method 查询权限树
+     *  type=1 菜单
      */
     @GetMapping(value = "/all")
-    CommonResponse findAll() {
+    public CommonResponse findAll() {
 
         List<Authority> authorities = authorityService.findAll();
         List<TreeDTO> trees = new ArrayList<>();
+        TreeDTO tree = null;
         for (Authority authority : authorities) {
-            TreeDTO tree = new TreeDTO();
+            tree = new TreeDTO();
             tree.setId(authority.getId());
             tree.setpId(authority.getpId());
             tree.setName(authority.getName());
@@ -194,20 +162,5 @@ public class AuthorityController {
         List<Object> list = treeUtils.menuList(trees);
         return CommonResponse.ok(list);
     }
-
-//    /**
-//     * @author boms
-//     * @method 分页查询
-//     * @param page
-//     * @param size
-//     * @return
-//     */
-//    @GetMapping
-//    CommonResponse paging(@RequestParam(value = "page", defaultValue = "1") Integer page,
-//                          @RequestParam(value = "size", defaultValue = "20")Integer size,
-//                          @RequestParam String searchInput){
-//        Authority authority = new Authority();
-//        return CommonResponse.ok(authorityService.paging(page,size,authority));
-//    }
 
 }

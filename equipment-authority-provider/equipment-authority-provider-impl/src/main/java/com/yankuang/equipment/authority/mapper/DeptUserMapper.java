@@ -1,15 +1,24 @@
 package com.yankuang.equipment.authority.mapper;
 
 import com.yankuang.equipment.authority.model.DeptUser;
-import io.terminus.common.mysql.dao.MyBatisDao;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Map;
+
 @Repository
-public class DeptUserMapper extends MyBatisDao<DeptUser> {
-    public Long findDeptId(Long userId){
-        return this.sqlSession.selectOne("findDeptIds",userId);
-    }
-    public Boolean deleteByUserId(Long userId) {
-        return this.sqlSession.update(this.sqlId("deleteByUserId"), userId) == 1;
-    }
+public interface DeptUserMapper {
+
+    Boolean create(DeptUser userId);
+
+    Boolean deleteByUserId(Long id);
+
+    Boolean deleteByDeptId(Long id);
+
+    DeptUser findByUserId(Long id);
+
+    List<DeptUser> findByDeptId(Long id);
+
+    List<DeptUser> findByDeptIdAndUserId(Map map);
+
 }
