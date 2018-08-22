@@ -47,6 +47,7 @@ public class AuthorityController {
         if (StringUtils.isEmpty(jsonString)) {
             return CommonResponse.errorTokenMsg("参数不能为空");
         }
+        //TODO 可能使用DTO
         Authority authority = JsonUtils.jsonToPojo(jsonString, Authority.class);
         if (StringUtils.isEmpty(authority.getId())) {
             return CommonResponse.errorTokenMsg("权限id不能为空");

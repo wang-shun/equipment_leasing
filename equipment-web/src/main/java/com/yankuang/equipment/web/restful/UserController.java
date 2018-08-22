@@ -237,7 +237,7 @@ public class UserController {
         if (!b == true) {
             return CommonResponse.errorMsg("添加失败");
         }
-        // TODO 用户部门关系表添加
+        //  用户部门关系表添加
         User user2 = userService.findByAccount(user.getAccount());
         DeptUser deptUser = new DeptUser();
         deptUser.setDepartmentId(deptId);
@@ -248,7 +248,7 @@ public class UserController {
         if (!b1){
             return CommonResponse.errorMsg("用户关联部门失败");
         }
-        // TODO 用户角色表添加
+        //  用户角色表添加
         RoleUser roleUser = new RoleUser();
         roleUser.setRoleId(roleId);
         roleUser.setUserId(user2.getId());
