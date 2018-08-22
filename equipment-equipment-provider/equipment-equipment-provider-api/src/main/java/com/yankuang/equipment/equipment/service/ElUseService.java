@@ -1,6 +1,7 @@
 package com.yankuang.equipment.equipment.service;
 
 import com.github.pagehelper.PageInfo;
+import com.yankuang.equipment.equipment.model.ElPlanItem;
 import com.yankuang.equipment.equipment.model.ElUse;
 
 import java.util.List;
@@ -47,4 +48,11 @@ public interface ElUseService {
      * @return
      */
     Boolean open(Long id);
+
+    /**
+     * @method 通过计划查询分区对象列表
+     * @param elPlanItem
+     * @return
+     */
+    List<ElPlanItem> findByPlanId(ElPlanItem elPlanItem);
 }

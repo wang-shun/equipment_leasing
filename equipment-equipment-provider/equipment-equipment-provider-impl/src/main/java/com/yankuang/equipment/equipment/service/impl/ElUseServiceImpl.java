@@ -3,8 +3,10 @@ package com.yankuang.equipment.equipment.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yankuang.equipment.common.util.UuidUtils;
+import com.yankuang.equipment.equipment.mapper.ElPlanItemMapper;
 import com.yankuang.equipment.equipment.mapper.ElUseItemMapper;
 import com.yankuang.equipment.equipment.mapper.ElUseMapper;
+import com.yankuang.equipment.equipment.model.ElPlanItem;
 import com.yankuang.equipment.equipment.model.ElUse;
 import com.yankuang.equipment.equipment.model.ElUseItem;
 import com.yankuang.equipment.equipment.service.ElUseService;
@@ -25,6 +27,9 @@ public class ElUseServiceImpl implements ElUseService{
 
     @Autowired
     ElUseItemMapper elUseItemMapper;
+
+    @Autowired
+    ElPlanItemMapper elPlanItemMapper;
 
     public Boolean create(ElUse elUse){
         if (elUse.getUseBy() == null){
@@ -106,5 +111,9 @@ public class ElUseServiceImpl implements ElUseService{
 
     public Boolean open(Long id){
         return elUseMapper.open(id) >= 0;
+    }
+
+    public List<ElPlanItem> findByPlanId(ElPlanItem elPlanItem){
+        return elPlanItemMapper.elPlanItemList(elPlanItem);
     }
 }

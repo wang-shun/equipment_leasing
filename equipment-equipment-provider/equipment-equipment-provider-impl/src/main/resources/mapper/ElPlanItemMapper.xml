@@ -136,7 +136,7 @@
     WHERE item_plan_id = #{itemPlanId}
   </select>
 
-  <select id="list" parameterType="map" resultMap="BaseResultMap">
+  <select id="elPlanItemList" parameterType="map" resultMap="BaseResultMap">
     SELECT <include refid="cols_all"/> FROM <include refid="tb"/>
     <where>
       1 = 1

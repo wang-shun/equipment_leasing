@@ -112,10 +112,10 @@
     <select id="list" parameterType="map" resultMap="BaseResultMap">
         SELECT <include refid="Base_Column_List" />
         FROM el_plan_use
-        WHERE plan_id IN
-        <foreach item="ids" index="planId" collection="planId"
+        WHERE plan_item_id IN
+        <foreach item="planIds" index="planItemId" collection="planItemId"
                  open="(" separator="," close=")">
-         #{ids}
+         #{planIds}
         </foreach>
         AND status = 2
         AND is_del = 1

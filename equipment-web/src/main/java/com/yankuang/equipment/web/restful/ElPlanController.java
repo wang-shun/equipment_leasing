@@ -3,8 +3,10 @@ package com.yankuang.equipment.web.restful;
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.Constants;
 import com.yankuang.equipment.common.util.JsonUtils;
+import com.yankuang.equipment.equipment.model.ElPlanItem;
 import com.yankuang.equipment.equipment.model.ElPlanUse;
 import com.yankuang.equipment.equipment.service.ElPlanUseService;
+import com.yankuang.equipment.equipment.service.ElUseService;
 import io.swagger.models.auth.In;
 import org.springframework.util.StringUtils;
 import com.yankuang.equipment.equipment.model.ElPlan;
@@ -29,6 +31,9 @@ public class ElPlanController {
 
     @RpcConsumer
     ElPlanUseService elPlanUseService;
+
+    @RpcConsumer
+    ElUseService elUseService;
 
     /**
      * 创建通用设备月度租赁计划
@@ -365,20 +370,49 @@ public class ElPlanController {
      */
     @GetMapping("/findByCreatorId")
     public CommonResponse findByCreatorId(@RequestParam Integer page,
-                                          @RequestParam Integer size){
-        ElPlan elPlan = new ElPlan();
-        List<String> ids = new ArrayList<>();
-        List<ElPlan> elPlans = elPlanService.findByCreatorId(elPlan);
-        if (elPlans == null){
-            return CommonResponse.ok( );
-        }
-        for (ElPlan elPlan1:elPlans){
-            ids.add(elPlan1.getPlanId());
-        }
+                                          @RequestParam Integer size,
+                                          @RequestParam String jsonString){
         Map elPlanUseMap = new HashMap();
-        elPlanUseMap.put("planId",ids);
-        if(elPlanUseService.list(page,size,elPlanUseMap) == null){
-            return CommonResponse.ok();
+        if (!StringUtils.isEmpty(jsonString)){
+            ElPlan elPlan = JsonUtils.jsonToPojo(jsonString,ElPlan.class);
+            if (elPlan == null){
+                return CommonResponse.errorMsg("参数对象不能为空");
+            }
+            if (elPlan.getPlanYear() == null){
+                return CommonResponse.errorMsg("计划年度不能为空");
+            }
+            if (elPlan.getPlanEquipmentType() == null){
+                return CommonResponse.errorMsg("设备类型不能为空");
+            }
+            if (elPlan.getPlanEquipmentType() == "1"){
+                if (elPlan.getPlanMonth() == null){
+                    return CommonResponse.errorMsg("月份不能为空");
+                }
+                elPlan.setPlanType("3");
+            }else if (elPlan.getPlanEquipmentType() == "2"){
+                elPlan.setPlanType("1");
+            }
+            List<ElPlan> elPlans = elPlanService.findByCreatorId(elPlan);
+            if (elPlans == null){
+                return CommonResponse.ok( );
+            }
+            List<String> planIds = new ArrayList<>();
+            ElPlanItem elPlanItem = new ElPlanItem();
+            for (ElPlan elPlan1:elPlans){
+                elPlanItem.setPlanId(elPlan1.getPlanId());
+//                elPlanItem.setItemPosition();
+                List<ElPlanItem> elPlanItems = elUseService.findByPlanId(elPlanItem);
+                if (elPlanItems == null){
+                    return CommonResponse.errorMsg("没有该计划");
+                }
+                for (ElPlanItem elPlanItem1 :elPlanItems){
+                    planIds.add(elPlanItem1.getItemId());
+                }
+            }
+            elPlanUseMap.put("planItemId",planIds);
+            if(elPlanUseService.list(page,size,elPlanUseMap) == null){
+                return CommonResponse.ok();
+            }
         }
         return CommonResponse.ok( elPlanUseService.list(page,size,elPlanUseMap));
     }
