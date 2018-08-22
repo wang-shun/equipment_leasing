@@ -35,13 +35,13 @@
     update_at, version, small_type_code, middle_type_code, big_type_code, equipment_code,
     equipment_name, equipment_model, effect_code, equipment_factory
   </sql>
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
         select
         <include refid="Base_Column_List" />
         from el_plan_use
         where id = #{id,jdbcType=BIGINT}
     </select>
-    <delete id="deleteById" parameterType="java.lang.Long" >
+    <delete id="delete" parameterType="java.lang.Long" >
     delete from el_plan_use
     where id = #{id,jdbcType=BIGINT}
   </delete>
@@ -193,5 +193,16 @@
         <if test="equipmentFactory != null" >
             AND equipment_factory = #{equipmentFactory}
         </if>
+    </select>
+    <select id="list" parameterType="map" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM el_plan_use
+        WHERE plan_id IN
+        <foreach item="ids" index="planId" collection="planId"
+                 open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+        AND status = 2
+        AND is_del = 1
     </select>
 </mapper>

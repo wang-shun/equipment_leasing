@@ -33,6 +33,8 @@ public class Organization implements Serializable {
 
     private Byte status;
 
+    private Long typeId;
+
     public Byte getStatus() {
         return status;
     }
@@ -143,5 +145,13 @@ public class Organization implements Serializable {
 
     public void setpId(Long pId) {
         this.pId = pId;
+    }
+
+    public Long getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(Long typeId) {
+        this.typeId = typeId;
     }
 }

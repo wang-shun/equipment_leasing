@@ -51,4 +51,8 @@ public class OrganizationServiceImpl implements OrganizationService {
         return pageInfo;
     }
 
+    public List<Organization> findByPId( ){
+        return organizationMapper.findByPId( );
+    }
+
 }

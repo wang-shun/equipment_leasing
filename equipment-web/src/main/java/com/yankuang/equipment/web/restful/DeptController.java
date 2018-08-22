@@ -10,6 +10,7 @@ import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.common.util.StringUtils;
 import com.yankuang.equipment.common.util.UuidUtils;
+import com.yankuang.equipment.web.dto.OrgDeptDTO;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -161,8 +162,10 @@ public class DeptController {
      * @return
      */
     @GetMapping("/findpage")
-    public CommonResponse getPage(@RequestParam int page,@RequestParam int limit){
+    public CommonResponse getPage(@RequestParam int page,
+                                  @RequestParam int limit){
         Dept dept = new Dept();
+
         return CommonResponse.ok(deptService.findpage(page,limit,dept));
     }
 
@@ -177,14 +180,21 @@ public class DeptController {
 
     /**
      * @method 添加部门管理
-     * @param organizationId
-     * @param name
+     * @param jsonString
      * @return
      */
     @PostMapping("/findOrgNameAdd")
     @Transactional
-    public CommonResponse findOrgNameAdd( @RequestParam Long organizationId,
-                                   @RequestParam String name){
+    public CommonResponse findOrgNameAdd( @RequestBody String jsonString){
+        if (StringUtils.isEmpty(jsonString)){
+            return CommonResponse.errorMsg("参数不能为空");
+        }
+
+        OrgDeptDTO orgDeptDTO = JsonUtils.jsonToPojo(jsonString,OrgDeptDTO.class);
+
+        String name = orgDeptDTO.getName();
+        Long organizationId = orgDeptDTO.getOrganizationId();
+
         Long departmentId;
 
         if (organizationId == null){
@@ -262,14 +272,22 @@ public class DeptController {
 
     /**
      * @method 部门管理更新功能
-     * @param organizationId
-     * @param name
+     * @param jsonString
      * @return
      */
     @PutMapping("/orgDepts")
-    public CommonResponse udtDeptOrg(@RequestParam Long organizationId,
-                              @RequestParam String name,
-                              @RequestParam Long id){
+    public CommonResponse udtDeptOrg(@RequestBody String jsonString){
+
+        if (StringUtils.isEmpty(jsonString)){
+            return CommonResponse.errorMsg("参数不能为空");
+        }
+
+        OrgDeptDTO orgDeptDTO = JsonUtils.jsonToPojo(jsonString,OrgDeptDTO.class);
+
+        Long organizationId = orgDeptDTO.getOrganizationId();
+        String name = orgDeptDTO.getName();
+        Long id = orgDeptDTO.getId();
+
         if (id == null){
             return CommonResponse.errorTokenMsg("系统错误");
         }

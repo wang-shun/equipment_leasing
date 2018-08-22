@@ -23,4 +23,10 @@ public interface OrganizationService {
 
     PageInfo<Organization> findByPage(int page, int size, Map orgMap);
 
+    /**
+     * @method 通过父级id来查询子列表
+     * @return
+     */
+    List<Organization> findByPId( );
+
 }

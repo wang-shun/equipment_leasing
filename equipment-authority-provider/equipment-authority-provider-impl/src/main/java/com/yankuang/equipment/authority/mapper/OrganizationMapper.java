@@ -22,4 +22,6 @@ public interface OrganizationMapper {
     Boolean delete(Long id);
 
     Organization findByName(String name);
+
+    List<Organization> findByPId( );
 }

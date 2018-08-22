@@ -13,21 +13,24 @@
         <result column="remarks" property="remarks" jdbcType="VARCHAR" />
         <result column="status" property="status" jdbcType="VARCHAR" />
         <result column="code" property="code" jdbcType="VARCHAR" />
+        <result column="plan_use_id" property="planUseId" jdbcType="BIGINT"/>
+        <result column="use_at" property="useAt" jdbcType="TIMESTAMP"/>
+        <result column="is_use" property="isUse" jdbcType="TINYINT"/>
     </resultMap>
     <sql id="Base_Column_List" >
         item_id, use_id, equipment_id, main_param_name, main_param_value, equipment_num,
-        equipment_effect, equipment_position, remarks, status, code
+        equipment_effect, equipment_position, remarks, status, code,  plan_use_id, use_at, is_use
     </sql>
     <insert id="create" parameterType="ElUseItem">
         INSERT INTO el_use_item(
         use_id, equipment_id, main_param_name, main_param_value, equipment_num,
-        equipment_effect, equipment_position, remarks, status, code
+        equipment_effect, equipment_position, remarks, status, code,  plan_use_id, use_at, is_use
         )
         VALUES
         (#{useId,jdbcType=BIGINT}, #{equipmentId,jdbcType=BIGINT},
       #{mainParamName,jdbcType=VARCHAR}, #{mainParamValue,jdbcType=VARCHAR}, #{equipmentNum,jdbcType=INTEGER},
       #{equipmentEffect,jdbcType=VARCHAR}, #{equipmentPosition,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR},
-      #{status,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR})
+      #{status,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{planUseId,jdbcType=BIGINT}, #{useAt,jdbcType=TIMESTAMP}, #{isUse,jdbcType=TINYINT})
     </insert>
 
     <update id="update" parameterType="ElUseItem">
@@ -62,6 +65,12 @@
             </if>
             <if test="code != null" >
                 code = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="planUseId != null">
+                plan_use_id = #{planUseId,jdbc=BIGINT},
+            </if>
+            <if test="useAt != null">
+                use_at = #{useAt,jdbcType=TIMESTAMP},
             </if>
         </set>
         WHERE item_id = #{itemId,jdbcType=BIGINT}
@@ -101,7 +110,14 @@
         <if test="code != null" >
             AND code = #{code,jdbcType=VARCHAR}
         </if>
+        <if test="planUseId != null">
+            AND plan_use_id = #{planUseId,jdbc=BIGINT}
+        </if>
+        <if test="useAt != null">
+            AND use_at = #{useAt,jdbcType=TIMESTAMP}
+        </if>
         AND status != 99
+        AND is_use = #{isUse,jdbcType=TINYINT}
     </select>
 
     <select id="findById" resultMap="BaseResultMap" parameterType="Long">
@@ -122,4 +138,11 @@
         SET status = 99
         WHERE item_id = #{itemId,jdbcType=BIGINT}
     </update>
+
+    <select id="findByUseId" parameterType="Long" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM el_use_item
+        WHERE use_id = #{useId,jdbcType=BIGINT}
+        AND is_use = #{isUse,jdbcType=TINYINT}
+    </select>
 </mapper>

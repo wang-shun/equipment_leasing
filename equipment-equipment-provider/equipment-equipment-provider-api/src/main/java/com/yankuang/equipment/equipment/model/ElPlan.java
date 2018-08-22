@@ -64,6 +64,10 @@ public class ElPlan implements Serializable {
 
     private List<ElPlanItem> elPlanItemList;
 
+    private Integer page;
+
+    private Integer size;
+
     public String getPlanId() {
         return planId;
     }

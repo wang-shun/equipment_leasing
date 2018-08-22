@@ -3,13 +3,10 @@ package com.yankuang.equipment.web.restful;
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.common.util.StringUtils;
-import com.yankuang.equipment.equipment.model.ElUse;
-import com.yankuang.equipment.equipment.model.ElUseItem;
-import com.yankuang.equipment.equipment.model.SbEquipmentT;
-import com.yankuang.equipment.equipment.service.ElUseItemService;
-import com.yankuang.equipment.equipment.service.ElUseService;
-import com.yankuang.equipment.equipment.service.SbEquipmentTService;
+import com.yankuang.equipment.equipment.model.*;
+import com.yankuang.equipment.equipment.service.*;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -28,6 +25,9 @@ public class ElUseController {
 
     @RpcConsumer
     SbEquipmentTService sbEquipmentTService;
+
+    @RpcConsumer
+    ElPlanUseService elPlanUseService;
 
     /**
      * @method 领用申请添加功能
@@ -190,6 +190,7 @@ public class ElUseController {
             if (elUseItemService.deleteById(itemId) == false){
                 return CommonResponse.errorMsg("删除失败");
             }
+            ElUseItem elUseItem = elUseItemService.findById(itemId);
         }
 
         return CommonResponse.ok("删除成功");
@@ -205,7 +206,58 @@ public class ElUseController {
         if (id == null){
             return CommonResponse.errorMsg("id不能为空");
         }
-
+        //在提交前判断一下是否领用的设备，如果没有就不允许提交
+        List<ElUseItem> elUseItems = elUseItemService.findByUseId(id);
+        if (elUseItems == null){
+            return CommonResponse.errorMsg("请设置领用设备");
+        }
+        for (ElUseItem elUseItem:elUseItems){
+            if (elUseItem.getItemId() <= 0){
+                return CommonResponse.errorMsg("请设置领用设备");
+            }
+        }
         return CommonResponse.ok(elUseService.open(id));
+    }
+
+    /**
+     * @method 申请成功
+     * @param jsonString
+     * @return
+     */
+    @PutMapping("/successStatus")
+    @Transactional
+    CommonResponse successStatus(@RequestBody String jsonString){
+        if (StringUtils.isEmpty(jsonString)){
+            return CommonResponse.errorMsg("参数不能为空");
+        }
+
+        ElUse elUse = JsonUtils.jsonToPojo(jsonString,ElUse.class);
+
+        if (elUse.getId() == null){
+            return CommonResponse.errorMsg("id不能为空");
+        }
+        elUse.setApproveBy(1L);//TODO 待redis开发完，先写死
+        elUse.setApproveAt(new Date());
+        elUse.setUpdateAt(new Date());
+        if (elUse.getStatus() != "2"){
+            return CommonResponse.errorMsg("未进入审核状态");
+        }
+        elUse.setStatus("4");
+        List<ElUseItem> elUseItems = elUseItemService.findByUseId(elUse.getId());
+        ElPlanUse elPlanUse = new ElPlanUse();
+        //由于同意租用所以将租用的设备状态更改成在租状态
+        for (ElUseItem elUseItem:elUseItems){
+            elPlanUse.setUpdateBy(1L);//TODO 待redis开发完，先写死
+            elPlanUse.setUpdateAt(new Date());
+            elPlanUse.setId(elUseItem.getPlanUseId());
+            elPlanUse.setStatus("2");//更改设备状态
+            if(elPlanUseService.update(elPlanUse)==null){
+                return CommonResponse.build(500,"更新失败",null);
+            }
+        }
+        if(elUseService.update(elUse)==false){
+            return CommonResponse.build(500,"领用明细更新失败",null);
+        }
+        return  CommonResponse.ok();
     }
 }

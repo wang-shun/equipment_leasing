@@ -2,27 +2,25 @@ package com.yankuang.equipment.web.restful;
 
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.Constants;
-import com.yankuang.equipment.equipment.model.ElPlan;
 import com.yankuang.equipment.equipment.model.ElPlanUse;
-import com.yankuang.equipment.equipment.service.ElPlanService;
 import com.yankuang.equipment.equipment.service.ElPlanUseService;
+import org.springframework.util.StringUtils;
+import com.yankuang.equipment.equipment.model.ElPlan;
+import com.yankuang.equipment.equipment.service.ElPlanService;
 import com.yankuang.equipment.web.dto.ElPlanUseDTO;
 import com.yankuang.equipment.web.service.ElPlanPlusService;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import io.terminus.common.model.Paging;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by zhouy on 2018/7/31.
  */
 @CrossOrigin(maxAge = 3600)
-@Controller
+@RestController
 @RequestMapping("/v1/elplan")
 public class ElPlanController {
 
@@ -393,4 +391,30 @@ public class ElPlanController {
         }
     }
 
+
+    /**
+     * @method 分页查询在租设备列表
+     * @param page
+     * @param size
+     * @return
+     */
+    @GetMapping("/findByCreatorId")
+    public CommonResponse findByCreatorId(@RequestParam Integer page,
+                                          @RequestParam Integer size){
+        ElPlan elPlan = new ElPlan();
+        List<String> ids = new ArrayList<>();
+        List<ElPlan> elPlans = elPlanService.findByCreatorId(elPlan);
+        if (elPlans == null){
+            return CommonResponse.ok( );
+        }
+        for (ElPlan elPlan1:elPlans){
+            ids.add(elPlan1.getPlanId());
+        }
+        Map elPlanUseMap = new HashMap();
+        elPlanUseMap.put("planId",ids);
+        if(elPlanUseService.list(page,size,elPlanUseMap) == null){
+            return CommonResponse.ok();
+        }
+        return CommonResponse.ok( elPlanUseService.list(page,size,elPlanUseMap));
+    }
 }

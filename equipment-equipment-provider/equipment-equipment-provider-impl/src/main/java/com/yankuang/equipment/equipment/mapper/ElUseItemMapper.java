@@ -19,4 +19,6 @@ public interface ElUseItemMapper {
     Integer delete(Long useId);
 
     Integer deleteById(Long itemId);
+
+    List<ElUseItem> findByUseId(Long useId);
 }

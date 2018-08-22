@@ -9,6 +9,7 @@ import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.common.util.UuidUtils;
 import com.yankuang.equipment.web.dto.TreeDTO;
 import com.yankuang.equipment.web.util.TreeUtils;
+import io.swagger.util.Json;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -71,6 +72,9 @@ public class OrganizationController {
 
         Long version = (organization.getVersion() == null || organization.getVersion() == 0) ? 1 : organization.getVersion();
         organization.setVersion(version);
+
+        Long typeId = organization.getTypeId() == null? 1L:organization.getTypeId();//增加组织类型
+        organization.setTypeId(typeId);
 
         organization.setCode(UuidUtils.newUuid());
         organization.setCreateBy("admin");//TODO 由于用户功能暂未开发完，先写死，后期改
@@ -151,9 +155,38 @@ public class OrganizationController {
     @GetMapping
     public CommonResponse findByPage(@RequestParam(value = "page", defaultValue = "1") int page,
                                      @RequestParam(value = "size", defaultValue = "20") int size,
-                                     @RequestParam(value = "searchInput", defaultValue = "") String serachInput) {
+                                     @RequestParam String jsonString) {
         Map orgMap = new HashMap();
+        if (!StringUtils.isEmpty(jsonString)){
+            Organization organization = JsonUtils.jsonToPojo(jsonString,Organization.class);
+            if (organization != null) {
+                orgMap.put("typeId", organization.getTypeId());
+                orgMap.put("pId", organization.getpId());
+                orgMap.put("name",organization.getName());
+                orgMap.put("code",organization.getCode());
+                orgMap.put("level",organization.getLevel());
+            }
+        }
         return CommonResponse.ok(organizationService.findByPage(page, size, orgMap));
     }
 
+    /**
+     * @method 查询单位功能
+     * @return
+     */
+    @GetMapping("/findList")
+    public CommonResponse findList(){
+        List<Organization> organizations = organizationService.findByPId();
+        List<TreeDTO> treeDTOS = new ArrayList<>();
+        for (Organization organization : organizations) {
+            TreeDTO treeDTO = new TreeDTO();
+            treeDTO.setId(organization.getId());
+            treeDTO.setpId(0l);
+            treeDTO.setName(organization.getName());
+            treeDTOS.add(treeDTO);
+        }
+        TreeUtils treeUtils = new TreeUtils();
+        List<Object> list = treeUtils.menuList(treeDTOS);
+        return CommonResponse.ok(list);
+    }
 }

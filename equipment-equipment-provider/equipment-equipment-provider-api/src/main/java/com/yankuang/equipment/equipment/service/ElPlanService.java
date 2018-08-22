@@ -5,6 +5,8 @@ import com.yankuang.equipment.equipment.model.ElPlan;
 import com.yankuang.equipment.equipment.model.ElPlanItem;
 import io.terminus.common.model.Paging;
 
+import java.util.List;
+
 /**
  * Created by zhouy on 2018/7/30.
  */
@@ -60,4 +62,11 @@ public interface ElPlanService {
      * @return
      */
     ElPlanItem findEPlanItemByItemId(String itemId);
+
+    /**
+     * @method 多条件查询计划列表
+     * @param elPlan
+     * @return
+     */
+    List<ElPlan> findByCreatorId(ElPlan elPlan);
 }
