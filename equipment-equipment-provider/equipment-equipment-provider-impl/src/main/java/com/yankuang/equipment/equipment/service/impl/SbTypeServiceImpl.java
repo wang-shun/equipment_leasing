@@ -22,7 +22,23 @@ public class SbTypeServiceImpl implements SbTypeService {
     private SbTypeInfoMapper sbTypeInfoMapper;
 
     public List<SbType> list() {
-        return sbTypeMapper.list();
+        List<SbType> typeOnes = sbTypeMapper.listByPcodeOrLevel("",1);
+        if(typeOnes!=null){
+            for(int i=0;i<typeOnes.size();i++){
+                SbType typeOne = typeOnes.get(i);
+                List<SbType> typeTwos = sbTypeMapper.listByPcodeOrLevel(typeOne.getCode(),2);
+                if(typeTwos!=null){
+                    typeOne.setChildren(typeTwos);
+                    for(int j=0;j<typeTwos.size();j++){
+                        SbType typeTwo = typeTwos.get(j);
+                        List<SbType> typeThrees = sbTypeMapper.listByPcodeOrLevel(typeTwo.getCode(),3);
+                        typeTwo.setChildren(typeThrees);
+                    }
+                }
+            }
+        }
+
+        return typeOnes;
     }
 
     public void create(SbType record, SbTypeInfo sbTypeInfo){

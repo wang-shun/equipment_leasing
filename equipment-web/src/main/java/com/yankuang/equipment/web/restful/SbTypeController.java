@@ -9,6 +9,7 @@ import com.yankuang.equipment.web.dto.SbTypeDTO;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.log4j.Logger;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/sbtype")
 public class SbTypeController {
+
+    public static final Logger logger = Logger.getLogger(SbTypeController.class);
 
     @RpcConsumer
     SbTypeService sbTypeService;
@@ -31,6 +34,7 @@ public class SbTypeController {
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"查询设备类型成功");
             responseMeta.setData(list);
         }catch (Exception e){
+            logger.info("查询设备类型失败:"+ExceptionUtils.getStackTrace(e));
             responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"查询设备类型失败");
             responseMeta.setData(ExceptionUtils.getStackTrace(e));
         }
@@ -57,6 +61,7 @@ public class SbTypeController {
             sbTypeService.create(sbType,sbTypeInfo);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"创建设备类型及信息成功");
         }catch (Exception e){
+            logger.info("创建设备类型及信息失败:"+ExceptionUtils.getStackTrace(e));
             responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"创建设备类型及信息失败");
             responseMeta.setData(ExceptionUtils.getStackTrace(e));
         }
@@ -70,6 +75,7 @@ public class SbTypeController {
             sbTypeService.deleteById(id);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"删除设备类型信息成功");
         }catch (Exception e){
+            logger.info("删除设备类型及信息失败:"+ExceptionUtils.getStackTrace(e));
             responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"删除设备类型信息失败");
             responseMeta.setData(ExceptionUtils.getStackTrace(e));
         }
@@ -84,6 +90,7 @@ public class SbTypeController {
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"查询设备类型成功");
             responseMeta.setData(list);
         }catch (Exception e){
+            logger.info("查询设备类型及信息失败:"+ExceptionUtils.getStackTrace(e));
             responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"查询设备类型失败");
             responseMeta.setData(ExceptionUtils.getStackTrace(e));
         }

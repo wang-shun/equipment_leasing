@@ -8,6 +8,7 @@ import com.yankuang.equipment.equipment.model.SbModel;
 import com.yankuang.equipment.equipment.service.SbModelService;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.log4j.Logger;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/sbmodel")
 public class SbModelController {
+
+    public static final Logger logger = Logger.getLogger(SbModelController.class);
 
     @RpcConsumer
     SbModelService sbModelService;
@@ -33,6 +36,7 @@ public class SbModelController {
             sbModelService.create(sbModel);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"创建设备规格型号成功");
         }catch (Exception e){
+            logger.info("创建设备规格型号失败:"+ExceptionUtils.getStackTrace(e));
             responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"创建设备规格型号失败");
             responseMeta.setData(ExceptionUtils.getStackTrace(e));
         }
@@ -49,6 +53,7 @@ public class SbModelController {
             sbModelService.update(sbModel);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"更新设备规格型号成功");
         }catch (Exception e){
+            logger.info("更新设备规格型号失败:"+ExceptionUtils.getStackTrace(e));
             responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"更新设备规格型号失败");
             responseMeta.setData(ExceptionUtils.getStackTrace(e));
         }
@@ -63,6 +68,7 @@ public class SbModelController {
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"编辑设备规格型号信息成功");
             responseMeta.setData(sbModel);
         }catch (Exception e){
+            logger.info("编辑设备规格型号失败:"+ExceptionUtils.getStackTrace(e));
             responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"编辑设备规格型号信息失败");
             responseMeta.setData(ExceptionUtils.getStackTrace(e));
         }
@@ -76,6 +82,7 @@ public class SbModelController {
             sbModelService.deleteById(id);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"删除设备规格型号信息成功");
         }catch (Exception e){
+            logger.info("删除设备规格型号失败:"+ExceptionUtils.getStackTrace(e));
             responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"删除设备规格型号信息失败");
             responseMeta.setData(ExceptionUtils.getStackTrace(e));
         }
@@ -90,6 +97,7 @@ public class SbModelController {
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"查询设备规格型号列表成功");
             responseMeta.setData(pageInfo);
         }catch (Exception e){
+            logger.info("查询设备规格型号失败:"+ExceptionUtils.getStackTrace(e));
             responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"查询设备规格型号列表失败");
             responseMeta.setData(ExceptionUtils.getStackTrace(e));
         }
@@ -108,6 +116,7 @@ public class SbModelController {
             sbModelService.deletes(ids);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"删除设备规格型号信息成功");
         }catch (Exception e){
+            logger.info("删除设备规格型号失败:"+ExceptionUtils.getStackTrace(e));
             responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"删除设备规格型号信息失败");
             responseMeta.setData(ExceptionUtils.getStackTrace(e));
         }
@@ -123,6 +132,7 @@ public class SbModelController {
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"查询设备规格型号列表成功");
             responseMeta.setData(list);
         }catch (Exception e){
+            logger.info("查询设备规格型号列表失败:"+ExceptionUtils.getStackTrace(e));
             responseMeta.setMeta(Constants.RESPONSE_EXCEPTION,"查询设备规格型号列表失败");
             responseMeta.setData(ExceptionUtils.getStackTrace(e));
         }

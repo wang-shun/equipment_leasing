@@ -67,10 +67,13 @@
     day_lease_fee, new_ratio, main_para, para1, para2, para3, para4, para5, para6, para7, para8
   </sql>
   <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
-    <include refid="Base_Column_List" />
-    from sb_equipment_z
-    where id = #{id,jdbcType=BIGINT}
+    select t.*,t1.name as sbtype_one_name,t2.name as sbtype_two_name,t3.name as sbtype_three_name,t4.name as sbmodel_name
+    from sb_equipment_z t
+    left join sb_type t1 on t.sbtype_one=t1.code and t1.status='1'
+    left join sb_type t2 on t.sbtype_two=t2.code and t2.status='1'
+    left join sb_type t3 on t.sbtype_three=t3.code and t3.status='1'
+    left join sb_model t4 on t.sbmodel_code=t4.code and t4.status='1'
+    where t.id = #{id,jdbcType=BIGINT}
   </select>
   <select id="findByCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select
@@ -187,28 +190,28 @@
     left join sb_model t4 on t.sbmodel_code=t4.code and t4.status='1'
     <where>
       1=1 and t.status = '1'
-      <if test="code != null" >
+      <if test="code != null and code != ''" >
         AND t.code like '%' #{code} '%'
       </if>
-      <if test="name != null" >
+      <if test="name != null and name != ''" >
         AND t.name like '%' #{name} '%'
       </if>
-      <if test="sbtypeOne != null" >
+      <if test="sbtypeOne != null and sbtypeOne != ''" >
         AND t.sbtype_one =  #{sbtypeOne}
       </if>
-      <if test="sbtypeTwo != null" >
+      <if test="sbtypeTwo != null and sbtypeTwo != ''" >
         AND t.sbtype_two =  #{sbtypeTwo}
       </if>
-      <if test="sbtypeThree != null" >
+      <if test="sbtypeThree != null and sbtypeThree != ''" >
         AND t.sbtype_three =  #{sbtypeThree}
       </if>
-      <if test="sbmodelCode != null" >
+      <if test="sbmodelCode != null and sbmodelCode != ''" >
         AND t.sbmodel_code = #{sbmodelCode}
       </if>
-      <if test="ware != null" >
+      <if test="ware != null and ware != ''" >
         AND t.ware = #{ware}
       </if>
-      <if test="mainPara != null" >
+      <if test="mainPara != null and mainPara != ''" >
         AND t.main_para = #{mainPara}
       </if>
     </where>
