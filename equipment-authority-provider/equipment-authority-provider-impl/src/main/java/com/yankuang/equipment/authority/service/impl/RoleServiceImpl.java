@@ -15,6 +15,7 @@ import java.util.Map;
 @Service
 @RpcProvider
 public class RoleServiceImpl implements RoleService {
+
     @Autowired
     RoleMapper roleMapper;
 
@@ -38,8 +39,8 @@ public class RoleServiceImpl implements RoleService {
         return roleMapper.findByName(name);
     }
 
-    public List<Role> getAll() {
-        return roleMapper.getAll();
+    public List<Role> findAll() {
+        return roleMapper.findAll();
     }
 
     public PageInfo<Role> list(Integer page, Integer size, Map roleMap) {

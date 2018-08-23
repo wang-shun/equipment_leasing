@@ -14,7 +14,7 @@ public interface RoleMapper {
 
     Role findByName(String name);
 
-    List<Role> getAll();
+    List<Role> findAll();
 
     Role findById(Long id);
 

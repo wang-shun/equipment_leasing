@@ -13,7 +13,7 @@ public interface RoleService {
     boolean create(Role role);
     boolean delete(Long id);
     Role findByName(String name);
-    List<Role> getAll( );
+    List<Role> findAll( );
     PageInfo<Role> list(Integer page, Integer size, Map role);
 
 }
