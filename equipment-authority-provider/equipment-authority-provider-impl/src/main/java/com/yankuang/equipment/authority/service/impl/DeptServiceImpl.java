@@ -1,61 +1,52 @@
 package com.yankuang.equipment.authority.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.yankuang.equipment.authority.mapper.DeptMapper;
 import com.yankuang.equipment.authority.model.Dept;
 import com.yankuang.equipment.authority.service.DeptService;
-import com.yankuang.equipment.common.util.UuidUtils;
 import io.terminus.boot.rpc.common.annotation.RpcProvider;
-import io.terminus.common.model.Paging;
-import jdk.nashorn.internal.ir.annotations.Reference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RpcProvider
-public class DeptServiceImpl implements DeptService{
+public class DeptServiceImpl implements DeptService {
+
     @Autowired
     DeptMapper deptMapper;
 
-    public Dept getById(Long id) {
-        return deptMapper.findById(id);
-    }
-
-    public boolean update(Dept dept){
-        return deptMapper.update(dept);
-    }
-
-    public boolean add(Dept dept){
+    public Boolean create(Dept dept) {
         return deptMapper.create(dept);
     }
 
-    public boolean del(Long id){
-        return  deptMapper.updatedel(id);
+    public Boolean delete(Long id) {
+        return deptMapper.delete(id);
     }
 
-    public Dept getByName(String name){
+    public Boolean update(Dept dept) {
+        return deptMapper.update(dept);
+    }
+
+    public Dept findById(Long id) {
+        return deptMapper.findById(id);
+    }
+
+    public Dept findByName(String name) {
         return deptMapper.findByName(name);
     }
 
-    public List<Dept> getAll( ){
-        return deptMapper.getAll( );
+    public List<Dept> findAll() {
+        return deptMapper.findAll();
     }
 
-    public Paging findpage(int pageSize, int pageNum, Dept dept){
-        int maxResult = (pageNum - 1) * pageSize;
-        Paging page = deptMapper.paging(maxResult, pageNum, dept);
-        return page;
-    }
-    public List<String> findName(){
-        return deptMapper.getName();
-    }
-
-    public Long getId(String name){
-        return deptMapper.getId(name);
-    }
-
-    public Dept findDept(Long deptId){
-        return deptMapper.findDept(deptId);
+    public PageInfo<Map> findByPage(Integer page, Integer size, Map map) {
+        PageHelper.startPage(page, size);
+        List<Map> maps = deptMapper.list(map);
+        PageInfo<Map> pageInfo = new PageInfo<Map>(maps);
+        return pageInfo;
     }
 }

@@ -2,13 +2,10 @@ package com.yankuang.equipment.authority.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.yankuang.equipment.authority.mapper.OrgDeptRoleUserMapper;
 import com.yankuang.equipment.authority.mapper.UserMapper;
-import com.yankuang.equipment.authority.model.OrgDeptRoleUser;
 import com.yankuang.equipment.authority.model.User;
 import com.yankuang.equipment.authority.service.UserService;
 import io.terminus.boot.rpc.common.annotation.RpcProvider;
-import io.terminus.common.model.Paging;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,10 +44,10 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    public PageInfo<Map> findByPage(Integer page, Integer size, Map user) {
+    public PageInfo<Map> findByPage(Integer page, Integer size, Map map) {
         PageHelper.startPage(page, size);
-        List<Map> users = userMapper.list(user);
-        PageInfo<Map> pageInfo = new PageInfo<Map>(users);
+        List<Map> maps = userMapper.list(map);
+        PageInfo<Map> pageInfo = new PageInfo<Map>(maps);
         return pageInfo;
     }
 

@@ -44,9 +44,6 @@ public class UserController {
     DeptUserService deptUserService;
 
     @RpcConsumer
-    OrgDeptRoleUserService orgDeptRoleUserService;
-
-    @RpcConsumer
     RoleService roleService;
 
     @RpcConsumer
@@ -290,13 +287,13 @@ public class UserController {
      *
      * @param page
      * @param size
-     * @param searchInput
+     * @param jsonString
      * @return
      */
     @GetMapping
     public CommonResponse findByPage(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                      @RequestParam(value = "size", defaultValue = "20") Integer size,
-                                     @RequestParam String searchInput) {
+                                     @RequestParam String jsonString) {
         Map user = new HashMap();
         PageInfo<Map> users = userService.findByPage(page, size, user);
         return CommonResponse.ok(users);

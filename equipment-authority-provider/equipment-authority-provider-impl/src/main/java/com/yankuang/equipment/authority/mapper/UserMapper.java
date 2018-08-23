@@ -23,8 +23,6 @@ public interface UserMapper {
 
     List<Map> list(Map map);
 
-    List<User> findAll();
-
     Boolean stop(Long id);
 
     Boolean start(Long id);

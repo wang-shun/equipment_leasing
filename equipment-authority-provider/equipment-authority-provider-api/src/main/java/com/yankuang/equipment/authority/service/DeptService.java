@@ -1,21 +1,25 @@
 package com.yankuang.equipment.authority.service;
 
+import com.github.pagehelper.PageInfo;
 import com.yankuang.equipment.authority.model.Dept;
-import io.terminus.common.model.Paging;
 
 import java.util.List;
+import java.util.Map;
 
 public interface DeptService {
-    Dept getById(Long id);
 
-    boolean update(Dept dept);
-    boolean add(Dept dept);
-    boolean del(Long id);
+    Boolean create(Dept dept);
 
-    Dept getByName(String name);
-    List<Dept> getAll( );
-    Paging findpage(int pageSize, int pageNum, Dept dept);
-    List<String> findName();
-    Long getId(String name);
-    Dept findDept(Long deptId);
+    Boolean delete(Long id);
+
+    Boolean update(Dept dept);
+
+    Dept findById(Long id);
+
+    Dept findByName(String name);
+
+    List<Dept> findAll();
+
+    PageInfo<Map> findByPage(Integer page, Integer size, Map dept);
+
 }

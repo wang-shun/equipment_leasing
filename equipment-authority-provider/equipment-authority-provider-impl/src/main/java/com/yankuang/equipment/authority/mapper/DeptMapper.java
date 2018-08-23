@@ -1,33 +1,26 @@
 package com.yankuang.equipment.authority.mapper;
 
 import com.yankuang.equipment.authority.model.Dept;
-import io.terminus.common.mysql.dao.MyBatisDao;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
-public class DeptMapper extends MyBatisDao<Dept> {
+public interface DeptMapper {
 
-    public Boolean updatedel(Long id) {
-        return this.sqlSession.update(this.sqlId("updatedel"), id) == 1;
-    }
+    Boolean create(Dept user);
 
-    public Dept findByName(String name) {
-        return getSqlSession().selectOne("findByNameD", name);
-    }
-    public List<Dept> getAll( ){
-        return getSqlSession().selectList("findAllD");
-    }
-    public List<String> getName(){
-        return getSqlSession().selectList("deptFindName");
-    }
+    Boolean delete(Long id);
 
-    public Long getId(String name){
-        return getSqlSession().selectOne("getId",name);
-    }
+    Boolean update(Dept user);
 
-    public Dept findDept(Long deptId){
-        return getSqlSession().selectOne("findDept",deptId);
-    }
+    Dept findById(Long id);
+
+    Dept findByName(String name);
+
+    List<Dept> findAll();
+
+    List<Map> list(Map map);
+
 }
