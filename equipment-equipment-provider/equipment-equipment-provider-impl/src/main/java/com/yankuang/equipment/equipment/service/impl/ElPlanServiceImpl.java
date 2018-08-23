@@ -96,7 +96,7 @@ public class ElPlanServiceImpl implements ElPlanService {
         try {
             ElPlan elPlan = elPlanMapper.findById(planId);
             List<ElPlanItem> list = elPlanItemMapper.findByPlanId(planId);
-            if (list != null) {
+            if (list != null && elPlan != null) {
                 elPlan.setElPlanItemList(list);
             }
             logger.info("findElPlanById: " + JSON.toJSONString(elPlan));

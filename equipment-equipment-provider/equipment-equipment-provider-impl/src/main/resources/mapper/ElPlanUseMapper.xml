@@ -19,7 +19,7 @@
         <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
         <result column="version" property="version" jdbcType="BIGINT" />
         <result column="equipment_type" property="equipmentType" jdbcType="VARCHAR" />
-        <result column="position_id" property="positionId" jdbcType="BIGINT" />
+        <result column="position_id" property="positionId" jdbcType="VARCHAR" />
         <result column="small_type_code" property="smallTypeCode" jdbcType="VARCHAR" />
         <result column="middle_type_code" property="middleTypeCode" jdbcType="VARCHAR" />
         <result column="big_type_code" property="bigTypeCode" jdbcType="VARCHAR" />
@@ -56,7 +56,7 @@
       equipment_code, equipment_name, equipment_model,
       effect_code, equipment_factory)
     values (#{id,jdbcType=BIGINT}, #{centerYear,jdbcType=INTEGER}, #{centerMonth,jdbcType=INTEGER},
-      #{positionId,jdbcType=BIGINT}, #{planType,jdbcType=VARCHAR}, #{planId,jdbcType=VARCHAR},
+      #{positionId,jdbcType=VARCHAR}, #{planType,jdbcType=VARCHAR}, #{planId,jdbcType=VARCHAR},
       #{planItemId,jdbcType=VARCHAR}, #{equipmentType,jdbcType=VARCHAR}, #{equipmentId,jdbcType=BIGINT},
       #{sorting,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{isDel,jdbcType=TINYINT},
       #{remarks,jdbcType=VARCHAR}, #{createBy,jdbcType=BIGINT}, #{createAt,jdbcType=TIMESTAMP},
@@ -75,7 +75,7 @@
                 center_month = #{centerMonth,jdbcType=INTEGER},
             </if>
             <if test="positionId != null" >
-                position_id = #{positionId,jdbcType=BIGINT},
+                position_id = #{positionId,jdbcType=VARCHAR},
             </if>
             <if test="planType != null" >
                 plan_type = #{planType,jdbcType=VARCHAR},
