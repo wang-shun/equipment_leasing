@@ -1,8 +1,6 @@
 package com.yankuang.equipment.web.service;
 
 import com.alibaba.fastjson.JSON;
-import com.yankuang.equipment.authority.model.Dept;
-import com.yankuang.equipment.authority.service.DeptService;
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.Constants;
 import com.yankuang.equipment.equipment.model.*;
@@ -24,9 +22,6 @@ public class ElPlanPlusService {
 
     @RpcConsumer
     private ElPlanService elPlanService;
-
-    @RpcConsumer
-    DeptService deptService;
 
     @RpcConsumer
     SbPositionService sbPositionService;
@@ -69,7 +64,7 @@ public class ElPlanPlusService {
                     String sbModelStr = item.getSpecificationCode();
                     // 设备主要参数值
                     String paramValue = item.getEquipmentParamValue();
-                    if (StringUtils.isEmpty(paramValue) || "0".equals(paramValue)) {
+                    if (StringUtils.isEmpty(paramValue)) {
                         paramValue = null;
                     }
                     // 设备名称
@@ -140,7 +135,7 @@ public class ElPlanPlusService {
                     if (Constants.PLANEQUIPMENTTYPE_INTEGRATED.equals(plan.getPlanEquipmentType())) {
                         // TODO 设备管理中心编码暂定
                         SbPosition position = new SbPosition();
-                        position.setPosition("8");
+                        position.setPosition("100120102");
                         List<SbPosition> sbPositions = sbPositionService.list(position, 1, 1000).getList();
                         for (SbPosition sbPosition : sbPositions) {
                             SbEquipmentZ sbEquipmentZ = new SbEquipmentZ();
