@@ -108,15 +108,33 @@
         WHERE id = #{id}
     </delete>
 
-    <select id="list" parameterType="map" resultMap="UserMap">
-        SELECT <include refid="cols_exclude_password"/>
-        FROM el_user
+    <select id="list" parameterType="map" resultType="java.util.HashMap">
+        SELECT
+        u.id,u.code,u.account,u.name,u.sex,u.telephone,u.mail,u.status,u.remark,u.version,u.sorting,
+        u.update_by as updateBy,from_unixtime(u.update_at, '%Y-%m-%d %H:%I:%S') as updateAt,
+        u.create_by as createBy,from_unixtime(u.create_at, '%Y-%m-%d %H:%I:%S') as createAt,
+        r.name as roleName,d.name as deptName,o.name as orgName
+        from el_user u
+        left join el_role_user_mapping ru
+        on u.id = ru.user_id
+        left join el_role r
+        on r.id = ru.role_id
+        left join el_department_user_mapping du
+        on du.user_id = u.id
+        left join el_department d
+        on d.id = du.department_id
+        left join el_organization_department_mapping od
+        on od.department_id = d.id
+        left join el_organization o
+        on o.id = od.department_id
         <where>
             1 = 1
-            and status != 99
-            <include refid="criteria"/>
+            <if test="id != null and id != ''">AND u.id = #{id}</if>
+            <if test="name != null and name != ''">AND u.name = #{name}</if>
+            <if test="code != null and code != ''">AND u.code = #{code}</if>
+            and u.status != 99
         </where>
-        ORDER BY create_at DESC
+        ORDER BY u.create_at DESC
     </select>
 
     <select id="findByName" parameterType="String" resultMap="UserMap">

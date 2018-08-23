@@ -298,7 +298,7 @@ public class UserController {
                                      @RequestParam(value = "size", defaultValue = "20") Integer size,
                                      @RequestParam String searchInput) {
         Map user = new HashMap();
-        PageInfo<User> users = userService.findByPage(page, size, user);
+        PageInfo<Map> users = userService.findByPage(page, size, user);
         return CommonResponse.ok(users);
     }
 

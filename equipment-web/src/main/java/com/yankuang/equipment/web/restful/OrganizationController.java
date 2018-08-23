@@ -3,13 +3,11 @@ package com.yankuang.equipment.web.restful;
 
 import com.yankuang.equipment.authority.model.Organization;
 import com.yankuang.equipment.authority.service.OrganizationService;
-
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.common.util.UuidUtils;
 import com.yankuang.equipment.web.dto.TreeDTO;
 import com.yankuang.equipment.web.util.TreeUtils;
-import io.swagger.util.Json;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -19,10 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @author boms
- * @createtime 2018/8/2
- */
+
 @CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("/v1/orgs")
@@ -42,9 +37,9 @@ public class OrganizationController {
     }
 
     /**
+     * 组织新增.
      * @param organization
      * @return
-     * @method 添加
      */
     @PostMapping
     public CommonResponse create(@RequestBody Organization organization) {
@@ -52,18 +47,15 @@ public class OrganizationController {
             return CommonResponse.errorMsg("请填写组织名称");
         }
         if (organizationService.findByName(organization.getName()) != null) {
-            return CommonResponse.errorMsg("此组织名称已存在");
+            return CommonResponse.errorMsg("此组织名称已存在,请勿重复添加");
         }
-        if (StringUtils.isEmpty(organization.getpId())) {
+        Long pId = organization.getpId();
+        if (StringUtils.isEmpty(pId)) {
             return CommonResponse.errorMsg("父级pId不能为空");
         }
-
+        organization.setpId(pId);
         int level = organization.getLevel() == null ? 0 : organization.getLevel();
         organization.setLevel(level);
-
-        Long pId = (StringUtils.isEmpty(organization.getpId())) ? 0 : organization.getpId();
-        organization.setpId(pId);
-
         String pcode = (organization.getPcode() == null || " ".equals(organization.getPcode())) ? "1" : organization.getPcode();
         organization.setPcode(pcode);
 
@@ -112,6 +104,7 @@ public class OrganizationController {
         if (StringUtils.isEmpty(jsonString)) {
             return CommonResponse.errorTokenMsg("没有查询的id");
         }
+        // 待修改
         List<Long> ids = JsonUtils.jsonToList(jsonString, Long.class);
         for (Long id : ids) {
             boolean idB = organizationService.delete(id);
