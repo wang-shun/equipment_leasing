@@ -55,4 +55,20 @@ public interface ElUseService {
      * @return
      */
     List<ElPlanItem> findByPlanId(ElPlanItem elPlanItem);
+
+    /**
+     * @method 退租记录添加
+     * @param elUse
+     * @return
+     */
+    Boolean createTz(ElUse elUse);
+
+    /**
+     * @method 退租分页查询
+     * @param page
+     * @param size
+     * @param elUseMap
+     * @return
+     */
+    PageInfo<ElUse> listTz(Integer page, Integer size, Map elUseMap);
 }

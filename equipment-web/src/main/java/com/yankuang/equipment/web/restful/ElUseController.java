@@ -209,11 +209,11 @@ public class ElUseController {
         //在提交前判断一下是否领用的设备，如果没有就不允许提交
         List<ElUseItem> elUseItems = elUseItemService.findByUseId(id);
         if (elUseItems == null){
-            return CommonResponse.errorMsg("请设置领用设备");
+            return CommonResponse.errorMsg("请设置设备");
         }
         for (ElUseItem elUseItem:elUseItems){
             if (elUseItem.getItemId() <= 0){
-                return CommonResponse.errorMsg("请设置领用设备");
+                return CommonResponse.errorMsg("请设置设备");
             }
         }
         return CommonResponse.ok(elUseService.open(id));
@@ -254,6 +254,92 @@ public class ElUseController {
         }
         if(elUseService.update(elUse)==false){
             return CommonResponse.build(500,"领用明细更新失败",null);
+        }
+        return  CommonResponse.ok();
+    }
+
+    /**
+     * @method 退租添加记录功能
+     * @param jsonString
+     * @return
+     */
+    @PostMapping("/createTz")
+    CommonResponse createTz(@RequestBody String jsonString){
+
+        if (StringUtils.isEmpty(jsonString)){
+            return CommonResponse.errorMsg("传入的参数不能为空");
+        }
+
+        ElUse elUse = JsonUtils.jsonToPojo(jsonString,ElUse.class);
+
+        if (elUseService.createTz(elUse) == false){
+            return CommonResponse.build(500,"创建失败",null);
+        }
+
+        return CommonResponse.ok();
+    }
+
+    /**
+     * @method 分页查询退租记录
+     * @param page
+     * @param size
+     * @return
+     */
+    @GetMapping("/findListTz")
+    CommonResponse findListByPageTz(@RequestParam Integer page,
+                                  @RequestParam Integer size){
+        Map elUseMap = new HashMap();
+        return CommonResponse.ok(elUseService.listTz(page, size, elUseMap));
+    }
+
+    /**
+     * @method 退租明细表分页查询功能
+     * @param page
+     * @param size
+     * @return
+     */
+    @GetMapping("/elUseItemTz")
+    CommonResponse findElUseItemByPageTz(@RequestParam Integer page,
+                                       @RequestParam Integer size){
+        Map elUseItemMap = new HashMap();
+        return CommonResponse.ok(elUseItemService.listTz(page,size,elUseItemMap));
+    }
+
+    /**
+     * @method 退租成功
+     * @param jsonString
+     * @return
+     */
+    @PutMapping("/successStatusTz")
+    @Transactional
+    CommonResponse successStatusTz(@RequestBody String jsonString){
+        if (StringUtils.isEmpty(jsonString)){
+            return CommonResponse.errorMsg("参数不能为空");
+        }
+
+        ElUse elUse = JsonUtils.jsonToPojo(jsonString,ElUse.class);
+
+        if (elUse.getId() == null){
+            return CommonResponse.errorMsg("id不能为空");
+        }
+        elUse.setApproveBy(1L);//TODO 待redis开发完，先写死
+        elUse.setApproveAt(new Date());
+        elUse.setUpdateAt(new Date());
+        elUse.setStatus("4");
+        List<ElUseItem> elUseItems = elUseItemService.findByUseId(elUse.getId());
+        ElPlanUse elPlanUse = new ElPlanUse();
+        //由于同意退租所以将租用的设备状态更改成备用状态
+        for (ElUseItem elUseItem:elUseItems){
+            elPlanUse.setUpdateBy(1L);//TODO 待redis开发完，先写死
+            elPlanUse.setUpdateAt(new Date());
+            elPlanUse.setId(elUseItem.getPlanUseId());
+            elPlanUse.setStatus("1");//更改设备状态
+            if(elPlanUseService.update(elPlanUse)==null){
+                return CommonResponse.build(500,"更新失败",null);
+            }
+        }
+        if(elUseService.update(elUse)==false){
+            return CommonResponse.build(500,"退租明细更新失败",null);
         }
         return  CommonResponse.ok();
     }

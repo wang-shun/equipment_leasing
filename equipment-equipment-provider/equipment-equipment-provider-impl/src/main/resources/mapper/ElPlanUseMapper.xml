@@ -199,8 +199,8 @@
         FROM el_plan_use
         WHERE plan_item_id IN
         <foreach item="planIds" index="planItemId" collection="planItemId"
-                 open="(" separator="," close=")">
-         #{planIds}
+                  open="(" separator="," close=")">
+        #{planIds}
         </foreach>
         AND status = 2
         AND is_del = 1

@@ -404,8 +404,8 @@ public class ElPlanController {
      * @return
      */
     @GetMapping("/findByCreatorId")
-    public CommonResponse findByCreatorId(@RequestParam Integer page,
-                                          @RequestParam Integer size,
+    public CommonResponse findByCreatorId(@RequestParam( defaultValue = "1") Integer page,
+                                          @RequestParam( defaultValue = "20" ) Integer size,
                                           @RequestParam String jsonString){
         Map elPlanUseMap = new HashMap();
         if (!StringUtils.isEmpty(jsonString)){
@@ -419,30 +419,33 @@ public class ElPlanController {
             if (elPlan.getPlanEquipmentType() == null){
                 return CommonResponse.errorMsg("设备类型不能为空");
             }
-            if (elPlan.getPlanEquipmentType() == "1"){
+            if ("1".equals(elPlan.getPlanEquipmentType())){
                 if (elPlan.getPlanMonth() == null){
                     return CommonResponse.errorMsg("月份不能为空");
                 }
                 elPlan.setPlanType("3");
-            }else if (elPlan.getPlanEquipmentType() == "2"){
+            }else if ("2".equals(elPlan.getPlanEquipmentType())){
                 elPlan.setPlanType("1");
             }
             List<ElPlan> elPlans = elPlanService.findByCreatorId(elPlan);
-            if (elPlans == null){
+            if (elPlans.size() <= 0 ){
                 return CommonResponse.ok( );
             }
             List<String> planIds = new ArrayList<>();
             ElPlanItem elPlanItem = new ElPlanItem();
             for (ElPlan elPlan1:elPlans){
                 elPlanItem.setPlanId(elPlan1.getPlanId());
-//                elPlanItem.setItemPosition();
+                elPlanItem.setItemPosition("金鸡滩");//TODO 此值暂时写死
                 List<ElPlanItem> elPlanItems = elUseService.findByPlanId(elPlanItem);
-                if (elPlanItems == null){
+                if (elPlanItems.size() <= 0){
                     return CommonResponse.errorMsg("没有该计划");
                 }
                 for (ElPlanItem elPlanItem1 :elPlanItems){
                     planIds.add(elPlanItem1.getItemId());
                 }
+            }
+            if (planIds.size() < 1){
+                return CommonResponse.errorMsg("不存在该计划");
             }
             elPlanUseMap.put("planItemId",planIds);
             if(elPlanUseService.list(page,size,elPlanUseMap) == null){

@@ -121,6 +121,14 @@
       </if>
   </sql>
 
+    <select id="elPlanItemList" parameterType="map" resultMap="BaseResultMap">
+        SELECT <include refid="cols_all"/> FROM <include refid="tb"/>
+        <where>
+            1 = 1
+            <include refid="criteria"/>
+        </where>
+    </select>
+
   <sql id="Base_Column_List" >
     item_id, plan_id, position_id, equipment_name, equipment_num, item_position, item_effect,effect_code,
     equipment_big_type, equipment_middle_type, equipment_small_type, equipment_specification,

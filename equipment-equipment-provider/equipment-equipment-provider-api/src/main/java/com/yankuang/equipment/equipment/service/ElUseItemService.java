@@ -57,4 +57,13 @@ public interface ElUseItemService {
      * @return
      */
     List<ElUseItem> findByUseId(Long itemId);
+
+    /**
+     * @method 退租明细表分页查询
+     * @param page
+     * @param size
+     * @param elUseItemMap
+     * @return
+     */
+    PageInfo<ElUseItem> listTz(Integer page, Integer size,Map elUseItemMap);
 }
