@@ -250,11 +250,63 @@
   </insert>
 
   <select id="findByPlanId" parameterType="java.lang.String" resultMap="BaseResultMap">
-    SELECT <include refid="cols_all"/> FROM <include refid="tb"/>
+    SELECT
+      e1.item_id as item_id,
+      e1.plan_id as plan_id,
+      e1.position_id as position_id,
+      e1.equipment_name as equipment_name,
+      e1.equipment_num as equipment_num,
+      e2.name as item_position,
+      e7.name as item_effect,
+      e1.effect_code as effect_code,
+      e3.name as equipment_big_type,
+      e4.name as equipment_middle_type,
+      e5.name as equipment_small_type,
+      e6.name as equipment_specification,
+      e1.equipment_param_name as equipment_param_name,
+      e1.equipment_param_value as equipment_param_value,
+      e1.item_remarks as item_remarks,
+      e1.big_type_code as big_type_code,
+      e1.middle_type_code as middle_type_code,
+      e1.small_type_code as small_type_code,
+      e1.specification_code  as specification_code
+      FROM el_plan_item e1
+      left join el_organization e2 on e1.position_id = e2.code and e2.status='1'
+      left join sb_type e3 on e1.big_type_code = e3.code and e3.status='1'
+      left join sb_type e4 on e1.middle_type_code = e4.code and e4.status='1'
+      left join sb_type e5 on e1.small_type_code = e5.code and e5.status='1'
+      left join sb_model e6 on e1.specification_code = e6.code and e6.status='1'
+      left join sb_position e7 on e1.effect_code = e7.code and e7.status='1'
     WHERE plan_id = #{planId}
   </select>
   <select id="findByItemId" parameterType="java.lang.String" resultMap="BaseResultMap">
-    SELECT <include refid="cols_all"/> FROM <include refid="tb"/>
+    SELECT
+      e1.item_id as item_id,
+      e1.plan_id as plan_id,
+      e1.position_id as position_id,
+      e1.equipment_name as equipment_name,
+      e1.equipment_num as equipment_num,
+      e2.name as item_position,
+      e7.name as item_effect,
+      e1.effect_code as effect_code,
+      e3.name as equipment_big_type,
+      e4.name as equipment_middle_type,
+      e5.name as equipment_small_type,
+      e6.name as equipment_specification,
+      e1.equipment_param_name as equipment_param_name,
+      e1.equipment_param_value as equipment_param_value,
+      e1.item_remarks as item_remarks,
+      e1.big_type_code as big_type_code,
+      e1.middle_type_code as middle_type_code,
+      e1.small_type_code as small_type_code,
+      e1.specification_code  as specification_code
+      FROM el_plan_item e1
+      left join el_organization e2 on e1.position_id = e2.code and e2.status='1'
+      left join sb_type e3 on e1.big_type_code = e3.code and e3.status='1'
+      left join sb_type e4 on e1.middle_type_code = e4.code and e4.status='1'
+      left join sb_type e5 on e1.small_type_code = e5.code and e5.status='1'
+      left join sb_model e6 on e1.specification_code = e6.code and e6.status='1'
+      left join sb_position e7 on e1.effect_code = e7.code and e7.status='1'
     WHERE item_id = #{itemId}
   </select>
     <update id="updateById" parameterType="com.yankuang.equipment.equipment.model.ElPlanItem" >

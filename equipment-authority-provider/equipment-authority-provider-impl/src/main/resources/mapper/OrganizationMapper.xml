@@ -158,6 +158,9 @@
     <if test="typeId != null">
       AND type_id = #{typeId}
     </if>
+    <if test="pId != null">
+      AND p_id = #{pId}
+    </if>
     AND status != 99
     order by create_at desc
   </select>
