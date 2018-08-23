@@ -1308,16 +1308,6 @@ public class ExcelUtil {
         String[] excelHeader2 = { "","", "1月", "2月", "3月", "4月","5月","6月","7月","8月", "9月", "10月","11月","12月","合计"};
         String[] headnum2 = { "2,2,2,2", "2,2,3,3","2,2,4,4","2,2,5,5","2,2,6,6","2,2,7,7","2,2,8,8","2,2,9,9","2,2,10,10","2,2,11,11","2,2,12,12","2,2,13,13","2,2,14,14"};
 
-
-//        第四行表头字段
-//        String[] excelHeader3 = { "序号", "使用单位（矿）", "使用地点（工作面）", "设备名称", "设备型号", "数量", "技术标识符", "归属公司", "归属公司","是否新设备","备   注"};
-//        String[] headnum3 = { "3,4,0,0","3,4,1,1", "3,4,2,2", "3,4,3,3", "3,4,4,4", "3,4,5,5", "3,4,6,6", "3,3,7,8", "3,3,7,8","3,4,9,9","3,4,10,10"};
-//
-//        第五行表头字段
-//        String[] excelHeader4 = { "", "", "", "", "", "", "", "1180煤业", "1730东华","",""};
-//        String[] headnum4 = {  "4,4,7,7", "4,4,8,8"};
-//
-
         // 声明一个工作簿
         HSSFWorkbook wb = new HSSFWorkbook();
         // 生成一个表格
@@ -1353,21 +1343,6 @@ public class ExcelUtil {
         style2.setAlignment(HSSFCellStyle.ALIGN_CENTER);
         style2.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
 
-        // 生成并设置另一个样式
-        HSSFCellStyle style3 = wb.createCellStyle();
-        style3.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-        style3.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-        style3.setBorderRight(HSSFCellStyle.BORDER_THIN);
-        style3.setBorderTop(HSSFCellStyle.BORDER_THIN);
-        style3.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        style3.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
-        // 生成另一种字体3
-        HSSFFont font3 = wb.createFont();
-        // 设置字体大小
-        font3.setFontHeightInPoints((short) 12);
-        // 在样式2中引用这种字体
-        style3.setFont(font3);
-
         // 第一行表头
         HSSFRow row = sheet.createRow(0);
         row.setHeightInPoints(30);//设置行高
@@ -1382,16 +1357,6 @@ public class ExcelUtil {
         row = sheet.createRow(2);
         row.setHeightInPoints(30);//设置行高
         this.first02(row,sheet,style,excelHeader2,headnum2);
-
-        // 第四行表头
-//        row = sheet.createRow(3);
-//        row.setHeightInPoints(30);//设置行高
-//        this.first02(row,sheet,style,excelHeader3,headnum3);
-
-        // 第五行表头
-//        row = sheet.createRow(4);
-//        row.setHeightInPoints(30);//设置行高
-//        this.first02(row,sheet,style,excelHeader4,headnum4);
 
         // 第五行数据
         BigDecimal total = new BigDecimal(0);
@@ -1541,27 +1506,27 @@ public class ExcelUtil {
             subTotal6 = subTotal6.add(b6);
             june = subTotal6.doubleValue();
 
-            BigDecimal b7 = new BigDecimal(Double.toString(report.getJune_repairs_cost()));
+            BigDecimal b7 = new BigDecimal(Double.toString(report.getJuly_repairs_cost()));
             subTotal7 = subTotal7.add(b7);
             july = subTotal7.doubleValue();
 
-            BigDecimal b8 = new BigDecimal(Double.toString(report.getJune_repairs_cost()));
+            BigDecimal b8 = new BigDecimal(Double.toString(report.getAugust_repairs_cost()));
             subTotal8 = subTotal8.add(b8);
-            august = subTotal6.doubleValue();
+            august = subTotal8.doubleValue();
 
-            BigDecimal b9 = new BigDecimal(Double.toString(report.getJune_repairs_cost()));
-            subTotal9 = subTotal6.add(b9);
+            BigDecimal b9 = new BigDecimal(Double.toString(report.getSep_repairs_cost()));
+            subTotal9 = subTotal9.add(b9);
             sep = subTotal9.doubleValue();
 
-            BigDecimal b10 = new BigDecimal(Double.toString(report.getJune_repairs_cost()));
+            BigDecimal b10 = new BigDecimal(Double.toString(report.getOct_repairs_cost()));
             subTotal10 = subTotal10.add(b10);
             oct = subTotal10.doubleValue();
 
-            BigDecimal b11 = new BigDecimal(Double.toString(report.getJune_repairs_cost()));
+            BigDecimal b11 = new BigDecimal(Double.toString(report.getNov_repairs_cost()));
             subTotal11 = subTotal11.add(b11);
             nov = subTotal11.doubleValue();
 
-            BigDecimal b12 = new BigDecimal(Double.toString(report.getJune_repairs_cost()));
+            BigDecimal b12 = new BigDecimal(Double.toString(report.getDec_repairs_cost()));
             subTotal12 = subTotal12.add(b12);
             dec = subTotal12.doubleValue();
 
@@ -1578,23 +1543,11 @@ public class ExcelUtil {
         row.setHeightInPoints(20);//设置行高
         this.first02(row,sheet,style2,excelHeader3,headnum3);
 
-        //倒数第6行
-        String[] excelHeader4 = {  "", "小计",  january+"", february+"", march+"", april+"",may+"",june+"",july+"",august+"",sep+"",oct+"",nov+"",dec+"",totalxiaoji+""};
-        int c = a+5;
-        String[] headnum4 = { b+","+b+",0,0",b+","+b+",1,1", b+","+b+",2,2", b+","+b+",3,3", b+","+b+",4,4",b+","+b+",5,5",b+","+b+",6,6",b+","+b+",7,7",b+","+b+",8,8",b+","+b+",9,9",b+","+b+",10,10",b+","+b+",11,11",b+","+b+",12,12",b+","+b+",13,13",b+","+b+",14,14"};
-
-
-        // 倒数第6行
-        row = sheet.createRow(list.size()+5);
-        row.setHeightInPoints(20);//设置行高
-        this.first02(row,sheet,style2,excelHeader4,headnum4);
-
-        // 第五行数据
-//        BigDecimal total = new BigDecimal(0);
-//        Double totalxiaoji = new Double(0);
+                BigDecimal total2 = new BigDecimal(0);
+        Double totalxiaoji2 = new Double(0);
         for (int i = 0; i < list.size(); i++) {
 
-            row = sheet.createRow(i + 12);
+            row = sheet.createRow(i + 11);
             row.setHeightInPoints(30);//设置行高
             ComprehensiveDepreciationRCostCollect report = list.get(i);
 
@@ -1676,55 +1629,32 @@ public class ExcelUtil {
             cel14.setCellStyle(style2);
 
             BigDecimal b13 = new BigDecimal(Double.toString(totalT));
-            total  = total.add(b13);
-            totalxiaoji = total.doubleValue();//合计（所有小计合计的数）
+            total2  = total2.add(b13);
+            totalxiaoji2 = total2.doubleValue();//合计（所有小计合计的数）
 
         }
-//
-//        //倒数第5行
-//        String[] excelHeader6 = {  "培养要求:", "",  "", "", "", "","","","","",""};
-//        int c = a+7;
-//        String[] headnum6 = { c+","+c+",0,10",c+","+c+",0,10", c+","+c+",0,10", c+","+c+",0,10", c+","+c+",0,10",c+","+c+",0,10",c+","+c+",0,10",c+","+c+",0,10",c+","+c+",0,10",c+","+c+",0,10",c+","+c+",0,10"};
-//        // 倒数第5行
-//        row = sheet.createRow(list.size()+7);
-//        row.setHeightInPoints(20);//设置行高
-//        this.last_column(list,row,sheet,style4,excelHeader6,headnum6);
-//
-//        //倒数第4行
-//        String[] excelHeader7 = {  "        1.那发到更符合规范化高合金钢", "",  "", "", "", "","","","","",""};//后面有一句话。看不清
-//        int d = a+8;
-//        String[] headnum7 = { d+","+d+",0,10",d+","+d+",0,10", d+","+d+",0,10", d+","+d+",0,10",d+","+d+",0,10",d+","+d+",0,10",d+","+d+",0,10",d+","+d+",0,10",d+","+d+",0,10",d+","+d+",0,10",d+","+d+",0,10"};
-//        // 倒数第5行
-//        row = sheet.createRow(list.size()+8);
-//        row.setHeightInPoints(20);//设置行高
-//        this.last_column(list,row,sheet,style4,excelHeader7,headnum7);
-//
-//        //倒数第3行
-//        String[] excelHeader8 = {  "        2.阿法狗多或过扩绿绿绿绿", "",  "", "", "", "","","","","",""};//后面有一句话。看不清
-//        int e = a+9;
-//        String[] headnum8 = { e+","+e+",0,10",e+","+e+",0,10", e+","+e+",0,10", e+","+e+",0,10",e+","+e+",0,10",e+","+e+",0,10",e+","+e+",0,10",e+","+e+",0,10",e+","+e+",0,10",e+","+e+",0,10",e+","+e+",0,10"};
-//        // 倒数第5行
-//        row = sheet.createRow(list.size()+9);
-//        row.setHeightInPoints(20);//设置行高
-//        this.last_column(list,row,sheet,style4,excelHeader8,headnum8);
-//
-//        //倒数第2行
-//        String[] excelHeader9 = {  "        3.他人委托人规范化大家好看看", "",  "", "", "", "","","","","",""};//后面有一句话。看不清
-//        int f = a+10;
-//        String[] headnum9 = { f+","+f+",0,10",f+","+f+",0,10", f+","+f+",0,10",f+","+f+",0,10", f+","+f+",0,10",f+","+f+",0,10",f+","+f+",0,10",f+","+f+",0,10",f+","+f+",0,10",f+","+f+",0,10",f+","+f+",0,10"};
-//        // 倒数第2行
-//        row = sheet.createRow(list.size()+10);
-//        row.setHeightInPoints(20);//设置行高
-//        this.last_column(list,row,sheet,style4,excelHeader9,headnum9);
-//
-//        //倒数第1行
-//        String[] excelHeader10 = {  "设备管理中心经办人：", "",  "", "", "", "","使用单位经办人：","","","",""};//后面有一句话。看不清
-//        int g = a+11;
-//        String[] headnum10 = { g+","+g+",0,5",g+","+g+",0,5", g+","+g+",0,5",g+","+g+",0,5", g+","+g+",0,5",g+","+g+",0,5",  g+","+g+",6,10",g+","+g+",6,10",g+","+g+",6,10",g+","+g+",6,10",g+","+g+",6,10"};
-//        // 最后一行
-//        row = sheet.createRow(list.size()+11);
-//        row.setHeightInPoints(20);//设置行高
-//        this.last_column(list,row,sheet,style6,excelHeader10,headnum10);
+
+        //倒数第2行
+        String[] excelHeader4 = {  "", "小计",  january+"", february+"", march+"", april+"",may+"",june+"",july+"",august+"",sep+"",oct+"",nov+"",dec+"",totalxiaoji2+""};
+        int c = a+11;
+        String[] headnum4 = { c+","+c+",0,0",c+","+c+",1,1", c+","+c+",2,2", c+","+c+",3,3", c+","+c+",4,4",c+","+c+",5,5",c+","+c+",6,6",c+","+c+",7,7",c+","+c+",8,8",c+","+c+",9,9",c+","+c+",10,10",c+","+c+",11,11",c+","+c+",12,12",c+","+c+",13,13",c+","+c+",14,14"};
+
+
+        // 倒数第2行
+        row = sheet.createRow(list.size()+11);
+        row.setHeightInPoints(20);//设置行高
+        this.first02(row,sheet,style2,excelHeader4,headnum4);
+
+        //倒数第2行
+        String[] excelHeader5 = {  "", "累计",  january+january+"", february+february+"", march+march+"", april+april+"",may+may+"",june+june+"",july+july+"",august+august+"",sep+sep+"",oct+oct+"",nov+nov+"",dec+dec+"",totalxiaoji2+totalxiaoji2+""};
+        int d = a+12;
+        String[] headnum5 = { d+","+d+",0,0",d+","+d+",1,1", d+","+d+",2,2", d+","+d+",3,3", d+","+d+",4,4",d+","+d+",5,5",d+","+d+",6,6",d+","+d+",7,7",d+","+d+",8,8",d+","+d+",9,9",d+","+d+",10,10",d+","+d+",11,11",d+","+d+",12,12",d+","+d+",13,13",d+","+d+",14,14"};
+
+
+        // 倒数第2行
+        row = sheet.createRow(list.size()+12);
+        row.setHeightInPoints(20);//设置行高
+        this.first02(row,sheet,style2,excelHeader5,headnum5);
 
         return wb;
     }
