@@ -59,12 +59,8 @@ public class ElPlanPlusService {
                     List<SbEquipmentZ> sbListZ = new ArrayList<>();
 
                     // 获取矿分区信息
-                    Long deptId = null;
-                    String itemPosition = item.getItemPosition();
-                    if (!StringUtils.isEmpty(itemPosition)) {
-                        Dept dept = deptService.getByName(itemPosition);
-                        deptId = dept.getId();
-                    } else {
+                    String positionId = item.getPositionId();
+                    if (StringUtils.isEmpty(positionId)) {
                         return CommonResponse.errorException("备货异常");
                     }
                     // 获取设备小类
@@ -83,7 +79,7 @@ public class ElPlanPlusService {
                     }
                     if (Constants.PLANEQUIPMENTTYPE_GENERIC.equals(plan.getPlanEquipmentType())) {
                         SbPosition position = new SbPosition();
-                        position.setPosition(deptId.toString());
+                        position.setPosition(positionId);
                         List<SbPosition> sbPositions = sbPositionService.list(position, 1, 1000).getList();
                         for (SbPosition sbPosition : sbPositions) {
                             SbEquipmentT sbEquipmentT = new SbEquipmentT();
@@ -116,7 +112,7 @@ public class ElPlanPlusService {
                             ElPlanUse elPlanUse = new ElPlanUse();
                             elPlanUse.setCenterYear(plan.getPlanYear());
                             elPlanUse.setCenterMonth(plan.getPlanMonth());
-                            elPlanUse.setPositionId(deptId);
+                            elPlanUse.setPositionId(positionId);
                             elPlanUse.setPlanType(plan.getPlanType());
                             elPlanUse.setPlanId(plan.getPlanId());
                             elPlanUse.setPlanItemId(item.getItemId());
@@ -177,7 +173,7 @@ public class ElPlanPlusService {
                             ElPlanUse elPlanUse = new ElPlanUse();
                             elPlanUse.setCenterYear(plan.getPlanYear());
                             elPlanUse.setCenterMonth(plan.getPlanMonth());
-                            elPlanUse.setPositionId(deptId);
+                            elPlanUse.setPositionId(positionId);
                             elPlanUse.setPlanType(plan.getPlanType());
                             elPlanUse.setPlanId(plan.getPlanId());
                             elPlanUse.setPlanItemId(item.getItemId());
@@ -227,10 +223,18 @@ public class ElPlanPlusService {
         for (ElPlanUse use : elPlanUses) {
             ElPlanUseDTO elPlanUseDTO = new ElPlanUseDTO();
             if ("1".equals(use.getEquipmentType()) && use != null) {
-                SbEquipmentT sbT = sbEquipmentTService.findById(use.getEquipmentId());
+                Long sbTID = use.getEquipmentId();
+                if (sbTID == null) {
+                    continue;
+                }
+                SbEquipmentT sbT = sbEquipmentTService.findById(sbTID);
                 elPlanUseDTO.setTeachCode(sbT.getTechCode());
                 elPlanUseDTO.setEquipmentName(sbT.getName());
-                ElPlanItem elPlanItem = elPlanService.findEPlanItemByItemId(use.getPlanItemId());
+                String itemId = use.getPlanItemId();
+                if (StringUtils.isEmpty(itemId)) {
+                    continue;
+                }
+                ElPlanItem elPlanItem = elPlanService.findEPlanItemByItemId(itemId);
                 if (elPlanItem == null) {
                     continue;
                 }
@@ -256,10 +260,18 @@ public class ElPlanPlusService {
                 elPlanUseDTOS.add(elPlanUseDTO);
             }
             if ("2".equals(use.getEquipmentType()) && use != null) {
-                SbEquipmentZ sbZ = sbEquipmentZService.findById(use.getEquipmentId());
+                Long sbZID = use.getEquipmentId();
+                if (sbZID == null) {
+                    continue;
+                }
+                SbEquipmentZ sbZ = sbEquipmentZService.findById(sbZID);
                 elPlanUseDTO.setTeachCode(sbZ.getTechCode());
                 elPlanUseDTO.setEquipmentName(sbZ.getName());
-                ElPlanItem elPlanItem = elPlanService.findEPlanItemByItemId(use.getPlanItemId());
+                String itemId = use.getPlanItemId();
+                if (StringUtils.isEmpty(itemId)) {
+                    continue;
+                }
+                ElPlanItem elPlanItem = elPlanService.findEPlanItemByItemId(itemId);
                 if (elPlanItem == null) {
                     continue;
                 }
