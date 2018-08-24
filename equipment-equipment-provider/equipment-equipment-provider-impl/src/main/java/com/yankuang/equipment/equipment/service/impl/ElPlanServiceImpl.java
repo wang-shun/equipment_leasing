@@ -71,13 +71,14 @@ public class ElPlanServiceImpl implements ElPlanService {
                 for (ElPlanItem elPlanItem : elPlanItemList) {
                     elPlanItem.setItemId(UuidUtils.newUuid());
                     elPlanItem.setPlanId(elPlan.getPlanId());
-                    itemRes = elPlanItemMapper.saveByPrimaryKey(elPlanItem) > 0;
+                    elPlanItem.setStatus("1");
+                    itemRes = elPlanItemMapper.insert(elPlanItem) > 0;
                     if (!itemRes) {
                         break;
                     }
                 }
             }
-            res = elPlanMapper.insertByPrimaryKey(elPlan) > 0 && itemRes;
+            res = elPlanMapper.insert(elPlan) > 0 && itemRes;
             if (!res) {
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             }
@@ -117,7 +118,6 @@ public class ElPlanServiceImpl implements ElPlanService {
             if (StringUtils.isEmpty(planId)) {
                 return res;
             }
-            //elPlanMapper.deletePlanItemByPlanId(planId);
             elPlan.setPlanUpdateTime(new Date().getTime());
             boolean itemRes = true;
             if (elPlan.getElPlanItemList() != null) {
@@ -126,9 +126,11 @@ public class ElPlanServiceImpl implements ElPlanService {
                     if (StringUtils.isEmpty(itemId)) {
                         elPlanItem.setItemId(UuidUtils.newUuid());
                         elPlanItem.setPlanId(elPlan.getPlanId());
-                        itemRes = elPlanItemMapper.saveByPrimaryKey(elPlanItem) > 0;
+                        elPlanItem.setStatus("1");
+                        itemRes = elPlanItemMapper.insert(elPlanItem) > 0;
+                    } else {
+                        itemRes = elPlanItemMapper.update(elPlanItem) >= 0;
                     }
-                    itemRes = elPlanItemMapper.updateById(elPlanItem) >= 0;
                     if (!itemRes) {
                         break;
                     }
@@ -136,7 +138,7 @@ public class ElPlanServiceImpl implements ElPlanService {
             }
             //elPlanMapper.savePlanItemByPlanId(elPlan);
             logger.info("update elPlan: " + JSON.toJSONString(elPlan));
-            res = elPlanMapper.updateByPrimarykey(elPlan) > 0 && itemRes;
+            res = elPlanMapper.update(elPlan) > 0 && itemRes;
             if (!res) {
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             }
@@ -152,7 +154,7 @@ public class ElPlanServiceImpl implements ElPlanService {
     public Boolean deletePlan(String planId) {
 
         try {
-            int res = elPlanMapper.deletePlanByPlanId(planId);
+            int res = elPlanMapper.delete(planId);
             if (res <= 0) {
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 return false;
@@ -178,13 +180,13 @@ public class ElPlanServiceImpl implements ElPlanService {
                 page.setData(pageInfo.getList());
                 page.setTotal(pageInfo.getTotal());
                 for (ElPlan plan : pageInfo.getList()) {
-                    //List<ElPlanItem> list = elPlanItemMapper.findByPlanId(plan.getPlanId());
-                    String str = Constants.PLANSTATUS_UNCOMMITED.equals(plan.getPlanStatus()) ? Constants.PLANSTATUS_UNCOMMITED_VALUE
-                            : Constants.PLANSTATUS_COMMITED.equals(plan.getPlanStatus()) ? Constants.PLANSTATUS_COMMITED_VALUE
-                            : Constants.PLANSTATUS_FAILED.equals(plan.getPlanStatus()) ? Constants.PLANSTATUS_FAILED_VALUE
-                            : Constants.PLANSTATUS_PASSED.equals(plan.getPlanStatus()) ? Constants.PLANSTATUS_PASSED_VALUE
-                            : Constants.PLANSTATUS_OTHERS_VALUE;
-                    plan.setPlanStatus(str);
+//                    List<ElPlanItem> list = elPlanItemMapper.findByPlanId(plan.getPlanId());
+//                    String str = Constants.PLANSTATUS_UNCOMMITED.equals(plan.getPlanStatus()) ? Constants.PLANSTATUS_UNCOMMITED_VALUE
+//                            : Constants.PLANSTATUS_COMMITED.equals(plan.getPlanStatus()) ? Constants.PLANSTATUS_COMMITED_VALUE
+//                            : Constants.PLANSTATUS_FAILED.equals(plan.getPlanStatus()) ? Constants.PLANSTATUS_FAILED_VALUE
+//                            : Constants.PLANSTATUS_PASSED.equals(plan.getPlanStatus()) ? Constants.PLANSTATUS_PASSED_VALUE
+//                            : Constants.PLANSTATUS_OTHERS_VALUE;
+//                    plan.setPlanStatus(str);
                     String planType = Constants.PLANTYPE_YEAR.equals(plan.getPlanType()) ? "年度计划"
                             : Constants.PLANTYPE_QUARTER.equals(plan.getPlanType()) ? "季度计划"
                             : Constants.PLANTYPE_MONTH.equals(plan.getPlanType()) ? "月度计划"
@@ -212,7 +214,7 @@ public class ElPlanServiceImpl implements ElPlanService {
         try {
             logger.info("approve elPlan: " + JSON.toJSONString(elPlan));
 
-            boolean res = elPlanMapper.updateByPrimarykey(elPlan) > 0;
+            boolean res = elPlanMapper.update(elPlan) > 0;
             if (!res) {
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             }
