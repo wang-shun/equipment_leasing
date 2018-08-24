@@ -1,43 +1,45 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.yankuang.equipment.equipment.mapper.ElPlanItemMapper" >
-  <resultMap id="BaseResultMap" type="com.yankuang.equipment.equipment.model.ElPlanItem" >
-    <id column="item_id" property="itemId" jdbcType="VARCHAR" />
-    <result column="plan_id" property="planId" jdbcType="VARCHAR" />
-    <result column="position_id" property="positionId" jdbcType="BIGINT" />
-    <result column="equipment_name" property="equipmentName" jdbcType="VARCHAR" />
-    <result column="equipment_num" property="equipmentNum" jdbcType="INTEGER" />
-    <result column="item_position" property="itemPosition" jdbcType="VARCHAR" />
-    <result column="item_effect" property="itemEffect" jdbcType="VARCHAR" />
-    <result column="effect_code" property="effectCode" jdbcType="VARCHAR" />
-    <result column="equipment_big_type" property="equipmentBigType" jdbcType="VARCHAR" />
-    <result column="equipment_middle_type" property="equipmentMiddleType" jdbcType="VARCHAR" />
-    <result column="equipment_small_type" property="equipmentSmallType" jdbcType="VARCHAR" />
-    <result column="equipment_specification" property="equipmentSpecification" jdbcType="VARCHAR" />
-    <result column="equipment_param_name" property="equipmentParamName" jdbcType="VARCHAR" />
-    <result column="equipment_param_value" property="equipmentParamValue" jdbcType="VARCHAR" />
-    <result column="item_remarks" property="itemRemarks" jdbcType="VARCHAR" />
-      <result column="big_type_code" property="bigTypeCode" jdbcType="VARCHAR" />
-      <result column="middle_type_code" property="middleTypeCode" jdbcType="VARCHAR" />
-      <result column="small_type_code" property="smallTypeCode" jdbcType="VARCHAR" />
-      <result column="specification_code" property="specificationCode" jdbcType="VARCHAR" />
-  </resultMap>
+<mapper namespace="com.yankuang.equipment.equipment.mapper.ElPlanItemMapper">
+    <resultMap id="BaseResultMap" type="com.yankuang.equipment.equipment.model.ElPlanItem">
+        <id column="item_id" property="itemId" jdbcType="VARCHAR"/>
+        <result column="plan_id" property="planId" jdbcType="VARCHAR"/>
+        <result column="position_id" property="positionId" jdbcType="BIGINT"/>
+        <result column="equipment_name" property="equipmentName" jdbcType="VARCHAR"/>
+        <result column="equipment_num" property="equipmentNum" jdbcType="INTEGER"/>
+        <result column="item_position" property="itemPosition" jdbcType="VARCHAR"/>
+        <result column="item_effect" property="itemEffect" jdbcType="VARCHAR"/>
+        <result column="effect_code" property="effectCode" jdbcType="VARCHAR"/>
+        <result column="equipment_big_type" property="equipmentBigType" jdbcType="VARCHAR"/>
+        <result column="equipment_middle_type" property="equipmentMiddleType" jdbcType="VARCHAR"/>
+        <result column="equipment_small_type" property="equipmentSmallType" jdbcType="VARCHAR"/>
+        <result column="equipment_specification" property="equipmentSpecification" jdbcType="VARCHAR"/>
+        <result column="equipment_param_name" property="equipmentParamName" jdbcType="VARCHAR"/>
+        <result column="equipment_param_value" property="equipmentParamValue" jdbcType="VARCHAR"/>
+        <result column="item_remarks" property="itemRemarks" jdbcType="VARCHAR"/>
+        <result column="big_type_code" property="bigTypeCode" jdbcType="VARCHAR"/>
+        <result column="middle_type_code" property="middleTypeCode" jdbcType="VARCHAR"/>
+        <result column="small_type_code" property="smallTypeCode" jdbcType="VARCHAR"/>
+        <result column="specification_code" property="specificationCode" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+    </resultMap>
 
-  <sql id="tb">
+    <sql id="tb">
     el_plan_item
-  </sql>
+    </sql>
 
-  <sql id="cols_all">
-    item_id, <include refid="cols_exclude_id" />
-  </sql>
+    <sql id="cols_all">
+        item_id,
+        <include refid="cols_exclude_id"/>
+    </sql>
 
-  <sql id="cols_exclude_id">
+    <sql id="cols_exclude_id">
     plan_id, position_id, equipment_name, equipment_num, item_position, item_effect,effect_code,
         equipment_big_type, equipment_middle_type, equipment_small_type, equipment_specification,
-        equipment_param_name, equipment_param_value, item_remarks,big_type_code,middle_type_code,small_type_code,specification_code
-  </sql>
+        equipment_param_name, equipment_param_value, item_remarks,big_type_code,middle_type_code,small_type_code,specification_code,status
+    </sql>
 
-  <sql id="vals">
+    <sql id="vals">
     #{itemId},
     #{planId},
     #{positionId},
@@ -56,200 +58,232 @@
     #{bigTypeCode},
     #{middleTypeCode},
     #{smallTypeCode},
-    #{specificationCode}
+    #{specificationCode},
+    #{status}
   </sql>
 
-  <sql id="criteria">
+    <sql id="criteria">
 
-    <if test="itemId != null" >
-      AND item_id = #{itemId}
-    </if>
-    <if test="planId != null" >
-      AND plan_id = #{planId}
-    </if>
-    <if test="positionId != null" >
-      AND position_id = #{positionId}
-    </if>
-    <if test="equipmentName != null" >
-      AND equipment_name = #{equipmentName}
-    </if>
-    <if test="equipmentNum != null" >
-      AND equipment_num = #{equipmentNum}
-    </if>
-    <if test="itemPosition != null" >
-      AND item_position = #{itemPosition}
-    </if>
-    <if test="itemEffect != null" >
-      AND item_effect = #{itemEffect}
-    </if>
-    <if test="effectCode != null" >
-      AND effect_code = #{effectCode}
-    </if>
-    <if test="equipmentBigType != null" >
-      AND equipment_big_type = #{equipmentBigType}
-    </if>
-    <if test="equipmentMiddleType != null" >
-      AND equipment_middle_type = #{equipmentMiddleType}
-    </if>
-    <if test="equipmentSmallType != null" >
-      AND equipment_small_type = #{equipmentSmallType}
-    </if>
-    <if test="equipmentSpecification != null" >
-      AND equipment_specification = #{equipmentSpecification}
-    </if>
-    <if test="equipmentParamName != null" >
-      AND equipment_param_name = #{equipmentParamName}
-    </if>
-    <if test="equipmentParamValue != null" >
-      AND equipment_param_value = #{equipmentParamValue}
-    </if>
-    <if test="itemRemarks != null" >
-      AND item_remarks = #{itemRemarks}
-    </if>
+        <if test="itemId != null and itemId != ''">
+            AND item_id = #{itemId}
+        </if>
+        <if test="planId != null and planId != ''">
+            AND plan_id = #{planId}
+        </if>
+        <if test="positionId != null and positionId != ''">
+            AND position_id = #{positionId}
+        </if>
+        <if test="equipmentName != null and equipmentName != ''">
+            AND equipment_name = #{equipmentName}
+        </if>
+        <if test="equipmentNum != null">
+            AND equipment_num = #{equipmentNum}
+        </if>
+        <if test="itemPosition != null and itemPosition != ''">
+            AND item_position = #{itemPosition}
+        </if>
+        <if test="itemEffect != null and itemEffect != ''">
+            AND item_effect = #{itemEffect}
+        </if>
+        <if test="effectCode != null and effectCode != ''">
+            AND effect_code = #{effectCode}
+        </if>
+        <if test="equipmentBigType != null and equipmentBigType != ''">
+            AND equipment_big_type = #{equipmentBigType}
+        </if>
+        <if test="equipmentMiddleType != null and equipmentMiddleType != ''">
+            AND equipment_middle_type = #{equipmentMiddleType}
+        </if>
+        <if test="equipmentSmallType != null and equipmentSmallType != ''">
+            AND equipment_small_type = #{equipmentSmallType}
+        </if>
+        <if test="equipmentSpecification != null and equipmentSpecification != ''">
+            AND equipment_specification = #{equipmentSpecification}
+        </if>
+        <if test="equipmentParamName != null and equipmentParamName != ''">
+            AND equipment_param_name = #{equipmentParamName}
+        </if>
+        <if test="equipmentParamValue != null and equipmentParamValue != ''">
+            AND equipment_param_value = #{equipmentParamValue}
+        </if>
+        <if test="itemRemarks != null and itemRemarks != ''">
+            AND item_remarks = #{itemRemarks}
+        </if>
 
-      <if test="bigTypeCode != null" >
-          AND big_type_code = #{bigTypeCode}
-      </if>
-      <if test="middleTypeCode != null" >
-          AND middle_type_code = #{middleTypeCode}
-      </if>
-      <if test="smallTypeCode != null" >
-          AND small_type_code = #{smallTypeCode}
-      </if>
-      <if test="specificationCode != null" >
-          AND specification_code = #{specificationCode}
-      </if>
-  </sql>
+        <if test="bigTypeCode != null and bigTypeCode != ''">
+            AND big_type_code = #{bigTypeCode}
+        </if>
+        <if test="middleTypeCode != null and middleTypeCode != ''">
+            AND middle_type_code = #{middleTypeCode}
+        </if>
+        <if test="smallTypeCode != null and smallTypeCode != ''">
+            AND small_type_code = #{smallTypeCode}
+        </if>
+        <if test="specificationCode != null and specificationCode != ''">
+            AND specification_code = #{specificationCode}
+        </if>
+    </sql>
 
-  <sql id="Base_Column_List" >
-    item_id, plan_id, position_id, equipment_name, equipment_num, item_position, item_effect,effect_code,
-    equipment_big_type, equipment_middle_type, equipment_small_type, equipment_specification,
-    equipment_param_name, equipment_param_value, item_remarks,big_type_code,middle_type_code,small_type_code,specification_code
-  </sql>
+    <insert id="insert" parameterType="com.yankuang.equipment.equipment.model.ElPlanItem">
+        insert into el_plan_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="itemId != null">
+                item_id,
+            </if>
+            <if test="planId != null">
+                plan_id,
+            </if>
+            <if test="positionId != null">
+                position_id,
+            </if>
+            <if test="equipmentName != null">
+                equipment_name,
+            </if>
+            <if test="equipmentNum != null">
+                equipment_num,
+            </if>
+            <if test="itemPosition != null">
+                item_position,
+            </if>
+            <if test="itemEffect != null">
+                item_effect,
+            </if>
+            <if test="effectCode != null">
+                effect_code,
+            </if>
+            <if test="equipmentBigType != null">
+                equipment_big_type,
+            </if>
+            <if test="equipmentMiddleType != null">
+                equipment_middle_type,
+            </if>
+            <if test="equipmentSmallType != null">
+                equipment_small_type,
+            </if>
+            <if test="equipmentSpecification != null">
+                equipment_specification,
+            </if>
+            <if test="equipmentParamName != null">
+                equipment_param_name,
+            </if>
+            <if test="equipmentParamValue != null">
+                equipment_param_value,
+            </if>
+            <if test="itemRemarks != null">
+                item_remarks,
+            </if>
+            <if test="bigTypeCode != null">
+                big_type_code,
+            </if>
+            <if test="middleTypeCode != null">
+                middle_type_code,
+            </if>
+            <if test="smallTypeCode != null">
+                small_type_code,
+            </if>
+            <if test="specificationCode != null">
+                specification_code,
+            </if>
+            <if test="status != null and status != ''">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="itemId != null">
+                #{itemId,jdbcType=VARCHAR},
+            </if>
+            <if test="planId != null">
+                #{planId,jdbcType=VARCHAR},
+            </if>
+            <if test="positionId != null">
+                #{positionId,jdbcType=VARCHAR},
+            </if>
+            <if test="equipmentName != null">
+                #{equipmentName,jdbcType=VARCHAR},
+            </if>
+            <if test="equipmentNum != null">
+                #{equipmentNum,jdbcType=INTEGER},
+            </if>
+            <if test="itemPosition != null">
+                #{itemPosition,jdbcType=VARCHAR},
+            </if>
+            <if test="itemEffect != null">
+                #{itemEffect,jdbcType=VARCHAR},
+            </if>
+            <if test="effectCode != null">
+                #{effectCode,jdbcType=VARCHAR},
+            </if>
+            <if test="equipmentBigType != null">
+                #{equipmentBigType,jdbcType=VARCHAR},
+            </if>
+            <if test="equipmentMiddleType != null">
+                #{equipmentMiddleType,jdbcType=VARCHAR},
+            </if>
+            <if test="equipmentSmallType != null">
+                #{equipmentSmallType,jdbcType=VARCHAR},
+            </if>
+            <if test="equipmentSpecification != null">
+                #{equipmentSpecification,jdbcType=VARCHAR},
+            </if>
+            <if test="equipmentParamName != null">
+                #{equipmentParamName,jdbcType=VARCHAR},
+            </if>
+            <if test="equipmentParamValue != null">
+                #{equipmentParamValue,jdbcType=VARCHAR},
+            </if>
+            <if test="itemRemarks != null">
+                #{itemRemarks,jdbcType=VARCHAR},
+            </if>
+            <if test="bigTypeCode != null">
+                #{bigTypeCode},
+            </if>
+            <if test="middleTypeCode != null">
+                #{middleTypeCode},
+            </if>
+            <if test="smallTypeCode != null">
+                #{smallTypeCode},
+            </if>
+            <if test="specificationCode != null">
+                #{specificationCode},
+            </if>
+            <if test="status != null and status != ''">
+                #{status},
+            </if>
+        </trim>
+    </insert>
 
-  <insert id="saveByPrimaryKey" parameterType="com.yankuang.equipment.equipment.model.ElPlanItem" >
-    insert into el_plan_item
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="itemId != null" >
-        item_id,
-      </if>
-      <if test="planId != null" >
-        plan_id,
-      </if>
-      <if test="positionId != null" >
-        position_id,
-      </if>
-      <if test="equipmentName != null" >
-        equipment_name,
-      </if>
-      <if test="equipmentNum != null" >
-        equipment_num,
-      </if>
-      <if test="itemPosition != null" >
-        item_position,
-      </if>
-      <if test="itemEffect != null" >
-        item_effect,
-      </if>
-      <if test="effectCode != null" >
-        effect_code,
-      </if>
-      <if test="equipmentBigType != null" >
-        equipment_big_type,
-      </if>
-      <if test="equipmentMiddleType != null" >
-        equipment_middle_type,
-      </if>
-      <if test="equipmentSmallType != null" >
-        equipment_small_type,
-      </if>
-      <if test="equipmentSpecification != null" >
-        equipment_specification,
-      </if>
-      <if test="equipmentParamName != null" >
-        equipment_param_name,
-      </if>
-      <if test="equipmentParamValue != null" >
-        equipment_param_value,
-      </if>
-      <if test="itemRemarks != null" >
-        item_remarks,
-      </if>
-        <if test="bigTypeCode != null" >
-            big_type_code,
-        </if>
-        <if test="middleTypeCode != null" >
-            middle_type_code,
-        </if>
-        <if test="smallTypeCode != null" >
-            small_type_code,
-        </if>
-        <if test="specificationCode != null" >
-            specification_code,
-        </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="itemId != null" >
-        #{itemId,jdbcType=VARCHAR},
-      </if>
-      <if test="planId != null" >
-        #{planId,jdbcType=VARCHAR},
-      </if>
-      <if test="positionId != null" >
-        #{positionId,jdbcType=VARCHAR},
-      </if>
-      <if test="equipmentName != null" >
-        #{equipmentName,jdbcType=VARCHAR},
-      </if>
-      <if test="equipmentNum != null" >
-        #{equipmentNum,jdbcType=INTEGER},
-      </if>
-      <if test="itemPosition != null" >
-        #{itemPosition,jdbcType=VARCHAR},
-      </if>
-      <if test="itemEffect != null" >
-        #{itemEffect,jdbcType=VARCHAR},
-      </if>
-      <if test="effectCode != null" >
-        #{effectCode,jdbcType=VARCHAR},
-      </if>
-      <if test="equipmentBigType != null" >
-        #{equipmentBigType,jdbcType=VARCHAR},
-      </if>
-      <if test="equipmentMiddleType != null" >
-        #{equipmentMiddleType,jdbcType=VARCHAR},
-      </if>
-      <if test="equipmentSmallType != null" >
-        #{equipmentSmallType,jdbcType=VARCHAR},
-      </if>
-      <if test="equipmentSpecification != null" >
-        #{equipmentSpecification,jdbcType=VARCHAR},
-      </if>
-      <if test="equipmentParamName != null" >
-        #{equipmentParamName,jdbcType=VARCHAR},
-      </if>
-      <if test="equipmentParamValue != null" >
-        #{equipmentParamValue,jdbcType=VARCHAR},
-      </if>
-      <if test="itemRemarks != null" >
-        #{itemRemarks,jdbcType=VARCHAR},
-      </if>
-        <if test="bigTypeCode != null" >
-            #{bigTypeCode},
-        </if>
-        <if test="middleTypeCode != null" >
-            #{middleTypeCode},
-        </if>
-        <if test="smallTypeCode != null" >
-            #{smallTypeCode},
-        </if>
-        <if test="specificationCode != null" >
-            #{specificationCode}
-        </if>
-    </trim>
-  </insert>
-
-  <select id="findByPlanId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <select id="findByPlanId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT
+      e1.item_id as item_id,
+      e1.plan_id as plan_id,
+      e1.position_id as position_id,
+      e1.equipment_name as equipment_name,
+      e1.equipment_num as equipment_num,
+      e2.name as item_position,
+      e7.name as item_effect,
+      e1.effect_code as effect_code,
+      e3.name as equipment_big_type,
+      e4.name as equipment_middle_type,
+      e5.name as equipment_small_type,
+      e6.name as equipment_specification,
+      e1.equipment_param_name as equipment_param_name,
+      e1.equipment_param_value as equipment_param_value,
+      e1.item_remarks as item_remarks,
+      e1.big_type_code as big_type_code,
+      e1.middle_type_code as middle_type_code,
+      e1.small_type_code as small_type_code,
+      e1.specification_code  as specification_code,
+      e1.status as status
+      FROM el_plan_item e1
+      left join el_organization e2 on e1.position_id = e2.code and e2.status='1'
+      left join sb_type e3 on e1.big_type_code = e3.code and e3.status='1'
+      left join sb_type e4 on e1.middle_type_code = e4.code and e4.status='1'
+      left join sb_type e5 on e1.small_type_code = e5.code and e5.status='1'
+      left join sb_model e6 on e1.specification_code = e6.code and e6.status='1'
+      left join sb_position e7 on e1.effect_code = e7.code and e7.status='1'
+    WHERE e1.plan_id = #{planId} and e1.status = '1'
+  </select>
+    <select id="findByItemId" parameterType="java.lang.String" resultMap="BaseResultMap">
     SELECT
       e1.item_id as item_id,
       e1.plan_id as plan_id,
@@ -277,94 +311,67 @@
       left join sb_type e5 on e1.small_type_code = e5.code and e5.status='1'
       left join sb_model e6 on e1.specification_code = e6.code and e6.status='1'
       left join sb_position e7 on e1.effect_code = e7.code and e7.status='1'
-    WHERE plan_id = #{planId}
+    WHERE e1.item_id = #{itemId} and e1.status = '1'
   </select>
-  <select id="findByItemId" parameterType="java.lang.String" resultMap="BaseResultMap">
-    SELECT
-      e1.item_id as item_id,
-      e1.plan_id as plan_id,
-      e1.position_id as position_id,
-      e1.equipment_name as equipment_name,
-      e1.equipment_num as equipment_num,
-      e2.name as item_position,
-      e7.name as item_effect,
-      e1.effect_code as effect_code,
-      e3.name as equipment_big_type,
-      e4.name as equipment_middle_type,
-      e5.name as equipment_small_type,
-      e6.name as equipment_specification,
-      e1.equipment_param_name as equipment_param_name,
-      e1.equipment_param_value as equipment_param_value,
-      e1.item_remarks as item_remarks,
-      e1.big_type_code as big_type_code,
-      e1.middle_type_code as middle_type_code,
-      e1.small_type_code as small_type_code,
-      e1.specification_code  as specification_code
-      FROM el_plan_item e1
-      left join el_organization e2 on e1.position_id = e2.code and e2.status='1'
-      left join sb_type e3 on e1.big_type_code = e3.code and e3.status='1'
-      left join sb_type e4 on e1.middle_type_code = e4.code and e4.status='1'
-      left join sb_type e5 on e1.small_type_code = e5.code and e5.status='1'
-      left join sb_model e6 on e1.specification_code = e6.code and e6.status='1'
-      left join sb_position e7 on e1.effect_code = e7.code and e7.status='1'
-    WHERE item_id = #{itemId}
-  </select>
-    <update id="updateById" parameterType="com.yankuang.equipment.equipment.model.ElPlanItem" >
+    <update id="update" parameterType="com.yankuang.equipment.equipment.model.ElPlanItem">
         update el_plan_item
-        <set >
-            <if test="planId != null" >
+        <set>
+            <if test="planId != null and planId != ''">
                 plan_id = #{planId,jdbcType=VARCHAR},
             </if>
-            <if test="positionId != null" >
+            <if test="positionId != null and positionId != ''">
                 position_id = #{positionId,jdbcType=BIGINT},
             </if>
-            <if test="equipmentName != null" >
+            <if test="equipmentName != null">
                 equipment_name = #{equipmentName,jdbcType=VARCHAR},
             </if>
-            <if test="equipmentNum != null" >
+            <if test="equipmentNum != null">
                 equipment_num = #{equipmentNum,jdbcType=INTEGER},
             </if>
-            <if test="itemPosition != null" >
+            <if test="itemPosition != null">
                 item_position = #{itemPosition,jdbcType=VARCHAR},
             </if>
-            <if test="itemEffect != null" >
+            <if test="itemEffect != null">
                 item_effect = #{itemEffect,jdbcType=VARCHAR},
             </if>
-            <if test="equipmentBigType != null" >
+            <if test="equipmentBigType != null">
                 equipment_big_type = #{equipmentBigType,jdbcType=VARCHAR},
             </if>
-            <if test="equipmentMiddleType != null" >
+            <if test="equipmentMiddleType != null">
                 equipment_middle_type = #{equipmentMiddleType,jdbcType=VARCHAR},
             </if>
-            <if test="equipmentSmallType != null" >
+            <if test="equipmentSmallType != null">
                 equipment_small_type = #{equipmentSmallType,jdbcType=VARCHAR},
             </if>
-            <if test="equipmentSpecification != null" >
+            <if test="equipmentSpecification != null">
                 equipment_specification = #{equipmentSpecification,jdbcType=VARCHAR},
             </if>
-            <if test="equipmentParamName != null" >
+            <if test="equipmentParamName != null">
                 equipment_param_name = #{equipmentParamName,jdbcType=VARCHAR},
             </if>
-            <if test="equipmentParamValue != null" >
+            <if test="equipmentParamValue != null">
                 equipment_param_value = #{equipmentParamValue,jdbcType=VARCHAR},
             </if>
-            <if test="itemRemarks != null" >
+            <if test="itemRemarks != null">
                 item_remarks = #{itemRemarks,jdbcType=VARCHAR},
             </if>
-            <if test="bigTypeCode != null" >
+            <if test="bigTypeCode != null and bigTypeCode != ''">
                 big_type_code = #{bigTypeCode,jdbcType=VARCHAR},
             </if>
-            <if test="middleTypeCode != null" >
+            <if test="middleTypeCode != null and middleTypeCode != ''">
                 middle_type_code = #{middleTypeCode,jdbcType=VARCHAR},
             </if>
-            <if test="smallTypeCode != null" >
+            <if test="smallTypeCode != null and smallTypeCode != ''">
                 small_type_code = #{smallTypeCode,jdbcType=VARCHAR},
             </if>
-            <if test="specificationCode != null" >
+            <if test="specificationCode != null">
                 specification_code = #{specificationCode,jdbcType=VARCHAR},
             </if>
-            <if test="effectCode != null" >
+            <if test="effectCode != null and effectCode != ''">
                 effect_code = #{effectCode,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null and status != ''">
+                status = #{status,jdbcType=VARCHAR},
             </if>
         </set>
         where item_id = #{itemId,jdbcType=VARCHAR}

@@ -57,5 +57,5 @@ public class ElPlanItem implements Serializable {
 
     private String effectCode;
 
-    private String backup1;
+    private String status;
 }
