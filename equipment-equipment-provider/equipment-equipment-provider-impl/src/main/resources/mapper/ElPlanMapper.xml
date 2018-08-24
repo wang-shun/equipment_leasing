@@ -15,13 +15,16 @@
         <result column="plan_creator_name" property="planCreatorName" jdbcType="VARCHAR" />
         <result column="plan_status" property="planStatus" jdbcType="VARCHAR" />
         <result column="plan_approve_time" property="planApproveTime" jdbcType="BIGINT" />
+        <result column="approve_time_str" property="approveTimeStr" jdbcType="VARCHAR" />
         <result column="plan_approver_id" property="planApproverId" jdbcType="VARCHAR" />
         <result column="plan_approver_name" property="planApproverName" jdbcType="VARCHAR" />
         <result column="plan_equipment_type" property="planEquipmentType" jdbcType="VARCHAR" />
         <result column="plan_type" property="planType" jdbcType="VARCHAR" />
         <result column="plan_is_del" property="planIsDel" jdbcType="BIT" />
         <result column="plan_create_time" property="planCreateTime" jdbcType="BIGINT" />
+        <result column="create_time_str" property="createTimeStr" jdbcType="VARCHAR" />
         <result column="plan_update_time" property="planUpdateTime" jdbcType="BIGINT" />
+        <result column="update_time_str" property="updateTimeStr" jdbcType="VARCHAR" />
         <result column="plan_code" property="planCode" jdbcType="VARCHAR" />
         <result column="plan_updator_id" property="planUpdatorId" jdbcType="VARCHAR" />
         <result column="plan_updator_name" property="planUpdatorName" jdbcType="VARCHAR" />
@@ -234,13 +237,16 @@
         e1.plan_creator_name AS plan_creator_name,
         e1.plan_status AS plan_status,
         e1.plan_approve_time AS plan_approve_time,
+        from_unixtime(e1.plan_approve_time/1000, '%Y-%m-%d %H:%I:%S') AS approve_time_str,
         e1.plan_approver_id AS plan_approver_id,
         e1.plan_approver_name AS plan_approver_name,
         e1.plan_equipment_type AS plan_equipment_type,
         e1.plan_type AS plan_type,
         e1.plan_is_del AS plan_is_del,
         e1.plan_create_time AS plan_create_time,
+        from_unixtime(e1.plan_create_time/1000, '%Y-%m-%d %H:%I:%S') AS create_time_str,
         e1.plan_update_time AS plan_update_time,
+        from_unixtime(e1.plan_update_time/1000, '%Y-%m-%d %H:%I:%S') AS update_time_str,
         e1.plan_code AS plan_code,
         e1.plan_updator_id AS plan_updator_id,
         e1.plan_updator_name AS plan_updator_name,
@@ -423,4 +429,79 @@
             </if>
         </trim>
     </insert>
+<!--根据多条件查询计划对象-->
+    <select id="findByCreatorId" parameterType="ElPlan" resultMap="ElPlanMap">
+        SELECT <include refid="cols_all"/>
+        FROM el_plan
+        WHERE
+        1=1
+        <if test="planId != null" >
+            AND plan_id = #{planId}
+        </if>
+        <if test="planYear != null" >
+            AND plan_year = #{planYear}
+        </if>
+        <if test="planMonth != null" >
+            AND plan_month = #{planMonth}
+        </if>
+        <if test="planQuarter != null" >
+            AND plan_quarter = #{planQuarter}
+        </if>
+        <if test="planPosition != null" >
+            AND plan_position = #{planPosition}
+        </if>
+        <if test="planRemarks != null" >
+            AND plan_remarks = #{planRemarks}
+        </if>
+        <if test="planOpinion != null" >
+            AND plan_opinion = #{planOpinion}
+        </if>
+        <if test="planCreatorId != null" >
+            AND plan_creator_id = #{planCreatorId}
+        </if>
+        <if test="planCreatorName != null" >
+            AND plan_creator_name = #{planCreatorName}
+        </if>
+        <if test="planStatus != null" >
+            AND plan_status = #{planStatus}
+        </if>
+        <if test="planApproveTime != null" >
+            AND plan_approve_time = #{planApproveTime}
+        </if>
+        <if test="planApproverId != null" >
+            AND plan_approver_id = #{planApproverId}
+        </if>
+        <if test="planApproverName != null" >
+            AND plan_approver_name = #{planApproverName}
+        </if>
+        <if test="planEquipmentType != null" >
+            AND plan_equipment_type = #{planEquipmentType}
+        </if>
+        <if test="planType != null" >
+            AND plan_type = #{planType}
+        </if>
+        <if test="planCreateTime != null" >
+            AND plan_create_time = #{planCreateTime}
+        </if>
+        <if test="planUpdateTime != null" >
+            AND plan_update_time = #{planUpdateTime}
+        </if>
+        <if test="planCode != null" >
+            AND plan_code = #{planCode}
+        </if>
+        <if test="planUpdatorId != null" >
+            AND plan_updator_id = #{planUpdatorId}
+        </if>
+        <if test="planUpdatorName != null" >
+            AND plan_updator_name = #{planUpdatorName}
+        </if>
+        <if test="planSorting != null" >
+            AND plan_sorting = #{planSorting}
+        </if>
+        <if test="planVersion != null" >
+            AND plan_version = #{planVersion}
+        </if>
+        AND plan_is_del != 99
+        ORDER BY plan_create_time DESC
+    </select>
 </mapper>
