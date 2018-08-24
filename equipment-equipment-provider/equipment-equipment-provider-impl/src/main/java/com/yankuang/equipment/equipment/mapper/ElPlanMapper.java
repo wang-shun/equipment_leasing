@@ -23,8 +23,4 @@ public interface ElPlanMapper{
 
     List<ElPlan> findByCreatorId(ElPlan elPlan);
 
-    public List<ElPlan> findByCreatorId(ElPlan elPlan){
-        return sqlSession.selectList("findByCreatorId",elPlan);
-    }
-
 }
