@@ -22,6 +22,7 @@
         <result column="version" property="version" jdbcType="VARCHAR" />
         <result column="remarks" property="remarks" jdbcType="VARCHAR" />
         <result column="is_use" property="isUse" jdbcType="TINYINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List" >
@@ -111,10 +112,12 @@
     </update>
 
     <select id="select" parameterType="Long" resultMap="BaseResultMap">
-        SELECT <include refid="Base_Column_List"/>
-        FROM el_use
-        WHERE id = #{id,jdbcType=BIGINT}
-        AND is_use = #{isUse,jdbcType=TINYINT}
+        SELECT t1.*,org.name AS name
+        FROM el_use t1
+        LEFT JOIN el_organization org
+        ON t1.use_position = org.code
+        WHERE t1.id = #{id,jdbcType=BIGINT}
+        AND org.status != 99
     </select>
 
     <update id="delete" parameterType="Long">
@@ -124,8 +127,10 @@
     </update>
 
     <select id="list" parameterType="map" resultMap="BaseResultMap">
-        SELECT <include refid="Base_Column_List"/>
-        FROM el_use
+        SELECT t1.*,org.name AS name
+        FROM el_use t1
+        LEFT JOIN el_organization org
+        ON t1.use_position = org.code
         WHERE 1=1
         <if test="approveCode != null" >
             AND approve_code = #{approveCode,jdbcType=VARCHAR}
@@ -183,6 +188,7 @@
         </if>
         AND is_del != 99
         AND is_use = #{isUse,jdbcType=TINYINT}
+        AND org.status != 99
         ORDER BY create_at DESC
     </select>
 

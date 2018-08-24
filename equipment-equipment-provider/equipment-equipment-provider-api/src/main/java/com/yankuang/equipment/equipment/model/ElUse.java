@@ -61,6 +61,8 @@ public class ElUse implements Serializable{
 
     private Long useId;
 
+    private String name;
+
     public Long getId() {
         return id;
     }

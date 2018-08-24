@@ -441,7 +441,7 @@ public class ElPlanController {
             ElPlanItem elPlanItem = new ElPlanItem();
             for (ElPlan elPlan1:elPlans){
                 elPlanItem.setPlanId(elPlan1.getPlanId());
-                elPlanItem.setPositionId("1");//TODO 此值暂时写死
+                elPlanItem.setPositionId("100120108");//TODO 此值暂时写死
                 List<ElPlanItem> elPlanItems = elUseService.findByPlanId(elPlanItem);
                 if (elPlanItems.size() <= 0){
                     return CommonResponse.errorMsg("没有该计划");

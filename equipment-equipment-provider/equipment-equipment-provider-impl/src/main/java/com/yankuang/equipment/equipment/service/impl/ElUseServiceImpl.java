@@ -72,6 +72,9 @@ public class ElUseServiceImpl implements ElUseService{
             if (elUseItem.getPlanUseId() == null){
                 return false;
             }
+            if (elUseItem.getEquipmentPosition() == null|| "".equals(elUseItem.getEquipmentPosition())){
+                return false;
+            }
             Integer equipmentNum = elUseItem.getEquipmentNum() == null?1:elUseItem.getEquipmentNum();
             String equipmentStatus = (elUseItem.getStatus() == null || " ".equals(elUseItem.getStatus()))?"1":elUseItem.getStatus();
             elUseItem.setStatus(equipmentStatus);
