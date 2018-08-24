@@ -54,8 +54,17 @@ public class DeptController {
         }
         Dept dept1 = deptService.findByName(deptName);
         if (dept1 != null) {
-            // todo 组织部门关联表查重
-            return CommonResponse.errorTokenMsg("此部门名称已存在");
+            OrgDept orgDept = new OrgDept();
+            orgDept.setDepartmentId(dept1.getId());
+            orgDept.setOrganizationId(orgId);
+            orgDept.setCode(CodeUtil.getCode());
+            orgDept.setCreateBy("admin");
+            orgDept.setUpdateBy("admin");
+            Boolean b2 = orgDeptService.create(orgDept);
+            if (!b2){
+                return CommonResponse.errorMsg("添加组织部门关系失败");
+            }
+            return CommonResponse.ok("部门添加成功");
         }
         dept.setCode(CodeUtil.getCode());
         dept.setCreateBy("admin");
@@ -69,6 +78,8 @@ public class DeptController {
         orgDept.setDepartmentId(dept2.getId());
         orgDept.setOrganizationId(orgId);
         orgDept.setCode(CodeUtil.getCode());
+        orgDept.setCreateBy("admin");
+        orgDept.setUpdateBy("admin");
         Boolean b2 = orgDeptService.create(orgDept);
         if (!b2){
             return CommonResponse.errorMsg("添加组织部门关系失败");

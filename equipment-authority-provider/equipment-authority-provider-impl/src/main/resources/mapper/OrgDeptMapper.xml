@@ -44,12 +44,12 @@
   </delete>
 
     <!-- 根据组织id和部门ids，删除对应组织下一个或者多个部门（字典表不操作） -->
-    <delete id="deleteByOrgIdAndDeptId" parameterType="Long">
+    <delete id="deleteByOrgIdAndDeptId" parameterType="Map">
     update el_organization_department_mapping
     set status = 99
     where organization_id = #{orgId}
     and department_id in
-        <foreach collection="list" item="deptId" separator="," open="(" close=")">
+        <foreach collection="deptIds" item="deptId" separator="," open="(" close=")">
             #{deptId}
         </foreach>
   </delete>

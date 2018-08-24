@@ -74,7 +74,7 @@
         VALUES(#{id}, #{name}, #{code},
         #{pcode}, #{level}, #{sorting},
         #{remark}, #{createBy},unix_timestamp(now()),
-        #{updateBy}, unix_timestamp(now()), #{version},1
+        #{updateBy}, unix_timestamp(now()),0,1
         )
     </insert>
 
