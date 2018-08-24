@@ -1,140 +1,91 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="OrgDept" >
-  <resultMap id="BaseResultMap" type="OrgDept" >
-    <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="department_id" property="departmentId" jdbcType="BIGINT" />
-    <result column="organization_id" property="organizationId" jdbcType="BIGINT" />
-    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
-    <result column="update_at" property="updateAt" jdbcType="BIGINT" />
-    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
-    <result column="create_at" property="createAt" jdbcType="BIGINT" />
-    <result column="version" property="version" jdbcType="BIGINT" />
-    <result column="status" property="status" jdbcType="TINYINT" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    id, department_id, organization_id, create_by, update_at, update_by, create_at, version,
-    status
-  </sql>
-  <select id="findById" resultMap="BaseResultMap" parameterType="Long" >
-    select
-    <include refid="Base_Column_List" />
-    from el_organization_department_mapping
-    where id = #{id}
-    AND status != 99
-    ORDER BY create_at
-  </select>
-  <delete id="delete" parameterType="Long" >
-    delete from el_organization_department_mapping
-    where id = #{id}
-  </delete>
-  <insert id="create" parameterType="OrgDept" >
-    insert into el_organization_department_mapping (id, department_id, organization_id,
+<mapper namespace="com.yankuang.equipment.authority.mapper.OrgDeptMapper">
+    <resultMap id="BaseResultMap" type="com.yankuang.equipment.authority.model.OrgDept">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="department_id" property="departmentId" jdbcType="BIGINT"/>
+        <result column="organization_id" property="organizationId" jdbcType="BIGINT"/>
+        <result column="create_by" property="createBy" jdbcType="VARCHAR"/>
+        <result column="update_at" property="updateAt" jdbcType="BIGINT"/>
+        <result column="update_by" property="updateBy" jdbcType="VARCHAR"/>
+        <result column="create_at" property="createAt" jdbcType="BIGINT"/>
+        <result column="version" property="version" jdbcType="BIGINT"/>
+        <result column="status" property="status" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+      id, department_id, organization_id, create_by, update_at, update_by, create_at, version,
+      status
+    </sql>
+
+    <insert id="create" parameterType="com.yankuang.equipment.authority.model.OrgDept">
+    insert into el_organization_department_mapping (department_id, organization_id,
       create_by, update_at, update_by,
       create_at, version, status
       )
-    values (#{id}, #{departmentId}, #{organizationId},
+    values (#{departmentId}, #{organizationId},
         #{createBy}, unix_timestamp(now()), #{updateBy},
-        unix_timestamp(now()), 1, 1
+        unix_timestamp(now()), 0, 1
       )
   </insert>
-  <update id="update" parameterType="OrgDept" >
+
+    <!-- 部门字典删除，删除对应关系表，可能对应多个组织 -->
+    <delete id="deleteByDeptId" parameterType="Long">
     update el_organization_department_mapping
-    <set >
-      <if test="departmentId != null" >
-        department_id = #{departmentId},
-      </if>
-      <if test="organizationId != null" >
-        organization_id = #{organizationId},
-      </if>
-      <if test="createBy != null" >
-        create_by = #{createBy},
-      </if>
-      <if test="updateAt != null" >
-        update_at = #{updateAt},
-      </if>
-      <if test="updateBy != null" >
-        update_by = #{updateBy},
-      </if>
-      <if test="createAt != null" >
-        create_at = #{createAt},
-      </if>
-      <if test="version != null" >
-        version = #{version},
-      </if>
-      <if test="status != null" >
-        status = #{status},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
+    set status = 99
+    where department_id = #{deptId}
+  </delete>
 
-  <update id="updatedelOD" parameterType="long">
-    UPDATE yankuang_equipment.el_organization_department_mapping
-    <set>
-      status = 99,
-      update_at = unix_timestamp(now())
-    </set>
-    WHERE id = #{id}
-  </update>
+    <!-- 根据组织id，删除对应组织下所有部门 -->
+    <delete id="deleteByOrgId" parameterType="Long">
+    update el_organization_department_mapping
+    set status = 99
+    where organization_id = #{orgId}
+  </delete>
 
-  <select id="paging" parameterType="map" resultMap="BaseResultMap">
-    SELECT <include refid="Base_Column_List"/>
-    FROM yankuang_equipment.el_organization_department_mapping
-    WHERE status != 99
-  </select>
+    <!-- 根据组织id和部门ids，删除对应组织下一个或者多个部门（字典表不操作） -->
+    <delete id="deleteByOrgIdAndDeptId" parameterType="Long">
+    update el_organization_department_mapping
+    set status = 99
+    where organization_id = #{orgId}
+    and department_id in
+        <foreach collection="list" item="deptId" separator="," open="(" close=")">
+            #{deptId}
+        </foreach>
+  </delete>
 
-  <select id="findOrgDept" resultType="Long" parameterType="OrgDept" >
-    select
-    count(1)
-    from el_organization_department_mapping
-    where department_id = #{departmentId}
-    AND organization_id = #{organizationId}
-    AND status != 99
-    ORDER BY create_at
-  </select>
+    <update id="update" parameterType="com.yankuang.equipment.authority.model.OrgDept">
+        update el_organization_department_mapping
+        <set>
+            <if test="departmentId != null and departmentId != '' ">
+                department_id = #{departmentId},
+            </if>
+            <if test="organizationId != null and organizationId != '' ">
+                organization_id = #{organizationId},
+            </if>
+            <if test="updateBy != null and updateBy != '' ">
+                update_by = #{updateBy},
+            </if>
+            update_at = unix_timestamp(now())
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
 
-  <select id="count" parameterType="map" resultType="long">
-    SELECT count(1)
-    FROM el_organization_department_mapping
-    WHERE
-    1 = 1
-    <if test="id != null" >
-      id,
-    </if>
-    <if test="departmentId != null" >
-      department_id,
-    </if>
-    <if test="organizationId != null" >
-      organization_id,
-    </if>
-    <if test="createBy != null" >
-      create_by,
-    </if>
-    <if test="updateAt != null" >
-      update_at,
-    </if>
-    <if test="updateBy != null" >
-      update_by,
-    </if>
-    <if test="createAt != null" >
-      create_at,
-    </if>
-    <if test="version != null" >
-      version,
-    </if>
-    AND status != 99
-  </select>
+    <select id="findByOrgId" parameterType="Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM yankuang_equipment.el_organization_department_mapping
+        WHERE status != 99
+        and organization_id = #{orgId}
+    </select>
 
-  <resultMap id="getDepartmentId" type="Long" >
-    <result column="department_id" property="departmentId" jdbcType="BIGINT" />
-  </resultMap>
+    <select id="findByOrgIdAndDeptId" parameterType="Map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM yankuang_equipment.el_organization_department_mapping
+        WHERE status != 99
+        and organization_id = #{orgId}
+        and department_id = #{deptId}
+    </select>
 
-  <select id="findDeptId" parameterType="Long" resultMap="getDepartmentId">
-    SELECT department_id
-    FROM el_organization_department_mapping
-    WHERE organization_id = #{organizationId}
-    AND status != 99
-    ORDER BY create_at
-  </select>
 </mapper>
