@@ -24,6 +24,8 @@ public class ElPlan implements Serializable {
     @NotNull(message = "提出单位不得为空")
     private String planPosition;
 
+    private String planPositionName;
+
     private String planRemarks;
 
     private String planOpinion;

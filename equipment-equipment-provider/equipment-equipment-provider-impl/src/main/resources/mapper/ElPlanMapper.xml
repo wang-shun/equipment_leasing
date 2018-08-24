@@ -8,6 +8,7 @@
         <result column="plan_month" property="planMonth" jdbcType="VARCHAR" />
         <result column="plan_quarter" property="planQuarter" jdbcType="VARCHAR" />
         <result column="plan_position" property="planPosition" jdbcType="VARCHAR" />
+        <result column="plan_position_name" property="planPositionName" jdbcType="VARCHAR" />
         <result column="plan_remarks" property="planRemarks" jdbcType="VARCHAR" />
         <result column="plan_opinion" property="planOpinion" jdbcType="VARCHAR" />
         <result column="plan_creator_id" property="planCreatorId" jdbcType="VARCHAR" />
@@ -274,7 +275,8 @@
         e1.plan_year AS plan_year,
         e1.plan_month AS plan_month,
         e1.plan_quarter AS plan_quarter,
-        e2.name AS plan_position,
+        e1.plan_position AS plan_position,
+        e2.name AS plan_position_name,
         e1.plan_remarks AS plan_remarks,
         e1.plan_opinion AS plan_opinion,
         e1.plan_creator_id AS plan_creator_id,
@@ -297,10 +299,10 @@
         left join el_organization e2 on e2.id = e1.plan_position
         <where>
             1 = 1 AND plan_is_del = 0
-            <if test="planYear != null" >
+            <if test="planYear != null and planYear != ''" >
                 AND plan_year = #{planYear}
             </if>
-            <if test="planMonth != null" >
+            <if test="planMonth != null and planMonth != ''" >
                 AND plan_month = #{planMonth}
             </if>
             <if test="planPosition != null and planPosition != '' " >
