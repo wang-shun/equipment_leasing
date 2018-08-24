@@ -300,6 +300,40 @@ public class ReportExcelController {
         outputStream.close();
     }
 
+    /**
+     * 综机折旧修理费月报（汇总）月度明细
+     * @param request
+     * @param response
+     * @throws IOException
+     */
+    @GetMapping("comprehensiveMachineryDRCostMonthly")
+    public void ComprehensiveMachineryDRCostMonthly( HttpServletRequest request, HttpServletResponse response )throws IOException{
+
+        List<ComprehensiveMachineryDRCostMonthly> list = new ArrayList<>();
+        for (int i = 0 ; i<6 ; i++) {
+            //组装测试数据
+            ComprehensiveMachineryDRCostMonthly comprehensiveMachineryDRCostMonthly = new ComprehensiveMachineryDRCostMonthly();
+            comprehensiveMachineryDRCostMonthly.setOrg_name("石拉乌素");
+            comprehensiveMachineryDRCostMonthly.setCoal_annual_plan_indicator(310.9626);
+            comprehensiveMachineryDRCostMonthly.setYh_annual_plan_indicator(341.5833);
+            comprehensiveMachineryDRCostMonthly.setFirst_half_indicator(880.1766);
+            comprehensiveMachineryDRCostMonthly.setFirst_half_hy_predictor(1050.5463);
+            comprehensiveMachineryDRCostMonthly.setOnetosix_real_income(876.3456);
+            comprehensiveMachineryDRCostMonthly.setOnetofive_real_income(896.4751);
+            comprehensiveMachineryDRCostMonthly.setSix_real_income(456.1234);
+            list.add(comprehensiveMachineryDRCostMonthly);
+        }
+
+        ExcelUtil reportExcel = new ExcelUtil();
+        HSSFWorkbook wb = reportExcel.comprehensiveMachineryDRCostMonthly(list);
+        response.setContentType("application/vnd.ms-excel");
+        response.addHeader("Content-Disposition", "attachment;filename="+ java.net.URLEncoder.encode("综机折旧修理费月报（汇总）月度明细", "UTF-8")+".xls");
+        OutputStream outputStream = response.getOutputStream();
+        wb.write(outputStream);
+        outputStream.flush();
+        outputStream.close();
+    }
+
 
 
 }

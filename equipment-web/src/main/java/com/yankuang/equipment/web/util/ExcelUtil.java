@@ -1036,6 +1036,7 @@ public class ExcelUtil {
         String[] headnum0 = { "0,0,0,10", "0,0,0,10","0,0,0,10","0,0,0,10","0,0,0,10","0,0,0,10","0,0,0,10","0,0,0,10","0,0,0,10","0,0,0,10","0,0,0,10"};
 
         //第二行表头字段
+        // 这边需要进行判断（综机设备停用交接单也可用）
         String[] excelHeader1 = {  "综机设备使用交接单", "", "", "","","","","", "", "", ""};
         String[] headnum1 = { "1,1,0,10", "1,1,0,10","1,1,0,10","1,1,0,10","1,1,0,10","1,1,0,10","1,1,0,10","1,1,0,10","1,1,0,10","1,1,0,10","1,1,0,10"};
 
@@ -1297,6 +1298,7 @@ public class ExcelUtil {
     public HSSFWorkbook comprehensiveDepreciationRCostCollect(List<ComprehensiveDepreciationRCostCollect> list) {
 
         //第一行表头字段，合并单元格时字段跨几列就将该字段重复几次
+        //此处的标题需要进行判断，进行多次复用（煤业综机折旧修理费、东华综机折旧修理费、皆可用）
         String[] excelHeader0 = {  "2018年综机折旧修理费汇总表", "", "", "", "", "", "", "", "", "", "", "", "", "", ""};
         String[] headnum0 = { "0,0,0,14", "0,0,0,14","0,0,0,14","0,0,0,14","0,0,0,14","0,0,0,14","0,0,0,14","0,0,0,14","0,0,0,14","0,0,0,14","0,0,0,14","0,0,0,14","0,0,0,14","0,0,0,14","0,0,0,14"};
 
@@ -1530,7 +1532,6 @@ public class ExcelUtil {
             subTotal12 = subTotal12.add(b12);
             dec = subTotal12.doubleValue();
 
-
         }
 
         //倒数第6行
@@ -1543,7 +1544,7 @@ public class ExcelUtil {
         row.setHeightInPoints(20);//设置行高
         this.first02(row,sheet,style2,excelHeader3,headnum3);
 
-                BigDecimal total2 = new BigDecimal(0);
+        BigDecimal total2 = new BigDecimal(0);
         Double totalxiaoji2 = new Double(0);
         for (int i = 0; i < list.size(); i++) {
 
@@ -1639,7 +1640,6 @@ public class ExcelUtil {
         int c = a+11;
         String[] headnum4 = { c+","+c+",0,0",c+","+c+",1,1", c+","+c+",2,2", c+","+c+",3,3", c+","+c+",4,4",c+","+c+",5,5",c+","+c+",6,6",c+","+c+",7,7",c+","+c+",8,8",c+","+c+",9,9",c+","+c+",10,10",c+","+c+",11,11",c+","+c+",12,12",c+","+c+",13,13",c+","+c+",14,14"};
 
-
         // 倒数第2行
         row = sheet.createRow(list.size()+11);
         row.setHeightInPoints(20);//设置行高
@@ -1650,11 +1650,308 @@ public class ExcelUtil {
         int d = a+12;
         String[] headnum5 = { d+","+d+",0,0",d+","+d+",1,1", d+","+d+",2,2", d+","+d+",3,3", d+","+d+",4,4",d+","+d+",5,5",d+","+d+",6,6",d+","+d+",7,7",d+","+d+",8,8",d+","+d+",9,9",d+","+d+",10,10",d+","+d+",11,11",d+","+d+",12,12",d+","+d+",13,13",d+","+d+",14,14"};
 
-
         // 倒数第2行
         row = sheet.createRow(list.size()+12);
         row.setHeightInPoints(20);//设置行高
         this.first02(row,sheet,style2,excelHeader5,headnum5);
+
+        return wb;
+    }
+
+    /**
+     * 功能 :获取表单导出数据
+     * 表名：2018年综机折旧修理费汇总表
+     */
+    public HSSFWorkbook comprehensiveMachineryDRCostMonthly(List<ComprehensiveMachineryDRCostMonthly> list) {
+
+        //第一行表头字段，合并单元格时字段跨几列就将该字段重复几次
+        //此处的标题需要进行判断，进行多次复用（煤业综机折旧修理费、东华综机折旧修理费、皆可用）
+        String[] excelHeader0 = {  "2018年综机折旧修理费月报（汇总）---6月份", "", "", "", "", "", "", "", ""};
+        String[] headnum0 = { "0,0,0,8", "0,0,0,8","0,0,0,8","0,0,0,8","0,0,0,8","0,0,0,8","0,0,0,8","0,0,0,8","0,0,0,8"};
+
+        //第二行表头字段
+        String[] excelHeader1 = {  "", "", "", "","","","","", "2018.6.16"};
+        String[] headnum1 = { "1,1,0,0", "1,1,1,1","1,1,2,2","1,1,3,3","1,1,4,4","1,1,5,5","1,1,6,6","1,1,7,7","1,1,8,8"};
+
+        //第二行表头字段
+        String[] excelHeader2 = {  "序号", "矿别", "上报煤业版 年度计划指标（万元）", "HY版 年度计划指标（万元）","上半年指标 按煤业版的一半（万元）","上半年 HY预测指标（万元）","1-6月实收（万元）","1-5月份实收", "6月实收（万元）"};
+        String[] headnum2 = { "2,2,0,0", "2,2,1,1","2,2,2,2","2,2,3,3","2,2,4,4","2,2,5,5","2,2,6,6","2,2,7,7","2,2,8,8"};
+
+//        第三行表头字段
+//        String[] excelHeader2 = { "","", "1月", "2月", "3月", "4月","5月","6月","7月","8月", "9月", "10月","11月","12月","合计"};
+//        String[] headnum2 = { "2,2,2,2", "2,2,3,3","2,2,4,4","2,2,5,5","2,2,6,6","2,2,7,7","2,2,8,8","2,2,9,9","2,2,10,10","2,2,11,11","2,2,12,12","2,2,13,13","2,2,14,14"};
+
+        // 声明一个工作簿
+        HSSFWorkbook wb = new HSSFWorkbook();
+        // 生成一个表格
+        HSSFSheet sheet = wb.createSheet("综机折旧修理费月报（汇总）月度明细");
+
+        // 生成一种样式
+        HSSFCellStyle style = wb.createCellStyle();
+        // 设置样式
+        style.setBorderBottom(HSSFCellStyle.BORDER_THIN);//下边框
+        style.setBorderLeft(HSSFCellStyle.BORDER_THIN);//左边框
+        style.setBorderRight(HSSFCellStyle.BORDER_THIN);//右边框
+        style.setBorderTop(HSSFCellStyle.BORDER_THIN);//上边框
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+
+        // 生成一种字体
+        HSSFFont font = wb.createFont();
+        // 设置字体
+        font.setFontName("微软雅黑");
+        // 设置字体大小
+        font.setFontHeightInPoints((short) 12);
+        // 字体加粗
+        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        // 在样式中引用这种字体
+        style.setFont(font);
+
+        // 生成并设置另一个样式
+        HSSFCellStyle style2 = wb.createCellStyle();
+        style2.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+        style2.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+        style2.setBorderRight(HSSFCellStyle.BORDER_THIN);
+        style2.setBorderTop(HSSFCellStyle.BORDER_THIN);
+        style2.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        style2.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+
+        // 生成并设置另一个样式
+        HSSFCellStyle style3 = wb.createCellStyle();
+        style3.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+        style3.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+        style3.setBorderRight(HSSFCellStyle.BORDER_THIN);
+        style3.setBorderTop(HSSFCellStyle.BORDER_THIN);
+        style3.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        style3.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+        style3.setWrapText(true);
+
+        // 生成并设置另一个样式
+        HSSFCellStyle style4 = wb.createCellStyle();
+        style4.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+        style4.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+        style4.setBorderRight(HSSFCellStyle.BORDER_THIN);
+        style4.setBorderTop(HSSFCellStyle.BORDER_THIN);
+        style4.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+        style4.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+
+        // 生成一种字体
+        HSSFFont font2 = wb.createFont();
+        // 设置字体
+        font2.setFontName("微软雅黑");
+        // 设置字体大小
+        font2.setFontHeightInPoints((short) 12);
+        // 字体加粗
+        font2.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        // 在样式中引用这种字体
+        style3.setFont(font);
+
+        // 第一行表头
+        HSSFRow row = sheet.createRow(0);
+        row.setHeightInPoints(30);//设置行高
+        this.first02(row,sheet,style,excelHeader0,headnum0);
+
+        // 第二行表头
+        row = sheet.createRow(1);
+        row.setHeightInPoints(30);//设置行高
+        this.first02(row,sheet,style,excelHeader1,headnum1);
+
+        // 第三行表头
+        row = sheet.createRow(2);
+        row.setHeightInPoints(40);//设置行高
+        this.first02(row,sheet,style3,excelHeader2,headnum2);
+
+        // 第五行数据
+        for (int i = 0; i < list.size(); i++) {
+
+            row = sheet.createRow(i + 3);
+            row.setHeightInPoints(30);//设置行高
+            ComprehensiveMachineryDRCostMonthly report = list.get(i);
+
+            // 导入对应列的数据
+            HSSFCell cell = row.createCell(0);
+            cell.setCellValue(i+1);
+            cell.setCellStyle(style2);
+
+            HSSFCell cell1 = row.createCell(1);
+            cell1.setCellValue(report.getOrg_name());
+            cell1.setCellStyle(style2);
+
+            HSSFCell cell2 = row.createCell(2);
+            cell2.setCellValue(report.getCoal_annual_plan_indicator());
+            cell2.setCellStyle(style2);
+
+            HSSFCell cell3 = row.createCell(3);
+            cell3.setCellValue(report.getYh_annual_plan_indicator());
+            cell3.setCellStyle(style2);
+
+            HSSFCell cell4 = row.createCell(4);
+            cell4.setCellValue(report.getFirst_half_indicator());
+            cell4.setCellStyle(style2);
+
+            HSSFCell cell5 = row.createCell(5);
+            cell5.setCellValue(report.getFirst_half_hy_predictor());
+            cell5.setCellStyle(style2);
+
+            HSSFCell cell6 = row.createCell(6);
+            cell6.setCellValue(report.getOnetosix_real_income());
+            cell6.setCellStyle(style2);
+
+            HSSFCell cell7 = row.createCell(7);
+            cell7.setCellValue(report.getOnetofive_real_income());
+            cell7.setCellStyle(style2);
+
+            HSSFCell cel8 = row.createCell(8);
+            cel8.setCellValue(report.getSix_real_income());
+            cel8.setCellStyle(style2);
+
+        }
+
+        //合计（计算 倒数第二行数据）
+        BigDecimal subTotal1 = new BigDecimal(0);
+        BigDecimal subTotal2 = new BigDecimal(0);
+        BigDecimal subTotal3 = new BigDecimal(0);
+        BigDecimal subTotal4 = new BigDecimal(0);
+        BigDecimal subTotal5 = new BigDecimal(0);
+        BigDecimal subTotal6 = new BigDecimal(0);
+        BigDecimal subTotal7 = new BigDecimal(0);
+
+        Double coal_annual_plan_indicator = new Double(0);
+        Double yh_annual_plan_indicator = new Double(0);
+        Double first_half_indicator = new Double(0);
+        Double first_half_hy_predictor = new Double(0);
+        Double onetosix_real_income = new Double(0);
+        Double onetofive_real_income = new Double(0);
+        Double six_real_income = new Double(0);
+
+
+        for (int i = 0; i < list.size(); i++) {
+
+            ComprehensiveMachineryDRCostMonthly report = list.get(i);
+
+            BigDecimal b1 = new BigDecimal(Double.toString(report.getCoal_annual_plan_indicator()));
+            subTotal1 = subTotal1.add(b1);
+            coal_annual_plan_indicator = subTotal1.doubleValue();
+
+            BigDecimal b2 = new BigDecimal(Double.toString(report.getYh_annual_plan_indicator()));
+            subTotal2 = subTotal2.add(b2);
+            yh_annual_plan_indicator = subTotal2.doubleValue();
+
+            BigDecimal b3 = new BigDecimal(Double.toString(report.getFirst_half_indicator()));
+            subTotal3 = subTotal3.add(b3);
+            first_half_indicator = subTotal3.doubleValue();
+
+            BigDecimal b4 = new BigDecimal(Double.toString(report.getFirst_half_hy_predictor()));
+            subTotal4 = subTotal4.add(b4);
+            first_half_hy_predictor = subTotal4.doubleValue();
+
+            BigDecimal b5 = new BigDecimal(Double.toString(report.getOnetosix_real_income()));
+            subTotal5 = subTotal5.add(b5);
+            onetosix_real_income = subTotal5.doubleValue();
+
+            BigDecimal b6 = new BigDecimal(Double.toString(report.getOnetofive_real_income()));
+            subTotal6 = subTotal6.add(b6);
+            onetofive_real_income = subTotal6.doubleValue();
+
+            BigDecimal b7 = new BigDecimal(Double.toString(report.getSix_real_income()));
+            subTotal7 = subTotal7.add(b7);
+            six_real_income = subTotal7.doubleValue();
+
+        }
+
+        //倒数第6行
+        String[] excelHeader3 = {  "", "小计",  coal_annual_plan_indicator+"", yh_annual_plan_indicator+"", first_half_indicator+"", first_half_hy_predictor+"",onetosix_real_income+"",onetofive_real_income+"",six_real_income+""};
+        int a = list.size();
+        int b = a+3;
+        String[] headnum3 = { b+","+b+",0,0",b+","+b+",1,1", b+","+b+",2,2", b+","+b+",3,3", b+","+b+",4,4",b+","+b+",5,5",b+","+b+",6,6",b+","+b+",7,7",b+","+b+",8,8"};
+        // 倒数第6行
+        row = sheet.createRow(list.size()+3);
+        row.setHeightInPoints(20);//设置行高
+        this.first02(row,sheet,style2,excelHeader3,headnum3);
+
+        for (int i = 0; i < list.size(); i++) {
+
+            row = sheet.createRow(i + 11);
+            row.setHeightInPoints(30);//设置行高
+            ComprehensiveMachineryDRCostMonthly report = list.get(i);
+
+            // 导入对应列的数据
+            HSSFCell cell = row.createCell(0);
+            cell.setCellValue(i+1);
+            cell.setCellStyle(style2);
+
+            HSSFCell cell1 = row.createCell(1);
+            cell1.setCellValue(report.getOrg_name());
+            cell1.setCellStyle(style2);
+
+            HSSFCell cell2 = row.createCell(2);
+            cell2.setCellValue(report.getCoal_annual_plan_indicator());
+            cell2.setCellStyle(style2);
+
+            HSSFCell cell3 = row.createCell(3);
+            cell3.setCellValue(report.getYh_annual_plan_indicator());
+            cell3.setCellStyle(style2);
+
+            HSSFCell cell4 = row.createCell(4);
+            cell4.setCellValue(report.getFirst_half_indicator());
+            cell4.setCellStyle(style2);
+
+            HSSFCell cell5 = row.createCell(5);
+            cell5.setCellValue(report.getFirst_half_hy_predictor());
+            cell5.setCellStyle(style2);
+
+            HSSFCell cell6 = row.createCell(6);
+            cell6.setCellValue(report.getOnetosix_real_income());
+            cell6.setCellStyle(style2);
+
+            HSSFCell cell7 = row.createCell(7);
+            cell7.setCellValue(report.getOnetofive_real_income());
+            cell7.setCellStyle(style2);
+
+            HSSFCell cel8 = row.createCell(8);
+            cel8.setCellValue(report.getSix_real_income());
+            cel8.setCellStyle(style2);
+
+        }
+
+        //倒数第4行
+        String[] excelHeader4 = {  "", "小计",  coal_annual_plan_indicator+"", yh_annual_plan_indicator+"", first_half_indicator+"", first_half_hy_predictor+"",onetosix_real_income+"",onetofive_real_income+"",six_real_income+""};
+        int c = a+11;
+        String[] headnum4 = { c+","+c+",0,0",c+","+c+",1,1", c+","+c+",2,2", c+","+c+",3,3", c+","+c+",4,4",c+","+c+",5,5",c+","+c+",6,6",c+","+c+",7,7",c+","+c+",8,8"};
+
+        // 倒数第4行
+        row = sheet.createRow(list.size()+11);
+        row.setHeightInPoints(20);//设置行高
+        this.first02(row,sheet,style2,excelHeader4,headnum4);
+
+        //倒数第3行
+        String[] excelHeader5 = {  "", "累计",  coal_annual_plan_indicator+coal_annual_plan_indicator+"", yh_annual_plan_indicator+yh_annual_plan_indicator+"", first_half_indicator+first_half_indicator+"", first_half_hy_predictor+first_half_hy_predictor+"",onetosix_real_income+onetosix_real_income+"",onetofive_real_income+onetofive_real_income+"",six_real_income+six_real_income+""};
+        int d = a+12;
+        String[] headnum5 = { d+","+d+",0,0",d+","+d+",1,1", d+","+d+",2,2", d+","+d+",3,3", d+","+d+",4,4",d+","+d+",5,5",d+","+d+",6,6",d+","+d+",7,7",d+","+d+",8,8",d+","+d+",9,9",d+","+d+",10,10",d+","+d+",11,11",d+","+d+",12,12",d+","+d+",13,13",d+","+d+",14,14"};
+
+        // 倒数第3行
+        row = sheet.createRow(list.size()+12);
+        row.setHeightInPoints(20);//设置行高
+        this.first02(row,sheet,style2,excelHeader5,headnum5);
+
+        //倒数第2行
+        String[] excelHeader6 = {  "注:1、石拉乌素、龙凤矿本月直接收取上半年全部租赁费、全部入1180账户", "",  "", "", "", "","","","","",""};
+        int e = a+13;
+        String[] headnum6 = { e+","+e+",0,8",e+","+e+",0,8",e+","+e+",0,8",e+","+e+",0,8",e+","+e+",0,8",e+","+e+",0,8",e+","+e+",0,8",e+","+e+",0,8",e+","+e+",0,8"};
+        // 倒数第2行
+        row = sheet.createRow(list.size()+13);
+        row.setHeightInPoints(20);//设置行高
+        this.last_column(list,row,sheet,style4,excelHeader6,headnum6);
+
+        //倒数第1行
+        String[] excelHeader7 = {  "   2、安源矿本月直接收取上半年全部租赁费，全入1730账户", "",  "", "", "", "","","","","",""};
+        int f = a+14;
+        String[] headnum7 = { f+","+f+",0,8",f+","+f+",0,8",f+","+f+",0,8",f+","+f+",0,8",f+","+f+",0,8",f+","+f+",0,8",f+","+f+",0,8",f+","+f+",0,8",f+","+f+",0,8"};
+        // 倒数第1行
+        row = sheet.createRow(list.size()+14);
+        row.setHeightInPoints(20);//设置行高
+        this.last_column(list,row,sheet,style4,excelHeader7,headnum7);
+
 
         return wb;
     }
