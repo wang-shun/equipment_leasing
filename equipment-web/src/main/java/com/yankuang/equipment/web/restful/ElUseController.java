@@ -14,6 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author boms
+ * @time 20180823
+ */
 @RestController
 @RequestMapping("/v1/elUses")
 public class ElUseController {
@@ -220,7 +224,7 @@ public class ElUseController {
     }
 
     /**
-     * @method 申请成功
+     * 申请成功
      * @param jsonString
      * @return
      */
@@ -259,7 +263,7 @@ public class ElUseController {
     }
 
     /**
-     * @method 退租添加记录功能
+     * 退租添加记录功能
      * @param jsonString
      * @return
      */
@@ -280,27 +284,27 @@ public class ElUseController {
     }
 
     /**
-     * @method 分页查询退租记录
+     * 分页查询退租记录
      * @param page
      * @param size
      * @return
      */
     @GetMapping("/findListTz")
-    CommonResponse findListByPageTz(@RequestParam Integer page,
-                                  @RequestParam Integer size){
+    CommonResponse findListByPageTz(@RequestParam(defaultValue = "1") Integer page,
+                                  @RequestParam(defaultValue = "20") Integer size){
         Map elUseMap = new HashMap();
         return CommonResponse.ok(elUseService.listTz(page, size, elUseMap));
     }
 
     /**
-     * @method 退租明细表分页查询功能
+     * 退租明细表分页查询功能
      * @param page
      * @param size
      * @return
      */
     @GetMapping("/elUseItemTz")
-    CommonResponse findElUseItemByPageTz(@RequestParam Integer page,
-                                       @RequestParam Integer size){
+    CommonResponse findElUseItemByPageTz(@RequestParam(defaultValue = "1") Integer page,
+                                       @RequestParam(defaultValue = "20") Integer size){
         Map elUseItemMap = new HashMap();
         return CommonResponse.ok(elUseItemService.listTz(page,size,elUseItemMap));
     }

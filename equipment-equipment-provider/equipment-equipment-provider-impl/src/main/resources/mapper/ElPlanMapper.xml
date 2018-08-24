@@ -553,10 +553,10 @@
         <if test="planEquipmentType != null" >
             AND plan_equipment_type = #{planEquipmentType}
         </if>
-        <if test="planEquipmentType != '2'">
+        <if test='planEquipmentType == "1" '>
             AND (plan_type = #{planType} OR plan_type = "4")
         </if>
-        <if test="planEquipmentType != '1'">
+        <if test='planEquipmentType == "2" '>
             AND plan_type = #{planType}
         </if>
         <if test="planCreateTime != null" >
