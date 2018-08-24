@@ -36,6 +36,7 @@ public class ElPlan implements Serializable {
     private String planStatus;
 
     private Long planApproveTime;
+    private String approveTimeStr;
 
     private String planApproverId;
 
@@ -48,8 +49,10 @@ public class ElPlan implements Serializable {
     private Boolean planIsDel;
 
     private Long planCreateTime;
+    private String createTimeStr;
 
     private Long planUpdateTime;
+    private String updateTimeStr;
 
     private String planCode;
 

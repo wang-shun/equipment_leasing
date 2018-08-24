@@ -11,18 +11,16 @@ import java.util.List;
 @Repository
 public interface ElPlanMapper{
 
-     ElPlan findById (String planId);
+    ElPlan findById (String planId);
 
-     int delete(String planId);
+    int delete(String planId);
 
-     int insert(ElPlan elPlan);
+    int insert(ElPlan elPlan);
 
-     List<ElPlan> listByCondition(ElPlan elPlan);
+    List<ElPlan> listByCondition(ElPlan elPlan);
 
-     int update(ElPlan elPlan);
+    int update(ElPlan elPlan);
 
-    public List<ElPlan> findByCreatorId(ElPlan elPlan){
-        return sqlSession.selectList("findByCreatorId",elPlan);
-    }
+    List<ElPlan> findByCreatorId(ElPlan elPlan);
 
 }
