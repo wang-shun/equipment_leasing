@@ -1,13 +1,16 @@
 package com.yankuang.equipment.web.restful;
 
 import com.yankuang.equipment.authority.model.Dept;
+import com.yankuang.equipment.authority.model.OrgDept;
 import com.yankuang.equipment.authority.service.DeptService;
 import com.yankuang.equipment.authority.service.OrgDeptService;
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.JsonUtils;
-import com.yankuang.equipment.common.util.StringUtils;
-import com.yankuang.equipment.common.util.UuidUtils;
+import com.yankuang.equipment.web.dto.DeptDTO;
+import com.yankuang.equipment.web.dto.IdsDTO;
+import com.yankuang.equipment.web.util.CodeUtil;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -23,13 +26,13 @@ import java.util.Map;
 @RequestMapping("/v1/depts")
 public class DeptController {
     @RpcConsumer
-    private DeptService deptService;
+    DeptService deptService;
 
     @RpcConsumer
-    private OrgDeptService orgDeptService;
+    OrgDeptService orgDeptService;
 
     /**
-     * 添加部门.
+     * 添加部门,及组织部门关系.
      *
      * @param jsonString
      * @return
@@ -40,55 +43,77 @@ public class DeptController {
         if (StringUtils.isEmpty(jsonString)) {
             return CommonResponse.errorTokenMsg("参数不能为空");
         }
-        Dept dept = JsonUtils.jsonToPojo(jsonString, Dept.class);
-
-        if (dept.getName() == null || " ".equals(dept.getName())) {
+        DeptDTO dept = JsonUtils.jsonToPojo(jsonString, DeptDTO.class);
+        String deptName = dept.getName();
+        if (StringUtils.isEmpty(deptName)) {
             return CommonResponse.errorTokenMsg("部门名称不能为空");
         }
-
-        if (deptService.findByName(dept.getName()) != null) {
-            return CommonResponse.errorTokenMsg("此部门名称已存在");
+        Long orgId = dept.getOrgId();
+        if (StringUtils.isEmpty(orgId)) {
+            return CommonResponse.errorTokenMsg("组织orgId不能为空");
         }
-
-        Long level = dept.getLevel() == null ? 0 : dept.getLevel();
-        dept.setLevel(level);
-
-        String pcode = (dept.getPcode() == null || " ".equals(dept.getPcode())) ? "1" : dept.getPcode();
-        dept.setPcode(pcode);
-
-        Long sort = dept.getSorting() == null ? 1 : dept.getSorting();
-        dept.setSorting(sort);
-
-        Long version = dept.getVersion() == null ? 1 : dept.getVersion();
-        dept.setVersion(version);
-
-        dept.setCode(UuidUtils.newUuid());
-        //TODO 由于用户功能暂未开发完，先写死，后期改
+        Dept dept1 = deptService.findByName(deptName);
+        if (dept1 != null) {
+            OrgDept orgDept = new OrgDept();
+            orgDept.setDepartmentId(dept1.getId());
+            orgDept.setOrganizationId(orgId);
+            orgDept.setCode(CodeUtil.getCode());
+            orgDept.setCreateBy("admin");
+            orgDept.setUpdateBy("admin");
+            Boolean b2 = orgDeptService.create(orgDept);
+            if (!b2){
+                return CommonResponse.errorMsg("添加组织部门关系失败");
+            }
+            return CommonResponse.ok("部门添加成功");
+        }
+        dept.setCode(CodeUtil.getCode());
         dept.setCreateBy("admin");
         dept.setUpdateBy("admin");
-
-        return CommonResponse.ok(deptService.create(dept));
+        Boolean b = deptService.create(dept);
+        if (!b) {
+            return CommonResponse.errorMsg("部门添加失败");
+        }
+        Dept dept2 = deptService.findByName(deptName);
+        OrgDept orgDept = new OrgDept();
+        orgDept.setDepartmentId(dept2.getId());
+        orgDept.setOrganizationId(orgId);
+        orgDept.setCode(CodeUtil.getCode());
+        orgDept.setCreateBy("admin");
+        orgDept.setUpdateBy("admin");
+        Boolean b2 = orgDeptService.create(orgDept);
+        if (!b2){
+            return CommonResponse.errorMsg("添加组织部门关系失败");
+        }
+        return CommonResponse.ok("部门添加成功");
     }
 
     /**
-     * 根据id删除.
-     *
+     * 根据组织id和下属部门id,删除组织与下属部门关系
      * @param jsonString
      * @return
      */
     @DeleteMapping
     public CommonResponse delete(@RequestBody String jsonString) {
         if (StringUtils.isEmpty(jsonString)) {
-            return CommonResponse.errorTokenMsg("没有查询的id");
+            return CommonResponse.errorMsg("参数不能为空");
         }
-        List<Long> ids = JsonUtils.jsonToList(jsonString, Long.class);
-        for (Long id : ids) {
-            boolean idB = deptService.delete(id);
-            if (idB == false) {
-                return CommonResponse.errorTokenMsg("删除失败");
-            }
+        IdsDTO idsDTO = JsonUtils.jsonToPojo(jsonString, IdsDTO.class);
+        List<Long> deptIds = idsDTO.getIds();
+        if (deptIds == null) {
+            return CommonResponse.errorMsg("部门id列表不能为空");
         }
-        return CommonResponse.ok();
+        Long orgId = idsDTO.getId();
+        if (deptIds == null) {
+            return CommonResponse.errorMsg("组织id不能为空");
+        }
+        Map map = new HashMap();
+        map.put("orgId", orgId);
+        map.put("deptIds", deptIds);
+        boolean b = orgDeptService.deleteByOrgIdAndDeptId(map);
+        if (!b) {
+            return CommonResponse.errorTokenMsg("删除失败");
+        }
+        return CommonResponse.ok("删除成功");
     }
 
     /**
@@ -106,7 +131,7 @@ public class DeptController {
         if (dept.getId() == null || dept.getId() == 0) {
             return CommonResponse.errorTokenMsg("系统错误");
         }
-        if (dept.getName() == null || " ".equals(dept.getName())) {
+        if (dept.getName() == null || "".equals(dept.getName())) {
             return CommonResponse.errorTokenMsg("部门名称不能为空");
         }
         if (deptService.findByName(dept.getName()) != null) {
@@ -147,7 +172,7 @@ public class DeptController {
     @GetMapping
     public CommonResponse findByPage(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                      @RequestParam(value = "size", defaultValue = "20") Integer size,
-                                     @RequestParam String jsonString) {
+                                     @RequestParam(value = "jsonString", defaultValue = "") String jsonString) {
         Map map = new HashMap();
         return CommonResponse.ok(deptService.findByPage(page, size, map));
     }

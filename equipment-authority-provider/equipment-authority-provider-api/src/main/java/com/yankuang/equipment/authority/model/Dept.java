@@ -20,6 +20,7 @@ public class Dept implements Serializable {
     private String remark;
 
     private String createBy;
+
     private Object beginTime;
 
     public String getCreateBy() {

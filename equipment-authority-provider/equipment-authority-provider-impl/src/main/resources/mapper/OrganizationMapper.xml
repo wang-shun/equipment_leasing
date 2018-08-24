@@ -116,49 +116,49 @@
     FROM yankuang_equipment.el_organization
     WHERE
     1 = 1
-    <if test="name != null" >
+    <if test="name != null and name != '' " >
       AND name = #{name}
     </if>
-    <if test="pcode != null" >
+    <if test="pcode != null and pcode != '' " >
       AND pcode = #{pcode}
     </if>
-    <if test="level != null" >
+    <if test="level != null and level != '' " >
       AND level = #{level}
     </if>
-    <if test="sorting != null" >
+    <if test="sorting != null and sorting != '' " >
       AND sorting = #{sorting}
     </if>
-    <if test="remark != null" >
+    <if test="remark != null and remark != '' " >
       AND remark = #{remark}
     </if>
-    <if test="createBy != null" >
+    <if test="createBy != null and createBy != '' " >
       AND create_by = #{createBy}
     </if>
-    <if test="createAt != null" >
+    <if test="createAt != null and createAt != '' " >
       AND create_at = #{createAt}
     </if>
-    <if test="updateBy != null" >
+    <if test="updateBy != null and updateBy != '' " >
       AND update_by = #{updateBy}
     </if>
-    <if test="code != null" >
+    <if test="code != null and code != '' " >
       AND code = #{code}
     </if>
-    <if test="updateAt != null" >
+    <if test="updateAt != null and updateAt != '' " >
       AND update_at = #{updateAt}
     </if>
-    <if test="version != null" >
+    <if test="version != null and version != '' " >
       AND version = #{version}
     </if>
-    <if test="id != null">
+    <if test="id != null and id != '' ">
       AND id = #{id}
     </if>
-    <if test="status != null" >
+    <if test="status != null and status != '' " >
       AND version = #{status}
     </if>
-    <if test="typeId != null">
+    <if test="typeId != null and typeId != '' ">
       AND type_id = #{typeId}
     </if>
-    <if test="pId != null">
+    <if test="pId != null and pId != '' ">
       AND p_id = #{pId}
     </if>
     AND status != 99

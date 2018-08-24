@@ -74,7 +74,7 @@
         VALUES(#{id}, #{name}, #{code},
         #{pcode}, #{level}, #{sorting},
         #{remark}, #{createBy},unix_timestamp(now()),
-        #{updateBy}, unix_timestamp(now()), #{version},1
+        #{updateBy}, unix_timestamp(now()),0,1
         )
     </insert>
 
@@ -140,52 +140,38 @@
         AND status != 99
         ORDER BY create_at asc
     </select>
-    <select id="list" parameterType="map" resultMap="BaseResultMap">
-        SELECT <include refid="Base_Column_List"/>
-        FROM yankuang_equipment.el_department
+
+    <select id="list" parameterType="map" resultType="java.util.HashMap">
+        select o.id as orgId,o.name as orgName,d.id as deptId,d.name as deptName,
+        d.update_by as updateBy,from_unixtime(d.update_at, '%Y-%m-%d %H:%I:%S') as updateAt,
+        d.create_by as createBy,from_unixtime(d.create_at, '%Y-%m-%d %H:%I:%S') as createAt,
+        d.sorting,d.remark,d.code,d.pcode
+        from el_department d
+        left join el_organization_department_mapping od
+        on d.id = od.department_id
+        left join el_organization o
+        on o.id = od.organization_id
         WHERE
         1 = 1
-        <if test="name != null" >
-            AND name = #{name}
+        <if test="name != null and name != '' " >
+            AND d.name = #{name}
         </if>
-        <if test="code != null" >
-            AND code = #{code}
+        <if test="code != null and code != '' " >
+            AND d.code = #{code}
         </if>
-        <if test="pcode != null" >
-            AND pcode = #{pcode}
+        <if test="pcode != null and pcode != '' " >
+            AND d.pcode = #{pcode}
         </if>
-        <if test="level != null" >
-            AND level = #{level}
+        <if test="level != null and level != '' " >
+            AND d.level = #{level}
         </if>
-        <if test="sorting != null" >
-            AND sorting = #{sorting}
+        <if test="id != null and id != '' ">
+            AND d.id = #{id}
         </if>
-        <if test="remark != null" >
-            AND remark = #{remark}
-        </if>
-        <if test="createBy != null" >
-            AND create_by = #{createBy}
-        </if>
-        <if test="createAt != null" >
-            AND create_at = #{createAt}
-        </if>
-        <if test="updateBy != null" >
-            AND update_by = #{updateBy}
-        </if>
-        <if test="updateAt != null" >
-            AND update_at = #{updateAt}
-        </if>
-        <if test="version != null" >
-            AND version = #{version}
-        </if>
-        <if test="id != null">
-            AND id = #{id}
-        </if>
-        <if test="status != null" >
-            AND version = #{status}
-        </if>
-        AND status != 99
-        order by create_at desc
+        AND d.status != 99
+        and od.status != 99
+        and o.status != 99
+        order by d.create_at desc
     </select>
 
 </mapper>
