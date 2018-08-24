@@ -12,9 +12,9 @@ import java.util.Date;
 public class ElPlanUse implements Serializable {
     private Long id;
 
-    private Integer centerYear;
+    private String centerYear;
 
-    private Integer centerMonth;
+    private String centerMonth;
 
     private String planType;
 
@@ -44,7 +44,7 @@ public class ElPlanUse implements Serializable {
 
     private String equipmentType;
 
-    private Long positionId;
+    private String positionId;
 
     private String smallTypeCode;
 

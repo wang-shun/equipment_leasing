@@ -47,10 +47,10 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    public PageInfo<User> findByPage(Integer page, Integer size, Map user) {
+    public PageInfo<Map> findByPage(Integer page, Integer size, Map user) {
         PageHelper.startPage(page, size);
-        List<User> users = userMapper.list(user);
-        PageInfo<User> pageInfo = new PageInfo<User>(users);
+        List<Map> users = userMapper.list(user);
+        PageInfo<Map> pageInfo = new PageInfo<Map>(users);
         return pageInfo;
     }
 

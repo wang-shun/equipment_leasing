@@ -4,10 +4,11 @@
 <mapper namespace="com.yankuang.equipment.equipment.mapper.ElPlanMapper">
     <resultMap id="ElPlanMap" type="com.yankuang.equipment.equipment.model.ElPlan">
         <id column="plan_id" property="planId" jdbcType="VARCHAR" />
-        <result column="plan_year" property="planYear" jdbcType="INTEGER" />
-        <result column="plan_month" property="planMonth" jdbcType="INTEGER" />
-        <result column="plan_quarter" property="planQuarter" jdbcType="INTEGER" />
+        <result column="plan_year" property="planYear" jdbcType="VARCHAR" />
+        <result column="plan_month" property="planMonth" jdbcType="VARCHAR" />
+        <result column="plan_quarter" property="planQuarter" jdbcType="VARCHAR" />
         <result column="plan_position" property="planPosition" jdbcType="VARCHAR" />
+        <result column="plan_position_name" property="planPositionName" jdbcType="VARCHAR" />
         <result column="plan_remarks" property="planRemarks" jdbcType="VARCHAR" />
         <result column="plan_opinion" property="planOpinion" jdbcType="VARCHAR" />
         <result column="plan_creator_id" property="planCreatorId" jdbcType="VARCHAR" />
@@ -190,13 +191,13 @@
                 plan_id = #{planId,jdbcType=VARCHAR},
             </if>
             <if test="planYear != null" >
-                plan_year = #{planYear,jdbcType=INTEGER},
+                plan_year = #{planYear,jdbcType=VARCHAR},
             </if>
             <if test="planMonth != null" >
-                plan_month = #{planMonth,jdbcType=INTEGER},
+                plan_month = #{planMonth,jdbcType=VARCHAR},
             </if>
             <if test="planQuarter != null" >
-                plan_quarter = #{planQuarter,jdbcType=INTEGER},
+                plan_quarter = #{planQuarter,jdbcType=VARCHAR},
             </if>
             <if test="planPosition != null" >
                 plan_position = #{planPosition,jdbcType=VARCHAR},
@@ -270,35 +271,54 @@
     </select>
 
     <select id="listByCondition" parameterType="map" resultMap="ElPlanMap">
-        SELECT el_plan.plan_id AS plan_id,
-        el_plan.plan_year AS plan_year,
-        el_plan.plan_month AS plan_month,
-        el_plan.plan_quarter AS plan_quarter,
-        el_plan.plan_position AS plan_position,
-        el_plan.plan_remarks AS plan_remarks,
-        el_plan.plan_opinion AS plan_opinion,
-        el_plan.plan_creator_id AS plan_creator_id,
-        el_plan.plan_creator_name AS plan_creator_name,
-        el_plan.plan_status AS plan_status,
-        el_plan.plan_approve_time AS plan_approve_time,
-        el_plan.plan_approver_id AS plan_approver_id,
-        el_plan.plan_approver_name AS plan_approver_name,
-        el_plan.plan_equipment_type AS plan_equipment_type,
-        el_plan.plan_type AS plan_type,
-        el_plan.plan_is_del AS plan_is_del,
-        el_plan.plan_create_time AS plan_create_time,
-        el_plan.plan_update_time AS plan_update_time,
-        el_plan.plan_code AS plan_code,
-        el_plan.plan_updator_id AS plan_updator_id,
-        el_plan.plan_updator_name AS plan_updator_name,
-        el_plan.plan_sorting AS plan_sorting,
-        el_plan.plan_version AS plan_version
-        FROM el_plan
+        SELECT e1.plan_id AS plan_id,
+        e1.plan_year AS plan_year,
+        e1.plan_month AS plan_month,
+        e1.plan_quarter AS plan_quarter,
+        e1.plan_position AS plan_position,
+        e2.name AS plan_position_name,
+        e1.plan_remarks AS plan_remarks,
+        e1.plan_opinion AS plan_opinion,
+        e1.plan_creator_id AS plan_creator_id,
+        e1.plan_creator_name AS plan_creator_name,
+        e1.plan_status AS plan_status,
+        e1.plan_approve_time AS plan_approve_time,
+        e1.plan_approver_id AS plan_approver_id,
+        e1.plan_approver_name AS plan_approver_name,
+        e1.plan_equipment_type AS plan_equipment_type,
+        e1.plan_type AS plan_type,
+        e1.plan_is_del AS plan_is_del,
+        e1.plan_create_time AS plan_create_time,
+        e1.plan_update_time AS plan_update_time,
+        e1.plan_code AS plan_code,
+        e1.plan_updator_id AS plan_updator_id,
+        e1.plan_updator_name AS plan_updator_name,
+        e1.plan_sorting AS plan_sorting,
+        e1.plan_version AS plan_version
+        FROM el_plan e1
+        left join el_organization e2 on e2.id = e1.plan_position
         <where>
             1 = 1 AND plan_is_del = 0
-            <include refid="criteria"/>
+            <if test="planYear != null and planYear != ''" >
+                AND plan_year = #{planYear}
+            </if>
+            <if test="planMonth != null and planMonth != ''" >
+                AND plan_month = #{planMonth}
+            </if>
+            <if test="planPosition != null and planPosition != '' " >
+                AND plan_position = #{planPosition}
+            </if>
+            <if test="planStatus != null and planStatus != '' " >
+                AND plan_status = #{planStatus}
+            </if>
+            <if test="planEquipmentType != null and planEquipmentType != '' " >
+                AND plan_equipment_type = #{planEquipmentType}
+            </if>
+            <if test="planType != null and planType != '' " >
+                AND plan_type = #{planType}
+            </if>
         </where>
-        ORDER BY el_plan.plan_update_time DESC
+        ORDER BY e1.plan_update_time DESC
     </select>
 
     <select id="count" parameterType="map" resultType="long">

@@ -20,7 +20,7 @@ public interface UserService {
 
     User findById(Long account);
 
-    PageInfo<User> findByPage(Integer page, Integer size, Map user);
+    PageInfo<Map> findByPage(Integer page, Integer size, Map user);
 
     Boolean stop(Long id);
 

@@ -21,7 +21,7 @@ public interface UserMapper {
 
     User findById(Long account);
 
-    List<User> list(Map map);
+    List<Map> list(Map map);
 
     List<User> findAll();
 
