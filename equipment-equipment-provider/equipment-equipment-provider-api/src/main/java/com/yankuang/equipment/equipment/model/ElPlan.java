@@ -15,11 +15,11 @@ public class ElPlan implements Serializable {
     private String planId;
 
     @NotNull(message = "需求年度不得为空")
-    private Integer planYear;
+    private String planYear;
 
-    private Integer planMonth;
+    private String planMonth;
 
-    private Integer planQuarter;
+    private String planQuarter;
 
     @NotNull(message = "提出单位不得为空")
     private String planPosition;
