@@ -132,10 +132,10 @@ public class ElPlanController {
                 return CommonResponse.errorMsg("通用设备租赁计划ID不得为空");
             }
             if (StringUtils.isEmpty(elPlan.getPlanUpdatorName())) {
-                return CommonResponse.errorMsg("编辑修改人ID不得为空");
+                return CommonResponse.errorMsg("编辑修改人姓名不得为空");
             }
             if (StringUtils.isEmpty(elPlan.getPlanUpdatorId())) {
-                return CommonResponse.errorMsg("编辑修改人姓名不得为空");
+                return CommonResponse.errorMsg("编辑修改人ID不得为空");
             }
             ElPlan plan = elPlanService.findElPlanById(elPlan.getPlanId());
             if (plan == null) {
@@ -173,9 +173,16 @@ public class ElPlanController {
             if (StringUtils.isEmpty(planId)) {
                 return CommonResponse.errorMsg("租赁计划ID不得为空");
             }
-            ElPlan elPlan = elPlanService.findElPlanById(planId);
-            if (elPlan == null || !Constants.PLANSTATUS_UNCOMMITED.equals(elPlan.getPlanStatus())) {
-                return CommonResponse.errorMsg("设备租赁计划删除失败");
+            ElPlan plan = elPlanService.findElPlanById(planId);
+            if (plan == null) {
+                return CommonResponse.errorMsg("该条租赁计划已过期");
+            }
+            if (Constants.PLANSTATUS_COMMITED.equals(plan.getPlanStatus())) {
+                return CommonResponse.errorMsg("该条租赁计划已提交，不能编辑修改");
+            }
+            if (Constants.PLANSTATUS_FAILED.equals(plan.getPlanStatus())
+                    || Constants.PLANSTATUS_PASSED.equals(plan.getPlanStatus())) {
+                return CommonResponse.errorMsg("该条租赁计划已审核，不能编辑修改");
             }
             res = elPlanService.deletePlan(planId);
             if (!res) {
@@ -307,6 +314,12 @@ public class ElPlanController {
                         || Constants.PLANSTATUS_PASSED.equals(plan.getPlanStatus())
                         || Constants.PLANSTATUS_FAILED.equals(plan.getPlanStatus())) {
                     return CommonResponse.errorMsg("该条租赁计划已提交,不能重复提交");
+                }
+                if (StringUtils.isEmpty(elPlan.getPlanUpdatorName())) {
+                    return CommonResponse.errorMsg("编辑修改人姓名不得为空");
+                }
+                if (StringUtils.isEmpty(elPlan.getPlanUpdatorId())) {
+                    return CommonResponse.errorMsg("编辑修改人ID不得为空");
                 }
                 elPlan.setPlanStatus(Constants.PLANSTATUS_COMMITED);
                 elPlan.setPlanUpdateTime(new Date().getTime());
