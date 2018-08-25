@@ -334,6 +334,46 @@ public class ReportExcelController {
         outputStream.close();
     }
 
+    /**
+     * 综机折旧修理费月报（汇总）全年汇总
+     * @param request
+     * @param response
+     * @throws IOException
+     */
+    @GetMapping("comprehensiveMachineryDRCostMonthlyCollect")
+    public void ComprehensiveMachineryDRCostMonthlyCollect( HttpServletRequest request, HttpServletResponse response )throws IOException{
 
+        List<ComprehensiveMachineryDRCostMonthlyCollect> list = new ArrayList<>();
+        for (int i = 0 ; i<6 ; i++) {
+            //组装测试数据
+            ComprehensiveMachineryDRCostMonthlyCollect comprehensiveMachineryDRCostMonthlyCollect = new ComprehensiveMachineryDRCostMonthlyCollect();
+            comprehensiveMachineryDRCostMonthlyCollect.setOrg_name("兴隆");
+            comprehensiveMachineryDRCostMonthlyCollect.setAnnual_plan_indicator(33310.9626);
+            comprehensiveMachineryDRCostMonthlyCollect.setMonthly_plan_receivables(341.5833);
+            comprehensiveMachineryDRCostMonthlyCollect.setTotal_plan_receivables(880.1766);
+            comprehensiveMachineryDRCostMonthlyCollect.setJanuary_repairs_cost(1050.5463);
+            comprehensiveMachineryDRCostMonthlyCollect.setFebruary_repairs_cost(876.3456);
+            comprehensiveMachineryDRCostMonthlyCollect.setMarch_repairs_cost(896.4751);
+            comprehensiveMachineryDRCostMonthlyCollect.setApril_repairs_cost(456.1234);
+            comprehensiveMachineryDRCostMonthlyCollect.setMay_repairs_cost(456.1234);
+            comprehensiveMachineryDRCostMonthlyCollect.setJune_repairs_cost(45.1234);
+            comprehensiveMachineryDRCostMonthlyCollect.setJuly_repairs_cost(46.7234);
+            comprehensiveMachineryDRCostMonthlyCollect.setAugust_repairs_cost(56.6234);
+            comprehensiveMachineryDRCostMonthlyCollect.setSep_repairs_cost(4564.9234);
+            comprehensiveMachineryDRCostMonthlyCollect.setOct_repairs_cost(463.8234);
+            comprehensiveMachineryDRCostMonthlyCollect.setNov_repairs_cost(4562.1238);
+            comprehensiveMachineryDRCostMonthlyCollect.setDec_repairs_cost(4256.1823);
+            list.add(comprehensiveMachineryDRCostMonthlyCollect);
+        }
+
+        ExcelUtil reportExcel = new ExcelUtil();
+        HSSFWorkbook wb = reportExcel.comprehensiveMachineryDRCostMonthlyCollect(list);
+        response.setContentType("application/vnd.ms-excel");
+        response.addHeader("Content-Disposition", "attachment;filename="+ java.net.URLEncoder.encode("综机折旧修理费月报（汇总）全年汇总", "UTF-8")+".xls");
+        OutputStream outputStream = response.getOutputStream();
+        wb.write(outputStream);
+        outputStream.flush();
+        outputStream.close();
+    }
 
 }

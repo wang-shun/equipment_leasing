@@ -1660,7 +1660,7 @@ public class ExcelUtil {
 
     /**
      * 功能 :获取表单导出数据
-     * 表名：2018年综机折旧修理费汇总表
+     * 表名：综机折旧修理费月报（汇总）月度明细
      */
     public HSSFWorkbook comprehensiveMachineryDRCostMonthly(List<ComprehensiveMachineryDRCostMonthly> list) {
 
@@ -1676,10 +1676,6 @@ public class ExcelUtil {
         //第二行表头字段
         String[] excelHeader2 = {  "序号", "矿别", "上报煤业版 年度计划指标（万元）", "HY版 年度计划指标（万元）","上半年指标 按煤业版的一半（万元）","上半年 HY预测指标（万元）","1-6月实收（万元）","1-5月份实收", "6月实收（万元）"};
         String[] headnum2 = { "2,2,0,0", "2,2,1,1","2,2,2,2","2,2,3,3","2,2,4,4","2,2,5,5","2,2,6,6","2,2,7,7","2,2,8,8"};
-
-//        第三行表头字段
-//        String[] excelHeader2 = { "","", "1月", "2月", "3月", "4月","5月","6月","7月","8月", "9月", "10月","11月","12月","合计"};
-//        String[] headnum2 = { "2,2,2,2", "2,2,3,3","2,2,4,4","2,2,5,5","2,2,6,6","2,2,7,7","2,2,8,8","2,2,9,9","2,2,10,10","2,2,11,11","2,2,12,12","2,2,13,13","2,2,14,14"};
 
         // 声明一个工作簿
         HSSFWorkbook wb = new HSSFWorkbook();
@@ -1952,6 +1948,438 @@ public class ExcelUtil {
         row.setHeightInPoints(20);//设置行高
         this.last_column(list,row,sheet,style4,excelHeader7,headnum7);
 
+
+        return wb;
+    }
+
+    /**
+     * 功能 :获取表单导出数据
+     * 表名：综机折旧修理费月报（汇总）全年汇总
+     */
+    public HSSFWorkbook comprehensiveMachineryDRCostMonthlyCollect(List<ComprehensiveMachineryDRCostMonthlyCollect> list) {
+
+        //第一行表头字段，合并单元格时字段跨几列就将该字段重复几次
+        //此处的标题需要进行判断，进行多次复用（煤业综机折旧修理费、东华综机折旧修理费、皆可用）
+        String[] excelHeader0 = {  "2018年综机折旧修理费月报（汇总）---6月份", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""};
+        String[] headnum0 = { "0,0,0,18", "0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18"};
+
+        //第二行表头字段
+        String[] excelHeader1 = {  "序号", "矿别", "年度计划指标（万元）","每月计划应收（万元）","1-12月计划应收（万元）","逐月累计收费金额（万元，不含税）", "","","","","", "", "", "","","","","","合计-总计划（万元）"};
+        String[] headnum1 = { "1,2,0,0", "1,2,1,1","1,2,2,2","1,2,3,3","1,2,4,4","1,1,5,17","1,1,5,17","1,1,5,17","1,1,5,17","1,1,5,17","1,1,5,17","1,1,5,17","1,1,5,17","1,1,5,17","1,1,5,17","1,1,5,17","1,2,18,18"};
+
+        //第三行表头字段
+        String[] excelHeader2 = { "","","","","", "1月", "2月", "3月", "4月","5月","6月","7月","8月", "9月", "10月","11月","12月","合计"};
+        String[] headnum2 = { "2,2,5,5","2,2,6,6","2,2,7,7","2,2,8,8","2,2,9,9","2,2,10,10","2,2,11,11","2,2,12,12","2,2,13,13","2,2,14,14","2,2,15,15","2,2,16,16","2,2,17,17"};
+
+        // 声明一个工作簿
+        HSSFWorkbook wb = new HSSFWorkbook();
+        // 生成一个表格
+        HSSFSheet sheet = wb.createSheet("综机折旧修理费月报（汇总）全年汇总");
+
+        // 生成一种样式
+        HSSFCellStyle style = wb.createCellStyle();
+        // 设置样式
+        style.setBorderBottom(HSSFCellStyle.BORDER_THIN);//下边框
+        style.setBorderLeft(HSSFCellStyle.BORDER_THIN);//左边框
+        style.setBorderRight(HSSFCellStyle.BORDER_THIN);//右边框
+        style.setBorderTop(HSSFCellStyle.BORDER_THIN);//上边框
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+
+        // 生成一种字体
+        HSSFFont font = wb.createFont();
+        // 设置字体
+        font.setFontName("微软雅黑");
+        // 设置字体大小
+        font.setFontHeightInPoints((short) 12);
+        // 字体加粗
+        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        // 在样式中引用这种字体
+        style.setFont(font);
+
+        // 生成并设置另一个样式
+        HSSFCellStyle style2 = wb.createCellStyle();
+        style2.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+        style2.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+        style2.setBorderRight(HSSFCellStyle.BORDER_THIN);
+        style2.setBorderTop(HSSFCellStyle.BORDER_THIN);
+        style2.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        style2.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+
+        // 第一行表头
+        HSSFRow row = sheet.createRow(0);
+        row.setHeightInPoints(30);//设置行高
+        this.first02(row,sheet,style,excelHeader0,headnum0);
+
+        // 第二行表头
+        row = sheet.createRow(1);
+        row.setHeightInPoints(30);//设置行高
+        this.first02(row,sheet,style,excelHeader1,headnum1);
+
+        // 第三行表头
+        row = sheet.createRow(2);
+        row.setHeightInPoints(30);//设置行高
+        this.first02(row,sheet,style,excelHeader2,headnum2);
+
+        // 第五行数据
+        BigDecimal total = new BigDecimal(0);
+        Double totalxiaoji = new Double(0);
+        for (int i = 0; i < list.size(); i++) {
+
+            row = sheet.createRow(i + 3);
+            row.setHeightInPoints(30);//设置行高
+            ComprehensiveMachineryDRCostMonthlyCollect report = list.get(i);
+
+            // 导入对应列的数据
+            HSSFCell cell = row.createCell(0);
+            cell.setCellValue(i+1);
+            cell.setCellStyle(style2);
+
+            HSSFCell cell1 = row.createCell(1);
+            cell1.setCellValue(report.getOrg_name());
+            cell1.setCellStyle(style2);
+
+            HSSFCell cell2 = row.createCell(2);
+            cell2.setCellValue(report.getAnnual_plan_indicator());
+            cell2.setCellStyle(style2);
+
+            HSSFCell cell3 = row.createCell(3);
+            cell3.setCellValue(report.getMonthly_plan_receivables());
+            cell3.setCellStyle(style2);
+
+            HSSFCell cell4 = row.createCell(4);
+            cell4.setCellValue(report.getTotal_plan_receivables());
+            cell4.setCellStyle(style2);
+
+            HSSFCell cell5 = row.createCell(5);
+            cell5.setCellValue(report.getJanuary_repairs_cost());
+            cell5.setCellStyle(style2);
+
+            HSSFCell cell6 = row.createCell(6);
+            cell6.setCellValue(report.getFebruary_repairs_cost());
+            cell6.setCellStyle(style2);
+
+            HSSFCell cell7 = row.createCell(7);
+            cell7.setCellValue(report.getMarch_repairs_cost());
+            cell7.setCellStyle(style2);
+
+            HSSFCell cell8 = row.createCell(8);
+            cell8.setCellValue(report.getApril_repairs_cost());
+            cell8.setCellStyle(style2);
+
+            HSSFCell cell9 = row.createCell(9);
+            cell9.setCellValue(report.getMay_repairs_cost());
+            cell9.setCellStyle(style2);
+
+            HSSFCell cell10 = row.createCell(10);
+            cell10.setCellValue(report.getJune_repairs_cost());
+            cell10.setCellStyle(style2);
+
+            HSSFCell cel11 = row.createCell(11);
+            cel11.setCellValue(report.getJuly_repairs_cost());
+            cel11.setCellStyle(style2);
+
+            HSSFCell cel12 = row.createCell(12);
+            cel12.setCellValue(report.getAugust_repairs_cost());
+            cel12.setCellStyle(style2);
+
+            HSSFCell cel13 = row.createCell(13);
+            cel13.setCellValue(report.getSep_repairs_cost());
+            cel13.setCellStyle(style2);
+
+            HSSFCell cel14 = row.createCell(14);
+            cel14.setCellValue(report.getOct_repairs_cost());
+            cel14.setCellStyle(style2);
+
+            HSSFCell cel15 = row.createCell(15);
+            cel15.setCellValue(report.getNov_repairs_cost());
+            cel15.setCellStyle(style2);
+
+            HSSFCell cel16 = row.createCell(16);
+            cel16.setCellValue(report.getDec_repairs_cost());
+            cel16.setCellStyle(style2);
+
+            BigDecimal b1 = new BigDecimal(Double.toString(report.getJanuary_repairs_cost()));
+            BigDecimal b2 = new BigDecimal(Double.toString(report.getFebruary_repairs_cost()));
+            BigDecimal b3 = new BigDecimal(Double.toString(report.getMarch_repairs_cost()));
+            BigDecimal b4 = new BigDecimal(Double.toString(report.getApril_repairs_cost()));
+            BigDecimal b5 = new BigDecimal(Double.toString(report.getMay_repairs_cost()));
+            BigDecimal b6 = new BigDecimal(Double.toString(report.getJune_repairs_cost()));
+            BigDecimal b7 = new BigDecimal(Double.toString(report.getJuly_repairs_cost()));
+            BigDecimal b8 = new BigDecimal(Double.toString(report.getAugust_repairs_cost()));
+            BigDecimal b9 = new BigDecimal(Double.toString(report.getSep_repairs_cost()));
+            BigDecimal b10 = new BigDecimal(Double.toString(report.getOct_repairs_cost()));
+            BigDecimal b11 = new BigDecimal(Double.toString(report.getNov_repairs_cost()));
+            BigDecimal b12 = new BigDecimal(Double.toString(report.getDec_repairs_cost()));
+
+            double totalT = b1.add(b2).add(b3).add(b4).add(b5).add(b6).add(b7).add(b8).add(b9).add(b10).add(b11).add(b12).doubleValue();
+
+            HSSFCell cel17 = row.createCell(17);
+            cel17.setCellValue(totalT);
+            cel17.setCellStyle(style2);
+
+            BigDecimal b13 = new BigDecimal(Double.toString(totalT));
+            total  = total.add(b13);
+            totalxiaoji = total.doubleValue();//合计（所有小计合计的数）
+
+            HSSFCell cel18 = row.createCell(18);
+            BigDecimal b14 = new BigDecimal(Double.toString( report.getAnnual_plan_indicator()));
+
+            cel18.setCellValue( b13.subtract(b14).doubleValue());
+            cel18.setCellStyle(style2);
+
+        }
+
+        //小计
+        BigDecimal subTotal1 = new BigDecimal(0);
+        BigDecimal subTotal2 = new BigDecimal(0);
+        BigDecimal subTotal3 = new BigDecimal(0);
+        BigDecimal subTotal4 = new BigDecimal(0);
+        BigDecimal subTotal5 = new BigDecimal(0);
+        BigDecimal subTotal6 = new BigDecimal(0);
+        BigDecimal subTotal7 = new BigDecimal(0);
+        BigDecimal subTotal8 = new BigDecimal(0);
+        BigDecimal subTotal9 = new BigDecimal(0);
+        BigDecimal subTotal10 = new BigDecimal(0);
+        BigDecimal subTotal11 = new BigDecimal(0);
+        BigDecimal subTotal12 = new BigDecimal(0);
+        BigDecimal subTotal13 = new BigDecimal(0);
+        BigDecimal subTotal14 = new BigDecimal(0);
+        BigDecimal subTotal15 = new BigDecimal(0);
+
+        Double january = new Double(0);
+        Double february = new Double(0);
+        Double march = new Double(0);
+        Double april = new Double(0);
+        Double may = new Double(0);
+        Double june = new Double(0);
+        Double july = new Double(0);
+        Double august = new Double(0);
+        Double sep = new Double(0);
+        Double oct = new Double(0);
+        Double nov = new Double(0);
+        Double dec = new Double(0);
+        Double annual = new Double(0);
+        Double monthly = new Double(0);
+        Double totalplan = new Double(0);
+
+        for (int i = 0; i < list.size(); i++) {
+
+            ComprehensiveMachineryDRCostMonthlyCollect report = list.get(i);
+
+            BigDecimal b1 = new BigDecimal(Double.toString(report.getJanuary_repairs_cost()));
+            subTotal1 = subTotal1.add(b1);
+            january = subTotal1.doubleValue();
+
+            BigDecimal b2 = new BigDecimal(Double.toString(report.getFebruary_repairs_cost()));
+            subTotal2 = subTotal2.add(b2);
+            february = subTotal2.doubleValue();
+
+            BigDecimal b3 = new BigDecimal(Double.toString(report.getMarch_repairs_cost()));
+            subTotal3 = subTotal3.add(b3);
+            march = subTotal3.doubleValue();
+
+            BigDecimal b4 = new BigDecimal(Double.toString(report.getApril_repairs_cost()));
+            subTotal4 = subTotal4.add(b4);
+            april = subTotal4.doubleValue();
+
+            BigDecimal b5 = new BigDecimal(Double.toString(report.getMay_repairs_cost()));
+            subTotal5 = subTotal5.add(b5);
+            may = subTotal5.doubleValue();
+
+            BigDecimal b6 = new BigDecimal(Double.toString(report.getJune_repairs_cost()));
+            subTotal6 = subTotal6.add(b6);
+            june = subTotal6.doubleValue();
+
+            BigDecimal b7 = new BigDecimal(Double.toString(report.getJuly_repairs_cost()));
+            subTotal7 = subTotal7.add(b7);
+            july = subTotal7.doubleValue();
+
+            BigDecimal b8 = new BigDecimal(Double.toString(report.getAugust_repairs_cost()));
+            subTotal8 = subTotal8.add(b8);
+            august = subTotal8.doubleValue();
+
+            BigDecimal b9 = new BigDecimal(Double.toString(report.getSep_repairs_cost()));
+            subTotal9 = subTotal9.add(b9);
+            sep = subTotal9.doubleValue();
+
+            BigDecimal b10 = new BigDecimal(Double.toString(report.getOct_repairs_cost()));
+            subTotal10 = subTotal10.add(b10);
+            oct = subTotal10.doubleValue();
+
+            BigDecimal b11 = new BigDecimal(Double.toString(report.getNov_repairs_cost()));
+            subTotal11 = subTotal11.add(b11);
+            nov = subTotal11.doubleValue();
+
+            BigDecimal b12 = new BigDecimal(Double.toString(report.getDec_repairs_cost()));
+            subTotal12 = subTotal12.add(b12);
+            dec = subTotal12.doubleValue();
+
+            BigDecimal b13 = new BigDecimal(Double.toString(report.getAnnual_plan_indicator()));
+            subTotal13 = subTotal13.add(b13);
+            annual = subTotal13.doubleValue();
+
+            BigDecimal b14 = new BigDecimal(Double.toString(report.getMonthly_plan_receivables()));
+            subTotal14 = subTotal14.add(b14);
+            monthly = subTotal14.doubleValue();
+
+            BigDecimal b15 = new BigDecimal(Double.toString(report.getTotal_plan_receivables()));
+            subTotal15 = subTotal15.add(b15);
+            totalplan = subTotal15.doubleValue();
+
+        }
+        BigDecimal annual1 = new BigDecimal(annual.toString());
+        BigDecimal totalxiaoji1 = new BigDecimal(totalxiaoji.toString());
+        double total_totalplan = totalxiaoji1.subtract(annual1).doubleValue();
+        //倒数第6行
+        String[] excelHeader3 = {  "", "小计", annual+"", monthly+"", totalplan+"",  january+"", february+"", march+"", april+"",may+"",june+"",july+"",august+"",sep+"",oct+"",nov+"",dec+"",totalxiaoji+"",total_totalplan+""};
+        int a = list.size();
+        int b = a+3;
+        String[] headnum3 = { b+","+b+",0,0",b+","+b+",1,1", b+","+b+",2,2", b+","+b+",3,3", b+","+b+",4,4",b+","+b+",5,5",b+","+b+",6,6",b+","+b+",7,7",b+","+b+",8,8",b+","+b+",9,9",b+","+b+",10,10",b+","+b+",11,11",b+","+b+",12,12",b+","+b+",13,13",b+","+b+",14,14",b+","+b+",15,15",b+","+b+",16,16",b+","+b+",17,17",b+","+b+",18,18"};
+        // 倒数第6行
+        row = sheet.createRow(list.size()+3);
+        row.setHeightInPoints(20);//设置行高
+        this.first02(row,sheet,style2,excelHeader3,headnum3);
+
+        BigDecimal total2 = new BigDecimal(0);
+        Double totalxiaoji2 = new Double(0);
+        for (int i = 0; i < list.size(); i++) {
+
+            row = sheet.createRow(i + 11);
+            row.setHeightInPoints(30);//设置行高
+            ComprehensiveMachineryDRCostMonthlyCollect report = list.get(i);
+
+            // 导入对应列的数据
+            HSSFCell cell = row.createCell(0);
+            cell.setCellValue(i+1);
+            cell.setCellStyle(style2);
+
+            HSSFCell cell1 = row.createCell(1);
+            cell1.setCellValue(report.getOrg_name());
+            cell1.setCellStyle(style2);
+
+            HSSFCell cell2 = row.createCell(2);
+            cell2.setCellValue(report.getAnnual_plan_indicator());
+            cell2.setCellStyle(style2);
+
+            HSSFCell cell3 = row.createCell(3);
+            cell3.setCellValue(report.getMonthly_plan_receivables());
+            cell3.setCellStyle(style2);
+
+            HSSFCell cell4 = row.createCell(4);
+            cell4.setCellValue(report.getTotal_plan_receivables());
+            cell4.setCellStyle(style2);
+
+            HSSFCell cell5 = row.createCell(5);
+            cell5.setCellValue(report.getJanuary_repairs_cost());
+            cell5.setCellStyle(style2);
+
+            HSSFCell cell6 = row.createCell(6);
+            cell6.setCellValue(report.getFebruary_repairs_cost());
+            cell6.setCellStyle(style2);
+
+            HSSFCell cell7 = row.createCell(7);
+            cell7.setCellValue(report.getMarch_repairs_cost());
+            cell7.setCellStyle(style2);
+
+            HSSFCell cell8 = row.createCell(8);
+            cell8.setCellValue(report.getApril_repairs_cost());
+            cell8.setCellStyle(style2);
+
+            HSSFCell cell9 = row.createCell(9);
+            cell9.setCellValue(report.getMay_repairs_cost());
+            cell9.setCellStyle(style2);
+
+            HSSFCell cell10 = row.createCell(10);
+            cell10.setCellValue(report.getJune_repairs_cost());
+            cell10.setCellStyle(style2);
+
+            HSSFCell cel11 = row.createCell(11);
+            cel11.setCellValue(report.getJuly_repairs_cost());
+            cel11.setCellStyle(style2);
+
+            HSSFCell cel12 = row.createCell(12);
+            cel12.setCellValue(report.getAugust_repairs_cost());
+            cel12.setCellStyle(style2);
+
+            HSSFCell cel13 = row.createCell(13);
+            cel13.setCellValue(report.getSep_repairs_cost());
+            cel13.setCellStyle(style2);
+
+            HSSFCell cel14 = row.createCell(14);
+            cel14.setCellValue(report.getOct_repairs_cost());
+            cel14.setCellStyle(style2);
+
+            HSSFCell cel15 = row.createCell(15);
+            cel15.setCellValue(report.getNov_repairs_cost());
+            cel15.setCellStyle(style2);
+
+            HSSFCell cel16 = row.createCell(16);
+            cel16.setCellValue(report.getDec_repairs_cost());
+            cel16.setCellStyle(style2);
+
+            BigDecimal b1 = new BigDecimal(Double.toString(report.getJanuary_repairs_cost()));
+            BigDecimal b2 = new BigDecimal(Double.toString(report.getFebruary_repairs_cost()));
+            BigDecimal b3 = new BigDecimal(Double.toString(report.getMarch_repairs_cost()));
+            BigDecimal b4 = new BigDecimal(Double.toString(report.getApril_repairs_cost()));
+            BigDecimal b5 = new BigDecimal(Double.toString(report.getMay_repairs_cost()));
+            BigDecimal b6 = new BigDecimal(Double.toString(report.getJune_repairs_cost()));
+            BigDecimal b7 = new BigDecimal(Double.toString(report.getJuly_repairs_cost()));
+            BigDecimal b8 = new BigDecimal(Double.toString(report.getAugust_repairs_cost()));
+            BigDecimal b9 = new BigDecimal(Double.toString(report.getSep_repairs_cost()));
+            BigDecimal b10 = new BigDecimal(Double.toString(report.getOct_repairs_cost()));
+            BigDecimal b11 = new BigDecimal(Double.toString(report.getNov_repairs_cost()));
+            BigDecimal b12 = new BigDecimal(Double.toString(report.getDec_repairs_cost()));
+
+            double totalT = b1.add(b2).add(b3).add(b4).add(b5).add(b6).add(b7).add(b8).add(b9).add(b10).add(b11).add(b12).doubleValue();
+
+
+            HSSFCell cel17 = row.createCell(17);
+            cel17.setCellValue(totalT);
+            cel17.setCellStyle(style2);
+
+            BigDecimal b13 = new BigDecimal(Double.toString(totalT));
+            total2  = total2.add(b13);
+            totalxiaoji2 = total2.doubleValue();//合计（所有小计合计的数）
+
+            HSSFCell cel18 = row.createCell(18);
+            BigDecimal b14 = new BigDecimal(Double.toString( report.getAnnual_plan_indicator()));
+
+            cel18.setCellValue( b13.subtract(b14).doubleValue());
+            cel18.setCellStyle(style2);
+
+        }
+
+        BigDecimal annual2 = new BigDecimal(annual.toString());
+        BigDecimal totalxiaoji3 = new BigDecimal(totalxiaoji2.toString());
+        double total_totalplan2 = totalxiaoji3.subtract(annual2).doubleValue();//合计-总计划（万元）
+        //倒数第6行
+        String[] excelHeader4 = {  "", "小计", annual+"", monthly+"", totalplan+"",  january+"", february+"", march+"", april+"",may+"",june+"",july+"",august+"",sep+"",oct+"",nov+"",dec+"",totalxiaoji2+"",total_totalplan2+""};
+        int c = a+11;
+        String[] headnum4 = { c+","+c+",0,0",c+","+c+",1,1", c+","+c+",2,2", c+","+c+",3,3", c+","+c+",4,4",c+","+c+",5,5",c+","+c+",6,6",c+","+c+",7,7",c+","+c+",8,8",c+","+c+",9,9",c+","+c+",10,10",c+","+c+",11,11",c+","+c+",12,12",c+","+c+",13,13",c+","+c+",14,14",c+","+c+",15,15",c+","+c+",16,16",c+","+c+",17,17",c+","+c+",18,18"};
+
+        // 倒数第2行
+        row = sheet.createRow(list.size()+11);
+        row.setHeightInPoints(20);//设置行高
+        this.first02(row,sheet,style2,excelHeader4,headnum4);
+
+
+        BigDecimal annual3 = new BigDecimal(annual.toString());
+        double totalxiaoji4 = annual3.add(annual3).doubleValue();
+        BigDecimal total_totalplan4 = new BigDecimal(totalxiaoji2.toString());
+        double total_totalplan5 = total_totalplan4.add(total_totalplan4).doubleValue();
+        BigDecimal total_totalplan6 = new BigDecimal(total_totalplan5);
+        BigDecimal totalxiaoji5 = new BigDecimal(totalxiaoji4);
+        double total_totalplan7 = totalxiaoji5.subtract(total_totalplan6).doubleValue();//合计-总计划（万元）
+        //倒数第2行
+        String[] excelHeader5 = {  "", "累计", annual+annual+"", monthly+monthly+"", totalplan+totalplan+"", january+january+"", february+february+"", march+march+"", april+april+"",may+may+"",june+june+"",july+july+"",august+august+"",sep+sep+"",oct+oct+"",nov+nov+"",dec+dec+"",totalxiaoji2+totalxiaoji2+"",total_totalplan7+""};
+        int d = a+12;
+        String[] headnum5 = { d+","+d+",0,0",d+","+d+",1,1", d+","+d+",2,2", d+","+d+",3,3", d+","+d+",4,4",d+","+d+",5,5",d+","+d+",6,6",d+","+d+",7,7",d+","+d+",8,8",d+","+d+",9,9",d+","+d+",10,10",d+","+d+",11,11",d+","+d+",12,12",d+","+d+",13,13",d+","+d+",14,14",d+","+d+",15,15",d+","+d+",16,16",d+","+d+",17,17",d+","+d+",18,18"};
+
+        // 倒数第2行
+        row = sheet.createRow(list.size()+12);
+        row.setHeightInPoints(20);//设置行高
+        this.first02(row,sheet,style2,excelHeader5,headnum5);
 
         return wb;
     }
