@@ -154,14 +154,13 @@
     </update>
 
     <select id="findByUseId" parameterType="Long" resultMap="BaseResultMap">
-        SELECT t1.*,org.name AS name,sb.name AS sbName,
+        SELECT t1.*,org.name as name,sb.name AS sbName
         FROM el_use_item t1
         LEFT JOIN el_organization org
         ON t1.equipment_position = org.code
         LEFT JOIN sb_position sb
         ON t1.equipment_effect = sb.code
         WHERE t1.use_id = #{useId,jdbcType=BIGINT}
-        AND t1.is_use = #{isUse,jdbcType=TINYINT}
         AND org.status != 99
         AND sb.status != 99
         AND t1.status != 99
