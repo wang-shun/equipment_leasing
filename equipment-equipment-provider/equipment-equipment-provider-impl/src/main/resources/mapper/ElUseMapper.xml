@@ -22,6 +22,7 @@
         <result column="version" property="version" jdbcType="VARCHAR" />
         <result column="remarks" property="remarks" jdbcType="VARCHAR" />
         <result column="is_use" property="isUse" jdbcType="TINYINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List" >
@@ -111,10 +112,14 @@
     </update>
 
     <select id="select" parameterType="Long" resultMap="BaseResultMap">
-        SELECT <include refid="Base_Column_List"/>
-        FROM el_use
-        WHERE id = #{id,jdbcType=BIGINT}
-        AND is_use = #{isUse,jdbcType=TINYINT}
+        SELECT t1.id, t1.approve_code, t1.code, t1.sorting, t1.is_del, t1.status, t1.use_by, DATE_FORMAT(t1.use_at,'%Y-%m-%e %H:%i:%s') as use_at, t1.use_position, t1.use_equipment_type,
+        t1.approve_by, DATE_FORMAT(t1.approve_at,'%Y-%m-%e %H:%i:%s') as approve_at, t1.approve_opinion, t1.create_by, DATE_FORMAT(t1.create_at,'%Y-%m-%e %H:%i:%s') as create_at, t1.update_by, DATE_FORMAT(t1.update_at,'%Y-%m-%e %H:%i:%s') as update_at,
+        t1.version, t1.remarks, t1.is_use,org.name AS name
+        FROM el_use t1
+        LEFT JOIN el_organization org
+        ON t1.use_position = org.code
+        WHERE t1.id = #{id,jdbcType=BIGINT}
+        AND org.status != 99
     </select>
 
     <update id="delete" parameterType="Long">
@@ -124,8 +129,12 @@
     </update>
 
     <select id="list" parameterType="map" resultMap="BaseResultMap">
-        SELECT <include refid="Base_Column_List"/>
-        FROM el_use
+        SELECT t1.id, t1.approve_code, t1.code, t1.sorting, t1.is_del, t1.status, t1.use_by, DATE_FORMAT(t1.use_at,'%Y-%m-%e %H:%i:%s') as use_at, t1.use_position, t1.use_equipment_type,
+        t1.approve_by, DATE_FORMAT(t1.approve_at,'%Y-%m-%e %H:%i:%s') as approve_at, t1.approve_opinion, t1.create_by, DATE_FORMAT(t1.create_at,'%Y-%m-%e %H:%i:%s') as create_at, t1.update_by, DATE_FORMAT(t1.update_at,'%Y-%m-%e %H:%i:%s') as update_at,
+        t1.version, t1.remarks, t1.is_use,org.name AS name
+        FROM el_use t1
+        LEFT JOIN el_organization org
+        ON t1.use_position = org.code
         WHERE 1=1
         <if test="approveCode != null" >
             AND approve_code = #{approveCode,jdbcType=VARCHAR}
@@ -183,6 +192,7 @@
         </if>
         AND is_del != 99
         AND is_use = #{isUse,jdbcType=TINYINT}
+        AND org.status != 99
         ORDER BY create_at DESC
     </select>
 

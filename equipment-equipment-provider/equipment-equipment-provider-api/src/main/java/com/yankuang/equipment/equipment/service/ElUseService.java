@@ -1,6 +1,7 @@
 package com.yankuang.equipment.equipment.service;
 
 import com.github.pagehelper.PageInfo;
+import com.yankuang.equipment.equipment.model.ElPlanItem;
 import com.yankuang.equipment.equipment.model.ElUse;
 
 import java.util.List;
@@ -47,4 +48,27 @@ public interface ElUseService {
      * @return
      */
     Boolean open(Long id);
+
+    /**
+     * @method 通过计划查询分区对象列表
+     * @param elPlanItem
+     * @return
+     */
+    List<ElPlanItem> findByPlanId(ElPlanItem elPlanItem);
+
+    /**
+     * @method 退租记录添加
+     * @param elUse
+     * @return
+     */
+    Boolean createTz(ElUse elUse);
+
+    /**
+     * @method 退租分页查询
+     * @param page
+     * @param size
+     * @param elUseMap
+     * @return
+     */
+    PageInfo<ElUse> listTz(Integer page, Integer size, Map elUseMap);
 }

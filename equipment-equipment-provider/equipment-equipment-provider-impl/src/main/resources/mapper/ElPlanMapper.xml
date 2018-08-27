@@ -477,7 +477,10 @@
         <if test="planEquipmentType != null" >
             AND plan_equipment_type = #{planEquipmentType}
         </if>
-        <if test="planType != null" >
+        <if test='planEquipmentType == "1" '>
+            AND (plan_type = #{planType} OR plan_type = "4")
+        </if>
+        <if test='planEquipmentType == "2" '>
             AND plan_type = #{planType}
         </if>
         <if test="planCreateTime != null" >
@@ -501,7 +504,7 @@
         <if test="planVersion != null" >
             AND plan_version = #{planVersion}
         </if>
-        AND plan_is_del != 99
+        AND plan_is_del != 1
         ORDER BY plan_create_time DESC
     </select>
 </mapper>
