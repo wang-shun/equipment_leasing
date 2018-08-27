@@ -17,4 +17,6 @@ public interface ElPlanItemMapper {
     ElPlanItem findByItemId(String itemId);
 
     int update(ElPlanItem elPlanItem);
+
+    List<ElPlanItem> elPlanItemList(ElPlanItem elPlanItem);
 }

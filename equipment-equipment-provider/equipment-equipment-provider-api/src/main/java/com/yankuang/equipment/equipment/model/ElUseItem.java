@@ -40,6 +40,10 @@ public class ElUseItem implements Serializable{
 
     private SbEquipmentT sbEquipmentT;
 
+    private String sbName;
+
+    private String name;
+
     public Long getItemId() {
         return itemId;
     }

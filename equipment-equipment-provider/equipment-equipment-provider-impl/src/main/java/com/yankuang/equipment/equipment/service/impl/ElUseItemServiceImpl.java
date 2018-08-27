@@ -61,4 +61,20 @@ public class ElUseItemServiceImpl implements ElUseItemService{
     public List<ElUseItem> findByUseId(Long itemId){
         return elUseItemMapper.findByUseId(itemId);
     }
+
+    public PageInfo<ElUseItem> listTz(Integer page, Integer size,Map elUseItemMap){
+        PageHelper.startPage(page,size);
+        elUseItemMap.put("isUse",(byte)2);
+        List<ElUseItem> elUseItems = elUseItemMapper.list(elUseItemMap);
+//        if (elUseItems == null){
+//            return null;
+//        }
+//        //分页查询将设备信息添加上
+//        for (ElUseItem elUseItem:elUseItems){
+//            SbEquipmentT sbEquipmentT = sbEquipmentTMapper.findById(elUseItem.getEquipmentId());
+//            elUseItem.setSbEquipmentT(sbEquipmentT);
+//        }
+        PageInfo<ElUseItem> pageInfo = new PageInfo<ElUseItem>(elUseItems);
+        return pageInfo;
+    }
 }

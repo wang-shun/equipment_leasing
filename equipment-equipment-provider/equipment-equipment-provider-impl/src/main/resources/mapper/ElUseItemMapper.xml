@@ -16,6 +16,8 @@
         <result column="plan_use_id" property="planUseId" jdbcType="BIGINT"/>
         <result column="use_at" property="useAt" jdbcType="TIMESTAMP"/>
         <result column="is_use" property="isUse" jdbcType="TINYINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="sbName" property="sbName" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List" >
         item_id, use_id, equipment_id, main_param_name, main_param_value, equipment_num,
@@ -77,8 +79,12 @@
     </update>
 
     <select id="list" parameterType="map" resultMap="BaseResultMap">
-        SELECT <include refid="Base_Column_List"/>
-        FROM el_use_item
+        SELECT t1.*,org.name AS name,sb.name AS sbName
+        FROM el_use_item t1
+        LEFT JOIN el_organization org
+        ON t1.equipment_position = org.code
+        LEFT JOIN sb_position sb
+        ON t1.equipment_effect = sb.code
         WHERE 1=1
         <if test="useId != null" >
             AND use_id = #{useId,jdbcType=BIGINT}
@@ -116,15 +122,23 @@
         <if test="useAt != null">
             AND use_at = #{useAt,jdbcType=TIMESTAMP}
         </if>
-        AND status != 99
+        AND org.status != 99
+        AND t1.status != 99
+        AND sb.status != 99
         AND is_use = #{isUse,jdbcType=TINYINT}
     </select>
 
     <select id="findById" resultMap="BaseResultMap" parameterType="Long">
-        SELECT <include refid="Base_Column_List"/>
-        FROM el_use_item
+        SELECT t1.*,org.name as name,sb.name AS sbName
+        FROM el_use_item t1
+        LEFT JOIN el_organization org
+        ON t1.equipment_position = org.code
+        LEFT JOIN sb_position sb
+        ON t1.equipment_effect = sb.code
         WHERE item_id = #{itemId,jdbcType=BIGINT}
-        AND status != 99
+        AND t1.status != 99
+        AND org.status != 99
+        AND sb.status != 99
     </select>
 
     <update id="delete" parameterType="Long">
@@ -140,9 +154,15 @@
     </update>
 
     <select id="findByUseId" parameterType="Long" resultMap="BaseResultMap">
-        SELECT <include refid="Base_Column_List"/>
-        FROM el_use_item
-        WHERE use_id = #{useId,jdbcType=BIGINT}
-        AND is_use = #{isUse,jdbcType=TINYINT}
+        SELECT t1.*,org.name as name,sb.name AS sbName
+        FROM el_use_item t1
+        LEFT JOIN el_organization org
+        ON t1.equipment_position = org.code
+        LEFT JOIN sb_position sb
+        ON t1.equipment_effect = sb.code
+        WHERE t1.use_id = #{useId,jdbcType=BIGINT}
+        AND org.status != 99
+        AND sb.status != 99
+        AND t1.status != 99
     </select>
 </mapper>
