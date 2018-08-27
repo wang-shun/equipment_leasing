@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yankuang.equipment.equipment.mapper.SbElFeeConfigMapper" >
+  <resultMap id="BaseResultMap" type="com.yankuang.equipment.equipment.model.SbElFeeConfig" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="year" property="year" jdbcType="VARCHAR" />
+    <result column="one_incre_rate" property="oneIncreRate" jdbcType="DOUBLE" />
+    <result column="one_el_rate" property="oneElRate" jdbcType="DOUBLE" />
+    <result column="one_repair_rate" property="oneRepairRate" jdbcType="DOUBLE" />
+    <result column="one_manage_rate" property="oneManageRate" jdbcType="DOUBLE" />
+    <result column="one_use_rate" property="oneUseRate" jdbcType="DOUBLE" />
+    <result column="two_repair_rate" property="twoRepairRate" jdbcType="DOUBLE" />
+    <result column="two_manage_rate" property="twoManageRate" jdbcType="DOUBLE" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+    <result column="version" property="version" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, year, one_incre_rate, one_el_rate, one_repair_rate, one_manage_rate, one_use_rate, 
+    two_repair_rate, two_manage_rate, status, create_by, create_at, update_by, update_at, 
+    version
+  </sql>
+  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from sb_el_fee_config
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="findByYear" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from sb_el_fee_config
+    where status = '1' and year = #{year,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteById" parameterType="java.lang.Long" >
+    update sb_el_fee_config
+    set status = 99
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deletes" parameterType="java.util.List">
+    update sb_el_fee_config
+    set status = 99
+    where id in
+    <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
+  <insert id="create" parameterType="com.yankuang.equipment.equipment.model.SbElFeeConfig" >
+    insert into sb_el_fee_config (year, one_incre_rate,
+      one_el_rate, one_repair_rate, one_manage_rate, 
+      one_use_rate, two_repair_rate, two_manage_rate, 
+      create_by, create_at,
+      update_by, update_at
+      )
+    values (#{year,jdbcType=VARCHAR}, #{oneIncreRate,jdbcType=DOUBLE},
+      #{oneElRate,jdbcType=DOUBLE}, #{oneRepairRate,jdbcType=DOUBLE}, #{oneManageRate,jdbcType=DOUBLE}, 
+      #{oneUseRate,jdbcType=DOUBLE}, #{twoRepairRate,jdbcType=DOUBLE}, #{twoManageRate,jdbcType=DOUBLE}, 
+      #{createBy,jdbcType=VARCHAR}, CURRENT_TIMESTAMP(),
+      #{updateBy,jdbcType=VARCHAR}, CURRENT_TIMESTAMP()
+      )
+  </insert>
+  <update id="update" parameterType="com.yankuang.equipment.equipment.model.SbElFeeConfig" >
+    update sb_el_fee_config
+    set one_incre_rate = #{oneIncreRate,jdbcType=DOUBLE},
+      one_el_rate = #{oneElRate,jdbcType=DOUBLE},
+      one_repair_rate = #{oneRepairRate,jdbcType=DOUBLE},
+      one_manage_rate = #{oneManageRate,jdbcType=DOUBLE},
+      one_use_rate = #{oneUseRate,jdbcType=DOUBLE},
+      two_repair_rate = #{twoRepairRate,jdbcType=DOUBLE},
+      two_manage_rate = #{twoManageRate,jdbcType=DOUBLE},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      update_at = CURRENT_TIMESTAMP()
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="list" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sb_el_fee_config t
+    where t.status = '1'
+    order by t.year desc
+  </select>
+</mapper>
