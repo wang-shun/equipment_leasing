@@ -5,12 +5,10 @@ import com.yankuang.equipment.authority.model.*;
 import com.yankuang.equipment.authority.service.*;
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.JsonUtils;
-import com.yankuang.equipment.web.dto.AuthorityDTO;
-import com.yankuang.equipment.web.dto.RoleDTO;
-import com.yankuang.equipment.web.dto.UserDTO;
-import com.yankuang.equipment.web.dto.UserIn;
+import com.yankuang.equipment.web.dto.*;
 import com.yankuang.equipment.web.util.CodeUtil;
 import com.yankuang.equipment.web.util.RedisOperator;
+import com.yankuang.equipment.web.util.TreeUtils;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @CrossOrigin(maxAge = 3600)
 @RestController
@@ -133,6 +132,7 @@ public class UserController {
         userDTO.setName(loginUser.getName());
         // 遍历用户角色列表
         for (RoleUser roleUser : roleUsers) {
+            // todo 如果是管理员
             Long roleId = roleUser.getRoleId();
             //根据roleId查询角色信息
             Role role = roleService.findById(roleId);
@@ -153,15 +153,47 @@ public class UserController {
                 authorityDTO.setType(authority.getType());
                 authorityDTO.setSorting(authority.getSorting());
                 authorityDTO.setCode(authority.getCode());
+                authorityDTO.setLevel(authority.getLevel());
+                authorityDTO.setUrl(authority.getUrl());
                 authoritys.add(authorityDTO);
             }
         }
         // 用户角色列表
         userDTO.setRoles(roles);
-        // 用户角色idlist
-        userDTO.setAuthoritys(authoritys);
+        List<RoleDTO> roles1 = roles.stream()
+                .filter(roleDTO -> "admin".equals(roleDTO.getName()))
+                .collect(Collectors.toList());
+        if (roles1.size() > 0) {
+            List<AuthorityDTO> authoritys1 = authoritys.stream().
+                    filter(authorityDTO -> 1 == authorityDTO.getType())
+                    .collect(Collectors.toList());
+            List<Object> list = getTree(authoritys1);
+            // 用户权限idlist
+            userDTO.setAuthoritys(list);
+        } else {
+            // 用户权限idlist
+            userDTO.setAuthoritys(getTree(authoritys));
+        }
+
         System.out.println(userDTO.toJsonString());
         return userDTO;
+    }
+
+    private List<Object> getTree(List<AuthorityDTO> authoritys) {
+        TreeUtils authorityTreeUtil = new TreeUtils();
+        List<TreeDTO> trees = new ArrayList<>();
+        TreeDTO tree = null;
+        for (Authority authority : authoritys) {
+            tree = new TreeDTO();
+            tree.setId(authority.getId());
+            tree.setpId(authority.getpId());
+            tree.setName(authority.getName());
+            tree.setLevel(authority.getLevel());
+            tree.setType(authority.getType());
+            tree.setUrl(authority.getUrl());
+            trees.add(tree);
+        }
+        return authorityTreeUtil.menuList(trees);
     }
 
     /**

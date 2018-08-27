@@ -324,7 +324,12 @@ public class WebLogAspect {
         logger.info("访问用户，{}", userFromRedis.toString());
         //TODO 获取请求路径url,验证权限
         List<RoleDTO> roles = userFromRedis.getRoles();
-        List<AuthorityDTO> authorities = userFromRedis.getAuthoritys();
+        List<Object> list = userFromRedis.getAuthoritys();
+        List<AuthorityDTO> authorities = null;
+        for (Object o : list) {
+            authorities.add((AuthorityDTO) o);
+        }
+
         for (RoleDTO roleDTO : roles) {
             if (!"admin".equals(roleDTO.getName())) {
                 // 遍历权限列表比对请求投中权限code
