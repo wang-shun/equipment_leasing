@@ -4,6 +4,7 @@ import com.yankuang.equipment.equipment.model.ElPlanItem;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by zhouy on 2018/8/4.
@@ -18,5 +19,9 @@ public interface ElPlanItemMapper {
 
     int update(ElPlanItem elPlanItem);
 
-    List<ElPlanItem> elPlanItemList(ElPlanItem elPlanItem);
+    List<ElPlanItem> findElPlanItemList(ElPlanItem elPlanItem);
+
+    int deleteItemById(String itemId);
+
+    ElPlanItem findByCondition(Map map);
 }

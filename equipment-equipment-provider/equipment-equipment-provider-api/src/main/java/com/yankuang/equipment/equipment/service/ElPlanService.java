@@ -69,4 +69,11 @@ public interface ElPlanService {
      * @return
      */
     List<ElPlan> findByCreatorId(ElPlan elPlan);
+
+    /**
+     * 删除租赁计划设备列表记录
+     * @param itemId
+     * @return
+     */
+    boolean deleteItemById(String itemId);
 }

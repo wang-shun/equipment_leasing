@@ -7,7 +7,6 @@ import com.yankuang.equipment.equipment.model.ElPlanItem;
 import com.yankuang.equipment.equipment.model.ElPlanUse;
 import com.yankuang.equipment.equipment.service.ElPlanUseService;
 import com.yankuang.equipment.equipment.service.ElUseService;
-import io.swagger.models.auth.In;
 import org.springframework.util.StringUtils;
 import com.yankuang.equipment.equipment.model.ElPlan;
 import com.yankuang.equipment.equipment.service.ElPlanService;
@@ -200,7 +199,31 @@ public class ElPlanController {
             e.printStackTrace();
             return CommonResponse.errorException("设备租赁计划删除服务异常");
         }
+    }
 
+    /**
+     * 删除租赁计划明细记录
+     * @return
+     */
+    @DeleteMapping("/planItem/{itemId}")
+    public CommonResponse deleteItem(@PathVariable(value = "itemId") String itemId) {
+
+        try {
+            // 检验参数
+            if (StringUtils.isEmpty(itemId)) {
+                return CommonResponse.errorMsg("设备列表记录ID不得为空");
+            }
+
+            // 执行操作
+            boolean res = elPlanService.deleteItemById(itemId);
+            if (!res) {
+                return CommonResponse.errorMsg("删除设备列表记录失败");
+            }
+            return CommonResponse.ok("删除成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return CommonResponse.ok("删除失败");
+        }
     }
 
     /**
@@ -313,8 +336,10 @@ public class ElPlanController {
             if (plan == null ) {
                 return CommonResponse.errorMsg("该条租赁计划已过期");
             }
-            if (plan.getElPlanItemList() != null) {
+            if (plan.getElPlanItemList() != null && plan.getElPlanItemList().size() > 0) {
                 elPlan.setElPlanItemList(plan.getElPlanItemList());
+            } else {
+                return CommonResponse.errorMsg("设备列表不得为空");
             }
             if ("submit".equals(approvalType)) {
                 if (Constants.PLANSTATUS_COMMITED.equals(plan.getPlanStatus())

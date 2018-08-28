@@ -44,6 +44,8 @@ public class ElUseItem implements Serializable{
 
     private String name;
 
+    private Double costA1;
+
     public Long getItemId() {
         return itemId;
     }

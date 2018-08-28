@@ -18,21 +18,24 @@
         <result column="is_use" property="isUse" jdbcType="TINYINT"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="sbName" property="sbName" jdbcType="VARCHAR"/>
+        <result column="cost_a1" property="costA1" javaType="DOUBLE"/>
     </resultMap>
     <sql id="Base_Column_List" >
         item_id, use_id, equipment_id, main_param_name, main_param_value, equipment_num,
-        equipment_effect, equipment_position, remarks, status, code,  plan_use_id, use_at, is_use
+        equipment_effect, equipment_position, remarks, status, code,  plan_use_id, use_at, is_use, cost_a1
     </sql>
     <insert id="create" parameterType="ElUseItem">
         INSERT INTO el_use_item(
         use_id, equipment_id, main_param_name, main_param_value, equipment_num,
-        equipment_effect, equipment_position, remarks, status, code,  plan_use_id, use_at, is_use
+        equipment_effect, equipment_position, remarks, status, code,  plan_use_id,
+        use_at, is_use,cost_a1
         )
         VALUES
         (#{useId,jdbcType=BIGINT}, #{equipmentId,jdbcType=BIGINT},
       #{mainParamName,jdbcType=VARCHAR}, #{mainParamValue,jdbcType=VARCHAR}, #{equipmentNum,jdbcType=INTEGER},
       #{equipmentEffect,jdbcType=VARCHAR}, #{equipmentPosition,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR},
-      #{status,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{planUseId,jdbcType=BIGINT}, #{useAt,jdbcType=TIMESTAMP}, #{isUse,jdbcType=TINYINT})
+      #{status,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{planUseId,jdbcType=BIGINT}, #{useAt,jdbcType=TIMESTAMP},
+      #{isUse,jdbcType=TINYINT},#{costA1,jdbcType=DOUBLE})
     </insert>
 
     <update id="update" parameterType="ElUseItem">
@@ -73,6 +76,9 @@
             </if>
             <if test="useAt != null">
                 use_at = #{useAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="costA1 != null" >
+                cost_a1 = #{costA1,jdbcType=DOUBLE},
             </if>
         </set>
         WHERE item_id = #{itemId,jdbcType=BIGINT}
