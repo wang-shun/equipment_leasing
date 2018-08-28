@@ -5,8 +5,10 @@ import com.yankuang.equipment.authority.model.Authority;
 import com.yankuang.equipment.authority.service.AuthorityService;
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.JsonUtils;
+import com.yankuang.equipment.web.dto.AuthorityDTO;
 import com.yankuang.equipment.web.dto.IdsDTO;
 import com.yankuang.equipment.web.dto.TreeDTO;
+import com.yankuang.equipment.web.util.AuthorityTreeUtils;
 import com.yankuang.equipment.web.util.CodeUtil;
 import com.yankuang.equipment.web.util.TreeUtils;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
@@ -90,15 +92,11 @@ public class AuthorityController {
         Authority au = authorityService.findByName(name);
         // 不存在 ，添加权限
         if (StringUtils.isEmpty(au)) {
-            Authority au1 = new Authority();
-            au1.setCode(CodeUtil.getCode());
-            au1.setName(name);
-            au1.setType(type);
-            au1.setpId(pId);
-            au1.setCreateBy("admin");
-            au1.setUpdateBy("admin");
+            authority.setCode(CodeUtil.getCode());
+            authority.setCreateBy("admin");
+            authority.setUpdateBy("admin");
             //添加权限
-            Boolean b = authorityService.create(au1);
+            Boolean b = authorityService.create(authority);
             if (!b) {
                 return CommonResponse.errorMsg("权限添加失败");
             }
@@ -153,17 +151,20 @@ public class AuthorityController {
     public CommonResponse findAll() {
 
         List<Authority> authorities = authorityService.findAll();
-        List<TreeDTO> trees = new ArrayList<>();
-        TreeDTO tree = null;
+        List<AuthorityDTO> trees = new ArrayList<>();
+        AuthorityDTO tree = null;
         for (Authority authority : authorities) {
-            tree = new TreeDTO();
+            tree = new AuthorityDTO();
             tree.setId(authority.getId());
             tree.setpId(authority.getpId());
             tree.setName(authority.getName());
+            tree.setUrl(authority.getUrl());
+            tree.setType(authority.getType());
+            tree.setLevel(authority.getLevel());
             trees.add(tree);
         }
-        TreeUtils treeUtils = new TreeUtils();
-        List<Object> list = treeUtils.menuList(trees);
+        AuthorityTreeUtils treeUtils = new AuthorityTreeUtils();
+        List<AuthorityDTO> list = treeUtils.menuList(trees);
         return CommonResponse.ok(list);
     }
 
