@@ -308,28 +308,23 @@ public class WebLogAspect {
             return CommonResponse.errorTokenMsg("登陆超时，请重新登录！");
         }
         // 解密redis中获取的用户信息
-        final Base64.Decoder decoder = Base64.getDecoder();
-        String decoderResult = null;
-        try {
-            decoderResult = new String(decoder.decode(userRedis), "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        logger.info("----- 解码后内容 : " + decoderResult + "------------");
+//        final Base64.Decoder decoder = Base64.getDecoder();
+//        String decoderResult = null;
+//        try {
+//            decoderResult = new String(decoder.decode(userRedis), "UTF-8");
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
+//        logger.info("----- 解码后内容 : " + decoderResult + "------------");
         // 刷新token时长
         redis.expire(token, 1800);
         // json转对象
-        UserDTO userFromRedis = JsonUtils.jsonToPojo(decoderResult, UserDTO.class);
+        UserDTO userFromRedis = JsonUtils.jsonToPojo(userRedis, UserDTO.class);
         // 打印日志信息
         logger.info("访问用户，{}", userFromRedis.toString());
         //TODO 获取请求路径url,验证权限
         List<RoleDTO> roles = userFromRedis.getRoles();
-        List<Object> list = userFromRedis.getAuthoritys();
-        List<AuthorityDTO> authorities = null;
-        for (Object o : list) {
-            authorities.add((AuthorityDTO) o);
-        }
-
+        List<AuthorityDTO> authorities = userFromRedis.getAuthoritys();
         for (RoleDTO roleDTO : roles) {
             if (!"admin".equals(roleDTO.getName())) {
                 // 遍历权限列表比对请求投中权限code
