@@ -13,7 +13,6 @@
         <module>equipment-web</module>
         <module>equipment-equipment-provider</module>
         <module>equipment-syslog-provider</module>
-        <module>equipment-excel-provider</module>
     </modules>
     <packaging>pom</packaging>
 
