@@ -69,6 +69,9 @@ public class ElPlanController {
             if (StringUtils.isEmpty(elPlan.getPlanPosition())) {
                 return CommonResponse.errorMsg("提出单位不得为空");
             }
+            if (elPlan.getElPlanItemList() == null && elPlan.getElPlanItemList().size() <= 0) {
+                return CommonResponse.errorMsg("设备列表记录不得为空");
+            }
 
             // 获取租赁计划设备类型
             if (!StringUtils.isEmpty(equipmentType) && Constants.PLANEQUIPMENTTYPE_GENERIC_VALUE.equals(equipmentType)) {
