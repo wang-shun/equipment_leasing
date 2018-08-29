@@ -83,6 +83,7 @@
         AND t.name like '%' #{p_name,jdbcType=VARCHAR} '%'
       </if>
     </where>
+    order by t.create_at desc
   </select>
 
   <select id="selectByMaxId" resultMap="BaseResultMap" >

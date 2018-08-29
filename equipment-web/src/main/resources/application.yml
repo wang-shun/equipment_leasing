@@ -8,9 +8,6 @@ spring:
     host: ${REDIS_HOST:47.94.211.172}
     port: ${REDIS_PORT:6379}
     password: ${REDIS_PASSWORD:738788}
-  jackson:
-    date-format: yyyy-MM-dd HH:mm:ss
-    time-zone: GMT+8
 rpc:
   mode: true
   dubbo:

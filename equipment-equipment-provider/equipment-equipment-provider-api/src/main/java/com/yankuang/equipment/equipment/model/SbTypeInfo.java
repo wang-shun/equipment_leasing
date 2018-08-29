@@ -1,5 +1,6 @@
 package com.yankuang.equipment.equipment.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
@@ -241,6 +242,7 @@ public class SbTypeInfo implements Serializable {
         this.createBy = createBy == null ? null : createBy.trim();
     }
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     public Date getCreateAt() {
         return createAt;
     }
@@ -257,6 +259,7 @@ public class SbTypeInfo implements Serializable {
         this.updateBy = updateBy == null ? null : updateBy.trim();
     }
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     public Date getUpdateAt() {
         return updateAt;
     }
