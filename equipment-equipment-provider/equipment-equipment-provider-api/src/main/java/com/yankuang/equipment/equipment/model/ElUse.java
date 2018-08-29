@@ -1,5 +1,6 @@
 package com.yankuang.equipment.equipment.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NonNull;
 
@@ -27,6 +28,7 @@ public class ElUse implements Serializable{
 
     private Long useBy;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date useAt;
 
     private String usePosition;
@@ -35,16 +37,19 @@ public class ElUse implements Serializable{
 
     private Long approveBy;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date approveAt;
 
     private String approveOpinion;
 
     private Long createBy;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createAt;
 
     private Long updateBy;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updateAt;
 
     private String version;
