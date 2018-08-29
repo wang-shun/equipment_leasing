@@ -84,6 +84,21 @@ services:
       bp_args:
         - USE_AGENT=true
 
+#  equipment-excel-provider:
+  eq-excel-pro:
+    module_path: equipment-excel-provider/equipment-excel-provider-impl
+    context: .
+    ports:
+      - 20880
+    resources:
+      cpu: 0.1
+      mem: 512
+    buildpack:
+      bp_repo: http://git.terminus.io/buildpacks/dice-bpack-termjava.git
+      bp_ver: master
+      bp_args:
+        - USE_AGENT=true
+
 addons:
   mysql:
     plan: mysql:small
