@@ -19,6 +19,10 @@ public class RoleServiceImpl implements RoleService {
     @Autowired
     RoleMapper roleMapper;
 
+    public List<Role> findByUserId(Long id) {
+        return roleMapper.findByUserId(id);
+    }
+
     public Role findById(Long id) {
         return roleMapper.findById(id);
     }
