@@ -6,6 +6,7 @@ import com.yankuang.equipment.authority.service.*;
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.web.dto.*;
+import com.yankuang.equipment.web.util.AuthorityTreeUtils;
 import com.yankuang.equipment.web.util.CodeUtil;
 import com.yankuang.equipment.web.util.RedisOperator;
 import com.yankuang.equipment.web.util.TreeUtils;
@@ -71,26 +72,46 @@ public class UserController {
             return CommonResponse.errorMsg("参数不能为空");
         }
         UserIn user = JsonUtils.jsonToPojo(jsonString, UserIn.class);
-        String username = user.getUsername();
-        if (StringUtils.isEmpty(username)) {
+        String name = user.getUsername();
+        if (StringUtils.isEmpty(name)) {
             return CommonResponse.errorMsg("用户名不能为空");
         }
         String password = user.getPassword();
         if (StringUtils.isEmpty(password)) {
             return CommonResponse.errorMsg("密码不能为空");
         }
-        log.info("--------- 用户登录信息:" + username + ":" + password);
-        List<AuthorityDTO> authoritys = new ArrayList();
-        List<RoleDTO> roles = new ArrayList();
+        log.info("--------- 用户登录信息:" + name + ":" + password);
+        List<AuthorityDTO> authoritys = new ArrayList<>();
+        //todo
+        List<RoleDTO> roles = new ArrayList<>();
         final Base64.Decoder decoder = Base64.getDecoder();
         String token = "";
-        User loginUser = userService.findByName(username);
+        User loginUser = userService.findByName(name);
         log.info("根据用户名查询的用户信息" + loginUser.toString());
         if (loginUser != null && !password.equals(loginUser.getPassword())) {
             return CommonResponse.errorTokenMsg("密码错误");
         }
         if (loginUser != null && password.equals(loginUser.getPassword())) {
             log.info(loginUser.toString());
+            List<Authority> authorities1 = authorityService.findByUserId(loginUser.getId());
+            for (Authority authority : authorities1) {
+                AuthorityDTO authorityDTO = new AuthorityDTO();
+                authorityDTO.setUrl(authority.getUrl());
+                authorityDTO.setId(authority.getId());
+                authorityDTO.setpId(authority.getpId());
+                authorityDTO.setLevel(authority.getLevel());
+                authorityDTO.setType(authority.getType());
+                authorityDTO.setName(authority.getName());
+                authorityDTO.setSorting(authority.getSorting());
+                authoritys.add(authorityDTO);
+            }
+            List<Role> roles1 = roleService.findByUserId(loginUser.getId());
+            for (Role role : roles1) {
+                RoleDTO roleDTO = new RoleDTO();
+                roleDTO.setId(role.getId());
+                roleDTO.setName(role.getName());
+                roles.add(roleDTO);
+            }
             // 登录验证成功，获取用户基本信息，角色信息，权限信息
             UserDTO userDTO1 = getUserDTO(authoritys, roles, loginUser);
             // redis中存放的key
@@ -108,8 +129,8 @@ public class UserController {
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            // 存放redis,暂时5天
-            redis.set(token, encodedResult, 432000);
+            // 存放redis,暂时2小时
+            redis.set(token, JsonUtils.objectToJson(userDTO1), 7200);
             // 更新user数据库表，记录最新一次登录保存的redis的key(token)
             User u = new User();
             u.setId(loginUser.getId());
@@ -130,34 +151,6 @@ public class UserController {
         }
         userDTO.setId(loginUser.getId());
         userDTO.setName(loginUser.getName());
-        // 遍历用户角色列表
-        for (RoleUser roleUser : roleUsers) {
-            // todo 如果是管理员
-            Long roleId = roleUser.getRoleId();
-            //根据roleId查询角色信息
-            Role role = roleService.findById(roleId);
-            RoleDTO roleDTO = new RoleDTO();
-            roleDTO.setId(role.getId());
-            roleDTO.setName(role.getName());
-            roles.add(roleDTO);
-            // 角色权限
-            List<RoleAuthority> roleAuthorities =
-                    roleAuthorityService.findByRoleId(roleUser.getRoleId());
-            //遍历角色权限列表
-            for (RoleAuthority roleAuthority : roleAuthorities) {
-                Authority authority = authorityService.findById(roleAuthority.getAuthorityId());
-                AuthorityDTO authorityDTO = new AuthorityDTO();
-                authorityDTO.setId(authority.getId());
-                authorityDTO.setName(authority.getName());
-                authorityDTO.setpId(authority.getpId());
-                authorityDTO.setType(authority.getType());
-                authorityDTO.setSorting(authority.getSorting());
-                authorityDTO.setCode(authority.getCode());
-                authorityDTO.setLevel(authority.getLevel());
-                authorityDTO.setUrl(authority.getUrl());
-                authoritys.add(authorityDTO);
-            }
-        }
         // 用户角色列表
         userDTO.setRoles(roles);
         List<RoleDTO> roles1 = roles.stream()
@@ -167,7 +160,7 @@ public class UserController {
             List<AuthorityDTO> authoritys1 = authoritys.stream().
                     filter(authorityDTO -> 1 == authorityDTO.getType())
                     .collect(Collectors.toList());
-            List<Object> list = getTree(authoritys1);
+            List<AuthorityDTO> list = getTree(authoritys1);
             // 用户权限idlist
             userDTO.setAuthoritys(list);
         } else {
@@ -179,18 +172,19 @@ public class UserController {
         return userDTO;
     }
 
-    private List<Object> getTree(List<AuthorityDTO> authoritys) {
-        TreeUtils authorityTreeUtil = new TreeUtils();
-        List<TreeDTO> trees = new ArrayList<>();
-        TreeDTO tree = null;
-        for (Authority authority : authoritys) {
-            tree = new TreeDTO();
+    private List<AuthorityDTO> getTree(List<AuthorityDTO> authoritys) {
+        AuthorityTreeUtils authorityTreeUtil = new AuthorityTreeUtils();
+        List<AuthorityDTO> trees = new ArrayList<>();
+        AuthorityDTO tree = null;
+        for (AuthorityDTO authority : authoritys) {
+            tree = new AuthorityDTO();
             tree.setId(authority.getId());
             tree.setpId(authority.getpId());
             tree.setName(authority.getName());
             tree.setLevel(authority.getLevel());
             tree.setType(authority.getType());
             tree.setUrl(authority.getUrl());
+            tree.setSorting(authority.getSorting());
             trees.add(tree);
         }
         return authorityTreeUtil.menuList(trees);

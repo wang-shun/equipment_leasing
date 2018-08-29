@@ -5,7 +5,7 @@ import java.lang.annotation.*;
 /**
  * @author xhh
  * @date 2018/8/15
- *  功能：excel模板设置
+ *  功能：excel模板设置.
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

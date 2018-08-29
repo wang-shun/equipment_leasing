@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * @author xhh
  * @date 2018/8/15 9:25
- * EXCEL导出测试类
+ * EXCEL导出测试类.
  */
 @RestController
 public class ReportExcelController {

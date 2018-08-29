@@ -47,6 +47,21 @@
         AND status != 99
     </select>
 
+    <select id="findByUserId" parameterType="long" resultMap="ResultMap">
+        select
+        r.id,r.name
+        from el_role r
+        left join el_role_user_mapping ru
+          on r.id = ru.role_id
+        left join el_user u
+          on u.id = ru.user_id
+        where u.id = #{id}
+        and r.status != 99
+        and ru.status != 99
+        and u.status != 99
+        order by r.create_at desc
+    </select>
+
     <update id="update" parameterType="com.yankuang.equipment.authority.model.Role">
         UPDATE yankuang_equipment.el_role
         <set>

@@ -5,7 +5,7 @@ import lombok.Data;
 /**
  * @author xhh
  * @date 2018/8/21 9:05
- *  综机设备使用清单
+ *  综机设备使用清单.
  */
 
 @Data

@@ -37,6 +37,7 @@ endpoints:
       - eq-authority-pro
       - eq-equipment-pro
       - eq-syslog-pro
+      - eq-excel-pro
 
 services:
 #  equipment-authority-provider:

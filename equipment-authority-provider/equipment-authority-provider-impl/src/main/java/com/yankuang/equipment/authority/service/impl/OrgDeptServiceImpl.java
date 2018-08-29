@@ -42,7 +42,7 @@ public class OrgDeptServiceImpl implements OrgDeptService {
     }
 
     /**
-     * 根据组织id和下属部门id,删除组织与下属部门关系
+     * 根据组织id和下属部门id,删除组织与下属部门关系  .
      * @param map
      * @return
      */

@@ -6,7 +6,7 @@ import lombok.Data;
 /**
  * @author xhh
  * @date 2018/8/15 16:32
- *  矿处通用机电租赁费用汇总表
+ *  矿处通用机电租赁费用汇总表.
  */
 @Data
 public class GeneralMechanicalCollect {

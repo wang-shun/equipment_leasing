@@ -5,7 +5,7 @@ import lombok.Data;
 /**
  * @author xhh
  * @date 2018/8/16 16:49
- * 通用设备折旧修理费确认单
+ * 通用设备折旧修理费确认单。
  */
 @Data
 public class CommonDepreciationCost {

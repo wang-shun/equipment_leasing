@@ -5,7 +5,7 @@ import lombok.Data;
 /**
  * @author xhh
  * @date 2018/8/21 11:20
- * 综机设备使用交接单
+ * 综机设备使用交接单.
  */
 @Data
 public class ComprehensiveUseInterchangeForm {
