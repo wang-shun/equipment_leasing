@@ -32,7 +32,7 @@ public class TreeUtils {
         List<Object> lists = new ArrayList<Object>();
         for(TreeDTO a:menuCommon){
             Map<String,Object> childArray = new LinkedHashMap<String, Object>();
-            if(a.getpId() == id){
+            if(id.equals(a.getpId())){
                 childArray.put("id", a.getId());
                 childArray.put("name", a.getName());
                 childArray.put("pid", a.getpId());
