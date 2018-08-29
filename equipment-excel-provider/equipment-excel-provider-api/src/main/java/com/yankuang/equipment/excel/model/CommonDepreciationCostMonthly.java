@@ -6,7 +6,7 @@ import lombok.Data;
  * @author xhh
  * @date 2018/8/17
  *
- * 通用设备折旧修理费月报（跨矿）
+ * 通用设备折旧修理费月报（跨矿）.
  */
 @Data
 public class CommonDepreciationCostMonthly {

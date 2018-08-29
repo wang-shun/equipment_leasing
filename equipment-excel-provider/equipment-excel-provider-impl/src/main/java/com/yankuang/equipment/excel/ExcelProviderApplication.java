@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * @author xhh
- * @date 2018/8/15 13:55
+ * @date 2018/8/15 13:55.
  */
 
 @SpringBootApplication(scanBasePackages = "com.yankuang.equipment.excel")

@@ -10,7 +10,7 @@ import java.util.*;
 /**
  * @author xhh
  * 2018/8/15 9:07
- * excel工具类
+ * excel工具类.
  */
 public class ExcelUtil {
 

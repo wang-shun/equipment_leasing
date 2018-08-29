@@ -5,7 +5,7 @@ import lombok.Data;
 /**
  * @author xhh
  * @date 2018/8/20 13:58
- * 综机折旧修理费表
+ * 综机折旧修理费表.
  */
 @Data
 public class ComprehensiveMachineryDRCost {
