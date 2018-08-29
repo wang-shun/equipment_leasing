@@ -17,6 +17,8 @@ public interface AuthorityMapper {
 
     Authority findById(Long id);
 
+    List<Authority> findByUserId(Long userId);
+
     boolean update(Authority role);
 
     boolean create(Authority role);

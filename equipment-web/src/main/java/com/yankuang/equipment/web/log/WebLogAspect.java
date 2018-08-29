@@ -307,17 +307,8 @@ public class WebLogAspect {
         if (StringUtils.isEmpty(userRedis)) {
             return CommonResponse.errorTokenMsg("登陆超时，请重新登录！");
         }
-        // 解密redis中获取的用户信息
-//        final Base64.Decoder decoder = Base64.getDecoder();
-//        String decoderResult = null;
-//        try {
-//            decoderResult = new String(decoder.decode(userRedis), "UTF-8");
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//        }
-//        logger.info("----- 解码后内容 : " + decoderResult + "------------");
         // 刷新token时长
-        redis.expire(token, 1800);
+        redis.expire(token, 7200);
         // json转对象
         UserDTO userFromRedis = JsonUtils.jsonToPojo(userRedis, UserDTO.class);
         // 打印日志信息

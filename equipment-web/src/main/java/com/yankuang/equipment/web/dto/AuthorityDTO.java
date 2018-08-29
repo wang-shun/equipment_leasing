@@ -17,6 +17,15 @@ public class AuthorityDTO {
 
     private Long level;
 
+    private Long sorting;
+
+    public Long getSorting() {
+        return sorting;
+    }
+
+    public void setSorting(Long sorting) {
+        this.sorting = sorting;
+    }
 
     private List<AuthorityDTO> childList;
 
