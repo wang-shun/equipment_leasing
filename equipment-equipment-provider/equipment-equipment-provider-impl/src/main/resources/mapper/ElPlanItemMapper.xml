@@ -258,7 +258,7 @@
                 #{smallTypeCode},
             </if>
             <if test="specificationCode != null" >
-                #{specificationCode}
+                #{specificationCode},
             </if>
             <if test="status != null and status != ''">
                 #{status},
