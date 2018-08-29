@@ -34,6 +34,9 @@ public class ElUseController {
     @RpcConsumer
     ElPlanUseService elPlanUseService;
 
+    @RpcConsumer
+    SbElFeeService sbElFeeService;
+
     /**
      * @method 领用申请添加功能
      * @param jsonString
@@ -47,6 +50,26 @@ public class ElUseController {
         }
 
         ElUse elUse = JsonUtils.jsonToPojo(jsonString,ElUse.class);
+
+        if (elUse == null || elUse.getElUseItems() == null || elUse.getElUseItems().size() <= 0) {
+            return CommonResponse.errorMsg("设备列表不得为空");
+        }
+
+        List<ElUseItem> list = elUse.getElUseItems();
+        for (ElUseItem item : list) {
+            Long equipmentId = item.getEquipmentId();
+            if (equipmentId == null) {
+                continue;
+            }
+            if ("1".equals(elUse.getUseEquipmentType())) {
+                double costA1 = sbElFeeService.CalDayElFeeA1ByEquipmentTId(equipmentId);
+                item.setCostA1(costA1);
+            }
+            if ("2".equals(elUse.getUseEquipmentType())) {
+                double costA1 = sbElFeeService.CalDayElFeeA1ByEquipmentZId(equipmentId);
+                item.setCostA1(costA1);
+            }
+        }
 
         if (elUseService.create(elUse) == false){
             return CommonResponse.build(500,"创建失败",null);
@@ -292,7 +315,7 @@ public class ElUseController {
      */
     @GetMapping("/findListTz")
     CommonResponse findListByPageTz(@RequestParam(defaultValue = "1") Integer page,
-                                  @RequestParam(defaultValue = "20") Integer size){
+                                    @RequestParam(defaultValue = "20") Integer size){
         Map elUseMap = new HashMap();
         return CommonResponse.ok(elUseService.listTz(page, size, elUseMap));
     }
@@ -305,7 +328,7 @@ public class ElUseController {
      */
     @GetMapping("/elUseItemTz")
     CommonResponse findElUseItemByPageTz(@RequestParam(defaultValue = "1") Integer page,
-                                       @RequestParam(defaultValue = "20") Integer size){
+                                         @RequestParam(defaultValue = "20") Integer size){
         Map elUseItemMap = new HashMap();
         return CommonResponse.ok(elUseItemService.listTz(page,size,elUseItemMap));
     }
