@@ -1,5 +1,6 @@
 package com.yankuang.equipment.equipment.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
@@ -38,14 +39,17 @@ public class SbEquipmentT implements Serializable {
 
     private String factory;
 
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date prodDate;
 
     private String prodCode;
 
     private String maCode;
 
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date maStartDate;
 
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date maEndDate;
 
     private String proof;
@@ -54,8 +58,10 @@ public class SbEquipmentT implements Serializable {
 
     private String license;
 
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date arriveDate;
 
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date useDate;
 
     private String comp;
@@ -378,6 +384,7 @@ public class SbEquipmentT implements Serializable {
         this.createBy = createBy == null ? null : createBy.trim();
     }
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     public Date getCreateAt() {
         return createAt;
     }
@@ -394,6 +401,7 @@ public class SbEquipmentT implements Serializable {
         this.updateBy = updateBy == null ? null : updateBy.trim();
     }
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     public Date getUpdateAt() {
         return updateAt;
     }
