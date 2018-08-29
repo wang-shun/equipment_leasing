@@ -1,5 +1,6 @@
 package com.yankuang.equipment.equipment.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -34,6 +35,7 @@ public class ElUseItem implements Serializable{
 
     private Long planUseId;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date useAt;
 
     private Byte isUse;
@@ -150,6 +152,7 @@ public class ElUseItem implements Serializable{
         this.planUseId = planUseId;
     }
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     public Date getUseAt() {
         return useAt;
     }
