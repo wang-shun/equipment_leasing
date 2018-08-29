@@ -21,7 +21,7 @@ public class ElPlanPlusService {
     public static final Logger logger = Logger.getLogger(ElPlanPlusService.class);
 
     @RpcConsumer
-    private ElPlanService elPlanService;
+    ElPlanService elPlanService;
 
     @RpcConsumer
     SbPositionService sbPositionService;
@@ -135,7 +135,7 @@ public class ElPlanPlusService {
                     if (Constants.PLANEQUIPMENTTYPE_INTEGRATED.equals(plan.getPlanEquipmentType())) {
                         // TODO 设备管理中心编码暂定
                         SbPosition position = new SbPosition();
-                        position.setPosition("100120102");
+                        position.setPosition("84");
                         List<SbPosition> sbPositions = sbPositionService.list(position, 1, 1000).getList();
                         for (SbPosition sbPosition : sbPositions) {
                             SbEquipmentZ sbEquipmentZ = new SbEquipmentZ();
