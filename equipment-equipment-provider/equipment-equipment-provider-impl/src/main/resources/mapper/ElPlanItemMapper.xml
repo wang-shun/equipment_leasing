@@ -394,20 +394,4 @@
     <update id="deleteItemById" parameterType="java.lang.String">
         update el_plan_item set status = '99' where item_id = #{itemId}
     </update>
-
-    <select id="findByCondition" parameterType="map" resultMap="BaseResultMap">
-        select <include refid="cols_all"/> from el_plan_item
-        <where>
-            1 = 1 and status != '99'
-            <if test="useId != null">
-                and use_id = #{useId}
-            </if>
-            <if test="equipmentId != null">
-                and equipment_id = #{equipmentId}
-            </if>
-            <if test="isUse != null">
-                and is_use = #{isUse}
-            </if>
-        </where>
-    </select>
 </mapper>

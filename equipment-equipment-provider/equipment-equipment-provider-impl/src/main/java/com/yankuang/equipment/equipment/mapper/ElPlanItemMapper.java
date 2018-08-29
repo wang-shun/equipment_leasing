@@ -23,5 +23,4 @@ public interface ElPlanItemMapper {
 
     int deleteItemById(String itemId);
 
-    ElPlanItem findByCondition(Map map);
 }
