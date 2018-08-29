@@ -48,6 +48,10 @@ public class ElPlanServiceImpl implements ElPlanService {
         }
     }
 
+    public boolean deleteItemById(String itemId) {
+        return elPlanItemMapper.deleteItemById(itemId) > 0;
+    }
+
     public Boolean create(ElPlan elPlan) {
         Boolean res = false;
         try {
@@ -136,7 +140,6 @@ public class ElPlanServiceImpl implements ElPlanService {
                     }
                 }
             }
-            //elPlanMapper.savePlanItemByPlanId(elPlan);
             logger.info("update elPlan: " + JSON.toJSONString(elPlan));
             res = elPlanMapper.update(elPlan) > 0 && itemRes;
             if (!res) {

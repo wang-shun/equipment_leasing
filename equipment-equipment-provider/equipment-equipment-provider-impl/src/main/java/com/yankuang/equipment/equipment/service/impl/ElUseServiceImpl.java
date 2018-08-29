@@ -115,7 +115,7 @@ public class ElUseServiceImpl implements ElUseService{
     }
 
     public List<ElPlanItem> findByPlanId(ElPlanItem elPlanItem){
-        return elPlanItemMapper.elPlanItemList(elPlanItem);
+        return elPlanItemMapper.findElPlanItemList(elPlanItem);
     }
 
     public Boolean createTz(ElUse elUse){

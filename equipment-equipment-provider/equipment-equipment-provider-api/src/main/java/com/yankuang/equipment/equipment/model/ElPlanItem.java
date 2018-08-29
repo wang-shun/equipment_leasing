@@ -15,7 +15,7 @@ public class ElPlanItem implements Serializable {
 
     private String planId;
 
-    private String positionId;
+    private Long positionId;
 
     private String equipmentName;
 

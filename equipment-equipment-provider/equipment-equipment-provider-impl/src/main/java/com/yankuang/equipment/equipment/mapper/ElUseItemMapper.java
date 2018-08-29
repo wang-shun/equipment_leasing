@@ -21,4 +21,6 @@ public interface ElUseItemMapper {
     Integer deleteById(Long itemId);
 
     List<ElUseItem> findByUseId(Long useId);
+
+    ElUseItem findByCondition(Map map);
 }

@@ -54,7 +54,7 @@ public class ElPlanPlusService {
                     List<SbEquipmentZ> sbListZ = new ArrayList<>();
 
                     // 获取矿分区信息
-                    String positionId = item.getPositionId();
+                    Long positionId = item.getPositionId();
                     if (StringUtils.isEmpty(positionId)) {
                         return CommonResponse.errorException("备货异常");
                     }
@@ -74,7 +74,7 @@ public class ElPlanPlusService {
                     }
                     if (Constants.PLANEQUIPMENTTYPE_GENERIC.equals(plan.getPlanEquipmentType())) {
                         SbPosition position = new SbPosition();
-                        position.setPosition(positionId);
+                        position.setPosition(positionId.toString());
                         List<SbPosition> sbPositions = sbPositionService.list(position, 1, 1000).getList();
                         for (SbPosition sbPosition : sbPositions) {
                             SbEquipmentT sbEquipmentT = new SbEquipmentT();
@@ -107,7 +107,7 @@ public class ElPlanPlusService {
                             ElPlanUse elPlanUse = new ElPlanUse();
                             elPlanUse.setCenterYear(plan.getPlanYear());
                             elPlanUse.setCenterMonth(plan.getPlanMonth());
-                            elPlanUse.setPositionId(positionId);
+                            elPlanUse.setPositionId(positionId.toString());
                             elPlanUse.setPlanType(plan.getPlanType());
                             elPlanUse.setPlanId(plan.getPlanId());
                             elPlanUse.setPlanItemId(item.getItemId());
@@ -168,7 +168,7 @@ public class ElPlanPlusService {
                             ElPlanUse elPlanUse = new ElPlanUse();
                             elPlanUse.setCenterYear(plan.getPlanYear());
                             elPlanUse.setCenterMonth(plan.getPlanMonth());
-                            elPlanUse.setPositionId(positionId);
+                            elPlanUse.setPositionId(positionId.toString());
                             elPlanUse.setPlanType(plan.getPlanType());
                             elPlanUse.setPlanId(plan.getPlanId());
                             elPlanUse.setPlanItemId(item.getItemId());
