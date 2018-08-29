@@ -81,8 +81,9 @@ public class UserController {
             return CommonResponse.errorMsg("密码不能为空");
         }
         log.info("--------- 用户登录信息:" + name + ":" + password);
-        List<AuthorityDTO> authoritys = new ArrayList();
-        List<RoleDTO> roles = new ArrayList();
+        List<AuthorityDTO> authoritys = new ArrayList<>();
+        //todo
+        List<RoleDTO> roles = new ArrayList<>();
         final Base64.Decoder decoder = Base64.getDecoder();
         String token = "";
         User loginUser = userService.findByName(name);
@@ -103,6 +104,13 @@ public class UserController {
                 authorityDTO.setName(authority.getName());
                 authorityDTO.setSorting(authority.getSorting());
                 authoritys.add(authorityDTO);
+            }
+            List<Role> roles1 = roleService.findByUserId(loginUser.getId());
+            for (Role role : roles1) {
+                RoleDTO roleDTO = new RoleDTO();
+                roleDTO.setId(role.getId());
+                roleDTO.setName(role.getName());
+                roles.add(roleDTO);
             }
             // 登录验证成功，获取用户基本信息，角色信息，权限信息
             UserDTO userDTO1 = getUserDTO(authoritys, roles, loginUser);

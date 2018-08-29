@@ -18,6 +18,8 @@ public interface RoleMapper {
 
     Role findById(Long id);
 
+    List<Role> findByUserId(Long id);
+
     boolean update(Role role);
 
     boolean create(Role role);
