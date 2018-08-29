@@ -13,10 +13,8 @@ import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Field;
+import java.util.*;
 
 
 @CrossOrigin(maxAge = 3600)
@@ -180,7 +178,12 @@ public class OrganizationController {
             treeDTOS.add(treeDTO);
         }
         TreeUtils treeUtils = new TreeUtils();
+        //前端这边接口需要id值为String类型，现将获取到的map中id获取并重新赋值成String
         List<Object> list = treeUtils.menuList(treeDTOS);
+        for (Object obj:list){
+            Map<String,Object> map = (Map<String,Object>)obj;
+            map.put("id",map.get("id").toString());
+        }
         return CommonResponse.ok(list);
     }
 }
