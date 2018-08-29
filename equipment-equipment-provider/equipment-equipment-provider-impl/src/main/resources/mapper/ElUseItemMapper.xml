@@ -24,7 +24,7 @@
         item_id, use_id, equipment_id, main_param_name, main_param_value, equipment_num,
         equipment_effect, equipment_position, remarks, status, code,  plan_use_id, use_at, is_use, cost_a1
     </sql>
-    <insert id="create" parameterType="ElUseItem">
+    <insert id="create" parameterType="com.yankuang.equipment.equipment.model.ElUseItem">
         INSERT INTO el_use_item(
         use_id, equipment_id, main_param_name, main_param_value, equipment_num,
         equipment_effect, equipment_position, remarks, status, code,  plan_use_id,
@@ -38,7 +38,7 @@
       #{isUse,jdbcType=TINYINT},#{costA1,jdbcType=DOUBLE})
     </insert>
 
-    <update id="update" parameterType="ElUseItem">
+    <update id="update" parameterType="com.yankuang.equipment.equipment.model.ElUseItem">
         UPDATE el_use_item
         <set>
             <if test="useId != null" >
@@ -170,5 +170,22 @@
         AND org.status != 99
         AND sb.status != 99
         AND t1.status != 99
+    </select>
+
+
+    <select id="findByCondition" parameterType="map" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from el_use_item
+        <where>
+            1 = 1 and status != '99'
+            <if test="useId != null">
+                and use_id = #{useId}
+            </if>
+            <if test="equipmentId != null">
+                and equipment_id = #{equipmentId}
+            </if>
+            <if test="isUse != null">
+                and is_use = #{isUse}
+            </if>
+        </where>
     </select>
 </mapper>
