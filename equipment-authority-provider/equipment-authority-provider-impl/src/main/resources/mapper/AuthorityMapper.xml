@@ -127,6 +127,27 @@
         ORDER BY create_at DESC
     </select>
 
+    <select id="findByUserId" parameterType="long" resultMap="BaseResultMap" >
+        select
+        a.id,a.name,a.level,a.p_id,a.type,a.url,a.sorting
+        from el_authority a
+        left join el_role_authority_mapping ra
+        on a.id = ra.authority_id
+        left join el_role r
+        on r.id = ra.role_id
+        left join el_role_user_mapping ru
+        on r.id  = ru.role_id
+        left join el_user u
+        on u.id = ru.user_id
+        WHERE a.status != 99
+        and ra.status != 99
+        and r.status != 99
+        and ru.status != 99
+        and u.status != 99
+        and u.id = #{userId}
+        ORDER BY a.create_at DESC
+    </select>
+
     <select id="list" parameterType="map" resultMap="BaseResultMap">
         SELECT <include refid="Base_Column_List"/>
         FROM yankuang_equipment.el_authority

@@ -17,6 +17,8 @@ public interface AuthorityService {
 
     Authority findById(Long id);
 
+    List<Authority> findByUserId(Long userId);
+
     boolean update(Authority authority);
 
     boolean create(Authority authority);

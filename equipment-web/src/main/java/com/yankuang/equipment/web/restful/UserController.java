@@ -92,6 +92,18 @@ public class UserController {
         }
         if (loginUser != null && password.equals(loginUser.getPassword())) {
             log.info(loginUser.toString());
+            List<Authority> authorities1 = authorityService.findByUserId(loginUser.getId());
+            for (Authority authority : authorities1) {
+                AuthorityDTO authorityDTO = new AuthorityDTO();
+                authorityDTO.setUrl(authority.getUrl());
+                authorityDTO.setId(authority.getId());
+                authorityDTO.setpId(authority.getpId());
+                authorityDTO.setLevel(authority.getLevel());
+                authorityDTO.setType(authority.getType());
+                authorityDTO.setName(authority.getName());
+                authorityDTO.setSorting(authority.getSorting());
+                authoritys.add(authorityDTO);
+            }
             // 登录验证成功，获取用户基本信息，角色信息，权限信息
             UserDTO userDTO1 = getUserDTO(authoritys, roles, loginUser);
             // redis中存放的key
@@ -109,8 +121,8 @@ public class UserController {
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            // 存放redis,暂时5天
-            redis.set(token, JsonUtils.objectToJson(userDTO1), 432000);
+            // 存放redis,暂时2小时
+            redis.set(token, JsonUtils.objectToJson(userDTO1), 7200);
             // 更新user数据库表，记录最新一次登录保存的redis的key(token)
             User u = new User();
             u.setId(loginUser.getId());
@@ -131,32 +143,6 @@ public class UserController {
         }
         userDTO.setId(loginUser.getId());
         userDTO.setName(loginUser.getName());
-        // 遍历用户角色列表
-        for (RoleUser roleUser : roleUsers) {
-            // todo 如果是管理员
-            Long roleId = roleUser.getRoleId();
-            //根据roleId查询角色信息
-            Role role = roleService.findById(roleId);
-            RoleDTO roleDTO = new RoleDTO();
-            roleDTO.setId(role.getId());
-            roleDTO.setName(role.getName());
-            roles.add(roleDTO);
-            // 角色权限
-            List<RoleAuthority> roleAuthorities =
-                    roleAuthorityService.findByRoleId(roleUser.getRoleId());
-            //遍历角色权限列表
-            for (RoleAuthority roleAuthority : roleAuthorities) {
-                Authority authority = authorityService.findById(roleAuthority.getAuthorityId());
-                AuthorityDTO authorityDTO = new AuthorityDTO();
-                authorityDTO.setId(authority.getId());
-                authorityDTO.setName(authority.getName());
-                authorityDTO.setpId(authority.getpId());
-                authorityDTO.setType(authority.getType());
-                authorityDTO.setLevel(authority.getLevel());
-                authorityDTO.setUrl(authority.getUrl());
-                authoritys.add(authorityDTO);
-            }
-        }
         // 用户角色列表
         userDTO.setRoles(roles);
         List<RoleDTO> roles1 = roles.stream()
@@ -190,6 +176,7 @@ public class UserController {
             tree.setLevel(authority.getLevel());
             tree.setType(authority.getType());
             tree.setUrl(authority.getUrl());
+            tree.setSorting(authority.getSorting());
             trees.add(tree);
         }
         return authorityTreeUtil.menuList(trees);

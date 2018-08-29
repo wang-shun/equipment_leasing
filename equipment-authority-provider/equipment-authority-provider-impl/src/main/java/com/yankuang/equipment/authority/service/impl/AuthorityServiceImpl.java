@@ -26,6 +26,10 @@ public class AuthorityServiceImpl implements AuthorityService{
         return authorityMapper.findById(id);
     }
 
+    public List<Authority> findByUserId(Long userId) {
+        return authorityMapper.findByUserId(userId);
+    }
+
     public boolean update(Authority authority){
         return authorityMapper.update(authority);
     }
