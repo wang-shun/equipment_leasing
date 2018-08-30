@@ -1,7 +1,9 @@
 package com.yankuang.equipment.common.util;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  *
@@ -91,6 +93,30 @@ public class DateUtils {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
         Date date = new Date();
         return sdf.format(date);
+    }
+
+    /**
+     * @Title: getDaysInTwoDate
+     * @category 得到俩个日期间隔的天数
+     * @param @param begin_date
+     * @param @param end_date
+     * @param @return    设定文件
+     * @return long    返回类型
+     */
+    public static long getDaysInTwoDate(Date begin_date,Date end_date) {
+        Calendar can=GregorianCalendar.getInstance();
+        long s1=0;long s2=0;
+        try{
+            can.setTime(begin_date);
+            s1=can.getTimeInMillis();
+            can.setTime(end_date);
+            s2=can.getTimeInMillis();
+        }catch(Exception ex){
+            ex.printStackTrace();
+            return 0;
+        }
+
+        return (s2-s1)/(3600 *1000 * 24);
     }
 
 }

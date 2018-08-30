@@ -15,6 +15,24 @@
     <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
     <result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
     <result column="version" jdbcType="BIGINT" property="version" />
+    <result column="main_para" property="mainPara" jdbcType="VARCHAR" />
+    <result column="main_para_type" property="mainParaType" jdbcType="VARCHAR" />
+    <result column="def_para1" property="defPara1" jdbcType="VARCHAR" />
+    <result column="def_para1_type" property="defPara1Type" jdbcType="VARCHAR" />
+    <result column="def_para2" property="defPara2" jdbcType="VARCHAR" />
+    <result column="def_para2_type" property="defPara2Type" jdbcType="VARCHAR" />
+    <result column="def_para3" property="defPara3" jdbcType="VARCHAR" />
+    <result column="def_para3_type" property="defPara3Type" jdbcType="VARCHAR" />
+    <result column="def_para4" property="defPara4" jdbcType="VARCHAR" />
+    <result column="def_para4_type" property="defPara4Type" jdbcType="VARCHAR" />
+    <result column="def_para5" property="defPara5" jdbcType="VARCHAR" />
+    <result column="def_para5_type" property="defPara5Type" jdbcType="VARCHAR" />
+    <result column="def_para6" property="defPara6" jdbcType="VARCHAR" />
+    <result column="def_para6_type" property="defPara6Type" jdbcType="VARCHAR" />
+    <result column="def_para7" property="defPara7" jdbcType="VARCHAR" />
+    <result column="def_para7_type" property="defPara7Type" jdbcType="VARCHAR" />
+    <result column="def_para8" property="defPara8" jdbcType="VARCHAR" />
+    <result column="def_para8_type" property="defPara8Type" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List">
     id, code, name, pcode, sorting, level, status, remark, create_by, create_at, update_by, 
@@ -60,16 +78,26 @@
 
     <select id="list" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
+        t.*,t2.main_para,t2.main_para_type,
+        t2.def_para1,t2.def_para1_type,t2.def_para2,t2.def_para2_type,
+        t2.def_para3,t2.def_para3_type,t2.def_para4,t2.def_para4_type,
+        t2.def_para5,t2.def_para5_type,t2.def_para6,t2.def_para6_type,
+        t2.def_para7,t2.def_para7_type,t2.def_para8,t2.def_para8_type
         from sb_type t
+        left join sb_type_info t2 on t.id = t2.type_id
         where t.status = '1'
         order by t.level,code
     </select>
 
   <select id="listByPcodeOrLevel" resultMap="BaseResultMap">
     select
-    <include refid="Base_Column_List"/>
+    t.*,t2.main_para,t2.main_para_type,
+    t2.def_para1,t2.def_para1_type,t2.def_para2,t2.def_para2_type,
+    t2.def_para3,t2.def_para3_type,t2.def_para4,t2.def_para4_type,
+    t2.def_para5,t2.def_para5_type,t2.def_para6,t2.def_para6_type,
+    t2.def_para7,t2.def_para7_type,t2.def_para8,t2.def_para8_type
     from sb_type t
+    left join sb_type_info t2 on t.id = t2.type_id
     where t.status = '1'
     <if test="p_code!=null">
         and t.pcode = #{p_code,jdbcType=VARCHAR}
