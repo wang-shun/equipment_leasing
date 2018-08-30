@@ -1,5 +1,6 @@
 package com.yankuang.equipment.web.restful;
 
+import com.github.pagehelper.PageInfo;
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.common.util.StringUtils;
@@ -165,9 +166,9 @@ public class ElUseController {
      */
     @GetMapping
     CommonResponse findListByPage(@RequestParam Integer page,
-                                  @RequestParam Integer size){
-        Map elUseMap = new HashMap();
-        return CommonResponse.ok(elUseService.list(page, size, elUseMap));
+                                  @RequestParam Integer size,
+                                  @RequestBody Map map){
+        return CommonResponse.ok(elUseService.list(page, size, map));
     }
 
     /**
@@ -178,9 +179,10 @@ public class ElUseController {
      */
     @GetMapping("/elUseItem")
     CommonResponse findElUseItemByPage(@RequestParam Integer page,
-                                       @RequestParam Integer size){
-        Map elUseItemMap = new HashMap();
-        return CommonResponse.ok(elUseItemService.list(page,size,elUseItemMap));
+                                       @RequestParam Integer size,
+                                       @RequestBody Map map){
+        PageInfo pageInfo = elUseItemService.list(page,size,map);
+        return CommonResponse.ok(pageInfo);
     }
 
     /**
