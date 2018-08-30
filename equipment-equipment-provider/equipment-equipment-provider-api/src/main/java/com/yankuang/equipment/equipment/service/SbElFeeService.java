@@ -19,14 +19,15 @@ public interface SbElFeeService {
     public Double CalDayElFeeA1ByEquipmentZId(Long equipmentId);
 
     /**
-     * 根据设备租赁的领用ID、设备ID 及 开始日期、结束日期 来计算设备租赁天数
+     * 根据设备租赁的领用ID、退租ID、设备ID 及 开始日期、结束日期 来计算设备租赁天数
      * @param useId
+     * @param backId
      * @param equipmentId
      * @param startDate
      * @param endDate
      * @return
      */
-    public Long CalEquipmentElDays(Long useId, Long equipmentId, Date startDate, Date endDate);
+    public Long CalEquipmentElDays(Long useId, Long backId, Long equipmentId, Date startDate, Date endDate);
 
     /**
      * 通用设备根据设备租赁的领用ID、设备ID 计算设备新度系数调节费
