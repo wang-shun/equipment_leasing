@@ -9,7 +9,7 @@
         <result column="main_param_value" property="mainParamValue" jdbcType="VARCHAR" />
         <result column="equipment_num" property="equipmentNum" jdbcType="INTEGER" />
         <result column="equipment_effect" property="equipmentEffect" jdbcType="VARCHAR" />
-        <result column="equipment_position" property="equipmentPosition" jdbcType="VARCHAR" />
+        <result column="equipment_position" property="equipmentPosition" jdbcType="BIGINT" />
         <result column="remarks" property="remarks" jdbcType="VARCHAR" />
         <result column="status" property="status" jdbcType="VARCHAR" />
         <result column="code" property="code" jdbcType="VARCHAR" />
@@ -33,7 +33,7 @@
         VALUES
         (#{useId,jdbcType=BIGINT}, #{equipmentId,jdbcType=BIGINT},
       #{mainParamName,jdbcType=VARCHAR}, #{mainParamValue,jdbcType=VARCHAR}, #{equipmentNum,jdbcType=INTEGER},
-      #{equipmentEffect,jdbcType=VARCHAR}, #{equipmentPosition,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR},
+      #{equipmentEffect,jdbcType=VARCHAR}, #{equipmentPosition,jdbcType=BIGINT}, #{remarks,jdbcType=VARCHAR},
       #{status,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{planUseId,jdbcType=BIGINT}, #{useAt,jdbcType=TIMESTAMP},
       #{isUse,jdbcType=TINYINT},#{costA1,jdbcType=DOUBLE})
     </insert>
@@ -60,7 +60,7 @@
                 equipment_effect = #{equipmentEffect,jdbcType=VARCHAR},
             </if>
             <if test="equipmentPosition != null" >
-                equipment_position = #{equipmentPosition,jdbcType=VARCHAR},
+                equipment_position = #{equipmentPosition,jdbcType=BIGINT},
             </if>
             <if test="remarks != null" >
                 remarks = #{remarks,jdbcType=VARCHAR},
@@ -88,7 +88,7 @@
         SELECT t1.*,org.name AS name,sb.name AS sbName
         FROM el_use_item t1
         LEFT JOIN el_organization org
-        ON t1.equipment_position = org.code
+        ON t1.equipment_position = org.id
         LEFT JOIN sb_position sb
         ON t1.equipment_effect = sb.code
         WHERE 1=1
@@ -111,7 +111,7 @@
             AND equipment_effect = #{equipmentEffect,jdbcType=VARCHAR}
         </if>
         <if test="equipmentPosition != null" >
-            AND equipment_position = #{equipmentPosition,jdbcType=VARCHAR}
+            AND equipment_position = #{equipmentPosition,jdbcType=BIGINT}
         </if>
         <if test="remarks != null" >
             AND remarks = #{remarks,jdbcType=VARCHAR}
@@ -138,7 +138,7 @@
         SELECT t1.*,org.name as name,sb.name AS sbName
         FROM el_use_item t1
         LEFT JOIN el_organization org
-        ON t1.equipment_position = org.code
+        ON t1.equipment_position = org.id
         LEFT JOIN sb_position sb
         ON t1.equipment_effect = sb.code
         WHERE item_id = #{itemId,jdbcType=BIGINT}
@@ -163,7 +163,7 @@
         SELECT t1.*,org.name as name,sb.name AS sbName
         FROM el_use_item t1
         LEFT JOIN el_organization org
-        ON t1.equipment_position = org.code
+        ON t1.equipment_position = org.id
         LEFT JOIN sb_position sb
         ON t1.equipment_effect = sb.code
         WHERE t1.use_id = #{useId,jdbcType=BIGINT}

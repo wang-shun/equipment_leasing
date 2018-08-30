@@ -1,5 +1,6 @@
 package com.yankuang.equipment.equipment.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -24,7 +25,7 @@ public class ElUseItem implements Serializable{
 
     private String equipmentEffect;
 
-    private String equipmentPosition;
+    private Long equipmentPosition;
 
     private String remarks;
 
@@ -34,6 +35,7 @@ public class ElUseItem implements Serializable{
 
     private Long planUseId;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date useAt;
 
     private Byte isUse;
@@ -102,12 +104,12 @@ public class ElUseItem implements Serializable{
         this.equipmentEffect = equipmentEffect == null ? null : equipmentEffect.trim();
     }
 
-    public String getEquipmentPosition() {
+    public Long getEquipmentPosition() {
         return equipmentPosition;
     }
 
-    public void setEquipmentPosition(String equipmentPosition) {
-        this.equipmentPosition = equipmentPosition == null ? null : equipmentPosition.trim();
+    public void setEquipmentPosition(Long equipmentPosition) {
+        this.equipmentPosition = equipmentPosition;
     }
 
     public String getRemarks() {
