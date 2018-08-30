@@ -19,6 +19,18 @@ public class AuthorityDTO {
 
     private Long sorting;
 
+    private String icon;
+
+    private List<AuthorityDTO> childList;
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
     public Long getSorting() {
         return sorting;
     }
@@ -26,8 +38,6 @@ public class AuthorityDTO {
     public void setSorting(Long sorting) {
         this.sorting = sorting;
     }
-
-    private List<AuthorityDTO> childList;
 
     public Long getId() {
         return id;

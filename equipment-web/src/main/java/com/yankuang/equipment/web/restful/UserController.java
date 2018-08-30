@@ -103,6 +103,7 @@ public class UserController {
                 authorityDTO.setType(authority.getType());
                 authorityDTO.setName(authority.getName());
                 authorityDTO.setSorting(authority.getSorting());
+                authorityDTO.setIcon(authority.getIcon());
                 authoritys.add(authorityDTO);
             }
             List<Role> roles1 = roleService.findByUserId(loginUser.getId());
@@ -184,6 +185,7 @@ public class UserController {
             tree.setLevel(authority.getLevel());
             tree.setType(authority.getType());
             tree.setUrl(authority.getUrl());
+            tree.setIcon(authority.getIcon());
             tree.setSorting(authority.getSorting());
             trees.add(tree);
         }
