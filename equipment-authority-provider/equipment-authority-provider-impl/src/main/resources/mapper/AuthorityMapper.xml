@@ -8,6 +8,7 @@
         <result column="type" property="type" jdbcType="BIGINT" />
         <result column="status" property="status" jdbcType="TINYINT" />
         <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="icon" property="icon" jdbcType="VARCHAR" />
         <result column="sorting" property="sorting" jdbcType="BIGINT" />
         <result column="url" property="url" jdbcType="VARCHAR" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
@@ -31,7 +32,7 @@
         AND status != 99
     </select>
 
-    <update id="update" parameterType="Authority" >
+    <update id="update" parameterType="com.yankuang.equipment.authority.model.Authority" >
         update el_authority
         <set >
             <if test="code != null" >
@@ -73,7 +74,7 @@
     </update>
 
 
-    <insert id="create" parameterType="Authority" keyProperty="id" useGeneratedKeys="true">
+    <insert id="create" parameterType="com.yankuang.equipment.authority.model.Authority" keyProperty="id" useGeneratedKeys="true">
       insert into el_authority
         (id, code, p_id, type, status, name,
           sorting, url, remark,
@@ -129,7 +130,7 @@
 
     <select id="findByUserId" parameterType="long" resultMap="BaseResultMap" >
         select
-        a.id,a.name,a.level,a.p_id,a.type,a.url,a.sorting
+        a.id,a.name,a.level,a.p_id,a.type,a.url,a.sorting,a.icon
         from el_authority a
         left join el_role_authority_mapping ra
         on a.id = ra.authority_id
