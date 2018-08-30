@@ -92,7 +92,7 @@ public class SbElFeeServiceImpl implements SbElFeeService {
         return dayElFeeA1;
     }
 
-    public Long CalEquipmentElDays(Long useId, Long equipmentId, Date startDate, Date endDate) {
+    public Long CalEquipmentElDays(Long useId,Long backId, Long equipmentId, Date startDate, Date endDate) {
         long days = 0;Date sDate = startDate;Date eDate = endDate;
 
         Map map = new HashMap();
@@ -100,15 +100,25 @@ public class SbElFeeServiceImpl implements SbElFeeService {
         map.put("equipmentId",equipmentId);
         map.put("isUse",1);
         ElUseItem elUseItem = elUseItemMapper.findByCondition(map);
+        //如果领用单没有此设备领用信息返回天数0
+        if(elUseItem==null){
+            return days;
+        }
         if(elUseItem!=null && elUseItem.getUseAt().after(startDate)){
             sDate = elUseItem.getUseAt();
         }
 
-        map.put("isUse",2);
-        ElUseItem elUseItem2 = elUseItemMapper.findByCondition(map);
-        if(elUseItem2!=null && elUseItem2.getUseAt().before(endDate)){
-            eDate = elUseItem2.getUseAt();
+        if(backId!=null){
+            Map map2 = new HashMap();
+            map2.put("useId",backId);
+            map2.put("equipmentId",equipmentId);
+            map2.put("isUse",2);
+            ElUseItem elUseItem2 = elUseItemMapper.findByCondition(map2);
+            if(elUseItem2!=null && elUseItem2.getUseAt().before(endDate)){
+                eDate = elUseItem2.getUseAt();
+            }
         }
+
         days = DateUtils.getDaysInTwoDate(sDate,eDate) < 0 ? 0:DateUtils.getDaysInTwoDate(sDate,eDate);
 
         return days;
@@ -122,6 +132,10 @@ public class SbElFeeServiceImpl implements SbElFeeService {
         map.put("equipmentId",equipmentId);
         map.put("isUse",1);
         ElUseItem elUseItem = elUseItemMapper.findByCondition(map);
+        //如果领用单没有此设备领用信息返回新度系数调节费0.00
+        if(elUseItem==null){
+            return 0.00;
+        }
 
         if(sbEquipmentT==null || elUseItem==null || sbEquipmentT.getUseDate()==null){
             return dayElFeeA3;
