@@ -13,7 +13,7 @@ public class UserDTO implements Serializable {
 
     private List<RoleDTO> roles;
 
-    private List<AuthorityDTO> authoritys;
+    private List<AuthorityTreeDTO> authoritys;
 
     @Override
     public String toString() {
@@ -68,11 +68,11 @@ public class UserDTO implements Serializable {
         this.roles = roles;
     }
 
-    public List<AuthorityDTO> getAuthoritys() {
+    public List<AuthorityTreeDTO> getAuthoritys() {
         return authoritys;
     }
 
-    public void setAuthoritys(List<AuthorityDTO> authoritys) {
+    public void setAuthoritys(List<AuthorityTreeDTO> authoritys) {
         this.authoritys = authoritys;
     }
 }

@@ -7,7 +7,7 @@ import com.yankuang.equipment.authority.service.OrgDeptService;
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.web.dto.DeptDTO;
-import com.yankuang.equipment.web.dto.IdsDTO;
+import com.yankuang.equipment.web.dto.CodesDTO;
 import com.yankuang.equipment.web.util.CodeUtil;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.util.StringUtils;
@@ -97,12 +97,12 @@ public class DeptController {
         if (StringUtils.isEmpty(jsonString)) {
             return CommonResponse.errorMsg("参数不能为空");
         }
-        IdsDTO idsDTO = JsonUtils.jsonToPojo(jsonString, IdsDTO.class);
-        List<Long> deptIds = idsDTO.getIds();
+        CodesDTO codesDTO = JsonUtils.jsonToPojo(jsonString, CodesDTO.class);
+        List<Long> deptIds = codesDTO.getIds();
         if (deptIds == null) {
             return CommonResponse.errorMsg("部门id列表不能为空");
         }
-        Long orgId = idsDTO.getId();
+        Long orgId = codesDTO.getId();
         if (deptIds == null) {
             return CommonResponse.errorMsg("组织id不能为空");
         }

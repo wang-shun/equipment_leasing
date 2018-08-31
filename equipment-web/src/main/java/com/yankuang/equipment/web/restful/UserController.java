@@ -9,7 +9,6 @@ import com.yankuang.equipment.web.dto.*;
 import com.yankuang.equipment.web.util.AuthorityTreeUtils;
 import com.yankuang.equipment.web.util.CodeUtil;
 import com.yankuang.equipment.web.util.RedisOperator;
-import com.yankuang.equipment.web.util.TreeUtils;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,7 +80,7 @@ public class UserController {
             return CommonResponse.errorMsg("密码不能为空");
         }
         log.info("--------- 用户登录信息:" + name + ":" + password);
-        List<AuthorityDTO> authoritys = new ArrayList<>();
+        List<AuthorityTreeDTO> authoritys = new ArrayList<>();
         //todo
         List<RoleDTO> roles = new ArrayList<>();
         final Base64.Decoder decoder = Base64.getDecoder();
@@ -95,7 +94,7 @@ public class UserController {
             log.info(loginUser.toString());
             List<Authority> authorities1 = authorityService.findByUserId(loginUser.getId());
             for (Authority authority : authorities1) {
-                AuthorityDTO authorityDTO = new AuthorityDTO();
+                AuthorityTreeDTO authorityDTO = new AuthorityTreeDTO();
                 authorityDTO.setUrl(authority.getUrl());
                 authorityDTO.setId(authority.getId());
                 authorityDTO.setpId(authority.getpId());
@@ -143,7 +142,7 @@ public class UserController {
         return CommonResponse.errorTokenMsg("用户不存在");
     }
 
-    private UserDTO getUserDTO(List<AuthorityDTO> authoritys, List<RoleDTO> roles, User loginUser) {
+    private UserDTO getUserDTO(List<AuthorityTreeDTO> authoritys, List<RoleDTO> roles, User loginUser) {
         UserDTO userDTO = new UserDTO();
         // 用户角色列表
         List<RoleUser> roleUsers = roleUserService.findByUserId(loginUser.getId());
@@ -158,10 +157,10 @@ public class UserController {
                 .filter(roleDTO -> "admin".equals(roleDTO.getName()))
                 .collect(Collectors.toList());
         if (roles1.size() > 0) {
-            List<AuthorityDTO> authoritys1 = authoritys.stream().
+            List<AuthorityTreeDTO> authoritys1 = authoritys.stream().
                     filter(authorityDTO -> 1 == authorityDTO.getType())
                     .collect(Collectors.toList());
-            List<AuthorityDTO> list = getTree(authoritys1);
+            List<AuthorityTreeDTO> list = getTree(authoritys1);
             // 用户权限idlist
             userDTO.setAuthoritys(list);
         } else {
@@ -173,12 +172,12 @@ public class UserController {
         return userDTO;
     }
 
-    private List<AuthorityDTO> getTree(List<AuthorityDTO> authoritys) {
+    private List<AuthorityTreeDTO> getTree(List<AuthorityTreeDTO> authoritys) {
         AuthorityTreeUtils authorityTreeUtil = new AuthorityTreeUtils();
-        List<AuthorityDTO> trees = new ArrayList<>();
-        AuthorityDTO tree = null;
-        for (AuthorityDTO authority : authoritys) {
-            tree = new AuthorityDTO();
+        List<AuthorityTreeDTO> trees = new ArrayList<>();
+        AuthorityTreeDTO tree = null;
+        for (AuthorityTreeDTO authority : authoritys) {
+            tree = new AuthorityTreeDTO();
             tree.setId(authority.getId());
             tree.setpId(authority.getpId());
             tree.setName(authority.getName());

@@ -4,7 +4,7 @@ import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.syslog.model.SysLog;
 import com.yankuang.equipment.syslog.service.SysLogService;
-import com.yankuang.equipment.web.dto.AuthorityDTO;
+import com.yankuang.equipment.web.dto.AuthorityTreeDTO;
 import com.yankuang.equipment.web.dto.RoleDTO;
 import com.yankuang.equipment.web.dto.UserDTO;
 import com.yankuang.equipment.web.util.RedisOperator;
@@ -23,11 +23,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -315,11 +313,11 @@ public class WebLogAspect {
         logger.info("访问用户，{}", userFromRedis.toString());
         //TODO 获取请求路径url,验证权限
         List<RoleDTO> roles = userFromRedis.getRoles();
-        List<AuthorityDTO> authorities = userFromRedis.getAuthoritys();
+        List<AuthorityTreeDTO> authorities = userFromRedis.getAuthoritys();
         for (RoleDTO roleDTO : roles) {
             if (!"admin".equals(roleDTO.getName())) {
                 // 遍历权限列表比对请求投中权限code
-                List<AuthorityDTO> au =
+                List<AuthorityTreeDTO> au =
                         authorities.stream().filter(authorityDTO ->
                                 authorityCode.equals(authorityDTO.getId())).collect(Collectors.toList());
                 if (au.size() <= 0) {

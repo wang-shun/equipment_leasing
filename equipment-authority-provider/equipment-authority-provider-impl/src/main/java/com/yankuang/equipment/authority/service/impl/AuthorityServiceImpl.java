@@ -6,7 +6,6 @@ import com.yankuang.equipment.authority.mapper.AuthorityMapper;
 import com.yankuang.equipment.authority.model.Authority;
 import com.yankuang.equipment.authority.service.AuthorityService;
 import io.terminus.boot.rpc.common.annotation.RpcProvider;
-import io.terminus.common.model.Paging;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,41 +16,37 @@ import java.util.Map;
 @Service
 @RpcProvider
 @Transactional
-public class AuthorityServiceImpl implements AuthorityService{
+public class AuthorityServiceImpl implements AuthorityService {
 
     @Autowired
     AuthorityMapper authorityMapper;
 
-    public Authority findById(Long id) {
-        return authorityMapper.findById(id);
+    public boolean create(Authority authority) {
+        return authorityMapper.create(authority);
+    }
+
+    public boolean delete(List<String> codes) {
+        return authorityMapper.delete(codes);
+    }
+
+    public boolean update(Authority authority) {
+        return authorityMapper.update(authority);
     }
 
     public List<Authority> findByUserId(Long userId) {
         return authorityMapper.findByUserId(userId);
     }
 
-    public boolean update(Authority authority){
-        return authorityMapper.update(authority);
+    public Authority findByCode(String code) {
+        return authorityMapper.findByCode(code);
     }
 
-    public boolean create(Authority authority){
-        return authorityMapper.create(authority);
-    }
-
-    public boolean delete(Long id){
-        return  authorityMapper.delete(id);
-    }
-
-    public boolean deletes(List<Long> ids){
-        return  authorityMapper.deletes(ids);
-    }
-
-    public Authority findByName(String name){
+    public Authority findByName(String name) {
         return authorityMapper.findByName(name);
     }
 
-    public List<Authority> findAll( ){
-        return authorityMapper.findAll();
+    public List<Authority> findAll() {
+        return authorityMapper.list(null);
     }
 
     public PageInfo<Authority> findByPage(Integer page, Integer size, Map authority) {

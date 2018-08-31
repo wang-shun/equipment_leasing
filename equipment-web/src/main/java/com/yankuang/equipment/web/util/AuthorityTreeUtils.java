@@ -1,6 +1,6 @@
 package com.yankuang.equipment.web.util;
 
-import com.yankuang.equipment.web.dto.AuthorityDTO;
+import com.yankuang.equipment.web.dto.AuthorityTreeDTO;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -11,43 +11,43 @@ public class AuthorityTreeUtils {
 
 
     public static Map<String,Object> mapArray = new LinkedHashMap<String, Object>();
-    public List<AuthorityDTO> menuCommon;
-    public List<AuthorityDTO> list = new ArrayList<>();
+    public List<AuthorityTreeDTO> menuCommon;
+    public List<AuthorityTreeDTO> list = new ArrayList<>();
 
-    public List<AuthorityDTO> menuList(List<AuthorityDTO> menu){
+    public List<AuthorityTreeDTO> menuList(List<AuthorityTreeDTO> menu){
         this.menuCommon = menu;
-        for (AuthorityDTO x : menu) {
-            AuthorityDTO mapArr = new AuthorityDTO();
-            if(x.getpId()==0){
-                mapArr.setId(x.getId());
+        for (AuthorityTreeDTO x : menu) {
+            AuthorityTreeDTO mapArr = new AuthorityTreeDTO();
+            if("0".equals(x.getPcode())){
+                mapArr.setCode(x.getCode());
                 mapArr.setName(x.getName());
-                mapArr.setpId(x.getpId());
+                mapArr.setPcode(x.getPcode());
                 mapArr.setType(x.getType());
                 mapArr.setLevel(x.getLevel());
                 mapArr.setUrl(x.getUrl());
                 mapArr.setSorting(x.getSorting());
                 mapArr.setIcon(x.getIcon());
-                mapArr.setChildList(menuChild(x.getId()));
+                mapArr.setChildList(menuChild(x.getCode()));
                 list.add(mapArr);
             }
         }
         return list;
     }
 
-    public List<AuthorityDTO> menuChild(Long id){
-        List<AuthorityDTO> lists = new ArrayList<>();
-        for(AuthorityDTO a:menuCommon){
-            AuthorityDTO childArray = new AuthorityDTO();
-            if(id.equals(a.getpId())){
-                childArray.setId(a.getId());
+    public List<AuthorityTreeDTO> menuChild(String code){
+        List<AuthorityTreeDTO> lists = new ArrayList<>();
+        for(AuthorityTreeDTO a:menuCommon){
+            AuthorityTreeDTO childArray = new AuthorityTreeDTO();
+            if(code.equals(a.getCode())){
+                childArray.setCode(a.getCode());
                 childArray.setName(a.getName());
-                childArray.setpId(a.getpId());
+                childArray.setPcode(a.getPcode());
                 childArray.setType(a.getType());
                 childArray.setLevel(a.getLevel());
                 childArray.setUrl(a.getUrl());
                 childArray.setSorting(a.getSorting());
                 childArray.setIcon(a.getIcon());
-                childArray.setChildList(menuChild(a.getId()));
+                childArray.setChildList(menuChild(a.getCode()));
                 lists.add(childArray);
             }
         }

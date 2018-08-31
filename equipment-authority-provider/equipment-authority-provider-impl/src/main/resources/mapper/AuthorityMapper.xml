@@ -27,20 +27,17 @@
         create_by, create_at, level, project_code,icon
     </sql>
 
-    <insert id="create" parameterType="com.yankuang.equipment.authority.model.Authority" keyProperty="id"
-            useGeneratedKeys="true">
+    <insert id="create" parameterType="com.yankuang.equipment.authority.model.Authority">
       insert into el_authority
-        (id, code, p_id, type, status, name,
+        (code, pcode, type, name,icon
           sorting, url, remark,
-          version, update_by, update_at,
-          create_by, create_at, level
+          update_by,create_by, level
           )
       values
-        (#{id}, #{code}, #{pId},
-        #{type}, 1, #{name},
+        ( #{code}, #{pcode},
+        #{type}, #{name}, #{icon},
         #{sorting}, #{url}, #{remark},
-        0, #{updateBy}, unix_timestamp(now()),
-        #{createBy}, unix_timestamp(now()), #{level}
+        #{updateBy},#{createBy}, #{level}
         )
     </insert>
 
@@ -48,41 +45,39 @@
         UPDATE yankuang_equipment.el_authority
         <set>
             status = 99,
-            update_at = unix_timestamp(now())
+            update_at = CURRENT_TIMESTAMP
         </set>
         WHERE code in
         <foreach collection="list" item="code" separator="," open="(" close=")">
             #{code}
         </foreach>
     </update>
+
     <update id="update" parameterType="com.yankuang.equipment.authority.model.Authority">
         update el_authority
         <set>
-            <if test="code != null">
-                code = #{code},
+            <if test="pcode != null and pcode != ''">
+                code = #{pcode},
             </if>
-            <if test="name != null">
+            <if test="name != null and name != '' ">
                 name = #{name},
             </if>
-            <if test="url != null">
+            <if test="url != null and url != '' ">
                 url = #{url},
             </if>
-            <if test="type != null">
+            <if test="type != null and type != '' ">
                 type = #{type},
             </if>
-            <if test="createBy != null">
-                create_by = #{createBy},
-            </if>
-            <if test="remark != null">
+            <if test="remark != null and remark != '' ">
                 remark = #{remark},
             </if>
-            <if test="sorting != null">
+            <if test="sorting != null and sorting != '' ">
                 sorting = #{sorting},
             </if>
-            <if test="updateBy != null">
+            <if test="updateBy != null and updateBy != '' ">
                 update_by = #{updateBy},
             </if>
-            <if test="version != null">
+            <if test="version != null and version != '' ">
                 version = #{version},
             </if>
             update_at = CURRENT_TIMESTAMP
@@ -114,17 +109,6 @@
         AND status != 99
     </select>
 
-    <!--<select id="findAll" resultMap="BaseResultMap">-->
-        <!--SELECT-->
-        <!--<include refid="Base_Column_List"/>-->
-        <!--FROM yankuang_equipment.el_authority-->
-        <!--WHERE status != 99-->
-        <!--<if test="type != null">-->
-            <!--AND type = #{type}-->
-        <!--</if>-->
-        <!--ORDER BY create_at DESC-->
-    <!--</select>-->
-
     <select id="findByUserId" parameterType="long" resultMap="BaseResultMap">
         select
         a.id,a.name,a.level,a.p_id,a.type,a.url,a.sorting,a.icon,a.code,a.pcode
@@ -152,41 +136,14 @@
         FROM yankuang_equipment.el_authority
         WHERE
         1 = 1
-        <if test="code != null">
+        <if test="code != null and code != '' ">
             AND code = #{code}
         </if>
-        <if test="name != null">
+        <if test="pcode != null and pcode != '' ">
+            AND pcode = #{pcode}
+        </if>
+        <if test="name != null and name != '' ">
             AND name like '%'#{name}'%'
-        </if>
-        <if test="url != null">
-            AND url = #{url}
-        </if>
-        <if test="type != null">
-            AND type = #{type}
-        </if>
-        <if test="createBy != null">
-            AND create_by = #{createBy}
-        </if>
-        <if test="remark != null">
-            AND remark = #{remark}
-        </if>
-        <if test="sorting != null">
-            AND sorting = #{sorting}
-        </if>
-        <if test="updateAt != null">
-            AND update_at = #{updateAt}
-        </if>
-        <if test="updateBy != null">
-            AND update_by = #{updateBy}
-        </if>
-        <if test="version != null">
-            AND version = #{version}
-        </if>
-        <if test="createAt != null">
-            AND create_at = #{createAt}
-        </if>
-        <if test="id != null">
-            AND id = #{id}
         </if>
         AND status != 99
         order by create_at desc

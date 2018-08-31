@@ -6,14 +6,13 @@ import com.yankuang.equipment.authority.service.OrganizationService;
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.common.util.UuidUtils;
-import com.yankuang.equipment.web.dto.IdsDTO;
+import com.yankuang.equipment.web.dto.CodesDTO;
 import com.yankuang.equipment.web.dto.TreeDTO;
 import com.yankuang.equipment.web.util.TreeUtils;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Field;
 import java.util.*;
 
 
@@ -103,8 +102,8 @@ public class OrganizationController {
         if (StringUtils.isEmpty(jsonString)) {
             return CommonResponse.errorTokenMsg("没有查询的id");
         }
-        IdsDTO idsDTO = JsonUtils.jsonToPojo(jsonString,IdsDTO.class);
-        List<Long> ids = idsDTO.getIds();
+        CodesDTO codesDTO = JsonUtils.jsonToPojo(jsonString, CodesDTO.class);
+        List<Long> ids = codesDTO.getIds();
         for (Long id : ids) {
             boolean idB = organizationService.delete(id);
             if (idB == false) {
