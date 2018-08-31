@@ -1,5 +1,6 @@
 package com.yankuang.equipment.web.restful;
 
+import com.alibaba.fastjson.JSON;
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.Constants;
 import com.yankuang.equipment.common.util.JsonUtils;
@@ -7,6 +8,7 @@ import com.yankuang.equipment.equipment.model.ElPlanItem;
 import com.yankuang.equipment.equipment.model.ElPlanUse;
 import com.yankuang.equipment.equipment.service.ElPlanUseService;
 import com.yankuang.equipment.equipment.service.ElUseService;
+import org.apache.log4j.Logger;
 import org.springframework.util.StringUtils;
 import com.yankuang.equipment.equipment.model.ElPlan;
 import com.yankuang.equipment.equipment.service.ElPlanService;
@@ -27,6 +29,8 @@ import java.util.*;
 @RequestMapping("/v1/elplan")
 public class ElPlanController {
 
+    public static final Logger logger = Logger.getLogger(ElPlanController.class);
+
     @RpcConsumer
     ElPlanService elPlanService;
 
@@ -41,13 +45,14 @@ public class ElPlanController {
 
     /**
      * 创建通用设备月度租赁计划
+     *
      * @param elPlan
      * @return
      */
     @PostMapping("/{equipmentType}/{planType}")
-    public CommonResponse create (@PathVariable(value = "equipmentType") String equipmentType,
-                                  @PathVariable(value = "planType") String planType,
-                                  @RequestBody ElPlan elPlan) {
+    public CommonResponse create(@PathVariable(value = "equipmentType") String equipmentType,
+                                 @PathVariable(value = "planType") String planType,
+                                 @RequestBody ElPlan elPlan) {
 
         Boolean res = false;
         try {
@@ -129,11 +134,12 @@ public class ElPlanController {
 
     /**
      * 更新设备租赁计划
+     *
      * @param elPlan
      * @return
      */
     @PutMapping("")
-    public CommonResponse update (@RequestBody ElPlan elPlan) {
+    public CommonResponse update(@RequestBody ElPlan elPlan) {
 
         Boolean res = false;
         try {
@@ -171,6 +177,7 @@ public class ElPlanController {
 
     /**
      * 删除设备租赁计划
+     *
      * @param planId
      * @return
      */
@@ -206,6 +213,7 @@ public class ElPlanController {
 
     /**
      * 删除租赁计划明细记录
+     *
      * @return
      */
     @DeleteMapping("/planItem/{itemId}")
@@ -231,11 +239,12 @@ public class ElPlanController {
 
     /**
      * 通过主键查询设备租赁计划
+     *
      * @param planId
      * @return
      */
     @GetMapping("/{planId}")
-    public CommonResponse getElPlan (@PathVariable(value = "planId") String planId) {
+    public CommonResponse getElPlan(@PathVariable(value = "planId") String planId) {
 
         try {
             if (StringUtils.isEmpty(planId)) {
@@ -245,6 +254,7 @@ public class ElPlanController {
             if (elPlan == null) {
                 return CommonResponse.build(201, "设备租赁计划查询为空", null);
             }
+            logger.info("getELPlan date: " + new Date() + " data:" + JSON.toJSONString(elPlan));
             return CommonResponse.ok(elPlan);
         } catch (NumberFormatException e) {
             e.printStackTrace();
@@ -254,6 +264,7 @@ public class ElPlanController {
 
     /**
      * 分页条件查询设备租赁计划
+     *
      * @param elPlan
      * @param pageSize
      * @param pageNum
@@ -304,7 +315,7 @@ public class ElPlanController {
             pageNum = pageNum == null ? 1 : pageNum;
             elPlan.setPlanEquipmentType(equipmentType);
             elPlan.setPlanType(planType);
-            Paging page = elPlanService.findElPlanByCondition(elPlan,pageSize,pageNum);
+            Paging page = elPlanService.findElPlanByCondition(elPlan, pageSize, pageNum);
             if (page == null || page.getTotal() <= 0) {
                 return CommonResponse.build(201, "查询结果为空", null);
             }
@@ -317,6 +328,7 @@ public class ElPlanController {
 
     /**
      * 审批、提交操作
+     *
      * @param approvalType
      * @param elPlan
      * @return
@@ -336,7 +348,7 @@ public class ElPlanController {
 
             // 填充数据
             ElPlan plan = elPlanService.findElPlanById(elPlan.getPlanId());
-            if (plan == null ) {
+            if (plan == null) {
                 return CommonResponse.errorMsg("该条租赁计划已过期");
             }
             if (plan.getElPlanItemList() != null && plan.getElPlanItemList().size() > 0) {
@@ -405,6 +417,7 @@ public class ElPlanController {
 
     /**
      * 查询租赁计划备用设备
+     *
      * @param elPlanUse
      * @return
      */
@@ -439,60 +452,60 @@ public class ElPlanController {
     }
 
     /**
-     * @method 分页查询在租设备列表
      * @param page
      * @param size
      * @return
+     * @method 分页查询在租设备列表
      */
     @GetMapping("/findByCreatorId")
-    public CommonResponse findByCreatorId(@RequestParam( defaultValue = "1") Integer page,
-                                          @RequestParam( defaultValue = "20" ) Integer size,
-                                          @RequestParam String jsonString){
+    public CommonResponse findByCreatorId(@RequestParam(defaultValue = "1") Integer page,
+                                          @RequestParam(defaultValue = "20") Integer size,
+                                          @RequestParam String jsonString) {
         Map elPlanUseMap = new HashMap();
-        if (!StringUtils.isEmpty(jsonString)){
-            ElPlan elPlan = JsonUtils.jsonToPojo(jsonString,ElPlan.class);
-            if (elPlan == null){
+        if (!StringUtils.isEmpty(jsonString)) {
+            ElPlan elPlan = JsonUtils.jsonToPojo(jsonString, ElPlan.class);
+            if (elPlan == null) {
                 return CommonResponse.errorMsg("参数对象不能为空");
             }
-            if (elPlan.getPlanYear() == null){
+            if (elPlan.getPlanYear() == null) {
                 return CommonResponse.errorMsg("计划年度不能为空");
             }
-            if (elPlan.getPlanEquipmentType() == null){
+            if (elPlan.getPlanEquipmentType() == null) {
                 return CommonResponse.errorMsg("设备类型不能为空");
             }
-            if ("1".equals(elPlan.getPlanEquipmentType())){
-                if (elPlan.getPlanMonth() == null){
+            if ("1".equals(elPlan.getPlanEquipmentType())) {
+                if (elPlan.getPlanMonth() == null) {
                     return CommonResponse.errorMsg("月份不能为空");
                 }
                 elPlan.setPlanType("3");
-            }else if ("2".equals(elPlan.getPlanEquipmentType())){
+            } else if ("2".equals(elPlan.getPlanEquipmentType())) {
                 elPlan.setPlanType("1");
             }
             List<ElPlan> elPlans = elPlanService.findByCreatorId(elPlan);
-            if (elPlans.size() <= 0 ){
-                return CommonResponse.ok( );
+            if (elPlans.size() <= 0) {
+                return CommonResponse.ok();
             }
             List<String> planIds = new ArrayList<>();
             ElPlanItem elPlanItem = new ElPlanItem();
-            for (ElPlan elPlan1:elPlans){
+            for (ElPlan elPlan1 : elPlans) {
                 elPlanItem.setPlanId(elPlan1.getPlanId());
                 elPlanItem.setPositionId(100120108L);//TODO 此值暂时写死
                 List<ElPlanItem> elPlanItems = elUseService.findByPlanId(elPlanItem);
-                if (elPlanItems.size() <= 0){
+                if (elPlanItems.size() <= 0) {
                     return CommonResponse.errorMsg("没有该计划");
                 }
-                for (ElPlanItem elPlanItem1 :elPlanItems){
+                for (ElPlanItem elPlanItem1 : elPlanItems) {
                     planIds.add(elPlanItem1.getItemId());
                 }
             }
-            if (planIds.size() < 1){
+            if (planIds.size() < 1) {
                 return CommonResponse.errorMsg("不存在该计划");
             }
-            elPlanUseMap.put("planItemId",planIds);
-            if(elPlanUseService.list(page,size,elPlanUseMap) == null){
+            elPlanUseMap.put("planItemId", planIds);
+            if (elPlanUseService.list(page, size, elPlanUseMap) == null) {
                 return CommonResponse.ok();
             }
         }
-        return CommonResponse.ok( elPlanUseService.list(page,size,elPlanUseMap));
+        return CommonResponse.ok(elPlanUseService.list(page, size, elPlanUseMap));
     }
 }

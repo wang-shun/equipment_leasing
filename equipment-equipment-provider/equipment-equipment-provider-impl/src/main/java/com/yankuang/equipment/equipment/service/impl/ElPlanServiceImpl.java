@@ -104,7 +104,6 @@ public class ElPlanServiceImpl implements ElPlanService {
             if (list != null && elPlan != null) {
                 elPlan.setElPlanItemList(list);
             }
-            logger.info("findElPlanById: " + JSON.toJSONString(elPlan));
             return elPlan;
         } catch (Exception e) {
             e.printStackTrace();
