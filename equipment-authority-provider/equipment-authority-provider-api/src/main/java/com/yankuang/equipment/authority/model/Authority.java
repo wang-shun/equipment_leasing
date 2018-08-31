@@ -1,167 +1,58 @@
 package com.yankuang.equipment.authority.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+import java.util.Date;
 
 @Table(name = "el_authority")
+@Data
 public class Authority implements Serializable {
-    private Long id;
 
-    private String code;
+    private Long id;
 
     private Long pId;
 
-    private Long type;
+    private String code;
 
-    private Byte status;
+    @NotEmpty(message = "父级权限pcode不能为空!")
+    private String pcode;
 
+    @NotEmpty(message = "权限name不能为空!")
     private String name;
 
-    private Long sorting;
+    @NotEmpty(message = "权限type不能为空!")
+    private Long type;
 
     private String url;
 
+    private String icon;
+
+    @NotEmpty(message = "权限sorting不能为空!")
+    private Long sorting;
+
+    private Long level;
+
     private String remark;
+
+    private Byte status;
 
     private Long version;
 
     private String updateBy;
 
-    private Long updateAt;
-
     private String createBy;
 
-    private Long createAt;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    private Date updateAt;
 
-    private Long level;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    private Date createAt;
 
-    private String icon;
+    private String projectCode;
 
-    public String getIcon() {
-        return icon;
-    }
 
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code == null ? null : code.trim();
-    }
-
-    public Long getpId() {
-        return pId;
-    }
-
-    public void setpId(Long pId) {
-        this.pId = pId;
-    }
-
-    public Long getType() {
-        return type;
-    }
-
-    public void setType(Long type) {
-        this.type = type;
-    }
-
-    public Byte getStatus() {
-        return status;
-    }
-
-    public void setStatus(Byte status) {
-        this.status = status;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
-    }
-
-    public Long getSorting() {
-        return sorting;
-    }
-
-    public void setSorting(Long sorting) {
-        this.sorting = sorting;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url == null ? null : url.trim();
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
-    }
-
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
-    }
-
-    public String getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy == null ? null : updateBy.trim();
-    }
-
-    public Long getUpdateAt() {
-        return updateAt;
-    }
-
-    public void setUpdateAt(Long updateAt) {
-        this.updateAt = updateAt;
-    }
-
-    public String getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy == null ? null : createBy.trim();
-    }
-
-    public Long getCreateAt() {
-        return createAt;
-    }
-
-    public void setCreateAt(Long createAt) {
-        this.createAt = createAt;
-    }
-
-    public Long getLevel() {
-        return level;
-    }
-
-    public void setLevel(Long level) {
-        this.level = level;
-    }
 }
