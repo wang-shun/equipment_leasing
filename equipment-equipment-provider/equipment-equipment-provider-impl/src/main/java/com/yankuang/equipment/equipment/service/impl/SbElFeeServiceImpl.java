@@ -60,8 +60,8 @@ public class SbElFeeServiceImpl implements SbElFeeService {
             dayElFeeA1 = new BigDecimal(ElFee/365).setScale(2, RoundingMode.UP).doubleValue();
         }else{
             double ElFee = sbEquipmentT.getBuyPrice().doubleValue()/sbEquipmentT.getCostYears().doubleValue()
-                        + sbEquipmentT.getBuyPrice().doubleValue()*sbElFeeConfig.getOneRepairRate()
-                        + sbEquipmentT.getBuyPrice().doubleValue()*sbElFeeConfig.getOneManageRate();
+                        + sbEquipmentT.getBuyPrice().doubleValue()*sbElFeeConfig.getTwoRepairRate()
+                        + sbEquipmentT.getBuyPrice().doubleValue()*sbElFeeConfig.getTwoManageRate();
             dayElFeeA1 = new BigDecimal(ElFee/365).setScale(2, RoundingMode.UP).doubleValue();
         }
 
