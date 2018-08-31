@@ -157,14 +157,15 @@ public class AuthorityController {
      * 权限分页查询.
      * @param page
      * @param size
-     * @param searchInput
+     * @param name
      * @return
      */
     @GetMapping
     public CommonResponse findByPage(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                      @RequestParam(value = "size", defaultValue = "20") Integer size,
-                                     @RequestParam(value = "searchInput", defaultValue = "") String searchInput){
+                                     @RequestParam(value = "name", defaultValue = "") String name){
         Map map = new HashMap();
+        map.put("name", name);
         PageInfo<Authority> authoritys = authorityService.findByPage(page, size, map);
         return CommonResponse.ok(authoritys);
     }
