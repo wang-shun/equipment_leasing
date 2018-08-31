@@ -22,6 +22,6 @@ public interface AuthorityService {
 
     Authority findByCode(String code);
 
-    List<Authority> findByUserId(Long userId);
+    List<Authority> findByUserCode(String code);
 
 }

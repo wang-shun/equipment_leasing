@@ -1,8 +1,6 @@
 package com.yankuang.equipment.web.restful;
 
 
-import com.yankuang.equipment.authority.model.Organization;
-import com.yankuang.equipment.authority.service.OrganizationService;
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.common.util.UuidUtils;

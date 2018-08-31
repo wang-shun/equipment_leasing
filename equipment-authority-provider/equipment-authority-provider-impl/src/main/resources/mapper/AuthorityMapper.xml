@@ -109,24 +109,24 @@
         AND status != 99
     </select>
 
-    <select id="findByUserId" parameterType="long" resultMap="BaseResultMap">
+    <select id="findByUserCode" parameterType="String" resultMap="BaseResultMap">
         select
-        a.id,a.name,a.level,a.p_id,a.type,a.url,a.sorting,a.icon,a.code,a.pcode
+        a.name,a.level,a.type,a.url,a.sorting,a.icon,a.code,a.pcode
         from el_authority a
         left join el_role_authority_mapping ra
-        on a.id = ra.authority_id
+        on a.code = ra.authority_code
         left join el_role r
-        on r.id = ra.role_id
+        on r.code = ra.role_code
         left join el_role_user_mapping ru
-        on r.id  = ru.role_id
+        on r.code = ru.role_code
         left join el_user u
-        on u.id = ru.user_id
+        on u.code = ru.user_code
         WHERE a.status != 99
         and ra.status != 99
         and r.status != 99
         and ru.status != 99
         and u.status != 99
-        and u.id = #{userId}
+        and u.code = #{code}
         ORDER BY a.create_at DESC
     </select>
 

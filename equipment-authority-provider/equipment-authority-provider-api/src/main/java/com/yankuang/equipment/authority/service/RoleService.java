@@ -9,17 +9,17 @@ import java.util.Map;
 
 public interface RoleService {
 
-    List<Role> findByUserId(Long id);
+    boolean create(Role role);
 
-    Role findById(Long id);
+    boolean delete(List<String> codes);
 
     boolean update(Role role);
 
-    boolean create(Role role);
-
-    boolean delete(Long id);
+    Role findByCode(String code);
 
     Role findByName(String name);
+
+    List<Role> findByUserCode(String code);
 
     List<Role> findAll();
 

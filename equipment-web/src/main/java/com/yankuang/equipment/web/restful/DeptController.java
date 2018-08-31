@@ -1,9 +1,7 @@
 package com.yankuang.equipment.web.restful;
 
 import com.yankuang.equipment.authority.model.Dept;
-import com.yankuang.equipment.authority.model.OrgDept;
 import com.yankuang.equipment.authority.service.DeptService;
-import com.yankuang.equipment.authority.service.OrgDeptService;
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.web.dto.DeptDTO;
@@ -27,9 +25,6 @@ import java.util.Map;
 public class DeptController {
     @RpcConsumer
     DeptService deptService;
-
-    @RpcConsumer
-    OrgDeptService orgDeptService;
 
     /**
      * 添加部门,及组织部门关系.

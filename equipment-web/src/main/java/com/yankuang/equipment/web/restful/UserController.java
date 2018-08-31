@@ -92,12 +92,12 @@ public class UserController {
         }
         if (loginUser != null && password.equals(loginUser.getPassword())) {
             log.info(loginUser.toString());
-            List<Authority> authorities1 = authorityService.findByUserId(loginUser.getId());
+            List<Authority> authorities1 = authorityService.findByUserCode(loginUser.getCode());
             for (Authority authority : authorities1) {
                 AuthorityTreeDTO authorityDTO = new AuthorityTreeDTO();
                 authorityDTO.setUrl(authority.getUrl());
-                authorityDTO.setId(authority.getId());
-                authorityDTO.setpId(authority.getpId());
+                authorityDTO.setCode(authority.getCode());
+                authorityDTO.setPcode(authority.getPcode());
                 authorityDTO.setLevel(authority.getLevel());
                 authorityDTO.setType(authority.getType());
                 authorityDTO.setName(authority.getName());
@@ -178,8 +178,8 @@ public class UserController {
         AuthorityTreeDTO tree = null;
         for (AuthorityTreeDTO authority : authoritys) {
             tree = new AuthorityTreeDTO();
-            tree.setId(authority.getId());
-            tree.setpId(authority.getpId());
+            tree.setCode(authority.getCode());
+            tree.setPcode(authority.getPcode());
             tree.setName(authority.getName());
             tree.setLevel(authority.getLevel());
             tree.setType(authority.getType());

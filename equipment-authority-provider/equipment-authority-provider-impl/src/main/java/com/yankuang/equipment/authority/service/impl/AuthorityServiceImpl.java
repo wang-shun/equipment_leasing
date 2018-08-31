@@ -33,8 +33,8 @@ public class AuthorityServiceImpl implements AuthorityService {
         return authorityMapper.update(authority);
     }
 
-    public List<Authority> findByUserId(Long userId) {
-        return authorityMapper.findByUserId(userId);
+    public List<Authority> findByUserCode(String code) {
+        return authorityMapper.findByUserCode(code);
     }
 
     public Authority findByCode(String code) {

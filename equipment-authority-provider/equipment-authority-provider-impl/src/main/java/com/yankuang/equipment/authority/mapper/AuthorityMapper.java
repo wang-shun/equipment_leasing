@@ -19,7 +19,7 @@ public interface AuthorityMapper {
 
     Authority findByName(String name);
 
-    List<Authority> findByUserId(Long userId);
+    List<Authority> findByUserCode(String code);
 
     List<Authority> list(Map role);
 

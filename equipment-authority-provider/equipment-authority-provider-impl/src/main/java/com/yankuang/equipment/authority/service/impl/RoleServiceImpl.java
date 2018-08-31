@@ -19,32 +19,32 @@ public class RoleServiceImpl implements RoleService {
     @Autowired
     RoleMapper roleMapper;
 
-    public List<Role> findByUserId(Long id) {
-        return roleMapper.findByUserId(id);
+    public boolean create(Role role) {
+        return roleMapper.create(role);
     }
 
-    public Role findById(Long id) {
-        return roleMapper.findById(id);
+    public boolean delete(List<String> codes) {
+        return roleMapper.delete(codes);
     }
 
     public boolean update(Role role) {
         return roleMapper.update(role);
     }
 
-    public boolean create(Role role) {
-        return roleMapper.create(role);
-    }
-
-    public boolean delete(Long id) {
-        return roleMapper.delete(id);
+    public Role findByCode(String code) {
+        return roleMapper.findByCode(code);
     }
 
     public Role findByName(String name) {
         return roleMapper.findByName(name);
     }
 
+    public List<Role> findByUserCode(String code) {
+        return roleMapper.findByUserCode(code);
+    }
+
     public List<Role> findAll() {
-        return roleMapper.findAll();
+        return roleMapper.list(null);
     }
 
     public PageInfo<Role> list(Integer page, Integer size, Map roleMap) {
