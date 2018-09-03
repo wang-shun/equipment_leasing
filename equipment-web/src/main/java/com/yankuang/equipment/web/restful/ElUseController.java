@@ -19,6 +19,7 @@ import java.util.Map;
  * @author boms
  * @time 20180823
  */
+@CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("/v1/elUses")
 public class ElUseController {
