@@ -90,7 +90,7 @@ public class RoleController {
         map.put("roleCode", roleCheckCode);
         map.put("deptCode", deptCode);
         // 关联表查重
-        DeptRole deptRole = deptRoleService.selectByDeptIdAndRoleId(map);
+        DeptRole deptRole = deptRoleService.findByDeptCodeAndRoleCode(map);
         if (StringUtils.isEmpty(deptRole)) {
             DeptRole deptRole1 = new DeptRole();
             deptRole1.setRoleCode(roleCheckCode);
@@ -166,14 +166,15 @@ public class RoleController {
      * 角色分页查询.
      * @param page
      * @param size
-     * @param searchInput
+     * @param name
      * @return
      */
     @GetMapping
     public CommonResponse findByPage(@RequestParam(value = "page", defaultValue = "1") Integer page,
                           @RequestParam(value = "size", defaultValue = "20") Integer size,
-                          @RequestParam String searchInput) {
+                          @RequestParam String name) {
         Map roleMap = new HashMap();
+        roleMap.put("name", name);
         return CommonResponse.ok(roleService.list(page, size, roleMap));
     }
 
@@ -189,26 +190,24 @@ public class RoleController {
             return CommonResponse.errorMsg("参数jsonString不能为空");
         }
         RoleAuthorityDTO roleAuthorityDTO = JsonUtils.jsonToPojo(jsonString, RoleAuthorityDTO.class);
-        Long roleId = roleAuthorityDTO.getRoleId();
-        if (StringUtils.isEmpty(roleId)) {
-            return CommonResponse.errorMsg("参数roleId不能为空");
+        String roleCode = roleAuthorityDTO.getRoleCode();
+        if (StringUtils.isEmpty(roleCode)) {
+            return CommonResponse.errorMsg("参数roleCode不能为空");
         }
-        List<Long> authorityIds = roleAuthorityDTO.getAuthorityIds();
-        if (StringUtils.isEmpty(authorityIds)) {
-            return CommonResponse.errorMsg("参数authorityIds不能为空");
+        List<String> authorityCodes = roleAuthorityDTO.getAuthorityCodes();
+        if (StringUtils.isEmpty(authorityCodes)) {
+            return CommonResponse.errorMsg("参数authorityCodes不能为空");
         }
         // 遍历ids,根据角色roleId查和权限id查重角色和权限关联表
-        for (Long authorityId : authorityIds) {
+        for (String authorityCode : authorityCodes) {
             Map map = new HashMap();
-            map.put("roleId", roleId);
-            map.put("authorityId", authorityId);
-            RoleAuthority roleAuthority = roleAuthorityService.findByRoleIdAndAuthorityId(map);
+            map.put("roleCode", roleCode);
+            map.put("authorityCode", authorityCode);
+            RoleAuthority roleAuthority = roleAuthorityService.findByRoleAndAuthorityCodes(map);
             if (StringUtils.isEmpty(roleAuthority)) {
                 RoleAuthority roleAuthority1 = new RoleAuthority();
-                roleAuthority1.setAuthorityId(authorityId);
-                roleAuthority1.setRoleId(roleId);
-                roleAuthority1.setCreateBy("admin");
-                roleAuthority1.setUpdateBy("admin");
+                roleAuthority1.setAuthorityCode(authorityCode);
+                roleAuthority1.setRoleCode(roleCode);
                 Boolean b = roleAuthorityService.create(roleAuthority1);
                 if (!b) {
                     return CommonResponse.errorMsg("添加角色权限关联失败");
@@ -223,15 +222,15 @@ public class RoleController {
      * @method
      * 根据deptId获取角色列表
      * 用户管理添加用户，角色下拉列表
-     * @param deptId
+     * @param deptRoles
      * @return
      */
     @GetMapping("/byDeptId")
-    public CommonResponse findByDeptId(@RequestParam Long deptId){
+    public CommonResponse findByDeptCode(@RequestParam String deptCode){
         List<Role> roles = new ArrayList<Role>();
-        List<DeptRole>  deptRoles = deptRoleService.findByDeptId(deptId);
+        List<DeptRole>  deptRoles = deptRoleService.findByDeptCode(deptCode);
         for (DeptRole deptRole : deptRoles){
-            Role role = roleService.findById(deptRole.getRoleId());
+            Role role = roleService.findByCode(deptRole.getDeptCode());
             roles.add(role);
         }
         return CommonResponse.ok(roles);

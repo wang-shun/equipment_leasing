@@ -49,17 +49,7 @@ public class DeptController {
         }
         Dept dept1 = deptService.findByName(deptName);
         if (dept1 != null) {
-            OrgDept orgDept = new OrgDept();
-            orgDept.setDepartmentId(dept1.getId());
-            orgDept.setOrganizationId(orgId);
-            orgDept.setCode(CodeUtil.getCode());
-            orgDept.setCreateBy("admin");
-            orgDept.setUpdateBy("admin");
-            Boolean b2 = orgDeptService.create(orgDept);
-            if (!b2){
-                return CommonResponse.errorMsg("添加组织部门关系失败");
-            }
-            return CommonResponse.ok("部门添加成功");
+            return CommonResponse.ok("部门已存在，请勿重复添加");
         }
         dept.setCode(CodeUtil.getCode());
         dept.setCreateBy("admin");
@@ -67,17 +57,6 @@ public class DeptController {
         Boolean b = deptService.create(dept);
         if (!b) {
             return CommonResponse.errorMsg("部门添加失败");
-        }
-        Dept dept2 = deptService.findByName(deptName);
-        OrgDept orgDept = new OrgDept();
-        orgDept.setDepartmentId(dept2.getId());
-        orgDept.setOrganizationId(orgId);
-        orgDept.setCode(CodeUtil.getCode());
-        orgDept.setCreateBy("admin");
-        orgDept.setUpdateBy("admin");
-        Boolean b2 = orgDeptService.create(orgDept);
-        if (!b2){
-            return CommonResponse.errorMsg("添加组织部门关系失败");
         }
         return CommonResponse.ok("部门添加成功");
     }
@@ -87,29 +66,18 @@ public class DeptController {
      * @param jsonString
      * @return
      */
-    @DeleteMapping
-    public CommonResponse delete(@RequestBody String jsonString) {
-        if (StringUtils.isEmpty(jsonString)) {
-            return CommonResponse.errorMsg("参数不能为空");
-        }
-        CodesDTO codesDTO = JsonUtils.jsonToPojo(jsonString, CodesDTO.class);
-        List<Long> deptIds = codesDTO.getIds();
-        if (deptIds == null) {
-            return CommonResponse.errorMsg("部门id列表不能为空");
-        }
-        Long orgId = codesDTO.getId();
-        if (deptIds == null) {
-            return CommonResponse.errorMsg("组织id不能为空");
-        }
-        Map map = new HashMap();
-        map.put("orgId", orgId);
-        map.put("deptIds", deptIds);
-        boolean b = orgDeptService.deleteByOrgIdAndDeptId(map);
-        if (!b) {
-            return CommonResponse.errorTokenMsg("删除失败");
-        }
-        return CommonResponse.ok("删除成功");
-    }
+//    @DeleteMapping
+//    public CommonResponse delete(@RequestBody String jsonString) {
+//        if (StringUtils.isEmpty(jsonString)) {
+//            return CommonResponse.errorMsg("参数不能为空");
+//        }
+//        CodesDTO codesDTO = JsonUtils.jsonToPojo(jsonString, CodesDTO.class);
+//        List<String> deptCodes = codesDTO.getCodes();
+//        if (deptCodes == null) {
+//            return CommonResponse.errorMsg("部门codes列表不能为空");
+//        }
+//        return CommonResponse.ok("删除成功");
+//    }
 
     /**
      * 根据id修改.
@@ -127,10 +95,10 @@ public class DeptController {
             return CommonResponse.errorTokenMsg("系统错误");
         }
         if (dept.getName() == null || "".equals(dept.getName())) {
-            return CommonResponse.errorTokenMsg("部门名称不能为空");
+            return CommonResponse.errorTokenMsg("部门名称不能为空!");
         }
         if (deptService.findByName(dept.getName()) != null) {
-            return CommonResponse.errorTokenMsg("此部门名称已存在");
+            return CommonResponse.errorTokenMsg("此部门名称已存在!");
         }
         return CommonResponse.ok(deptService.update(dept));
     }

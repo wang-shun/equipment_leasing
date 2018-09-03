@@ -3,53 +3,43 @@
 <mapper namespace="com.yankuang.equipment.authority.mapper.RoleUserMapper" >
   <resultMap id="BaseResultMap" type="com.yankuang.equipment.authority.model.RoleUser" >
     <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="role_id" property="roleId" jdbcType="BIGINT" />
-    <result column="user_id" property="userId" jdbcType="BIGINT" />
-    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
-    <result column="update_at" property="updateAt" jdbcType="BIGINT" />
-    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
-    <result column="create_at" property="createAt" jdbcType="BIGINT" />
-    <result column="version" property="version" jdbcType="BIGINT" />
+    <result column="role_code" property="roleCode" jdbcType="BIGINT" />
+    <result column="user_code" property="userCode" jdbcType="BIGINT" />
+    <result column="project_code" property="projectCode" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="TINYINT" />
   </resultMap>
 
   <sql id="Base_Column_List" >
-    id, role_id, user_id, create_by, update_at, update_by, create_at, version, status
+    id, role_code, user_code,project_code, status
   </sql>
 
-  <insert id="create" parameterType="com.yankuang.equipment.authority.model.RoleUser" keyProperty="id" useGeneratedKeys="true">
-    insert into el_role_user_mapping (id, role_id, user_id,
-      create_by, update_at, update_by, 
-      create_at, version,
-      status)
-    values (#{id}, #{roleId}, #{userId},
-      #{createBy}, unix_timestamp(now()), #{updateBy},
-      unix_timestamp(now()), 0,
-      1)
+  <insert id="create" parameterType="com.yankuang.equipment.authority.model.RoleUser">
+    insert into el_role_user_mapping (role_code, user_code, project_code, status)
+    values (#{roleId}, #{userId}, "sb001", 1)
   </insert>
 
-  <delete id="deleteByUserId" parameterType="java.lang.Long" >
+  <delete id="deleteByUserCode" parameterType="java.lang.String" >
     UPDATE el_role_user_mapping
     SET status = 99
-    WHERE user_id = #{userId}
+    WHERE user_code = #{userCode}
   </delete>
 
-  <delete id="deleteByRoleId" parameterType="java.lang.Long" >
+  <delete id="deleteByRoleCode" parameterType="java.lang.String" >
     UPDATE el_role_user_mapping
     SET status = 99
-    WHERE role_id = #{roleId}
+    WHERE role_code = #{roleCode}
   </delete>
 
-  <select id="findByUserId" parameterType="long" resultMap="BaseResultMap" >
+  <select id="findByUserCode" parameterType="String" resultMap="BaseResultMap" >
     SELECT <include refid="Base_Column_List" />
     FROM el_role_user_mapping
-    WHERE user_id = #{userId}
+    WHERE user_code = #{userCode}
   </select>
 
-  <select id="findByRoleId" parameterType="long" resultMap="BaseResultMap" >
+  <select id="findByRoleCode" parameterType="long" resultMap="BaseResultMap" >
     SELECT <include refid="Base_Column_List" />
     FROM el_role_user_mapping
-    WHERE role_id = #{roleId}
+    WHERE role_code= #{roleCode}
   </select>
 
 </mapper>

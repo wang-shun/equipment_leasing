@@ -9,4 +9,8 @@ public class DeptRoleDTO {
 
     private String name;
 
+    private String roleCode;
+
+    private String projectCode;
+
 }

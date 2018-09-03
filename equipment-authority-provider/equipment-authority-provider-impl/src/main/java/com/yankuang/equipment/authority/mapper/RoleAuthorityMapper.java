@@ -11,7 +11,9 @@ public interface RoleAuthorityMapper {
 
     Boolean create(RoleAuthority t);
 
-    List<RoleAuthority> findByRoleId(Long roleId);
+    List<RoleAuthority> findByRoleCode(String code);
 
-    RoleAuthority findByRoleIdAndAuthorityId(Map map);
+    RoleAuthority findByRoleAndAuthorityCodes(Map map);
+
+    boolean delete(List<String> codes);
 }

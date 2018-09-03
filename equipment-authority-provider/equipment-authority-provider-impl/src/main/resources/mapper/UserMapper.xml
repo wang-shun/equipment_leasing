@@ -15,19 +15,21 @@
         <result column="remark" property="remark" jdbcType="VARCHAR" />
         <result column="create_by" property="createBy" jdbcType="VARCHAR" />
         <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
-        <result column="update_at" property="updateAt" jdbcType="BIGINT" />
+        <result column="update_at" property="updateAt" jdbcType="TIMESTAMP"/>
         <result column="sorting" property="sorting" jdbcType="BIGINT" />
         <result column="version" property="version" jdbcType="BIGINT" />
-        <result column="create_at" property="createAt" jdbcType="BIGINT" />
+        <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
         <result column="code" property="code" jdbcType="VARCHAR" />
     </resultMap>
 
     <sql id="cols_exclude_password">
         id, <include refid="cols_exclude_id_password" />
     </sql>
+
     <sql id="cols_all">
         password, <include refid="cols_exclude_password" />
     </sql>
+
     <sql id="cols_exclude_id_password">
         code,
         name,
@@ -40,8 +42,6 @@
         version,
         update_by,
         create_by,
-        create_at,
-        update_at,
         account
     </sql>
 
@@ -59,8 +59,6 @@
         0,
         #{updateBy},
         #{createBy},
-        unix_timestamp(now()),
-        unix_timestamp(now()),
         #{account}
     </sql>
 
@@ -78,10 +76,10 @@
         (<include refid="vals" />)
     </insert>
 
-    <select id="findById" parameterType="long" resultMap="UserMap" >
+    <select id="findByCode" parameterType="String" resultMap="UserMap" >
         SELECT <include refid="cols_all" />
         FROM el_user
-        WHERE id = #{id}
+        WHERE code = #{code}
     </select>
 
     <update id="update" parameterType="com.yankuang.equipment.authority.model.User">
@@ -99,34 +97,33 @@
             <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
             update_at=unix_timestamp(now())
         </set>
-        WHERE id = #{id}
+        WHERE code = #{code}
     </update>
 
-    <delete id="delete" parameterType="long">
+    <delete id="delete" parameterType="java.util.List">
         UPDATE el_user
         SET status = 99
-        WHERE id = #{id}
+        WHERE code in
+        <foreach collection="list" item="code" separator="," open="(" close=")">
+            #{code}
+        </foreach>
     </delete>
 
     <select id="list" parameterType="map" resultType="java.util.HashMap">
         SELECT
         u.id,u.code,u.account,u.name,u.sex,u.telephone,u.mail,u.status,u.remark,u.version,u.sorting,
-        u.update_by as updateBy,from_unixtime(u.update_at, '%Y-%m-%d %H:%I:%S') as updateAt,
-        u.create_by as createBy,from_unixtime(u.create_at, '%Y-%m-%d %H:%I:%S') as createAt,
-        r.name as roleName,d.name as deptName,o.name as orgName
+        u.update_by as updateBy,update_at as updateAt,
+        u.create_by as createBy,create_at as createAt,
+        r.name as roleName,d.name as deptName
         from el_user u
         left join el_role_user_mapping ru
-        on u.id = ru.user_id
+        on u.code = ru.user_code
         left join el_role r
-        on r.id = ru.role_id
+        on r.code = ru.role_code
         left join el_department_user_mapping du
-        on du.user_id = u.id
+        on du.user_code = u.code
         left join el_department d
-        on d.id = du.department_id
-        left join el_organization_department_mapping od
-        on od.department_id = d.id
-        left join el_organization o
-        on o.id = od.department_id
+        on d.code = du.dept_code
         <where>
             1 = 1
             <if test="id != null and id != ''">AND u.id = #{id}</if>
@@ -149,16 +146,16 @@
         where account = #{account}
     </select>
 
-    <update id="stop" parameterType="Long">
+    <update id="stop" parameterType="String">
         UPDATE el_user
         SET status = 2
-        WHERE id = #{id}
+        WHERE code = #{code}
     </update>
 
-    <update id="start" parameterType="Long">
+    <update id="start" parameterType="String">
         UPDATE el_user
         SET status = 1
-        WHERE id = #{id}
+        WHERE code = #{code}
     </update>
 
 </mapper>

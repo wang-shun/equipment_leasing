@@ -38,7 +38,7 @@ public class AuthorityTreeUtils {
         List<AuthorityTreeDTO> lists = new ArrayList<>();
         for(AuthorityTreeDTO a:menuCommon){
             AuthorityTreeDTO childArray = new AuthorityTreeDTO();
-            if(code.equals(a.getCode())){
+            if(code.equals(a.getPcode())){
                 childArray.setCode(a.getCode());
                 childArray.setName(a.getName());
                 childArray.setPcode(a.getPcode());

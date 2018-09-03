@@ -7,10 +7,12 @@ import java.util.Map;
 
 public interface RoleAuthorityService {
 
-    boolean create(RoleAuthority roleAuthority);
+    Boolean create(RoleAuthority t);
 
-    List<RoleAuthority> findByRoleId(Long roleId);
+    List<RoleAuthority> findByRoleCode(String code);
 
-    RoleAuthority findByRoleIdAndAuthorityId(Map map);
+    RoleAuthority findByRoleAndAuthorityCodes(Map map);
+
+    boolean delete(List<String> codes);
 
 }

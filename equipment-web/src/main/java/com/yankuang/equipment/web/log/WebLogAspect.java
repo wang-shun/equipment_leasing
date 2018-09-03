@@ -319,7 +319,7 @@ public class WebLogAspect {
                 // 遍历权限列表比对请求投中权限code
                 List<AuthorityTreeDTO> au =
                         authorities.stream().filter(authorityDTO ->
-                                authorityCode.equals(authorityDTO.getId())).collect(Collectors.toList());
+                                authorityCode.equals(authorityDTO.getCode())).collect(Collectors.toList());
                 if (au.size() <= 0) {
                     return CommonResponse.errorTokenMsg("无权限操作");
                 }

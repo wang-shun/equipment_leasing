@@ -9,6 +9,10 @@ public class CodesDTO {
 
     private List<String> codes;
 
-    private Long code;
+    private String code;
+
+    private List<Long> ids;
+
+    private Long id;
 
 }

@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Date;
 
 @Table(name = "el_user")
 @Data
@@ -31,13 +32,13 @@ public class User implements Serializable {
 
     private String updateBy;
 
-    private Long updateAt;
+    private Date updateAt;
 
     private Long sorting;
 
     private Long version;
 
-    private Long createAt;
+    private Date createAt;
 
     private String code;
 
