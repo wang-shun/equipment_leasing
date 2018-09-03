@@ -132,7 +132,7 @@ public class UserController {
             redis.set(token, JsonUtils.objectToJson(userDTO1), 7200);
             // 更新user数据库表，记录最新一次登录保存的redis的key(token)
             User u = new User();
-            u.setId(loginUser.getId());
+            u.setCode(loginUser.getCode());
             u.setToken(token);
             userService.update(u);
             // 返回加密用户信息包含token
@@ -340,7 +340,7 @@ public class UserController {
      * @param code
      * @return
      */
-    @PatchMapping("/stop/{Code}")
+    @PatchMapping("/stop/{code}")
     public CommonResponse stop(@PathVariable String code) {
         Boolean b = userService.stop(code);
         if (!b) {

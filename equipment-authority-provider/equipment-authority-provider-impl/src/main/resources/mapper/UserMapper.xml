@@ -95,7 +95,7 @@
             <if test="sorting != null and sorting != ''">sorting = #{sorting},</if>
             <if test="version != null and version != ''">version = #{version},</if>
             <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
-            update_at=unix_timestamp(now())
+            update_at = CURRENT_TIMESTAMP
         </set>
         WHERE code = #{code}
     </update>
