@@ -249,7 +249,7 @@ public class UserController {
         // todo
         String deptCode = user.getDeptCode();
         if (StringUtils.isEmpty(deptCode)) {
-            return CommonResponse.errorMsg("用户部门id 不能为空");
+            return CommonResponse.errorMsg("用户部门code不能为空");
         }
         User userCheck = userService.findByAccount(user.getAccount());
         if (!StringUtils.isEmpty(userCheck)) {
@@ -327,10 +327,10 @@ public class UserController {
     @GetMapping
     public CommonResponse findByPage(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                      @RequestParam(value = "size", defaultValue = "20") Integer size,
-                                     @RequestParam String name) {
+                                     @RequestParam(value = "name", defaultValue = "")  String name) {
         Map user = new HashMap();
         user.put("name", name);
-        PageInfo<Map> users = userService.findByPage(page, size, user);
+        PageInfo<User> users = userService.findByPage(page, size, user);
         return CommonResponse.ok(users);
     }
 

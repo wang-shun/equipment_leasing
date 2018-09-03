@@ -20,7 +20,7 @@ public interface UserService {
 
     User findByCode(String code);
 
-    PageInfo<Map> findByPage(Integer page, Integer size, Map user);
+    PageInfo<User> findByPage(Integer page, Integer size, Map user);
 
     Boolean stop(String code);
 

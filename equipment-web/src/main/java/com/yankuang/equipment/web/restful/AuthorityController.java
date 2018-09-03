@@ -146,6 +146,8 @@ public class AuthorityController {
             tree.setUrl(authority.getUrl());
             tree.setType(authority.getType());
             tree.setLevel(authority.getLevel());
+            tree.setSorting(authority.getSorting());
+            tree.setIcon(authority.getIcon());
             trees.add(tree);
         }
         AuthorityTreeUtils treeUtils = new AuthorityTreeUtils();

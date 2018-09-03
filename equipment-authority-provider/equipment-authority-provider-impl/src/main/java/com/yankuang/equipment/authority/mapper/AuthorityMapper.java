@@ -9,7 +9,7 @@ import java.util.Map;
 @Repository
 public interface AuthorityMapper {
 
-    boolean create(Authority role);
+    boolean create(Authority authority);
 
     boolean delete(List<String> codes);
 

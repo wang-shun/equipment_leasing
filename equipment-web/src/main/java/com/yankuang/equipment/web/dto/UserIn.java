@@ -3,6 +3,7 @@ package com.yankuang.equipment.web.dto;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Data
 public class UserIn implements Serializable {
@@ -31,13 +32,13 @@ public class UserIn implements Serializable {
 
     private String updateBy;
 
-    private Long updateAt;
+    private Date updateAt;
 
     private Long sorting;
 
     private Long version;
 
-    private Long createAt;
+    private Date createAt;
 
     private String code;
 

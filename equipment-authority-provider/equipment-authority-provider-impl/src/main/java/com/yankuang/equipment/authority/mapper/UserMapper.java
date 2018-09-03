@@ -21,7 +21,7 @@ public interface UserMapper {
 
     User findByCode(String code);
 
-    List<Map> list(Map map);
+    List<User> list(Map map);
 
     Boolean stop(String code);
 

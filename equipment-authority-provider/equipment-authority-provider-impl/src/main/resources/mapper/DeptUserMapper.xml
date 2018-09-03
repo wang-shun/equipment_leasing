@@ -3,64 +3,61 @@
 <mapper namespace="com.yankuang.equipment.authority.mapper.DeptUserMapper" >
   <resultMap id="BaseResultMap" type="com.yankuang.equipment.authority.model.DeptUser" >
     <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="department_id" property="departmentId" jdbcType="BIGINT" />
-    <result column="user_id" property="userId" jdbcType="BIGINT" />
-    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
-    <result column="update_at" property="updateAt" jdbcType="BIGINT" />
-    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
-    <result column="create_at" property="createAt" jdbcType="BIGINT" />
-    <result column="version" property="version" jdbcType="BIGINT" />
+    <result column="department_id" property="deptCode" jdbcType="VARCHAR" />
+    <result column="user_id" property="userCode" jdbcType="VARCHAR" />
+    <result column="project_code" property="projectCode" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="TINYINT" />
   </resultMap>
 
   <sql id="Base_Column_List" >
-    id, department_id, user_id, create_by, update_at, update_by, create_at, version,
-    status
+    id, dept_code, user_code, project_code, status
   </sql>
 
-  <insert id="create" parameterType="DeptUser" >
-    insert into el_department_user_mapping (department_id, user_id,
-      create_by, update_at, update_by,
-      create_at, version, status
-      )
-    values (#{departmentId}, #{userId},
-      #{createBy}, unix_timestamp(now()), #{updateBy},
-      unix_timestamp(now()), 0, 1
-      )
+  <insert id="create" parameterType="com.yankuang.equipment.authority.model.DeptUser" >
+    insert into el_department_user_mapping
+      (dept_code, user_code, project_code, status)
+    values
+      (#{deptCode}, #{userCode}, "sb001", 1)
   </insert>
 
-  <update id="deleteByUserId" parameterType="Long">
+  <update id="deleteByUserCode" parameterType="List">
     UPDATE el_department_user_mapping
     SET status = 99
-    WHERE user_id = #{userId}
+    WHERE user_code in
+    <foreach collection="list" item="code" separator="," open="(" close=")">
+      #{code}
+    </foreach>
   </update>
 
-  <update id="deleteByDeptId" parameterType="Long">
+  <update id="deleteByDeptCode" parameterType="List">
     UPDATE el_department_user_mapping
     SET status = 99
-    WHERE department_id = #{deptId}
+    WHERE dept_code in
+    <foreach collection="list" item="code" separator="," open="(" close=")">
+      #{code}
+    </foreach>
   </update>
 
-  <select id="findByDeptId" resultMap="BaseResultMap" parameterType="Long">
+  <select id="findByDeptCode" resultMap="BaseResultMap" parameterType="String">
     SELECT <include refid="Base_Column_List"/>
     FROM el_department_user_mapping
-    WHERE department_id = #{deptId}
+    WHERE dept_code = #{deptCode}
     AND status != 99
   </select>
 
-  <select id="findByUserId" resultMap="BaseResultMap" parameterType="Long">
+  <select id="findByUserCode" resultMap="BaseResultMap" parameterType="String">
     SELECT <include refid="Base_Column_List"/>
     FROM el_department_user_mapping
-    WHERE user_id = #{userId}
+    WHERE user_code= #{userCode}
     AND status != 99
   </select>
 
-  <select id="findByDeptIdAndUserId" resultMap="BaseResultMap" parameterType="Map">
+  <select id="findByDeptCodeAndUserCode" resultMap="BaseResultMap" parameterType="Map">
     select
     <include refid="Base_Column_List"/>
     from el_department_role_mapping
-    where department_id = #{deptId}
-    and user_id = #{userId}
+    where dept_code = #{deptCode}
+    and user_code = #{userCode}
     and status != 99
   </select>
 

@@ -9,16 +9,16 @@ import java.util.Map;
 @Repository
 public interface DeptUserMapper {
 
-    Boolean create(DeptUser userId);
+    Boolean create(DeptUser deptUser);
 
-    Boolean deleteByUserId(Long id);
+    Boolean deleteByUserCode(String code);
 
-    Boolean deleteByDeptId(Long id);
+    Boolean deleteByDeptCode(String code);
 
-    DeptUser findByUserId(Long id);
+    DeptUser findByUserCode(String code);
 
-    List<DeptUser> findByDeptId(Long id);
+    List<DeptUser> findByDeptCode(String code);
 
-    List<DeptUser> findByDeptIdAndUserId(Map map);
+    List<DeptUser> findByDeptCodeAndUserCode(Map map);
 
 }

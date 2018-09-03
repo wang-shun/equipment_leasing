@@ -20,6 +20,8 @@
         <result column="version" property="version" jdbcType="BIGINT" />
         <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
         <result column="code" property="code" jdbcType="VARCHAR" />
+        <result column="roleName" property="roleName" jdbcType="VARCHAR" />
+        <result column="deptName" property="deptName" jdbcType="VARCHAR" />
     </resultMap>
 
     <sql id="cols_exclude_password">
@@ -109,11 +111,11 @@
         </foreach>
     </delete>
 
-    <select id="list" parameterType="map" resultType="java.util.HashMap">
+    <select id="list" parameterType="map" resultMap="UserMap">
         SELECT
         u.id,u.code,u.account,u.name,u.sex,u.telephone,u.mail,u.status,u.remark,u.version,u.sorting,
-        u.update_by as updateBy,update_at as updateAt,
-        u.create_by as createBy,create_at as createAt,
+        u.update_by,u.update_at,
+        u.create_by,u.create_at,
         r.name as roleName,d.name as deptName
         from el_user u
         left join el_role_user_mapping ru

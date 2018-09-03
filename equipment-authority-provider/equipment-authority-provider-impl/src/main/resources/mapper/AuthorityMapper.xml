@@ -3,7 +3,6 @@
 <mapper namespace="com.yankuang.equipment.authority.mapper.AuthorityMapper">
     <resultMap id="BaseResultMap" type="com.yankuang.equipment.authority.model.Authority">
         <id column="id" property="id" jdbcType="BIGINT"/>
-        <result column="p_id" property="pId" jdbcType="BIGINT"/>
         <result column="code" property="code" jdbcType="VARCHAR"/>
         <result column="pcode" property="pcode" jdbcType="VARCHAR"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
@@ -23,22 +22,48 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, code, p_id, pcode, type, status, name, sorting, url, remark, version, update_by, update_at,
+        id, code, pcode, type, status, name, sorting, url, remark, version, update_by, update_at,
         create_by, create_at, level, project_code,icon
     </sql>
 
     <insert id="create" parameterType="com.yankuang.equipment.authority.model.Authority">
       insert into el_authority
-        (code, pcode, type, name,icon
-          sorting, url, remark,
-          update_by,create_by, level
-          )
-      values
-        ( #{code}, #{pcode},
-        #{type}, #{name}, #{icon},
-        #{sorting}, #{url}, #{remark},
-        #{updateBy},#{createBy}, #{level}
-        )
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            code,pcode,type,status,name,sorting,update_by,create_by,
+            <if test="icon != null  and icon != '' " >
+                ,#{icon,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null and url != '' " >
+                ,url,
+            </if>
+            <if test="remark != null and remark != '' ">
+                remark,
+            </if>
+            <if test="level != null and level != '' " >
+                level,
+            </if>
+            <if test="version != null and version != '' " >
+                version,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            #{code},#{pcode},#{type},1,#{name},#{sorting},#{updateBy},#{createBy}
+            <if test="icon != null  and icon != '' " >
+                ,#{icon,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null  and url != '' " >
+                ,#{url,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null and remark != '' " >
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="level != null and level != '' " >
+                #{level,jdbcType=BIGINT},
+            </if>
+            <if test="version != null and version != ''" >
+                #{version,jdbcType=BIGINT},
+            </if>
+        </trim>
     </insert>
 
     <update id="delete" parameterType="java.util.List">
@@ -57,7 +82,7 @@
         update el_authority
         <set>
             <if test="pcode != null and pcode != ''">
-                code = #{pcode},
+                pcode = #{pcode},
             </if>
             <if test="name != null and name != '' ">
                 name = #{name},
@@ -74,24 +99,16 @@
             <if test="sorting != null and sorting != '' ">
                 sorting = #{sorting},
             </if>
-            <if test="updateBy != null and updateBy != '' ">
-                update_by = #{updateBy},
-            </if>
             <if test="version != null and version != '' ">
                 version = #{version},
+            </if>
+            <if test="updateBy != null and updateBy != '' ">
+                update_by = #{updateBy},
             </if>
             update_at = CURRENT_TIMESTAMP
         </set>
         where code = #{code}
     </update>
-
-    <!--<select id="findById" parameterType="long" resultMap="BaseResultMap">-->
-        <!--SELECT-->
-        <!--<include refid="Base_Column_List"/>-->
-        <!--FROM yankuang_equipment.el_authority-->
-        <!--WHERE id = #{id}-->
-        <!--AND status != 99-->
-    <!--</select>-->
 
     <select id="findByCode" parameterType="String" resultMap="BaseResultMap">
         SELECT
