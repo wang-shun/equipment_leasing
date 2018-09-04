@@ -443,7 +443,7 @@ public class ElPlanController {
 
             List<ElPlanUseDTO> list = elPlanPlusService.findElPlanUseList(elPlanUse);
             if (list == null || list.size() == 0) {
-                return CommonResponse.errorMsg("查询结果为空");
+                return CommonResponse.build(200, "查询结果为空", null);
             }
             return CommonResponse.ok(list);
         } catch (Exception e) {
