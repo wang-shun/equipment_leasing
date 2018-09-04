@@ -10,6 +10,8 @@ import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -143,8 +145,16 @@ public class ElUseController {
      */
     @GetMapping
     CommonResponse findListByPage(@RequestParam Integer page,
-                                  @RequestParam Integer size){
+                                  @RequestParam Integer size,
+                                  @RequestParam String jsonString){
         Map elUseMap = new HashMap();
+        if (StringUtils.isEmpty(jsonString)){
+            ElUse elUse = JsonUtils.jsonToPojo(jsonString,ElUse.class);
+            elUseMap.put("useBy", elUse.getUseBy());
+            elUseMap.put("usePosition",elUse.getUsePosition());
+            elUseMap.put("startTime", elUse.getStartTime());
+            elUseMap.put("endTime", elUse.getEndTime());
+        }
         return CommonResponse.ok(elUseService.list(page, size, elUseMap));
     }
 
@@ -293,8 +303,19 @@ public class ElUseController {
      */
     @GetMapping("/findListTz")
     CommonResponse findListByPageTz(@RequestParam(defaultValue = "1") Integer page,
-                                  @RequestParam(defaultValue = "20") Integer size){
+                                    @RequestParam(defaultValue = "20") Integer size,
+                                    @RequestParam String jsonString){
         Map elUseMap = new HashMap();
+        if (!StringUtils.isEmpty(jsonString)){
+            ElUse elUse = JsonUtils.jsonToPojo(jsonString,ElUse.class);
+            if (elUse == null){
+                return CommonResponse.errorMsg("传入对象为空");
+            }
+            elUseMap.put("useBy", elUse.getUseBy());
+            elUseMap.put("usePosition",elUse.getUsePosition());
+            elUseMap.put("startTime", elUse.getStartTime());
+            elUseMap.put("endTime", elUse.getEndTime());
+        }
         return CommonResponse.ok(elUseService.listTz(page, size, elUseMap));
     }
 

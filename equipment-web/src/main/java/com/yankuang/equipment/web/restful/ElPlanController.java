@@ -7,6 +7,8 @@ import com.yankuang.equipment.equipment.model.ElPlanItem;
 import com.yankuang.equipment.equipment.model.ElPlanUse;
 import com.yankuang.equipment.equipment.service.ElPlanUseService;
 import com.yankuang.equipment.equipment.service.ElUseService;
+import com.yankuang.equipment.web.dto.ElPlanDTO;
+import io.swagger.util.Json;
 import org.springframework.util.StringUtils;
 import com.yankuang.equipment.equipment.model.ElPlan;
 import com.yankuang.equipment.equipment.service.ElPlanService;
@@ -450,24 +452,31 @@ public class ElPlanController {
                                           @RequestParam String jsonString){
         Map elPlanUseMap = new HashMap();
         if (!StringUtils.isEmpty(jsonString)){
-            ElPlan elPlan = JsonUtils.jsonToPojo(jsonString,ElPlan.class);
-            if (elPlan == null){
+            ElPlanDTO elPlanDTO = JsonUtils.jsonToPojo(jsonString,ElPlanDTO.class);
+            if (elPlanDTO == null){
                 return CommonResponse.errorMsg("参数对象不能为空");
             }
-            if (elPlan.getPlanYear() == null){
+            if (elPlanDTO.getPlanYear() == null){
                 return CommonResponse.errorMsg("计划年度不能为空");
             }
-            if (elPlan.getPlanEquipmentType() == null){
+            if (elPlanDTO.getPlanEquipmentType() == null){
                 return CommonResponse.errorMsg("设备类型不能为空");
             }
-            if ("1".equals(elPlan.getPlanEquipmentType())){
-                if (elPlan.getPlanMonth() == null){
+            if ("1".equals(elPlanDTO.getPlanEquipmentType())){
+                if (elPlanDTO.getPlanMonth() == null){
                     return CommonResponse.errorMsg("月份不能为空");
                 }
-                elPlan.setPlanType("3");
-            }else if ("2".equals(elPlan.getPlanEquipmentType())){
-                elPlan.setPlanType("1");
+                elPlanDTO.setPlanType("3");
+            }else if ("2".equals(elPlanDTO.getPlanEquipmentType())){
+                elPlanDTO.setPlanType("1");
             }
+            ElPlan elPlan = new ElPlan();
+            if (elPlanDTO.getPlanMonth() != null || "".equals(elPlanDTO.getPlanMonth())){
+                elPlan.setPlanMonth(elPlanDTO.getPlanMonth());
+            }
+            elPlan.setPlanYear(elPlanDTO.getPlanYear());
+            elPlan.setPlanEquipmentType(elPlanDTO.getPlanEquipmentType());
+            elPlan.setPlanType(elPlanDTO.getPlanType());
             List<ElPlan> elPlans = elPlanService.findByCreatorId(elPlan);
             if (elPlans.size() <= 0 ){
                 return CommonResponse.ok( );
@@ -476,7 +485,7 @@ public class ElPlanController {
             ElPlanItem elPlanItem = new ElPlanItem();
             for (ElPlan elPlan1:elPlans){
                 elPlanItem.setPlanId(elPlan1.getPlanId());
-                elPlanItem.setPositionId(100120108L);//TODO 此值暂时写死
+                elPlanItem.setPositionId(0L);//TODO 此值暂时写死
                 List<ElPlanItem> elPlanItems = elUseService.findByPlanId(elPlanItem);
                 if (elPlanItems.size() <= 0){
                     return CommonResponse.errorMsg("没有该计划");
@@ -489,6 +498,13 @@ public class ElPlanController {
                 return CommonResponse.errorMsg("不存在该计划");
             }
             elPlanUseMap.put("planItemId",planIds);
+            elPlanUseMap.put("smallTypeCode",elPlanDTO.getSmallTypeCode());
+            elPlanUseMap.put("middleTypeCode",elPlanDTO.getMiddleTypeCode());
+            elPlanUseMap.put("bigTypeCode",elPlanDTO.getBigTypeCode());
+            elPlanUseMap.put("equipmentCode",elPlanDTO.getEquipmentCode());
+            elPlanUseMap.put("effectCode",elPlanDTO.getEffectCode());
+            elPlanUseMap.put("equipmentModel",elPlanDTO.getEquipmentModel());
+            elPlanUseMap.put("equipmentFactory",elPlanDTO.getEquipmentFactory());
             if(elPlanUseService.list(page,size,elPlanUseMap) == null){
                 return CommonResponse.ok();
             }
