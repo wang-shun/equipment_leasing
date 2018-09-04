@@ -13,7 +13,7 @@ public interface AuthorityMapper {
 
     boolean delete(List<String> codes);
 
-    boolean update(Authority role);
+    boolean update(Authority authority);
 
     Authority findByCode(String code);
 
@@ -21,6 +21,6 @@ public interface AuthorityMapper {
 
     List<Authority> findByUserCode(String code);
 
-    List<Authority> list(Map role);
+    List<Authority> list(Map map);
 
 }

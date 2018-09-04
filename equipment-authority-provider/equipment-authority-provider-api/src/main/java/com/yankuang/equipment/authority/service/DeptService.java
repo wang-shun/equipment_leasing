@@ -8,18 +8,18 @@ import java.util.Map;
 
 public interface DeptService {
 
-    Boolean create(Dept dept);
+    Boolean create(Dept user);
 
-    Boolean delete(Long id);
+    Boolean delete(List<String> codes);
 
-    Boolean update(Dept dept);
+    Boolean update(Dept user);
 
-    Dept findById(Long id);
+    Dept findByCode(String code);
 
     Dept findByName(String name);
 
     List<Dept> findAll();
 
-    PageInfo<Map> findByPage(Integer page, Integer size, Map dept);
+    PageInfo<Dept> findByPage(Integer page, Integer size, Map dept);
 
 }

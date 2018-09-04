@@ -11,10 +11,10 @@
         <result column="status" property="status" jdbcType="TINYINT"/>
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
         <result column="create_by" property="createBy" jdbcType="VARCHAR"/>
-        <result column="update_at" property="updateAt" jdbcType="BIGINT"/>
+        <result column="update_at" property="updateAt" jdbcType="TIMESTAMP"/>
         <result column="update_by" property="updateBy" jdbcType="VARCHAR"/>
         <result column="level" property="level" jdbcType="BIGINT"/>
-        <result column="create_at" property="createAt" jdbcType="BIGINT"/>
+        <result column="create_at" property="createAt" jdbcType="TIMESTAMP"/>
         <result column="version" property="version" jdbcType="BIGINT"/>
         <result column="project_code" property="projectCode" jdbcType="VARCHAR"/>
     </resultMap>

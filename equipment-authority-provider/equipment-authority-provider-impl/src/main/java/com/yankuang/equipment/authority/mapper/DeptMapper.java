@@ -11,16 +11,14 @@ public interface DeptMapper {
 
     Boolean create(Dept user);
 
-    Boolean delete(Long id);
+    Boolean delete(List<String> codes);
 
     Boolean update(Dept user);
 
-    Dept findById(Long id);
+    Dept findByCode(String code);
 
     Dept findByName(String name);
 
-    List<Dept> findAll();
-
-    List<Map> list(Map map);
+    List<Dept> list(Map map);
 
 }
