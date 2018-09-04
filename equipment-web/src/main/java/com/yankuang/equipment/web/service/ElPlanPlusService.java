@@ -254,7 +254,7 @@ public class ElPlanPlusService {
                 elPlanUseDTO.setPlanUseId(use.getId().toString());
                 elPlanUseDTO.setEquipmentNum(1);
                 elPlanUseDTO.setModelCode(elPlanItem.getEffectCode());
-                elPlanUseDTO.setEquipmentId(elPlanUse.getEquipmentId());
+                elPlanUseDTO.setEquipmentId(use.getEquipmentId());
                 elPlanUseDTOS.add(elPlanUseDTO);
             }
             if ("2".equals(use.getEquipmentType()) && use != null) {
@@ -294,7 +294,7 @@ public class ElPlanPlusService {
                 elPlanUseDTO.setPlanUseId(use.getId().toString());
                 elPlanUseDTO.setEquipmentNum(1);
                 elPlanUseDTO.setModelCode(elPlanItem.getEffectCode());
-                elPlanUseDTO.setEquipmentId(elPlanUse.getEquipmentId());
+                elPlanUseDTO.setEquipmentId(use.getEquipmentId());
                 elPlanUseDTOS.add(elPlanUseDTO);
             }
         }
