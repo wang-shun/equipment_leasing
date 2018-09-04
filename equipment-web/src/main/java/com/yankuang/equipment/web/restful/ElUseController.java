@@ -170,8 +170,11 @@ public class ElUseController {
                                   @RequestParam Integer size,
                                   @RequestParam String jsonString){
         Map elUseMap = new HashMap();
-        if (StringUtils.isEmpty(jsonString)){
+        if (!StringUtils.isEmpty(jsonString)){
             ElUse elUse = JsonUtils.jsonToPojo(jsonString,ElUse.class);
+            if (elUse == null){
+                return CommonResponse.errorMsg("传入对象为空");
+            }
             elUseMap.put("useBy", elUse.getUseBy());
             elUseMap.put("usePosition",elUse.getUsePosition());
             elUseMap.put("startTime", elUse.getStartTime());
