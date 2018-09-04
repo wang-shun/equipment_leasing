@@ -108,7 +108,7 @@
 
     <select id="findByUserCode" parameterType="String" resultMap="ResultMap">
         select
-        r.code,r.name
+        r.code,r.name,r.create_at,r.update_at
         from el_role r
         left join el_role_user_mapping ru
           on r.code = ru.role_code
