@@ -289,6 +289,7 @@ public class ElPlanPlusService {
                 elPlanUseDTO.setEffectName(effectName);
                 elPlanUseDTO.setStatus("备用");
                 elPlanUseDTO.setPlanUseId(use.getId().toString());
+                elPlanUseDTO.setEquipmentNum(1);
                 elPlanUseDTOS.add(elPlanUseDTO);
             }
         }

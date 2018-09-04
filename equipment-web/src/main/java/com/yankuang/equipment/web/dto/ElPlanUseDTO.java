@@ -30,6 +30,16 @@ public class ElPlanUseDTO {
 
     private String status;
 
+    private Integer equipmentNum;
+
+    public Integer getEquipmentNum() {
+        return equipmentNum;
+    }
+
+    public void setEquipmentNum(Integer equipmentNum) {
+        this.equipmentNum = equipmentNum;
+    }
+
     public String getTeachCode() {
         return teachCode;
     }
@@ -159,6 +169,8 @@ public class ElPlanUseDTO {
                 ", smallTypeName='" + smallTypeName + '\'' +
                 ", effectName='" + effectName + '\'' +
                 ", status='" + status + '\'' +
+                ", equipmentNum=" + equipmentNum +
                 '}';
     }
+
 }
