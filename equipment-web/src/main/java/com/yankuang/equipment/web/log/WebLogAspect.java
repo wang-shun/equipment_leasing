@@ -109,7 +109,7 @@ public class WebLogAspect {
         logger.info("访问IP : " + InetAddress.getLocalHost().toString().substring(InetAddress.getLocalHost().toString().lastIndexOf("/") + 1));
         logger.info("执行了" + joinPoint.getTarget().getClass().getName() + "类的" + joinPoint.getSignature().getName() + "方法");// 获取哪个类哪个方法
         logger.info("传入参数 : " + Arrays.toString(joinPoint.getArgs()));//获取传入目标方法的参数对象
-
+        logger.info("请求token : " + request.getHeader("token"));// 请求token
     }
 
     /**
