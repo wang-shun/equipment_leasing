@@ -202,6 +202,48 @@
                   open="(" separator="," close=")">
         #{planIds}
         </foreach>
+        <if test="centerYear != null and centerYear != '' ">
+            AND center_year = #{centerYear}
+        </if>
+        <if test="centerMonth != null and centerMonth != '' ">
+            AND center_month = #{centerMonth}
+        </if>
+        <if test="planType != null and planType != '' ">
+            AND plan_type = #{planType}
+        </if>
+        <if test="status != null and status != '' ">
+            AND status = #{status}
+        </if>
+        <if test="positionId != null and positionId != '' ">
+            AND position_id = #{positionId}
+        </if>
+        <if test="equipmentType != null and equipmentType != '' ">
+            AND equipment_type = #{equipmentType}
+        </if>
+        <if test="bigTypeCode != null and bigTypeCode != '' ">
+            AND big_type_code = #{bigTypeCode}
+        </if>
+        <if test="middleTypeCode != null and middleTypeCode != '' ">
+            AND middle_type_code = #{middleTypeCode}
+        </if>
+        <if test="smallTypeCode != null and smallTypeCode != '' ">
+            AND small_type_code = #{smallTypeCode}
+        </if>
+        <if test="equipmentCode != null and equipmentCode != '' " >
+            AND equipment_code = #{equipmentCode}
+        </if>
+        <if test="equipmentName != null and equipmentName != '' " >
+            AND equipment_name = #{equipmentName}
+        </if>
+        <if test="effectCode != null and effectCode != '' " >
+            AND effect_code = #{effectCode}
+        </if>
+        <if test="equipmentModel != null and equipmentModel != '' " >
+            AND equipment_model = #{equipmentModel}
+        </if>
+        <if test="equipmentFactory != null and equipmentFactory != '' " >
+            AND equipment_factory = #{equipmentFactory}
+        </if>
         AND status = 2
         AND is_del = 1
     </select>

@@ -137,60 +137,66 @@
         ON t1.use_position = org.id
         WHERE 1=1
         <if test="approveCode != null" >
-            AND approve_code = #{approveCode,jdbcType=VARCHAR}
+            AND t1.approve_code = #{approveCode,jdbcType=VARCHAR}
         </if>
         <if test="code != null" >
-            AND code = #{code,jdbcType=VARCHAR}
+            AND t1.code = #{code,jdbcType=VARCHAR}
         </if>
         <if test="sorting != null" >
-            AND sorting = #{sorting,jdbcType=VARCHAR}
+            AND t1.sorting = #{sorting,jdbcType=VARCHAR}
         </if>
         <if test="isDel != null" >
-            AND is_del = #{isDel,jdbcType=TINYINT}
+            AND t1.is_del = #{isDel,jdbcType=TINYINT}
         </if>
         <if test="status != null" >
-            AND status = #{status,jdbcType=VARCHAR}
+            AND t1.status = #{status,jdbcType=VARCHAR}
         </if>
         <if test="useBy != null" >
-            AND use_by = #{useBy,jdbcType=BIGINT}
+            AND t1.use_by = #{useBy,jdbcType=BIGINT}
         </if>
         <if test="useAt != null" >
-            AND use_at = #{useAt,jdbcType=TIMESTAMP}
+            AND t1.use_at = #{useAt,jdbcType=TIMESTAMP}
         </if>
         <if test="usePosition != null" >
-            AND use_position = #{usePosition,jdbcType=BIGINT}
+            AND t1.use_position = #{usePosition,jdbcType=VARCHAR}
         </if>
         <if test="useEquipmentType != null" >
-            AND use_equipment_type = #{useEquipmentType,jdbcType=VARCHAR}
+            AND t1.use_equipment_type = #{useEquipmentType,jdbcType=VARCHAR}
         </if>
         <if test="approveBy != null" >
-            AND approve_by = #{approveBy,jdbcType=BIGINT}
+            AND t1.approve_by = #{approveBy,jdbcType=BIGINT}
         </if>
         <if test="approveAt != null" >
-            AND approve_at = #{approveAt,jdbcType=TIMESTAMP}
+            AND t1.approve_at = #{approveAt,jdbcType=TIMESTAMP}
         </if>
         <if test="approveOpinion != null" >
-            AND approve_opinion = #{approveOpinion,jdbcType=VARCHAR}
+            AND t1.approve_opinion = #{approveOpinion,jdbcType=VARCHAR}
         </if>
         <if test="createBy != null" >
-            AND create_by = #{createBy,jdbcType=BIGINT}
+            AND t1.create_by = #{createBy,jdbcType=BIGINT}
         </if>
         <if test="createAt != null" >
-            AND create_at = #{createAt,jdbcType=TIMESTAMP}
+            AND t1.create_at = #{createAt,jdbcType=TIMESTAMP}
         </if>
         <if test="updateBy != null" >
-            AND update_by = #{updateBy,jdbcType=BIGINT}
+            AND t1.update_by = #{updateBy,jdbcType=BIGINT}
         </if>
         <if test="updateAt != null" >
-            AND update_at = #{updateAt,jdbcType=TIMESTAMP}
+            AND t1.update_at = #{updateAt,jdbcType=TIMESTAMP}
         </if>
         <if test="version != null" >
-            AND version = #{version,jdbcType=VARCHAR}
+            AND t1.version = #{version,jdbcType=VARCHAR}
         </if>
         <if test="remarks != null" >
-            AND remarks = #{remarks,jdbcType=VARCHAR}
+            AND t1.remarks = #{remarks,jdbcType=VARCHAR}
         </if>
-        AND is_del != 99
+        <if test="startTime != null">
+            AND t1.use_at >= #{startTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="endTime != null">
+            AND t1.use_at &lt;= #{endTime,jdbcType=TIMESTAMP}
+        </if>
+        AND t1.is_del != 99
         AND is_use = #{isUse,jdbcType=TINYINT}
         AND org.status != 99
         ORDER BY create_at DESC

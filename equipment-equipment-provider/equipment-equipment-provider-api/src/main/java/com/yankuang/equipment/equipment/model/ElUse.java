@@ -67,6 +67,12 @@ public class ElUse implements Serializable{
 
     private String name;
 
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    private String startTime;
+
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    private String endTime;
+
     public Long getId() {
         return id;
     }
