@@ -3,50 +3,44 @@
 <mapper namespace="com.yankuang.equipment.authority.mapper.RoleAuthorityMapper" >
   <resultMap id="BaseResultMap" type="com.yankuang.equipment.authority.model.RoleAuthority" >
     <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="role_id" property="roleId" jdbcType="BIGINT" />
-    <result column="authority_id" property="authorityId" jdbcType="BIGINT" />
-    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
-    <result column="update_at" property="updateAt" jdbcType="BIGINT" />
-    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
-    <result column="create_at" property="createAt" jdbcType="BIGINT" />
-    <result column="version" property="version" jdbcType="BIGINT" />
+    <result column="role_code" property="roleCode" jdbcType="BIGINT" />
+    <result column="authority_code" property="authorityCode" jdbcType="BIGINT" />
+    <result column="project_code" property="projectCode" jdbcType="VARCHAR"/>
     <result column="status" property="status" jdbcType="TINYINT" />
   </resultMap>
 
   <sql id="Base_Column_List" >
-    id, role_id, authority_id, create_by, update_at, update_by, create_at, version, status
+    id, role_code, authority_code, project_code, status
   </sql>
 
-  <select id="findByRoleId" parameterType="long" resultMap="BaseResultMap" >
-    SELECT <include refid="Base_Column_List" />
-    FROM el_role_authority_mapping
-    WHERE role_id = #{roleId}
-  </select>
-
-  <select id="findByRoleIdAndAuthorityId" parameterType="Map" resultMap="BaseResultMap" >
-    SELECT <include refid="Base_Column_List" />
-    FROM el_role_authority_mapping
-    WHERE role_id = #{roleId} and authority_id = #{authorityId}
-  </select>
-
-  <delete id="delete" parameterType="java.lang.Long" >
-    UPDATE el_role_authority_mapping
-    SET status = 99
-    WHERE id = #{id}
-  </delete>
-
-  <insert id="create" parameterType="com.yankuang.equipment.authority.model.RoleAuthority"
-          keyProperty="id" useGeneratedKeys="true">
+  <insert id="create" parameterType="com.yankuang.equipment.authority.model.RoleAuthority">
     insert into el_role_authority_mapping
-      (id, role_id, authority_id,
-      create_by, update_at, update_by,
-      create_at, version, status
-      )
-    values (#{id}, #{roleId}, #{authorityId},
-      #{createBy}, unix_timestamp(now()), #{updateBy},
-      unix_timestamp(now()), 0, 1
-      )
+      (role_code, authority_code, project_code, status)
+    values
+      (#{roleId}, #{authorityId}, "sb001", 1)
   </insert>
 
+  <update id="delete" parameterType="java.util.List">
+    UPDATE el_role_authority_mapping
+    <set>
+      status = 99
+    </set>
+    WHERE code in
+    <foreach collection="list" item="code" separator="," open="(" close=")">
+      #{code}
+    </foreach>
+  </update>
+
+  <select id="findByRoleCode" parameterType="String" resultMap="BaseResultMap" >
+    SELECT <include refid="Base_Column_List" />
+    FROM el_role_authority_mapping
+    WHERE role_code = #{roleCode}
+  </select>
+
+  <select id="findByRoleAndAuthorityCodes" parameterType="Map" resultMap="BaseResultMap" >
+    SELECT <include refid="Base_Column_List" />
+    FROM el_role_authority_mapping
+    WHERE role_code = #{roleCode} and authority_Code = #{authorityCode}
+  </select>
 
 </mapper>

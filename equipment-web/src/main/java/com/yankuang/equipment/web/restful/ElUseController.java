@@ -6,7 +6,7 @@ import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.common.util.StringUtils;
 import com.yankuang.equipment.equipment.model.*;
 import com.yankuang.equipment.equipment.service.*;
-import com.yankuang.equipment.web.dto.IdsDTO;
+import com.yankuang.equipment.web.dto.CodesDTO;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -145,8 +145,8 @@ public class ElUseController {
             return CommonResponse.errorMsg("参数不能为空");
         }
 
-        IdsDTO idsDTO = JsonUtils.jsonToPojo(jsonString,IdsDTO.class);
-        List<Long> ids = idsDTO.getIds();
+        CodesDTO codesDTO = JsonUtils.jsonToPojo(jsonString, CodesDTO.class);
+        List<Long> ids = codesDTO.getIds();
         for(Long id:ids) {
             if (elUseService.delete(id) == false){
                 return CommonResponse.build(500,"删除失败",null);
@@ -215,8 +215,8 @@ public class ElUseController {
         if (StringUtils.isEmpty(jsonString)){
             return CommonResponse.errorMsg("参数不能为空");
         }
-        IdsDTO idsDTO = JsonUtils.jsonToPojo(jsonString,IdsDTO.class);
-        List<Long> itemIds = idsDTO.getIds();
+        CodesDTO codesDTO = JsonUtils.jsonToPojo(jsonString, CodesDTO.class);
+        List<Long> itemIds = codesDTO.getIds();
         for (Long itemId:itemIds){
             if (elUseItemService.deleteById(itemId) == false){
                 return CommonResponse.errorMsg("删除失败");

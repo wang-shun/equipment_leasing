@@ -1,26 +1,16 @@
 package com.yankuang.equipment.web.dto;
 
-import java.io.Serializable;
+import lombok.Data;
 
-public class DeptRoleDTO implements Serializable {
+@Data
+public class DeptRoleDTO {
 
-    private Long deptId;
+    private String deptCode;
 
     private String name;
 
-    public Long getDeptId() {
-        return deptId;
-    }
+    private String roleCode;
 
-    public void setDeptId(Long deptId) {
-        this.deptId = deptId;
-    }
+    private String projectCode;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

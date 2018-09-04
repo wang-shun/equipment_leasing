@@ -21,23 +21,25 @@ public class DeptUserServiceImpl implements DeptUserService {
         return deptUserMapper.create(deptUser);
     }
 
-    public Boolean deleteByUserId(Long id) {
-        return deptUserMapper.deleteByUserId(id);
+    public Boolean deleteByUserCode(String code) {
+        return deptUserMapper.deleteByUserCode(code);
     }
 
-    public Boolean deleteByDeptId(Long id) {
-        return deptUserMapper.deleteByDeptId(id);
+    public Boolean deleteByDeptCode(String code) {
+        return deptUserMapper.deleteByDeptCode(code);
     }
 
-    public DeptUser findByUserId(Long id) {
-        return deptUserMapper.findByUserId(id);
+    public DeptUser findByUserCode(String code) {
+        return deptUserMapper.findByUserCode(code);
     }
 
-    public List<DeptUser> findByDeptId(Long id) {
-        return deptUserMapper.findByDeptId(id);
+    public List<DeptUser> findByDeptCode(String code) {
+        return deptUserMapper.findByDeptCode(code);
     }
 
-    public List<DeptUser> findByDeptIdAndUserId(Map map) {
-        return deptUserMapper.findByDeptIdAndUserId(map);
+    public List<DeptUser> findByDeptCodeAndUserCode(Map map) {
+        return deptUserMapper.findByDeptCodeAndUserCode(map);
     }
+
+
 }

@@ -16,51 +16,34 @@
         <result column="level" property="level" jdbcType="BIGINT"/>
         <result column="create_at" property="createAt" jdbcType="BIGINT"/>
         <result column="version" property="version" jdbcType="BIGINT"/>
+        <result column="project_code" property="projectCode" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="all_cols">
       id, name, code, pcode, type, sorting, status, remark, create_by, update_at, update_by,
-      level, create_at, version
+      level, create_at, version, project_code
     </sql>
 
-    <select id="findByName" parameterType="String" resultMap="ResultMap">
-        SELECT
-        <include refid="all_cols"/>
-        FROM yankuang_equipment.el_role
-        WHERE name = #{name}
-        AND status != 99
-    </select>
+    <insert id="create" parameterType="com.yankuang.equipment.authority.model.Role">
+        INSERT INTO yankuang_equipment.el_role
+          (name, code, pcode, type, sorting, remark, create_by,update_by,
+           level, project_code)
+        VALUES( #{name}, #{code},#{pcode}, #{type}, #{sorting},
+        #{remark}, #{createBy},#{updateBy}, #{level},projectCode)
+    </insert>
 
-    <select id="findAll" resultMap="ResultMap">
-        SELECT
-        <include refid="all_cols"/>
-        FROM yankuang_equipment.el_role
-        WHERE status != 99
-        ORDER BY create_at desc
-    </select>
 
-    <select id="findById" parameterType="long" resultMap="ResultMap">
-        SELECT
-        <include refid="all_cols"/>
-        FROM yankuang_equipment.el_role
-        WHERE id = #{id}
-        AND status != 99
-    </select>
-
-    <select id="findByUserId" parameterType="long" resultMap="ResultMap">
-        select
-        r.id,r.name
-        from el_role r
-        left join el_role_user_mapping ru
-          on r.id = ru.role_id
-        left join el_user u
-          on u.id = ru.user_id
-        where u.id = #{id}
-        and r.status != 99
-        and ru.status != 99
-        and u.status != 99
-        order by r.create_at desc
-    </select>
+    <update id="delete" parameterType="java.util.List">
+        UPDATE yankuang_equipment.el_role
+        <set>
+            status = 99,
+            update_at = CURRENT_TIMESTAMP
+        </set>
+        WHERE code in
+        <foreach collection="list" item="code" separator="," open="(" close=")">
+            #{code}
+        </foreach>
+    </update>
 
     <update id="update" parameterType="com.yankuang.equipment.authority.model.Role">
         UPDATE yankuang_equipment.el_role
@@ -101,32 +84,42 @@
             <if test="version != null">
                 version = #{version},
             </if>
-            update_at = unix_timestamp(now())
+            update_at = CURRENT_TIMESTAMP
         </set>
-        WHERE id = #{id}
+        WHERE code = #{code}
         AND status != 99
     </update>
 
-    <insert id="create" parameterType="com.yankuang.equipment.authority.model.Role"
-            keyProperty="id" useGeneratedKeys="true">
-        INSERT INTO yankuang_equipment.el_role
-        (<include refid="all_cols"/>)
-        VALUES(#{id}, #{name}, #{code},
-        #{pcode}, #{type}, #{sorting},
-        1, #{remark}, #{createBy},
-        unix_timestamp(now()), #{updateBy}, #{level},
-        unix_timestamp(now()),0
-        )
-    </insert>
+    <select id="findByName" parameterType="String" resultMap="ResultMap">
+        SELECT
+        <include refid="all_cols"/>
+        FROM yankuang_equipment.el_role
+        WHERE name = #{name}
+        AND status != 99
+    </select>
 
-    <update id="delete" parameterType="long">
-        UPDATE yankuang_equipment.el_role
-        <set>
-            status = 99,
-            update_at = unix_timestamp(now())
-        </set>
-        WHERE id = #{id}
-    </update>
+    <select id="findByCode" parameterType="String" resultMap="ResultMap">
+        SELECT
+        <include refid="all_cols"/>
+        FROM yankuang_equipment.el_role
+        WHERE code = #{code}
+        AND status != 99
+    </select>
+
+    <select id="findByUserCode" parameterType="String" resultMap="ResultMap">
+        select
+        r.code,r.name
+        from el_role r
+        left join el_role_user_mapping ru
+          on r.code = ru.role_code
+        left join el_user u
+          on u.code = ru.user_code
+        where u.code= #{code}
+        and r.status != 99
+        and ru.status != 99
+        and u.status != 99
+        order by r.create_at desc
+    </select>
 
     <select id="list" parameterType="map" resultMap="ResultMap">
         SELECT
@@ -135,7 +128,7 @@
         WHERE
         1 = 1
         <if test="name != null">
-            AND name = #{name}
+            AND name like '%'#{name}'%'
         </if>
         <if test="code != null">
             AND code = #{code}
@@ -146,35 +139,8 @@
         <if test="type != null">
             AND type = #{type}
         </if>
-        <if test="sorting != null">
-            AND sorting = #{sorting}
-        </if>
-        <if test="status != null">
-            AND status = #{status}
-        </if>
-        <if test="remark != null">
-            AND remark = #{remark}
-        </if>
-        <if test="createBy != null">
-            AND create_by = #{createBy}
-        </if>
-        <if test="updateAt != null">
-            AND update_at = #{updateAt}
-        </if>
-        <if test="updateBy != null">
-            AND update_by = #{updateBy
-        </if>
         <if test="level != null">
             AND level = #{level}
-        </if>
-        <if test="createAt != null">
-            AND create_at = #{createAt}
-        </if>
-        <if test="version != null">
-            AND version = #{version}
-        </if>
-        <if test="id != null">
-            AND id = #{id}
         </if>
         AND status != 99
         order by create_at desc

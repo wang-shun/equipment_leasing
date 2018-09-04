@@ -11,7 +11,7 @@ public interface UserMapper {
 
     Boolean create(User user);
 
-    Boolean delete(Long id);
+    Boolean delete(List<String> codes);
 
     Boolean update(User user);
 
@@ -19,12 +19,12 @@ public interface UserMapper {
 
     User findByAccount(String account);
 
-    User findById(Long account);
+    User findByCode(String code);
 
-    List<Map> list(Map map);
+    List<User> list(Map map);
 
-    Boolean stop(Long id);
+    Boolean stop(String code);
 
-    Boolean start(Long id);
+    Boolean start(String code);
 
 }

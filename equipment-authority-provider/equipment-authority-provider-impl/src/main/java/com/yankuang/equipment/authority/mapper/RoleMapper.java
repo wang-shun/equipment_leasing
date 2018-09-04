@@ -10,20 +10,18 @@ import java.util.Map;
 @Repository
 public interface RoleMapper {
 
-    List<Role> list(Map role);
+    boolean create(Role role);
 
-    Role findByName(String name);
-
-    List<Role> findAll();
-
-    Role findById(Long id);
-
-    List<Role> findByUserId(Long id);
+    boolean delete(List<String> codes);
 
     boolean update(Role role);
 
-    boolean create(Role role);
+    Role findByCode(String code);
 
-    boolean delete(Long id);
+    Role findByName(String name);
+
+    List<Role> findByUserCode(String code);
+
+    List<Role> list(Map role);
 
 }

@@ -11,12 +11,12 @@ public interface RoleUserMapper {
 
     Boolean create(RoleUser roleUser);
 
-    Boolean deleteByUserId(Long id);
+    Boolean deleteByUserCode(String code);
 
-    Boolean deleteByRoleId(Long id);
+    Boolean deleteByRoleCode(String code);
 
-    List<RoleUser> findByUserId(Long id);
+    List<RoleUser> findByUserCode(String code);
 
-    List<RoleUser> findByRoleId(Long id);
+    List<RoleUser> findByRoleCode(String code);
 
 }

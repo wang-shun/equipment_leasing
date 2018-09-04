@@ -20,19 +20,21 @@ public class RoleUserServiceImpl implements RoleUserService {
         return roleUserMapper.create(roleUser);
     }
 
-    public Boolean deleteByUserId(Long id) {
-        return roleUserMapper.deleteByUserId(id);
+    public Boolean deleteByUserCode(String code) {
+        return roleUserMapper.deleteByUserCode(code);
     }
 
-    public Boolean deleteByRoleId(Long id) {
-        return roleUserMapper.deleteByRoleId(id);
+    public Boolean deleteByRoleCode(String code) {
+        return roleUserMapper.deleteByRoleCode(code);
     }
 
-    public List<RoleUser> findByUserId(Long id) {
-        return roleUserMapper.findByUserId(id);
+    public List<RoleUser> findByUserCode(String code) {
+        return roleUserMapper.findByUserCode(code);
     }
 
-    public List<RoleUser> findByRoleId(Long id) {
-        return roleUserMapper.findByRoleId(id);
+    public List<RoleUser> findByRoleCode(String code) {
+        return roleUserMapper.findByRoleCode(code);
     }
+
+
 }

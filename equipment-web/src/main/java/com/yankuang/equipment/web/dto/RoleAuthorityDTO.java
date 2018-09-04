@@ -1,35 +1,14 @@
 package com.yankuang.equipment.web.dto;
 
-import java.io.Serializable;
+import lombok.Data;
+
 import java.util.List;
 
-public class RoleAuthorityDTO implements Serializable {
+@Data
+public class RoleAuthorityDTO {
 
-    private Long roleId;
+    private String roleCode;
 
-    private List<Long> authorityIds;
+    private List<String> authorityCodes;
 
-    public Long getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
-    }
-
-    public List<Long> getAuthorityIds() {
-        return authorityIds;
-    }
-
-    public void setAuthorityIds(List<Long> authorityIds) {
-        this.authorityIds = authorityIds;
-    }
-
-    @Override
-    public String toString() {
-        return "{RoleAuthorityDTO:{" +
-                "roleId=" + roleId +
-                ", authorityIds=" + authorityIds.toString() +
-                '}' + '}';
-    }
 }

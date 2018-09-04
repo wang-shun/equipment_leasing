@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 关联表.
+ */
 @Service
 @RpcProvider
 public class DeptRoleServiceImpl implements DeptRoleService {
@@ -17,27 +20,29 @@ public class DeptRoleServiceImpl implements DeptRoleService {
     @Autowired
     DeptRoleMapper deptRoleMapper;
 
+
     public Boolean create(DeptRole t) {
         return deptRoleMapper.create(t);
     }
 
-    public DeptRole selectByDeptIdAndRoleId(Map map) {
-        return deptRoleMapper.selectByDeptIdAndRoleId(map);
+    public DeptRole findByDeptCodeAndRoleCode(Map map) {
+        return deptRoleMapper.findByDeptCodeAndRoleCode(map);
     }
 
-    public Boolean deleteByDeptId(Long id) {
-        return deptRoleMapper.deleteByDeptId(id);
+    public Boolean deleteByDeptCode(String code) {
+        return deptRoleMapper.deleteByDeptCode(code);
     }
 
-    public Boolean deleteByRoleId(Long id) {
-        return deptRoleMapper.deleteByRoleId(id);
+    public Boolean deleteByRoleCode(String code) {
+        return deptRoleMapper.deleteByRoleCode(code);
     }
 
-    public List<DeptRole> findByRoleId(Long id) {
-        return deptRoleMapper.findByRoleId(id);
+    public List<DeptRole> findByRoleCode(String code) {
+        return deptRoleMapper.findByRoleCode(code);
     }
 
-    public List<DeptRole> findByDeptId(Long id) {
-        return deptRoleMapper.findByDeptId(id);
+    public List<DeptRole> findByDeptCode(String code) {
+        return deptRoleMapper.findByDeptCode(code);
     }
+
 }

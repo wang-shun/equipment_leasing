@@ -9,14 +9,14 @@ public interface DeptRoleService {
 
     Boolean create(DeptRole t);
 
-    DeptRole selectByDeptIdAndRoleId(Map map);
+    DeptRole findByDeptCodeAndRoleCode(Map map);
 
-    Boolean deleteByDeptId(Long id);
+    Boolean deleteByDeptCode(String code);
 
-    Boolean deleteByRoleId(Long id);
+    Boolean deleteByRoleCode(String code);
 
-    List<DeptRole> findByRoleId(Long roleId);
+    List<DeptRole> findByRoleCode(String code);
 
-    List<DeptRole> findByDeptId(Long deptId);
+    List<DeptRole> findByDeptCode(String code);
 
 }

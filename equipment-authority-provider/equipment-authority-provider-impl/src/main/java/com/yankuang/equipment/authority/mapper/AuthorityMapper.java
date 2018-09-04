@@ -9,21 +9,18 @@ import java.util.Map;
 @Repository
 public interface AuthorityMapper {
 
-    List<Authority> list(Map role);
+    boolean create(Authority authority);
 
-    Authority findByName(String name);
-
-    List<Authority> findAll();
-
-    Authority findById(Long id);
-
-    List<Authority> findByUserId(Long userId);
+    boolean delete(List<String> codes);
 
     boolean update(Authority role);
 
-    boolean create(Authority role);
+    Authority findByCode(String code);
 
-    boolean delete(Long id);
+    Authority findByName(String name);
 
-    boolean deletes(List<Long> ids);
+    List<Authority> findByUserCode(String code);
+
+    List<Authority> list(Map role);
+
 }

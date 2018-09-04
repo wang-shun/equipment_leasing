@@ -23,8 +23,8 @@ public class UserServiceImpl implements UserService {
         return userMapper.create(user);
     }
 
-    public Boolean delete(Long id) {
-        return userMapper.delete(id);
+    public Boolean delete(List<String> codes) {
+        return userMapper.delete(codes);
     }
 
     public Boolean update(User user) {
@@ -39,24 +39,24 @@ public class UserServiceImpl implements UserService {
         return userMapper.findByAccount(name);
     }
 
-    public User findById(Long id) {
-        return userMapper.findById(id);
+    public User findByCode(String code) {
+        return userMapper.findByCode(code);
     }
 
 
-    public PageInfo<Map> findByPage(Integer page, Integer size, Map map) {
+    public PageInfo<User> findByPage(Integer page, Integer size, Map map) {
         PageHelper.startPage(page, size);
-        List<Map> maps = userMapper.list(map);
-        PageInfo<Map> pageInfo = new PageInfo<Map>(maps);
+        List<User> maps = userMapper.list(map);
+        PageInfo<User> pageInfo = new PageInfo<User>(maps);
         return pageInfo;
     }
 
-    public Boolean stop(Long id) {
-        return userMapper.stop(id);
+    public Boolean stop(String code) {
+        return userMapper.stop(code);
     }
 
-    public Boolean start(Long id) {
-        return userMapper.start(id);
+    public Boolean start(String code) {
+        return userMapper.start(code);
     }
 
 }

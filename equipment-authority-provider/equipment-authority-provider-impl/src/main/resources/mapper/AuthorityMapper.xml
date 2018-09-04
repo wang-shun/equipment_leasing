@@ -1,196 +1,168 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yankuang.equipment.authority.mapper.AuthorityMapper">
-    <resultMap id="BaseResultMap" type="com.yankuang.equipment.authority.model.Authority" >
-        <id column="id" property="id" jdbcType="BIGINT" />
-        <result column="code" property="code" jdbcType="VARCHAR" />
-        <result column="p_id" property="pId" jdbcType="BIGINT" />
-        <result column="type" property="type" jdbcType="BIGINT" />
-        <result column="status" property="status" jdbcType="TINYINT" />
-        <result column="name" property="name" jdbcType="VARCHAR" />
-        <result column="icon" property="icon" jdbcType="VARCHAR" />
-        <result column="sorting" property="sorting" jdbcType="BIGINT" />
-        <result column="url" property="url" jdbcType="VARCHAR" />
-        <result column="remark" property="remark" jdbcType="VARCHAR" />
-        <result column="version" property="version" jdbcType="BIGINT" />
-        <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
-        <result column="update_at" property="updateAt" jdbcType="BIGINT" />
-        <result column="create_by" property="createBy" jdbcType="VARCHAR" />
-        <result column="create_at" property="createAt" jdbcType="BIGINT" />
-        <result column="level" property="level" jdbcType="BIGINT" />
+    <resultMap id="BaseResultMap" type="com.yankuang.equipment.authority.model.Authority">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="pcode" property="pcode" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="BIGINT"/>
+        <result column="icon" property="icon" jdbcType="VARCHAR"/>
+        <result column="sorting" property="sorting" jdbcType="BIGINT"/>
+        <result column="url" property="url" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="TINYINT"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="level" property="level" jdbcType="BIGINT"/>
+        <result column="version" property="version" jdbcType="BIGINT"/>
+        <result column="update_by" property="updateBy" jdbcType="VARCHAR"/>
+        <result column="update_at" property="updateAt" jdbcType="TIMESTAMP"/>
+        <result column="create_by" property="createBy" jdbcType="VARCHAR"/>
+        <result column="create_at" property="createAt" jdbcType="TIMESTAMP"/>
+        <result column="project_code" property="projectCode" jdbcType="VARCHAR"/>
     </resultMap>
 
-    <sql id="Base_Column_List" >
-    id, code, p_id, type, status, name, sorting, url, remark, version, update_by, update_at,
-    create_by, create_at, level
-  </sql>
+    <sql id="Base_Column_List">
+        id, code, pcode, type, status, name, sorting, url, remark, version, update_by, update_at,
+        create_by, create_at, level, project_code,icon
+    </sql>
 
-    <select id="findById" parameterType="long" resultMap="BaseResultMap" >
-        SELECT <include refid="Base_Column_List" />
-        FROM yankuang_equipment.el_authority
-        WHERE id = #{id}
-        AND status != 99
-    </select>
-
-    <update id="update" parameterType="com.yankuang.equipment.authority.model.Authority" >
-        update el_authority
-        <set >
-            <if test="code != null" >
-                code = #{code},
-            </if>
-            <if test="name != null" >
-                name = #{name},
-            </if>
-            <if test="url != null" >
-                url = #{url},
-            </if>
-            <if test="type != null" >
-                type = #{type},
-            </if>
-            <if test="status != null" >
-                status = #{status},
-            </if>
-            <if test="createBy != null" >
-                create_by = #{createBy},
-            </if>
-            <if test="remark != null" >
-                remark = #{remark},
-            </if>
-            <if test="sorting != null" >
-                sorting = #{sorting},
-            </if>
-            <if test="updateBy != null" >
-                update_by = #{updateBy},
-            </if>
-            <if test="version != null" >
-                version = #{version},
-            </if>
-            <if test="createAt != null" >
-                create_at = #{createAt},
-            </if>
-            update_at = unix_timestamp(now())
-        </set>
-        where id = #{id}
-    </update>
-
-
-    <insert id="create" parameterType="com.yankuang.equipment.authority.model.Authority" keyProperty="id" useGeneratedKeys="true">
+    <insert id="create" parameterType="com.yankuang.equipment.authority.model.Authority">
       insert into el_authority
-        (id, code, p_id, type, status, name,
-          sorting, url, remark,
-          version, update_by, update_at,
-          create_by, create_at, level
-          )
-      values
-        (#{id}, #{code}, #{pId},
-        #{type}, 1, #{name},
-        #{sorting}, #{url}, #{remark},
-        0, #{updateBy}, unix_timestamp(now()),
-        #{createBy}, unix_timestamp(now()), #{level}
-        )
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            code,pcode,type,status,name,sorting,update_by,create_by,
+            <if test="icon != null  and icon != '' " >
+                ,#{icon,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null and url != '' " >
+                ,url,
+            </if>
+            <if test="remark != null and remark != '' ">
+                remark,
+            </if>
+            <if test="level != null and level != '' " >
+                level,
+            </if>
+            <if test="version != null and version != '' " >
+                version,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            #{code},#{pcode},#{type},1,#{name},#{sorting},#{updateBy},#{createBy}
+            <if test="icon != null  and icon != '' " >
+                ,#{icon,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null  and url != '' " >
+                ,#{url,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null and remark != '' " >
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="level != null and level != '' " >
+                #{level,jdbcType=BIGINT},
+            </if>
+            <if test="version != null and version != ''" >
+                #{version,jdbcType=BIGINT},
+            </if>
+        </trim>
     </insert>
 
-    <update id="delete" parameterType="long">
+    <update id="delete" parameterType="java.util.List">
         UPDATE yankuang_equipment.el_authority
         <set>
             status = 99,
-            update_at = unix_timestamp(now())
+            update_at = CURRENT_TIMESTAMP
         </set>
-        WHERE id = #{id}
-    </update>
-
-    <update id="deletes" parameterType="java.util.List">
-        UPDATE yankuang_equipment.el_authority
-        <set>
-            status = 99,
-            update_at = unix_timestamp(now())
-        </set>
-        WHERE id in
-        <foreach collection="list" item="id" separator="," open="(" close=")">
-            #{id}
+        WHERE code in
+        <foreach collection="list" item="code" separator="," open="(" close=")">
+            #{code}
         </foreach>
     </update>
 
-    <select id="findByName" parameterType="String" resultMap="BaseResultMap" >
-        SELECT <include refid="Base_Column_List" />
+    <update id="update" parameterType="com.yankuang.equipment.authority.model.Authority">
+        update el_authority
+        <set>
+            <if test="pcode != null and pcode != ''">
+                pcode = #{pcode},
+            </if>
+            <if test="name != null and name != '' ">
+                name = #{name},
+            </if>
+            <if test="url != null and url != '' ">
+                url = #{url},
+            </if>
+            <if test="type != null and type != '' ">
+                type = #{type},
+            </if>
+            <if test="remark != null and remark != '' ">
+                remark = #{remark},
+            </if>
+            <if test="sorting != null and sorting != '' ">
+                sorting = #{sorting},
+            </if>
+            <if test="version != null and version != '' ">
+                version = #{version},
+            </if>
+            <if test="updateBy != null and updateBy != '' ">
+                update_by = #{updateBy},
+            </if>
+            update_at = CURRENT_TIMESTAMP
+        </set>
+        where code = #{code}
+    </update>
+
+    <select id="findByCode" parameterType="String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM yankuang_equipment.el_authority
+        WHERE code = #{code}
+        AND status != 99
+    </select>
+
+    <select id="findByName" parameterType="String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
         FROM yankuang_equipment.el_authority
         WHERE name = #{name}
         AND status != 99
     </select>
 
-    <select id="findAll" resultMap="BaseResultMap" >
-        SELECT <include refid="Base_Column_List" />
-        FROM yankuang_equipment.el_authority
-        WHERE status != 99
-        <if test="type != null" >
-            AND type = #{type}
-        </if>
-        ORDER BY create_at DESC
-    </select>
-
-    <select id="findByUserId" parameterType="long" resultMap="BaseResultMap" >
+    <select id="findByUserCode" parameterType="String" resultMap="BaseResultMap">
         select
-        a.id,a.name,a.level,a.p_id,a.type,a.url,a.sorting,a.icon
+        a.name,a.level,a.type,a.url,a.sorting,a.icon,a.code,a.pcode
         from el_authority a
         left join el_role_authority_mapping ra
-        on a.id = ra.authority_id
+        on a.code = ra.authority_code
         left join el_role r
-        on r.id = ra.role_id
+        on r.code = ra.role_code
         left join el_role_user_mapping ru
-        on r.id  = ru.role_id
+        on r.code = ru.role_code
         left join el_user u
-        on u.id = ru.user_id
+        on u.code = ru.user_code
         WHERE a.status != 99
         and ra.status != 99
         and r.status != 99
         and ru.status != 99
         and u.status != 99
-        and u.id = #{userId}
+        and u.code = #{code}
         ORDER BY a.create_at DESC
     </select>
 
     <select id="list" parameterType="map" resultMap="BaseResultMap">
-        SELECT <include refid="Base_Column_List"/>
+        SELECT
+        <include refid="Base_Column_List"/>
         FROM yankuang_equipment.el_authority
         WHERE
-            1 = 1
-            <if test="code != null" >
-                AND code = #{code}
-            </if>
-            <if test="name != null" >
-                AND name = #{name}
-            </if>
-            <if test="url != null" >
-                AND url = #{url}
-            </if>
-            <if test="type != null" >
-                AND type = #{type}
-            </if>
-            <if test="createBy != null" >
-                AND create_by = #{createBy}
-            </if>
-            <if test="remark != null" >
-                AND remark = #{remark}
-            </if>
-            <if test="sorting != null" >
-                AND sorting = #{sorting}
-            </if>
-            <if test="updateAt != null" >
-                AND update_at = #{updateAt}
-            </if>
-            <if test="updateBy != null" >
-                AND update_by = #{updateBy}
-            </if>
-            <if test="version != null" >
-                AND version = #{version}
-            </if>
-            <if test="createAt != null" >
-                AND create_at = #{createAt}
-            </if>
-            <if test="id != null">
-                AND id = #{id}
-            </if>
-            AND status != 99
+        1 = 1
+        <if test="code != null and code != '' ">
+            AND code = #{code}
+        </if>
+        <if test="pcode != null and pcode != '' ">
+            AND pcode = #{pcode}
+        </if>
+        <if test="name != null and name != '' ">
+            AND name like '%'#{name}'%'
+        </if>
+        AND status != 99
         order by create_at desc
     </select>
 

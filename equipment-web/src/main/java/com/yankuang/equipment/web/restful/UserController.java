@@ -9,7 +9,6 @@ import com.yankuang.equipment.web.dto.*;
 import com.yankuang.equipment.web.util.AuthorityTreeUtils;
 import com.yankuang.equipment.web.util.CodeUtil;
 import com.yankuang.equipment.web.util.RedisOperator;
-import com.yankuang.equipment.web.util.TreeUtils;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,8 +80,7 @@ public class UserController {
             return CommonResponse.errorMsg("密码不能为空");
         }
         log.info("--------- 用户登录信息:" + name + ":" + password);
-        List<AuthorityDTO> authoritys = new ArrayList<>();
-        //todo
+        List<AuthorityTreeDTO> authoritys = new ArrayList<>();
         List<RoleDTO> roles = new ArrayList<>();
         final Base64.Decoder decoder = Base64.getDecoder();
         String token = "";
@@ -93,12 +91,12 @@ public class UserController {
         }
         if (loginUser != null && password.equals(loginUser.getPassword())) {
             log.info(loginUser.toString());
-            List<Authority> authorities1 = authorityService.findByUserId(loginUser.getId());
+            List<Authority> authorities1 = authorityService.findByUserCode(loginUser.getCode());
             for (Authority authority : authorities1) {
-                AuthorityDTO authorityDTO = new AuthorityDTO();
+                AuthorityTreeDTO authorityDTO = new AuthorityTreeDTO();
                 authorityDTO.setUrl(authority.getUrl());
-                authorityDTO.setId(authority.getId());
-                authorityDTO.setpId(authority.getpId());
+                authorityDTO.setCode(authority.getCode());
+                authorityDTO.setPcode(authority.getPcode());
                 authorityDTO.setLevel(authority.getLevel());
                 authorityDTO.setType(authority.getType());
                 authorityDTO.setName(authority.getName());
@@ -106,10 +104,10 @@ public class UserController {
                 authorityDTO.setIcon(authority.getIcon());
                 authoritys.add(authorityDTO);
             }
-            List<Role> roles1 = roleService.findByUserId(loginUser.getId());
+            List<Role> roles1 = roleService.findByUserCode(loginUser.getCode());
             for (Role role : roles1) {
                 RoleDTO roleDTO = new RoleDTO();
-                roleDTO.setId(role.getId());
+                roleDTO.setCode(role.getCode());
                 roleDTO.setName(role.getName());
                 roles.add(roleDTO);
             }
@@ -134,7 +132,7 @@ public class UserController {
             redis.set(token, JsonUtils.objectToJson(userDTO1), 7200);
             // 更新user数据库表，记录最新一次登录保存的redis的key(token)
             User u = new User();
-            u.setId(loginUser.getId());
+            u.setCode(loginUser.getCode());
             u.setToken(token);
             userService.update(u);
             // 返回加密用户信息包含token
@@ -143,10 +141,10 @@ public class UserController {
         return CommonResponse.errorTokenMsg("用户不存在");
     }
 
-    private UserDTO getUserDTO(List<AuthorityDTO> authoritys, List<RoleDTO> roles, User loginUser) {
+    private UserDTO getUserDTO(List<AuthorityTreeDTO> authoritys, List<RoleDTO> roles, User loginUser) {
         UserDTO userDTO = new UserDTO();
         // 用户角色列表
-        List<RoleUser> roleUsers = roleUserService.findByUserId(loginUser.getId());
+        List<RoleUser> roleUsers = roleUserService.findByUserCode(loginUser.getCode());
         if (roleUsers == null || roleUsers.size() == 0) {
             return userDTO;
         }
@@ -158,10 +156,10 @@ public class UserController {
                 .filter(roleDTO -> "admin".equals(roleDTO.getName()))
                 .collect(Collectors.toList());
         if (roles1.size() > 0) {
-            List<AuthorityDTO> authoritys1 = authoritys.stream().
+            List<AuthorityTreeDTO> authoritys1 = authoritys.stream().
                     filter(authorityDTO -> 1 == authorityDTO.getType())
                     .collect(Collectors.toList());
-            List<AuthorityDTO> list = getTree(authoritys1);
+            List<AuthorityTreeDTO> list = getTree(authoritys1);
             // 用户权限idlist
             userDTO.setAuthoritys(list);
         } else {
@@ -173,14 +171,14 @@ public class UserController {
         return userDTO;
     }
 
-    private List<AuthorityDTO> getTree(List<AuthorityDTO> authoritys) {
+    private List<AuthorityTreeDTO> getTree(List<AuthorityTreeDTO> authoritys) {
         AuthorityTreeUtils authorityTreeUtil = new AuthorityTreeUtils();
-        List<AuthorityDTO> trees = new ArrayList<>();
-        AuthorityDTO tree = null;
-        for (AuthorityDTO authority : authoritys) {
-            tree = new AuthorityDTO();
-            tree.setId(authority.getId());
-            tree.setpId(authority.getpId());
+        List<AuthorityTreeDTO> trees = new ArrayList<>();
+        AuthorityTreeDTO tree = null;
+        for (AuthorityTreeDTO authority : authoritys) {
+            tree = new AuthorityTreeDTO();
+            tree.setCode(authority.getCode());
+            tree.setPcode(authority.getPcode());
             tree.setName(authority.getName());
             tree.setLevel(authority.getLevel());
             tree.setType(authority.getType());
@@ -193,26 +191,37 @@ public class UserController {
     }
 
     /**
-     * 根据id查询用户....
+     * 根据code查询用户....
      *
-     * @param id
+     * @param code
      * @return
      */
-    @GetMapping(value = "/{id}")
-    public CommonResponse findById(@PathVariable Long id) {
-        return CommonResponse.ok(userService.findById(id));
+    @GetMapping(value = "/{code}")
+    public CommonResponse findById(@PathVariable String code) {
+        return CommonResponse.ok(userService.findByCode(code));
     }
 
     /**
-     * 根据id删除用户.
+     * 根据codes删除用户.
      *
-     * @param id
+     * @param jsonString
      * @return
      */
-    @DeleteMapping(value = "/{id}")
-    public CommonResponse delete(@PathVariable Long id) {
-        return CommonResponse.ok(userService.delete(id));
+    @DeleteMapping
+    public CommonResponse delete(@RequestBody String jsonString) {
+        if (StringUtils.isEmpty(jsonString)) {
+            return CommonResponse.errorMsg("请选择要删除的数据!");
+        }
+        CodesDTO codesDTO = JsonUtils.jsonToPojo(jsonString, CodesDTO.class);
+        List<String> codes = codesDTO.getCodes();
+        Boolean b = userService.delete(codes);
+        if (!b) {
+            return CommonResponse.errorMsg("删除失败!");
+        }
+        return CommonResponse.ok("删除成功!");
+
     }
+
 
     /**
      * 添加用户.
@@ -233,13 +242,14 @@ public class UserController {
         if (StringUtils.isEmpty(user.getName())) {
             return CommonResponse.errorMsg("用户名 不能为空");
         }
-        Long roleId = user.getRoleId();
-        if (StringUtils.isEmpty(roleId)) {
+        String roleCode = user.getRoleCode();
+        if (StringUtils.isEmpty(roleCode)) {
             return CommonResponse.errorMsg("用户角色id 不能为空");
         }
-        Long deptId = user.getDeptId();
-        if (StringUtils.isEmpty(deptId)) {
-            return CommonResponse.errorMsg("用户部门id 不能为空");
+        // todo
+        String deptCode = user.getDeptCode();
+        if (StringUtils.isEmpty(deptCode)) {
+            return CommonResponse.errorMsg("用户部门code不能为空");
         }
         User userCheck = userService.findByAccount(user.getAccount());
         if (!StringUtils.isEmpty(userCheck)) {
@@ -265,20 +275,16 @@ public class UserController {
         //  用户部门关系表添加
         User user2 = userService.findByAccount(user.getAccount());
         DeptUser deptUser = new DeptUser();
-        deptUser.setDepartmentId(deptId);
-        deptUser.setUserId(user2.getId());
-        deptUser.setCreateBy("admin");
-        deptUser.setUpdateBy("admin");
+        deptUser.setDeptCode(deptCode);
+        deptUser.setUserCode(user2.getCode());
         Boolean b1 = deptUserService.create(deptUser);
-        if (!b1){
+        if (!b1) {
             return CommonResponse.errorMsg("用户关联部门失败");
         }
         //  用户角色表添加
         RoleUser roleUser = new RoleUser();
-        roleUser.setRoleId(roleId);
-        roleUser.setUserId(user2.getId());
-        roleUser.setCreateBy("admin");
-        roleUser.setUpdateBy("admin");
+        roleUser.setRoleCode(roleCode);
+        roleUser.setUserCode(user2.getCode());
         Boolean b3 = roleUserService.create(roleUser);
         if (!b3) {
             return CommonResponse.errorMsg("用户关联角色失败");
@@ -287,7 +293,7 @@ public class UserController {
     }
 
     /**
-     * 根据id修改用户.
+     * 根据code修改用户.
      *
      * @param jsonString
      * @return
@@ -298,8 +304,8 @@ public class UserController {
             return CommonResponse.errorMsg("参数不能为空");
         }
         User user = JsonUtils.jsonToPojo(jsonString, User.class);
-        if (user.getId() == null || "".equals(user.getId())) {
-            return CommonResponse.errorMsg("id 不能为空");
+        if (user.getCode() == null || "".equals(user.getCode())) {
+            return CommonResponse.errorMsg("code不能为空");
         }
         //todo
         user.setUpdateBy("登陆人");
@@ -315,27 +321,28 @@ public class UserController {
      *
      * @param page
      * @param size
-     * @param jsonString
+     * @param name
      * @return
      */
     @GetMapping
     public CommonResponse findByPage(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                      @RequestParam(value = "size", defaultValue = "20") Integer size,
-                                     @RequestParam String jsonString) {
+                                     @RequestParam(value = "name", defaultValue = "")  String name) {
         Map user = new HashMap();
-        PageInfo<Map> users = userService.findByPage(page, size, user);
+        user.put("name", name);
+        PageInfo<User> users = userService.findByPage(page, size, user);
         return CommonResponse.ok(users);
     }
 
     /**
      * 用户停用.
      *
-     * @param id
+     * @param code
      * @return
      */
-    @PatchMapping("/stop/{id}")
-    public CommonResponse stop(@PathVariable Long id) {
-        Boolean b = userService.stop(id);
+    @PatchMapping("/stop/{code}")
+    public CommonResponse stop(@PathVariable String code) {
+        Boolean b = userService.stop(code);
         if (!b) {
             return CommonResponse.errorMsg("禁用失败");
         }
@@ -345,12 +352,12 @@ public class UserController {
     /**
      * 用户启用.
      *
-     * @param id
+     * @param code
      * @return
      */
-    @PatchMapping("/start/{id}")
-    public CommonResponse start(@PathVariable Long id) {
-        Boolean b = userService.start(id);
+    @PatchMapping("/start/{code}")
+    public CommonResponse start(@PathVariable String code) {
+        Boolean b = userService.start(code);
         if (!b) {
             return CommonResponse.errorMsg("启用失败");
         }
