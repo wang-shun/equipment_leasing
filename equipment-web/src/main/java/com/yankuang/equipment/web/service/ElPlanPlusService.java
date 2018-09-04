@@ -253,6 +253,8 @@ public class ElPlanPlusService {
                 elPlanUseDTO.setStatus("备用");
                 elPlanUseDTO.setPlanUseId(use.getId().toString());
                 elPlanUseDTO.setEquipmentNum(1);
+                elPlanUseDTO.setModelCode(elPlanItem.getEffectCode());
+                elPlanUseDTO.setEquipmentId(elPlanUse.getEquipmentId());
                 elPlanUseDTOS.add(elPlanUseDTO);
             }
             if ("2".equals(use.getEquipmentType()) && use != null) {
@@ -291,6 +293,8 @@ public class ElPlanPlusService {
                 elPlanUseDTO.setStatus("备用");
                 elPlanUseDTO.setPlanUseId(use.getId().toString());
                 elPlanUseDTO.setEquipmentNum(1);
+                elPlanUseDTO.setModelCode(elPlanItem.getEffectCode());
+                elPlanUseDTO.setEquipmentId(elPlanUse.getEquipmentId());
                 elPlanUseDTOS.add(elPlanUseDTO);
             }
         }

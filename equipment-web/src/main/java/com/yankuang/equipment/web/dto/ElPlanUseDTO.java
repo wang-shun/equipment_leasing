@@ -32,6 +32,26 @@ public class ElPlanUseDTO {
 
     private Integer equipmentNum;
 
+    private String modelCode;
+
+    private Long equipmentId;
+
+    public String getModelCode() {
+        return modelCode;
+    }
+
+    public void setModelCode(String modelCode) {
+        this.modelCode = modelCode;
+    }
+
+    public Long getEquipmentId() {
+        return equipmentId;
+    }
+
+    public void setEquipmentId(Long equipmentId) {
+        this.equipmentId = equipmentId;
+    }
+
     public Integer getEquipmentNum() {
         return equipmentNum;
     }
@@ -170,7 +190,8 @@ public class ElPlanUseDTO {
                 ", effectName='" + effectName + '\'' +
                 ", status='" + status + '\'' +
                 ", equipmentNum=" + equipmentNum +
+                ", modelCode='" + modelCode + '\'' +
+                ", equipmentId=" + equipmentId +
                 '}';
     }
-
 }
