@@ -47,4 +47,6 @@ public class Dept implements Serializable {
 
     private String address;
 
+    private String pname;
+
 }
