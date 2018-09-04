@@ -63,6 +63,7 @@ public class AuthorityController {
             authority.setCode(CodeUtil.getCode());
             authority.setCreateBy("admin");
             authority.setUpdateBy("admin");
+            authority.setProjectCode("sb001");
             //添加权限
             Boolean b = authorityService.create(authority);
             if (!b) {
@@ -104,7 +105,6 @@ public class AuthorityController {
         if (StringUtils.isEmpty(jsonString)) {
             return CommonResponse.errorTokenMsg("参数不能为空");
         }
-        //TODO 可能使用DTO
         Authority authority = JsonUtils.jsonToPojo(jsonString, Authority.class);
         if (StringUtils.isEmpty(authority.getCode())) {
             return CommonResponse.errorTokenMsg("权限code不能为空");
@@ -124,6 +124,9 @@ public class AuthorityController {
      */
     @GetMapping(value = "/{code}")
     public CommonResponse findByCode(@PathVariable String code) {
+        if (StringUtils.isEmpty(code)) {
+            return CommonResponse.errorTokenMsg("code不能为空");
+        }
         return CommonResponse.ok(authorityService.findByCode(code));
     }
 
@@ -148,6 +151,7 @@ public class AuthorityController {
             tree.setLevel(authority.getLevel());
             tree.setSorting(authority.getSorting());
             tree.setIcon(authority.getIcon());
+            tree.setCreateAt(authority.getCreateAt());
             trees.add(tree);
         }
         AuthorityTreeUtils treeUtils = new AuthorityTreeUtils();
@@ -168,8 +172,8 @@ public class AuthorityController {
                                      @RequestParam(value = "name", defaultValue = "") String name){
         Map map = new HashMap();
         map.put("name", name);
-        PageInfo<Authority> authoritys = authorityService.findByPage(page, size, map);
-        return CommonResponse.ok(authoritys);
+        PageInfo<Authority> authorityPageInfo = authorityService.findByPage(page, size, map);
+        return CommonResponse.ok(authorityPageInfo);
     }
 
 }

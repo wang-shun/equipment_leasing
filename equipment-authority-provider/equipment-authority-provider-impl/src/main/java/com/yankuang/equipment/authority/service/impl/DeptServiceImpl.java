@@ -23,16 +23,16 @@ public class DeptServiceImpl implements DeptService {
         return deptMapper.create(dept);
     }
 
-    public Boolean delete(Long id) {
-        return deptMapper.delete(id);
+    public Boolean delete(List<String> codes) {
+        return deptMapper.delete(codes);
     }
 
-    public Boolean update(Dept dept) {
-        return deptMapper.update(dept);
+    public Boolean update(Dept user) {
+        return deptMapper.update(user);
     }
 
-    public Dept findById(Long id) {
-        return deptMapper.findById(id);
+    public Dept findByCode(String code) {
+        return deptMapper.findByCode(code);
     }
 
     public Dept findByName(String name) {
@@ -40,13 +40,14 @@ public class DeptServiceImpl implements DeptService {
     }
 
     public List<Dept> findAll() {
-        return deptMapper.findAll();
+        return deptMapper.list(null);
     }
 
-    public PageInfo<Map> findByPage(Integer page, Integer size, Map map) {
+    public PageInfo<Dept> findByPage(Integer page, Integer size, Map map) {
         PageHelper.startPage(page, size);
-        List<Map> maps = deptMapper.list(map);
-        PageInfo<Map> pageInfo = new PageInfo<Map>(maps);
+        List<Dept> maps = deptMapper.list(map);
+        PageInfo<Dept> pageInfo = new PageInfo<Dept>(maps);
         return pageInfo;
     }
+
 }

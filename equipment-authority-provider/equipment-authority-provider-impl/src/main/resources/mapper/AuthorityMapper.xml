@@ -29,12 +29,12 @@
     <insert id="create" parameterType="com.yankuang.equipment.authority.model.Authority">
       insert into el_authority
         <trim prefix="(" suffix=")" suffixOverrides="," >
-            code,pcode,type,status,name,sorting,update_by,create_by,
+            code,pcode,type,name,sorting,update_by,create_by,project_code
             <if test="icon != null  and icon != '' " >
-                ,#{icon,jdbcType=VARCHAR},
+                ,icon,
             </if>
             <if test="url != null and url != '' " >
-                ,url,
+                url,
             </if>
             <if test="remark != null and remark != '' ">
                 remark,
@@ -42,26 +42,20 @@
             <if test="level != null and level != '' " >
                 level,
             </if>
-            <if test="version != null and version != '' " >
-                version,
-            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
-            #{code},#{pcode},#{type},1,#{name},#{sorting},#{updateBy},#{createBy}
+            #{code},#{pcode},#{type},#{name},#{sorting},#{updateBy},#{createBy},#{projectCode}
             <if test="icon != null  and icon != '' " >
-                ,#{icon,jdbcType=VARCHAR},
+                ,#{icon},
             </if>
             <if test="url != null  and url != '' " >
-                ,#{url,jdbcType=VARCHAR},
+                ,#{url},
             </if>
             <if test="remark != null and remark != '' " >
-                #{remark,jdbcType=VARCHAR},
+                #{remark},
             </if>
             <if test="level != null and level != '' " >
-                #{level,jdbcType=BIGINT},
-            </if>
-            <if test="version != null and version != ''" >
-                #{version,jdbcType=BIGINT},
+                #{level},
             </if>
         </trim>
     </insert>
