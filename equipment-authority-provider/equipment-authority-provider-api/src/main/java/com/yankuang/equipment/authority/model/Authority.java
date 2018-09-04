@@ -56,5 +56,6 @@ public class Authority implements Serializable {
 
     private String projectCode;
 
+    private String pname;
 
 }

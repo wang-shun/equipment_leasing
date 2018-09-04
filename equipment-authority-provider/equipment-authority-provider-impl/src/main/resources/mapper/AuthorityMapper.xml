@@ -19,6 +19,7 @@
         <result column="create_by" property="createBy" jdbcType="VARCHAR"/>
         <result column="create_at" property="createAt" jdbcType="TIMESTAMP"/>
         <result column="project_code" property="projectCode" jdbcType="VARCHAR"/>
+        <result column="pname" property="pname" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -27,34 +28,34 @@
     </sql>
 
     <insert id="create" parameterType="com.yankuang.equipment.authority.model.Authority">
-      insert into el_authority
-        <trim prefix="(" suffix=")" suffixOverrides="," >
+        insert into el_authority
+        <trim prefix="(" suffix=")" suffixOverrides=",">
             code,pcode,type,name,sorting,update_by,create_by,project_code
-            <if test="icon != null  and icon != '' " >
+            <if test="icon != null  and icon != '' ">
                 ,icon,
             </if>
-            <if test="url != null and url != '' " >
+            <if test="url != null and url != '' ">
                 url,
             </if>
             <if test="remark != null and remark != '' ">
                 remark,
             </if>
-            <if test="level != null and level != '' " >
+            <if test="level != null and level != '' ">
                 level,
             </if>
         </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides="," >
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
             #{code},#{pcode},#{type},#{name},#{sorting},#{updateBy},#{createBy},#{projectCode}
-            <if test="icon != null  and icon != '' " >
+            <if test="icon != null  and icon != '' ">
                 ,#{icon},
             </if>
-            <if test="url != null  and url != '' " >
+            <if test="url != null  and url != '' ">
                 ,#{url},
             </if>
-            <if test="remark != null and remark != '' " >
+            <if test="remark != null and remark != '' ">
                 #{remark},
             </if>
-            <if test="level != null and level != '' " >
+            <if test="level != null and level != '' ">
                 #{level},
             </if>
         </trim>
@@ -106,10 +107,13 @@
 
     <select id="findByCode" parameterType="String" resultMap="BaseResultMap">
         SELECT
-        <include refid="Base_Column_List"/>
-        FROM yankuang_equipment.el_authority
-        WHERE code = #{code}
-        AND status != 99
+        a1.code, a1.pcode, a1.name, a2.name as pname, a1.type, a1.status, a1.sorting, a1.url, a1.remark, a1.version, a1.update_by, a1.update_at,
+        a1.create_by, a1.create_at, a1.level, a1.project_code,a1.icon
+        FROM el_authority a1
+        left join el_authority a2
+          on a1.pcode = a2.code
+        WHERE a1.code = #{code}
+        AND a1.status != 99
     </select>
 
     <select id="findByName" parameterType="String" resultMap="BaseResultMap">
