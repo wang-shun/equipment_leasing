@@ -30,34 +30,11 @@
     <insert id="create" parameterType="com.yankuang.equipment.authority.model.Authority">
         insert into el_authority
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            code,pcode,type,name,sorting,update_by,create_by,project_code
-            <if test="icon != null  and icon != '' ">
-                ,icon,
-            </if>
-            <if test="url != null and url != '' ">
-                url,
-            </if>
-            <if test="remark != null and remark != '' ">
-                remark,
-            </if>
-            <if test="level != null and level != '' ">
-                level,
-            </if>
+            code,pcode,type,name,sorting,update_by,create_by,project_code,icon,url,remark,level
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            #{code},#{pcode},#{type},#{name},#{sorting},#{updateBy},#{createBy},#{projectCode}
-            <if test="icon != null  and icon != '' ">
-                ,#{icon},
-            </if>
-            <if test="url != null  and url != '' ">
-                ,#{url},
-            </if>
-            <if test="remark != null and remark != '' ">
-                #{remark},
-            </if>
-            <if test="level != null and level != '' ">
-                #{level},
-            </if>
+            #{code},#{pcode},#{type},#{name},#{sorting},#{updateBy},#{createBy},
+            #{projectCode},#{icon},#{url},#{remark},#{level}
         </trim>
     </insert>
 

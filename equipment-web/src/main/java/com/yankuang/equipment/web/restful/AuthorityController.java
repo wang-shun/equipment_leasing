@@ -3,6 +3,7 @@ package com.yankuang.equipment.web.restful;
 import com.github.pagehelper.PageInfo;
 import com.yankuang.equipment.authority.model.Authority;
 import com.yankuang.equipment.authority.service.AuthorityService;
+import com.yankuang.equipment.authority.service.RoleAuthorityService;
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.web.dto.AuthorityTreeDTO;
@@ -23,13 +24,18 @@ import java.util.Map;
 @RestController
 @RequestMapping("/v1/acls")
 public class AuthorityController {
+
     @RpcConsumer
     AuthorityService authorityService;
 
+    @RpcConsumer
+    RoleAuthorityService roleAuthorityService;
+
     /**
-     *  添加权限.
-     *  type=1 添加权限菜单
-     *  rype=2 添加权限按钮
+     * 添加权限.
+     * type=1 添加权限菜单
+     * rype=2 添加权限按钮
+     *
      * @param jsonString
      * @return
      */
@@ -77,6 +83,7 @@ public class AuthorityController {
 
     /**
      * 根据codes删除权限，单个或批量
+     *
      * @param jsonString
      * @return
      */
@@ -87,15 +94,22 @@ public class AuthorityController {
         }
         CodesDTO codesDTO = JsonUtils.jsonToPojo(jsonString, CodesDTO.class);
         List<String> codes = codesDTO.getCodes();
-        Boolean b = authorityService.delete(codes);
+        // 删除权限角色关联
+        Boolean b = roleAuthorityService.deleteByAuthorityCodes(codes);
         if (!b) {
-            return CommonResponse.errorMsg("删除失败");
+            return CommonResponse.errorMsg("删除权限角色关联失败");
+        }
+        // 删除角色
+        b = authorityService.delete(codes);
+        if (!b) {
+            return CommonResponse.errorMsg("删除角色失败");
         }
         return CommonResponse.ok("删除成功");
     }
 
     /**
      * 根据code修改.
+     *
      * @param jsonString
      * @return
      */
@@ -119,6 +133,7 @@ public class AuthorityController {
 
     /**
      * 通过code查询.
+     *
      * @param code
      * @return
      */
@@ -133,7 +148,7 @@ public class AuthorityController {
     /**
      * @return
      * @method 查询权限树
-     *  type=1 菜单
+     * type=1 菜单
      */
     @GetMapping(value = "/tree")
     public CommonResponse findAll() {
@@ -161,6 +176,7 @@ public class AuthorityController {
 
     /**
      * 权限分页查询.
+     *
      * @param page
      * @param size
      * @param name
@@ -169,7 +185,7 @@ public class AuthorityController {
     @GetMapping
     public CommonResponse findByPage(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                      @RequestParam(value = "size", defaultValue = "20") Integer size,
-                                     @RequestParam(value = "name", defaultValue = "") String name){
+                                     @RequestParam(value = "name", defaultValue = "") String name) {
         Map map = new HashMap();
         map.put("name", name);
         PageInfo<Authority> authorityPageInfo = authorityService.findByPage(page, size, map);

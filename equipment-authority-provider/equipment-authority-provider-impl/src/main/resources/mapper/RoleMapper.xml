@@ -5,31 +5,29 @@
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="code" property="code" jdbcType="VARCHAR"/>
-        <result column="pcode" property="pcode" jdbcType="VARCHAR"/>
-        <result column="type" property="type" jdbcType="BIGINT"/>
         <result column="sorting" property="sorting" jdbcType="BIGINT"/>
         <result column="status" property="status" jdbcType="TINYINT"/>
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
         <result column="create_by" property="createBy" jdbcType="VARCHAR"/>
         <result column="update_at" property="updateAt" jdbcType="TIMESTAMP"/>
         <result column="update_by" property="updateBy" jdbcType="VARCHAR"/>
-        <result column="level" property="level" jdbcType="BIGINT"/>
         <result column="create_at" property="createAt" jdbcType="TIMESTAMP"/>
         <result column="version" property="version" jdbcType="BIGINT"/>
         <result column="project_code" property="projectCode" jdbcType="VARCHAR"/>
+        <result column="deptCode" property="deptCode" jdbcType="VARCHAR"/>
+        <result column="deptName" property="deptName" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="all_cols">
-      id, name, code, pcode, type, sorting, status, remark, create_by, update_at, update_by,
-      level, create_at, version, project_code
+      id, name, code, sorting, status, remark, create_by, update_at, update_by,
+      create_at, version, project_code
     </sql>
 
     <insert id="create" parameterType="com.yankuang.equipment.authority.model.Role">
         INSERT INTO yankuang_equipment.el_role
-          (name, code, pcode, type, sorting, remark, create_by,update_by,
-           level, project_code)
-        VALUES( #{name}, #{code},#{pcode}, #{type}, #{sorting},
-        #{remark}, #{createBy},#{updateBy}, #{level},projectCode)
+          (name,code,sorting,remark,create_by,update_by,project_code,update_at,create_at)
+        VALUES
+          (#{name},#{code},#{sorting},#{remark},#{createBy},#{updateBy},#{projectCode},CURRENT_TIMESTAMP(),CURRENT_TIMESTAMP())
     </insert>
 
 
@@ -37,7 +35,7 @@
         UPDATE yankuang_equipment.el_role
         <set>
             status = 99,
-            update_at = CURRENT_TIMESTAMP
+            update_at = CURRENT_TIMESTAMP()
         </set>
         WHERE code in
         <foreach collection="list" item="code" separator="," open="(" close=")">
@@ -48,47 +46,44 @@
     <update id="update" parameterType="com.yankuang.equipment.authority.model.Role">
         UPDATE yankuang_equipment.el_role
         <set>
-            <if test="name != null">
+            <if test="name != null and name != '' ">
                 name = #{name},
             </if>
-            <if test="code != null">
-                code = #{code},
-            </if>
-            <if test="pcode != null">
-                pcode = #{pcode},
-            </if>
-            <if test="type != null">
-                type = #{type},
-            </if>
-            <if test="sorting != null">
+            <if test="sorting != null and sorting != '' ">
                 sorting = #{sorting},
             </if>
-            <if test="status != null">
+            <if test="status != null and status != '' ">
                 status = #{status},
             </if>
-            <if test="remark != null">
+            <if test="remark != null and remark != '' ">
                 remark = #{remark},
             </if>
-            <if test="createBy != null">
-                create_by = #{createBy},
-            </if>
-            <if test="updateAt != null">
-                update_at = #{updateAt},
-            </if>
-            <if test="updateBy != null">
+            <if test="updateBy != null and updateBy != '' ">
                 update_by = #{updateBy},
             </if>
-            <if test="level != null">
-                level = #{level},
-            </if>
-            <if test="version != null">
+            <if test="version != null and version != '' ">
                 version = #{version},
             </if>
-            update_at = CURRENT_TIMESTAMP
+            update_at = CURRENT_TIMESTAMP()
         </set>
         WHERE code = #{code}
         AND status != 99
     </update>
+
+    <select id="findByCode" parameterType="String" resultMap="ResultMap">
+        SELECT
+        r.name,r.code,r.sorting,r.status,r.remark,r.create_by,r.update_at,r.update_by,
+        r.create_at,r.version,r.project_code,d.code as deptCode,d.name as deptName
+        FROM el_role r
+        left join el_department_role_mapping dr
+          on r.code = dr.role_code
+        left join el_department d
+          on d.code = dr.dept_code
+        WHERE r.code = #{code}
+        AND r.status != 99
+        and dr.status != 99
+        and d.status != 99
+    </select>
 
     <select id="findByName" parameterType="String" resultMap="ResultMap">
         SELECT
@@ -98,13 +93,28 @@
         AND status != 99
     </select>
 
-    <select id="findByCode" parameterType="String" resultMap="ResultMap">
+    <select id="list" parameterType="com.yankuang.equipment.authority.model.Role" resultMap="ResultMap">
         SELECT
         <include refid="all_cols"/>
         FROM yankuang_equipment.el_role
-        WHERE code = #{code}
+        WHERE
+        1 = 1
+        <if test="name != null">
+            AND name like '%'#{name}'%'
+        </if>
+        <if test="code != null">
+            AND code = #{code}
+        </if>
+        <if test="type != null">
+            AND type = #{type}
+        </if>
+        <if test="level != null">
+            AND level = #{level}
+        </if>
         AND status != 99
+        order by create_at desc
     </select>
+
 
     <select id="findByUserCode" parameterType="String" resultMap="ResultMap">
         select
@@ -121,29 +131,19 @@
         order by r.create_at desc
     </select>
 
-    <select id="list" parameterType="map" resultMap="ResultMap">
+    <select id="findByDeptCode" parameterType="String" resultMap="ResultMap">
         SELECT
-        <include refid="all_cols"/>
-        FROM yankuang_equipment.el_role
-        WHERE
-        1 = 1
-        <if test="name != null">
-            AND name like '%'#{name}'%'
-        </if>
-        <if test="code != null">
-            AND code = #{code}
-        </if>
-        <if test="pcode != null">
-            AND pcode = #{pcode}
-        </if>
-        <if test="type != null">
-            AND type = #{type}
-        </if>
-        <if test="level != null">
-            AND level = #{level}
-        </if>
-        AND status != 99
-        order by create_at desc
+        r.name,r.code,r.sorting,r.status,r.remark,r.create_by,r.update_at,r.update_by,
+        r.create_at,r.version,r.project_code
+        FROM el_role r
+        left join el_department_role_mapping dr
+          on r.code = dr.role_code
+        left join el_department d
+          on d.code = dr.dept_code
+        WHERE d.code = #{code}
+        AND r.status != 99
+        and dr.status != 99
+        and d.status != 99
     </select>
 
 </mapper>

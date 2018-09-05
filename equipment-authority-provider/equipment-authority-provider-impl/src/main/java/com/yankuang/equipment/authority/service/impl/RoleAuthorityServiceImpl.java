@@ -17,20 +17,20 @@ public class RoleAuthorityServiceImpl implements RoleAuthorityService {
     @Autowired
     RoleAuthorityMapper roleAuthorityMapper;
 
-
     public Boolean create(RoleAuthority t) {
         return roleAuthorityMapper.create(t);
-    }
-
-    public List<RoleAuthority> findByRoleCode(String code) {
-        return roleAuthorityMapper.findByRoleCode(code);
     }
 
     public RoleAuthority findByRoleAndAuthorityCodes(Map map) {
         return roleAuthorityMapper.findByRoleAndAuthorityCodes(map);
     }
 
-    public boolean delete(List<String> codes) {
-        return roleAuthorityMapper.delete(codes);
+    public boolean deleteByAuthorityCodes(List<String> codes) {
+        return roleAuthorityMapper.deleteByAuthorityCodes(codes);
     }
+
+    public boolean deleteByRoleCodes(List<String> codes) {
+        return roleAuthorityMapper.deleteByRoleCodes(codes);
+    }
+
 }

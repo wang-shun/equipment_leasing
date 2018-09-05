@@ -5,7 +5,7 @@ import lombok.Data;
 
 import javax.persistence.Table;
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 @Table(name = "el_role")
 @Data
@@ -15,11 +15,7 @@ public class Role implements Serializable {
 
     private String code;
 
-    private String pcode;
-
     private String name;
-
-    private Long type;
 
     private Long sorting;
 
@@ -34,8 +30,6 @@ public class Role implements Serializable {
 
     private String updateBy;
 
-    private Long level;
-
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createAt;
 
@@ -43,5 +37,11 @@ public class Role implements Serializable {
 
     private String projectCode;
 
+    private String deptCode;
+
+    private String deptName;
+
+    /**入参使用属性 更新role时 新的部门code ，xml不对应*/
+    private String deptCodeNew;
 
 }
