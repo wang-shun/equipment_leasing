@@ -428,7 +428,7 @@ public class ElUseController {
      * @param jsonString
      * @return
      */
-    @PutMapping("/failStatus")
+    @PutMapping("/failStatusTz")
     @Transactional
     CommonResponse failStatusTz(@RequestBody String jsonString){
         if (StringUtils.isEmpty(jsonString)){
