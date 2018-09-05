@@ -39,6 +39,9 @@ public class ElUseController {
     @RpcConsumer
     SbElFeeService sbElFeeService;
 
+    @RpcConsumer
+    SbEquipmentZService sbEquipmentZService;
+
     /**
      * @method 领用申请添加功能
      * @param jsonString
@@ -206,13 +209,31 @@ public class ElUseController {
         if (itemId == null){
             return CommonResponse.errorMsg("id不能为空");
         }
-        ElUseItem elUseItem = elUseItemService.findById(itemId);
-        if (elUseItem == null){
-            return CommonResponse.errorMsg("该记录不存在");
+        ElUse elUse = elUseService.select(itemId);
+        List<ElUseItem> elUseItems = elUseItemService.findByUseId(itemId);
+        //循环获取设备对象
+        if ("1".equals(elUse.getUseEquipmentType())) {
+            for (ElUseItem elUseItem : elUseItems) {
+                SbEquipmentT sbEquipmentT = sbEquipmentTService.findById(elUseItem.getEquipmentId());
+                if (sbEquipmentT == null) {
+                    continue;
+                }
+                elUseItem.setSbEquipmentT(sbEquipmentT);
+            }
         }
-        SbEquipmentT sbEquipmentT = sbEquipmentTService.findById(elUseItem.getEquipmentId());
-        elUseItem.setSbEquipmentT(sbEquipmentT);
-        return CommonResponse.ok(elUseItem);
+        if ("2".equals(elUse.getUseEquipmentType())){
+            for (ElUseItem elUseItem : elUseItems) {
+                SbEquipmentZ sbEquipmentZ = sbEquipmentZService.findById(elUseItem.getEquipmentId());
+                if (sbEquipmentZ == null) {
+                    continue;
+                }
+                elUseItem.setSbEquipmentZ(sbEquipmentZ);
+            }
+        }
+        if (elUseItems != null || elUseItems.size() > 0){
+            elUse.setElUseItems(elUseItems);
+        }
+        return CommonResponse.ok(elUse);
     }
 
     /**
