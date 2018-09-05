@@ -277,6 +277,10 @@ public class ElUseController {
         if (elUse.getId() == null){
             return CommonResponse.errorMsg("id不能为空");
         }
+        ElUse chooseElUse = elUseService.select(elUse.getId());
+        if (chooseElUse.getStatus() != "2"){
+            return CommonResponse.errorMsg("该数据未处于审核状态");
+        }
         elUse.setApproveBy(1L);//TODO 待redis开发完，先写死
         elUse.setApproveAt(new Date());
         elUse.setUpdateAt(new Date());
@@ -314,6 +318,10 @@ public class ElUseController {
 
         if (elUse.getId() == null){
             return CommonResponse.errorMsg("id不能为空");
+        }
+        ElUse chooseElUse = elUseService.select(elUse.getId());
+        if (chooseElUse.getStatus() != "2"){
+            return CommonResponse.errorMsg("该数据未处于审核状态");
         }
         elUse.setApproveBy(1L);//TODO 待redis开发完，先写死
         elUse.setApproveAt(new Date());
@@ -399,6 +407,10 @@ public class ElUseController {
 
         if (elUse.getId() == null){
             return CommonResponse.errorMsg("id不能为空");
+        }
+        ElUse chooseElUse = elUseService.select(elUse.getId());
+        if (chooseElUse.getStatus() != "2"){
+            return CommonResponse.errorMsg("该数据未处于审核状态");
         }
         elUse.setApproveBy(1L);//TODO 待redis开发完，先写死
         elUse.setApproveAt(new Date());
