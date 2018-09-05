@@ -5,7 +5,6 @@ import com.github.pagehelper.PageInfo;
 import com.yankuang.equipment.authority.model.Role;
 
 import java.util.List;
-import java.util.Map;
 
 public interface RoleService {
 
@@ -19,10 +18,12 @@ public interface RoleService {
 
     Role findByName(String name);
 
-    List<Role> findByUserCode(String code);
+    PageInfo<Role> list(Integer page, Integer size, Role role);
 
     List<Role> findAll();
 
-    PageInfo<Role> list(Integer page, Integer size, Map role);
+    List<Role> findByUserCode(String code);
+
+    List<Role> findByDeptCode(String code);
 
 }

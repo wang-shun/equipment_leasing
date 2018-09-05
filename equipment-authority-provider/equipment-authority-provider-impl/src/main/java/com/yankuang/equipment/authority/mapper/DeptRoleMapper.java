@@ -13,12 +13,10 @@ public interface DeptRoleMapper {
 
     DeptRole findByDeptCodeAndRoleCode(Map map);
 
-    Boolean deleteByDeptCode(String code);
+    Boolean deleteByDeptCodeAndRoleCode(Map map);
 
-    Boolean deleteByRoleCode(String code);
+    boolean deleteByRoleCodes(List<String> codes);
 
-    List<DeptRole> findByRoleCode(String code);
-
-    List<DeptRole> findByDeptCode(String code);
+    boolean deleteByDeptCodes(List<String> codes);
 
 }

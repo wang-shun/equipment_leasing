@@ -17,25 +17,30 @@
     insert into el_role_authority_mapping
       (role_code, authority_code, project_code, status)
     values
-      (#{roleId}, #{authorityId}, "sb001", 1)
+      (#{roleCode}, #{authorityCode}, "sb001", 1)
   </insert>
 
-  <update id="delete" parameterType="java.util.List">
+  <update id="deleteByAuthorityCodes" parameterType="java.util.List">
     UPDATE el_role_authority_mapping
     <set>
       status = 99
     </set>
-    WHERE code in
+    WHERE authority_code in
     <foreach collection="list" item="code" separator="," open="(" close=")">
       #{code}
     </foreach>
   </update>
 
-  <select id="findByRoleCode" parameterType="String" resultMap="BaseResultMap" >
-    SELECT <include refid="Base_Column_List" />
-    FROM el_role_authority_mapping
-    WHERE role_code = #{roleCode}
-  </select>
+  <update id="deleteByRoleCodes" parameterType="java.util.List">
+    UPDATE el_role_authority_mapping
+    <set>
+      status = 99
+    </set>
+    WHERE role_code in
+    <foreach collection="list" item="code" separator="," open="(" close=")">
+      #{code}
+    </foreach>
+  </update>
 
   <select id="findByRoleAndAuthorityCodes" parameterType="Map" resultMap="BaseResultMap" >
     SELECT <include refid="Base_Column_List" />
