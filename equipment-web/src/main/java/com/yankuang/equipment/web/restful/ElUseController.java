@@ -320,6 +320,9 @@ public class ElUseController {
             return CommonResponse.errorMsg("id不能为空");
         }
         ElUse chooseElUse = elUseService.select(elUse.getId());
+        if (chooseElUse == null){
+            return CommonResponse.errorMsg("没有该数据");
+        }
         if (chooseElUse.getStatus() != "2"){
             return CommonResponse.errorMsg("该数据未处于审核状态");
         }
