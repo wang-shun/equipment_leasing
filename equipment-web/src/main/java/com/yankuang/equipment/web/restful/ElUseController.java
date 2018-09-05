@@ -304,8 +304,7 @@ public class ElUseController {
      * @param jsonString
      * @return
      */
-    @PutMapping("/failStatus")
-    @Transactional
+    @PostMapping("/fail")
     CommonResponse failStatus(@RequestBody String jsonString){
         if (StringUtils.isEmpty(jsonString)){
             return CommonResponse.errorMsg("参数不能为空");
@@ -419,33 +418,6 @@ public class ElUseController {
         }
         if(elUseService.update(elUse)==false){
             return CommonResponse.build(500,"退租明细更新失败",null);
-        }
-        return  CommonResponse.ok();
-    }
-
-    /**
-     * 退租失败
-     * @param jsonString
-     * @return
-     */
-    @PutMapping("/failStatusTz")
-    @Transactional
-    CommonResponse failStatusTz(@RequestBody String jsonString){
-        if (StringUtils.isEmpty(jsonString)){
-            return CommonResponse.errorMsg("参数不能为空");
-        }
-
-        ElUse elUse = JsonUtils.jsonToPojo(jsonString,ElUse.class);
-
-        if (elUse.getId() == null){
-            return CommonResponse.errorMsg("id不能为空");
-        }
-        elUse.setApproveBy(1L);//TODO 待redis开发完，先写死
-        elUse.setApproveAt(new Date());
-        elUse.setUpdateAt(new Date());
-        elUse.setStatus("3");
-        if(elUseService.update(elUse)==false){
-            return CommonResponse.build(500,"领用明细更新失败",null);
         }
         return  CommonResponse.ok();
     }
