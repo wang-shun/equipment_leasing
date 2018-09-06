@@ -24,7 +24,7 @@
     </sql>
 
     <insert id="create" parameterType="com.yankuang.equipment.authority.model.Role">
-        INSERT INTO yankuang_equipment.el_role
+        INSERT INTO el_role
           (name,code,sorting,remark,create_by,update_by,project_code,update_at,create_at)
         VALUES
           (#{name},#{code},#{sorting},#{remark},#{createBy},#{updateBy},#{projectCode},CURRENT_TIMESTAMP(),CURRENT_TIMESTAMP())
@@ -32,7 +32,7 @@
 
 
     <update id="delete" parameterType="java.util.List">
-        UPDATE yankuang_equipment.el_role
+        UPDATE el_role
         <set>
             status = 99,
             update_at = CURRENT_TIMESTAMP()
@@ -44,7 +44,7 @@
     </update>
 
     <update id="update" parameterType="com.yankuang.equipment.authority.model.Role">
-        UPDATE yankuang_equipment.el_role
+        UPDATE el_role
         <set>
             <if test="name != null and name != '' ">
                 name = #{name},
@@ -88,7 +88,7 @@
     <select id="findByName" parameterType="String" resultMap="ResultMap">
         SELECT
         <include refid="all_cols"/>
-        FROM yankuang_equipment.el_role
+        FROM el_role
         WHERE name = #{name}
         AND status != 99
     </select>
@@ -96,7 +96,7 @@
     <select id="list" parameterType="com.yankuang.equipment.authority.model.Role" resultMap="ResultMap">
         SELECT
         <include refid="all_cols"/>
-        FROM yankuang_equipment.el_role
+        FROM el_role
         WHERE
         1 = 1
         <if test="name != null and name != ''" >

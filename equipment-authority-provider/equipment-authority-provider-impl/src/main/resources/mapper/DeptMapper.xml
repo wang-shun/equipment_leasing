@@ -26,7 +26,7 @@
     </sql>
 
     <insert id="create" parameterType="com.yankuang.equipment.authority.model.Dept">
-        INSERT INTO yankuang_equipment.el_department
+        INSERT INTO el_department
         <trim prefix="(" suffix=")" suffixOverrides="," >
             type, name, code, pcode, sorting, create_by, update_by,project_code,level,remark
         </trim>
@@ -36,7 +36,7 @@
     </insert>
 
     <update id="delete" parameterType="java.util.List">
-        UPDATE yankuang_equipment.el_department
+        UPDATE el_department
         <set>
             status = 99,
             update_at = CURRENT_TIMESTAMP
@@ -48,7 +48,7 @@
     </update>
 
     <update id="update" parameterType="com.yankuang.equipment.authority.model.Dept" >
-        update yankuang_equipment.el_department
+        update el_department
         <set >
             <if test="name != null and name != '' " >
                 name = #{name},
@@ -91,7 +91,7 @@
 
     <select id="findByName" parameterType="String" resultMap="BaseResultMap" >
         SELECT <include refid="Base_Column_List" />
-        FROM yankuang_equipment.el_department
+        FROM el_department
         WHERE name = #{name}
         AND status != 99
     </select>

@@ -39,7 +39,7 @@
     </insert>
 
     <update id="delete" parameterType="java.util.List">
-        UPDATE yankuang_equipment.el_authority
+        UPDATE el_authority
         <set>
             status = 99,
             update_at = CURRENT_TIMESTAMP
@@ -96,7 +96,7 @@
     <select id="findByName" parameterType="String" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM yankuang_equipment.el_authority
+        FROM el_authority
         WHERE name = #{name}
         AND status != 99
     </select>
@@ -125,7 +125,7 @@
     <select id="list" parameterType="map" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM yankuang_equipment.el_authority
+        FROM el_authority
         WHERE
         1 = 1
         <if test="code != null and code != '' ">

@@ -22,14 +22,11 @@
         <result column="code" property="code" jdbcType="VARCHAR" />
         <result column="roleName" property="roleName" jdbcType="VARCHAR" />
         <result column="deptName" property="deptName" jdbcType="VARCHAR" />
+        <result column="project_code" property="projectCode" jdbcType="VARCHAR" />
     </resultMap>
 
-    <sql id="cols_exclude_password">
-        id, <include refid="cols_exclude_id_password" />
-    </sql>
-
-    <sql id="cols_all">
-        password, <include refid="cols_exclude_password" />
+    <sql id="cols_exclude_id">
+        password, <include refid="cols_exclude_id_password" />
     </sql>
 
     <sql id="cols_exclude_id_password">
@@ -44,12 +41,12 @@
         version,
         update_by,
         create_by,
-        account
+        account,
+        project_code
     </sql>
 
     <sql id="vals">
         #{password},
-        #{id},
         #{code},
         #{name},
         #{sex},
@@ -61,7 +58,8 @@
         0,
         #{updateBy},
         #{createBy},
-        #{account}
+        #{account},
+        #{projectCode}
     </sql>
 
     <sql id="criteria">
@@ -70,19 +68,21 @@
         <if test="code != null and code != ''">AND code = #{code}</if>
     </sql>
 
-    <insert id="create" parameterType="com.yankuang.equipment.authority.model.User"
-            keyProperty="id" useGeneratedKeys="true">
+    <insert id="create" parameterType="com.yankuang.equipment.authority.model.User">
         INSERT INTO el_user
-        (<include refid="cols_all" />)
+        (<include refid="cols_exclude_id" />)
         VALUES
         (<include refid="vals" />)
     </insert>
 
-    <select id="findByCode" parameterType="String" resultMap="UserMap" >
-        SELECT <include refid="cols_all" />
-        FROM el_user
-        WHERE code = #{code}
-    </select>
+    <delete id="delete" parameterType="java.util.List">
+        UPDATE el_user
+        SET status = 99
+        WHERE code in
+        <foreach collection="list" item="code" separator="," open="(" close=")">
+            #{code}
+        </foreach>
+    </delete>
 
     <update id="update" parameterType="com.yankuang.equipment.authority.model.User">
         UPDATE el_user
@@ -97,19 +97,40 @@
             <if test="sorting != null and sorting != ''">sorting = #{sorting},</if>
             <if test="version != null and version != ''">version = #{version},</if>
             <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
-            update_at = CURRENT_TIMESTAMP
+            update_at = CURRENT_TIMESTAMP()
         </set>
         WHERE code = #{code}
     </update>
 
-    <delete id="delete" parameterType="java.util.List">
+    <update id="stop" parameterType="String">
         UPDATE el_user
-        SET status = 99
-        WHERE code in
-        <foreach collection="list" item="code" separator="," open="(" close=")">
-            #{code}
-        </foreach>
-    </delete>
+        SET status = 2
+        WHERE code = #{code}
+    </update>
+
+    <update id="start" parameterType="String">
+        UPDATE el_user
+        SET status = 1
+        WHERE code = #{code}
+    </update>
+
+    <select id="findByCode" parameterType="String" resultMap="UserMap" >
+        SELECT <include refid="cols_exclude_id_password" />
+        FROM el_user
+        WHERE code = #{code}
+    </select>
+
+    <select id="findByName" parameterType="String" resultMap="UserMap">
+        select <include refid="cols_exclude_id"/>
+        from  el_user
+        where name = #{name}
+    </select>
+
+    <select id="findByAccount" parameterType="String" resultMap="UserMap">
+        select <include refid="cols_exclude_id"/>
+        from  el_user
+        where account = #{account}
+    </select>
 
     <select id="list" parameterType="map" resultMap="UserMap">
         SELECT
@@ -128,36 +149,14 @@
         on d.code = du.dept_code
         <where>
             1 = 1
-            <if test="id != null and id != ''">AND u.id = #{id}</if>
-            <if test="name != null and name != ''">AND u.name = #{name}</if>
-            <if test="code != null and code != ''">AND u.code = #{code}</if>
+            <if test="name != null and name != ''">AND u.name = '%'#{name}'%'</if>
             and u.status != 99
+            and ru.status != 99
+            and r.status != 99
+            and du.status != 99
+            and d.status != 99
         </where>
         ORDER BY u.create_at DESC
     </select>
-
-    <select id="findByName" parameterType="String" resultMap="UserMap">
-        select <include refid="cols_all"/>
-        from  el_user
-        where name = #{name}
-    </select>
-
-    <select id="findByAccount" parameterType="String" resultMap="UserMap">
-        select <include refid="cols_all"/>
-        from  el_user
-        where account = #{account}
-    </select>
-
-    <update id="stop" parameterType="String">
-        UPDATE el_user
-        SET status = 2
-        WHERE code = #{code}
-    </update>
-
-    <update id="start" parameterType="String">
-        UPDATE el_user
-        SET status = 1
-        WHERE code = #{code}
-    </update>
 
 </mapper>
