@@ -25,9 +25,9 @@
 
     <insert id="create" parameterType="com.yankuang.equipment.authority.model.Role">
         INSERT INTO el_role
-          (name,code,sorting,remark,create_by,update_by,project_code,update_at,create_at)
+          (name,code,sorting,remark,create_by,update_by,project_code)
         VALUES
-          (#{name},#{code},#{sorting},#{remark},#{createBy},#{updateBy},#{projectCode},CURRENT_TIMESTAMP(),CURRENT_TIMESTAMP())
+          (#{name},#{code},#{sorting},#{remark},#{createBy},#{updateBy},#{projectCode})
     </insert>
 
 
@@ -95,15 +95,22 @@
 
     <select id="list" parameterType="com.yankuang.equipment.authority.model.Role" resultMap="ResultMap">
         SELECT
-        <include refid="all_cols"/>
-        FROM el_role
+        r.name,r.code,r.sorting,r.status,r.remark,r.create_by,r.update_at,r.update_by,
+        r.create_at,r.version,r.project_code,d.code as deptCode,d.name as deptName
+        FROM el_role r
+        left join el_department_role_mapping dr
+        on r.code = dr.role_code
+        left join el_department d
+        on d.code = dr.dept_code
         WHERE
         1 = 1
+        AND r.status != 99
+        and dr.status != 99
+        and d.status != 99
         <if test="name != null and name != ''" >
-            AND name like '%'#{name}'%'
+            AND r.name like '%'#{name}'%'
         </if>
-        AND status != 99
-        order by create_at desc
+        order by r.create_at desc
     </select>
 
 
