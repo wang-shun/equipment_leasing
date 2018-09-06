@@ -7,6 +7,7 @@ import com.yankuang.equipment.common.util.StringUtils;
 import com.yankuang.equipment.equipment.model.*;
 import com.yankuang.equipment.equipment.service.*;
 import com.yankuang.equipment.web.dto.CodesDTO;
+import com.yankuang.equipment.web.util.DateConverterConfig;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -59,7 +60,11 @@ public class ElUseController {
         if (elUse == null || elUse.getElUseItems() == null || elUse.getElUseItems().size() <= 0) {
             return CommonResponse.errorMsg("设备列表不得为空");
         }
-
+        if (!StringUtils.isEmpty(elUse.getDateTime())){
+            DateConverterConfig dateConverterConfig = new DateConverterConfig();
+            Date date = dateConverterConfig.convert(elUse.getDateTime());
+            elUse.setUseAt(date);
+        }
         List<ElUseItem> list = elUse.getElUseItems();
         for (ElUseItem item : list) {
             Long equipmentId = item.getEquipmentId();
@@ -371,6 +376,14 @@ public class ElUseController {
 
         ElUse elUse = JsonUtils.jsonToPojo(jsonString,ElUse.class);
 
+        if (elUse == null || elUse.getElUseItems() == null || elUse.getElUseItems().size() <= 0) {
+            return CommonResponse.errorMsg("设备列表不得为空");
+        }
+        if (!StringUtils.isEmpty(elUse.getDateTime())){
+            DateConverterConfig dateConverterConfig = new DateConverterConfig();
+            Date date = dateConverterConfig.convert(elUse.getDateTime());
+            elUse.setUseAt(date);
+        }
         if (elUseService.createTz(elUse) == false){
             return CommonResponse.build(500,"创建失败",null);
         }
