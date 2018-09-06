@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RpcProvider
@@ -39,9 +40,9 @@ public class RoleServiceImpl implements RoleService {
         return roleMapper.findByName(name);
     }
 
-    public PageInfo<Role> list(Integer page, Integer size, Role role) {
+    public PageInfo<Role> list(Integer page, Integer size, Map map) {
         PageHelper.startPage(page, size);
-        List<Role> roles = roleMapper.list(role);
+        List<Role> roles = roleMapper.list(map);
         PageInfo<Role> pageInfo = new PageInfo<Role>(roles);
         return pageInfo;
     }

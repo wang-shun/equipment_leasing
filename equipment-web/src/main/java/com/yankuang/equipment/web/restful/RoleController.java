@@ -188,10 +188,10 @@ public class RoleController {
     @GetMapping
     public CommonResponse findByPage(@RequestParam(value = "page", defaultValue = "1") Integer page,
                           @RequestParam(value = "size", defaultValue = "20") Integer size,
-                          @RequestParam(value = "name", defaultValue = "") String name) {
-        Role role = new Role();
-        role.setName(name);
-        return CommonResponse.ok(roleService.list(page, size, role));
+                          @RequestParam String name) {
+        Map map = new HashMap();
+        map.put("name", name);
+        return CommonResponse.ok(roleService.list(page, size, map));
     }
 
     /**

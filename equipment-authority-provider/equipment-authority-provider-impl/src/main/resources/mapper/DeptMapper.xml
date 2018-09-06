@@ -96,14 +96,14 @@
         AND status != 99
     </select>
 
-    <select id="list" parameterType="map" resultMap="BaseResultMap" >
+    <select id="list" parameterType="java.util.HashMap" resultMap="BaseResultMap" >
         select
         <include refid="Base_Column_List"/>
         from el_department
-        WHERE
+        <where>
         1 = 1
         <if test="name != null and name != '' " >
-            AND name like '%'#{name}'%'
+            AND name like '%${name}%'
         </if>
         <if test="code != null and code != '' " >
             AND code = #{code}
@@ -114,7 +114,8 @@
         <if test="level != null and level != '' " >
             AND level = #{level}
         </if>
-        AND status != 99
+            AND status != 99
+        </where>
         order by create_at desc
     </select>
 

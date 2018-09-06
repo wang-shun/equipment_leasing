@@ -180,7 +180,7 @@ public class AuthorityController {
     @GetMapping
     public CommonResponse findByPage(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                      @RequestParam(value = "size", defaultValue = "20") Integer size,
-                                     @RequestParam(value = "name", defaultValue = "") String name) {
+                                     @RequestParam String name) {
         Map map = new HashMap();
         map.put("name", name);
         PageInfo<Authority> authorityPageInfo = authorityService.findByPage(page, size, map);

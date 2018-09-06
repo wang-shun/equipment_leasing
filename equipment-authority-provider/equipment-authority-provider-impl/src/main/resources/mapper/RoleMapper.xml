@@ -93,7 +93,7 @@
         AND status != 99
     </select>
 
-    <select id="list" parameterType="com.yankuang.equipment.authority.model.Role" resultMap="ResultMap">
+    <select id="list" parameterType="java.util.HashMap" resultMap="ResultMap">
         SELECT
         r.name,r.code,r.sorting,r.status,r.remark,r.create_by,r.update_at,r.update_by,
         r.create_at,r.version,r.project_code,d.code as deptCode,d.name as deptName
@@ -102,14 +102,15 @@
         on r.code = dr.role_code
         left join el_department d
         on d.code = dr.dept_code
-        WHERE
-        1 = 1
-        AND r.status != 99
-        and dr.status != 99
-        and d.status != 99
-        <if test="name != null and name != ''" >
-            AND r.name like '%'#{name}'%'
-        </if>
+        <where>
+            1 = 1
+            <if test="name != null and name != ''">
+                AND r.name like '%${name}%'
+            </if>
+            AND r.status != 99
+            and dr.status != 99
+            and d.status != 99
+        </where>
         order by r.create_at desc
     </select>
 

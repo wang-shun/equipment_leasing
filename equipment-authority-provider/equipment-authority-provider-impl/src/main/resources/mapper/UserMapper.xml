@@ -132,7 +132,7 @@
         where account = #{account}
     </select>
 
-    <select id="list" parameterType="map" resultMap="UserMap">
+    <select id="list" parameterType="java.util.HashMap" resultMap="UserMap">
         SELECT
         u.id,u.code,u.account,u.name,u.sex,u.telephone,u.mail,u.status,u.remark,u.version,u.sorting,
         u.update_by,u.update_at,
@@ -149,7 +149,9 @@
         on d.code = du.dept_code
         <where>
             1 = 1
-            <if test="name != null and name != ''">AND u.name = '%'#{name}'%'</if>
+            <if test="name != null and name != ''">
+                AND u.name like '%${name}%'
+            </if>
             and u.status != 99
             and ru.status != 99
             and r.status != 99
