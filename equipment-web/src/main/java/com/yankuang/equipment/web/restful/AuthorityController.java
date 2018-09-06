@@ -94,13 +94,8 @@ public class AuthorityController {
         }
         CodesDTO codesDTO = JsonUtils.jsonToPojo(jsonString, CodesDTO.class);
         List<String> codes = codesDTO.getCodes();
-        // 删除权限角色关联
-        Boolean b = roleAuthorityService.deleteByAuthorityCodes(codes);
-        if (!b) {
-            return CommonResponse.errorMsg("删除权限角色关联失败");
-        }
         // 删除角色
-        b = authorityService.delete(codes);
+        Boolean b  = authorityService.delete(codes);
         if (!b) {
             return CommonResponse.errorMsg("删除角色失败");
         }
