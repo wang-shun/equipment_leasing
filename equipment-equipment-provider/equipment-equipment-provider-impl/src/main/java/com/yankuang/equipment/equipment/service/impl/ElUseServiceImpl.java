@@ -2,6 +2,7 @@ package com.yankuang.equipment.equipment.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yankuang.equipment.common.util.StringUtils;
 import com.yankuang.equipment.common.util.UuidUtils;
 import com.yankuang.equipment.equipment.mapper.ElPlanItemMapper;
 import com.yankuang.equipment.equipment.mapper.ElUseItemMapper;
@@ -30,7 +31,7 @@ public class ElUseServiceImpl implements ElUseService{
     ElPlanItemMapper elPlanItemMapper;
 
     public Boolean create(ElUse elUse){
-        if (elUse.getUseBy() == null){
+        if (elUse.getUseBy() == null || " ".equals(elUse.getUseBy())){
             return false;
         }
         if (elUse.getUsePosition() == null || " ".equals(elUse.getUsePosition())){
@@ -43,15 +44,16 @@ public class ElUseServiceImpl implements ElUseService{
         elUse.setSorting(sorting);
         String status = (elUse.getStatus() == null || " ".equals(elUse.getStatus()))?"1":elUse.getStatus();
         elUse.setStatus(status);
-        elUse.setUseAt(new Date());
+        Date date = elUse.getUseAt() == null?new Date():elUse.getUseAt();
+        elUse.setUseAt(date);
         elUse.setCreateAt(new Date());
         elUse.setUpdateAt(new Date());
         String useEquipmentType = (elUse.getUseEquipmentType() == null || " ".equals(elUse.getUseEquipmentType()))?"1":elUse.getUseEquipmentType();
         elUse.setUseEquipmentType(useEquipmentType);
-        elUse.setCreateBy(1L);//TODO 这个从redis中获取，暂未完成先写死
+        elUse.setCreateBy("001001");//TODO 这个从redis中获取，暂未完成先写死
         String version = (elUse.getVersion() == null || " ".equals(elUse.getVersion()))?"1":elUse.getVersion();
         elUse.setVersion(version);
-        elUse.setUpdateBy(1L);
+        elUse.setUpdateBy("001001");
         elUse.setIsUse((byte)1);
         int num = Integer.parseInt(elUseMapper.create(elUse)+"");
         List<ElUseItem> elUseItems = elUse.getElUseItems();
@@ -119,7 +121,7 @@ public class ElUseServiceImpl implements ElUseService{
     }
 
     public Boolean createTz(ElUse elUse){
-        if (elUse.getUseBy() == null){
+        if (elUse.getUseBy() == null || " ".equals(elUse.getUseBy())){
             return false;
         }
         if (elUse.getUsePosition() == null || " ".equals(elUse.getUsePosition())){
@@ -132,15 +134,16 @@ public class ElUseServiceImpl implements ElUseService{
         elUse.setSorting(sorting);
         String status = (elUse.getStatus() == null || " ".equals(elUse.getStatus()))?"1":elUse.getStatus();
         elUse.setStatus(status);
-        elUse.setUseAt(new Date());
+        Date date = elUse.getUseAt() == null?new Date():elUse.getUseAt();
+        elUse.setUseAt(date);
         elUse.setCreateAt(new Date());
         elUse.setUpdateAt(new Date());
         String useEquipmentType = (elUse.getUseEquipmentType() == null || " ".equals(elUse.getUseEquipmentType()))?"1":elUse.getUseEquipmentType();
         elUse.setUseEquipmentType(useEquipmentType);
-        elUse.setCreateBy(1L);//TODO 这个从redis中获取，暂未完成先写死
+        elUse.setCreateBy("001001");//TODO 这个从redis中获取，暂未完成先写死
         String version = (elUse.getVersion() == null || " ".equals(elUse.getVersion()))?"1":elUse.getVersion();
         elUse.setVersion(version);
-        elUse.setUpdateBy(1L);
+        elUse.setUpdateBy("001001");
         elUse.setIsUse((byte)2);
         int num = Integer.parseInt(elUseMapper.create(elUse)+"");
         List<ElUseItem> elUseItems = elUse.getElUseItems();

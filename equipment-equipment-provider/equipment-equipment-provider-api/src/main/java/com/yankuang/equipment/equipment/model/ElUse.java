@@ -25,7 +25,7 @@ public class ElUse implements Serializable{
 
     private String status;
 
-    private Long useBy;
+    private String useBy;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date useAt;
@@ -41,12 +41,12 @@ public class ElUse implements Serializable{
 
     private String approveOpinion;
 
-    private Long createBy;
+    private String createBy;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createAt;
 
-    private Long updateBy;
+    private String updateBy;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date updateAt;
@@ -67,11 +67,13 @@ public class ElUse implements Serializable{
 
     private String name;
 
-//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private String startTime;
 
-//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private String endTime;
+
+    private String userName;
+
+    private String dateTime;
 
     public Long getId() {
         return id;
