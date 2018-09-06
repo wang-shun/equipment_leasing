@@ -42,6 +42,8 @@ public class ElUseItem implements Serializable{
 
     private SbEquipmentT sbEquipmentT;
 
+    private SbEquipmentZ sbEquipmentZ;
+
     private String sbName;
 
     private String name;

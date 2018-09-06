@@ -31,16 +31,11 @@ public class DeptController {
 
     /**
      * 添加部门.
-     * @param jsonString
+     * @param dept
      * @return
      */
     @PostMapping
-    public CommonResponse create(@RequestBody String jsonString) {
-
-        if (StringUtils.isEmpty(jsonString)) {
-            return CommonResponse.errorMsg("参数不能为空");
-        }
-        Dept dept = JsonUtils.jsonToPojo(jsonString, Dept.class);
+    public CommonResponse create(@RequestBody Dept dept) {
         String name = dept.getName();
         if (StringUtils.isEmpty(name)) {
             return CommonResponse.errorMsg("部门name不能为空");

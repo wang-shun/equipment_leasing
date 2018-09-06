@@ -29,39 +29,33 @@
         AND status != 99
     </select>
 
-    <select id="findByDeptCode" parameterType="Long" resultMap="BaseResultMap">
-        SELECT
-        <include refid="Base_Column_List"/>
-        FROM el_department_role_mapping
-        WHERE department_code = #{deptCode}
-        AND status != 99
-    </select>
-
-    <select id="findByRoleCode" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select
-        <include refid="Base_Column_List"/>
-        from el_department_role_mapping
-        where role_code = #{roleCode}
-        AND status != 99
-    </select>
-
-
-    <delete id="deleteByDeptCode" parameterType="java.lang.String">
+    <delete id="deleteByDeptCodeAndRoleCode" parameterType="Map">
         update el_department_role_mapping
-        set status == 99
+        set status = 99
+        WHERE  dept_code = #{deptCode}
+        and role_Code = #{roleCode}
+    </delete>
+
+    <update id="deleteByRoleCodes" parameterType="java.util.List">
+        UPDATE el_department_role_mapping
+        <set>
+            status = 99
+        </set>
+        WHERE role_Code in
+        <foreach collection="list" item="code" separator="," open="(" close=")">
+            #{code}
+        </foreach>
+    </update>
+
+    <update id="deleteByDeptCodes" parameterType="java.util.List">
+        UPDATE el_department_role_mapping
+        <set>
+            status = 99
+        </set>
         WHERE dept_code in
         <foreach collection="list" item="code" separator="," open="(" close=")">
             #{code}
         </foreach>
-    </delete>
-
-    <delete id="deleteByRoleCode" parameterType="java.lang.String">
-        update el_department_role_mapping
-        set status == 99
-        WHERE role_code in
-        <foreach collection="list" item="code" separator="," open="(" close=")">
-            #{code}
-        </foreach>
-    </delete>
+    </update>
 
 </mapper>

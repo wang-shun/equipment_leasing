@@ -26,29 +26,17 @@
     </sql>
 
     <insert id="create" parameterType="com.yankuang.equipment.authority.model.Dept">
-        INSERT INTO yankuang_equipment.el_department
+        INSERT INTO el_department
         <trim prefix="(" suffix=")" suffixOverrides="," >
-            type, name, code, pcode, sorting, create_by, update_by,project_code
-            <if test="level != null  and level != '' " >
-                ,level,
-            </if>
-            <if test="remark != null and remark != '' " >
-                remark,
-            </if>
+            type, name, code, pcode, sorting, create_by, update_by,project_code,level,remark
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
-            #{type}, #{name},#{code},#{pcode},#{sorting},#{createBy},#{updateBy},#{projectCode}
-            <if test="level != null and level != '' " >
-                ,#{level},
-            </if>
-            <if test="remark != null and remark != '' " >
-                #{remark},
-            </if>
+            #{type}, #{name},#{code},#{pcode},#{sorting},#{createBy},#{updateBy},#{projectCode},#{level},#{remark}
         </trim>
     </insert>
 
     <update id="delete" parameterType="java.util.List">
-        UPDATE yankuang_equipment.el_department
+        UPDATE el_department
         <set>
             status = 99,
             update_at = CURRENT_TIMESTAMP
@@ -60,7 +48,7 @@
     </update>
 
     <update id="update" parameterType="com.yankuang.equipment.authority.model.Dept" >
-        update yankuang_equipment.el_department
+        update el_department
         <set >
             <if test="name != null and name != '' " >
                 name = #{name},
@@ -83,6 +71,9 @@
             <if test="version != null and version != '' " >
                 version = #{version},
             </if>
+            <if test="type != null and type != '' " >
+                type = #{type},
+            </if>
             update_at = CURRENT_TIMESTAMP
         </set>
         where code = #{code}
@@ -90,7 +81,7 @@
 
     <select id="findByCode" parameterType="String" resultMap="BaseResultMap" >
         SELECT
-         d1.name,d2.name as pname, d1.code, d1.pcode, d1.level, d1.sorting, d1.remark, d1.create_by, d1.update_by, d1.version, d1.status, d1.project_code
+         d1.name,d2.name as pname, d1.code, d1.pcode, d1.level, d1.sorting, d1.remark, d1.create_by, d1.update_by, d1.version, d1.status, d1.project_code,d1.type
         FROM el_department d1
         left join el_department d2
         on d1.pcode = d2.code
@@ -100,7 +91,7 @@
 
     <select id="findByName" parameterType="String" resultMap="BaseResultMap" >
         SELECT <include refid="Base_Column_List" />
-        FROM yankuang_equipment.el_department
+        FROM el_department
         WHERE name = #{name}
         AND status != 99
     </select>

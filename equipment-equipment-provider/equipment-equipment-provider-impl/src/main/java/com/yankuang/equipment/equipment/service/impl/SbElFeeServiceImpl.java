@@ -143,21 +143,21 @@ public class SbElFeeServiceImpl implements SbElFeeService {
 
         if(DateUtils.getDaysInTwoDate(sbEquipmentT.getUseDate(),elUseItem.getUseAt()) < 12*30){
             //新购设备
-            if("0001".equals(sbEquipmentT.getStateCode())){
+            if(sbEquipmentT.getIsNew() == 1){
                 dayElFeeA3 = 1*(1+0.3);
             }
             //再制造设备
-            if("0002".equals(sbEquipmentT.getStateCode())){
+            if(sbEquipmentT.getIsNew() == 0){
                 dayElFeeA3 = 1*(1+0.15);
             }
         }
         if(DateUtils.getDaysInTwoDate(sbEquipmentT.getUseDate(),elUseItem.getUseAt()) > (sbEquipmentT.getCostYears()-1)*365){
             //新购设备
-            if("0001".equals(sbEquipmentT.getStateCode())){
+            if(sbEquipmentT.getIsNew() == 1){
                 dayElFeeA3 = 1*(1-0.3);
             }
             //再制造设备
-            if("0002".equals(sbEquipmentT.getStateCode())){
+            if(sbEquipmentT.getIsNew() == 0){
                 dayElFeeA3 = 1*(1-0.15);
             }
         }
@@ -180,21 +180,21 @@ public class SbElFeeServiceImpl implements SbElFeeService {
 
         if(DateUtils.getDaysInTwoDate(sbEquipmentZ.getUseDate(),elUseItem.getUseAt()) < 12*30){
             //新购设备
-            if("0001".equals(sbEquipmentZ.getStateCode())){
+            if(sbEquipmentZ.getIsNew() == 1){
                 dayElFeeA3 = 1*(1+0.3);
             }
             //再制造设备
-            if("0002".equals(sbEquipmentZ.getStateCode())){
+            if(sbEquipmentZ.getIsNew() == 0){
                 dayElFeeA3 = 1*(1+0.15);
             }
         }
         if(DateUtils.getDaysInTwoDate(sbEquipmentZ.getUseDate(),elUseItem.getUseAt()) > (sbEquipmentZ.getCostYears()-1)*365){
             //新购设备
-            if("0001".equals(sbEquipmentZ.getStateCode())){
+            if(sbEquipmentZ.getIsNew() == 1){
                 dayElFeeA3 = 1*(1-0.3);
             }
             //再制造设备
-            if("0002".equals(sbEquipmentZ.getStateCode())){
+            if(sbEquipmentZ.getIsNew() == 0){
                 dayElFeeA3 = 1*(1-0.15);
             }
         }

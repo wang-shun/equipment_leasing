@@ -4,7 +4,8 @@ spring:
     name: eq-syslog-pro
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://${MYSQL_HOST:47.94.211.172}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:yankuang_equipment}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=CTT&useSSL=false
+#    url: jdbc:mysql://${MYSQL_HOST:47.94.211.172}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:yankuang_equipment}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=CTT&useSSL=false
+    url: jdbc:mysql://${MYSQL_HOST:47.94.211.172}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:yankuang_equipment_test}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=CTT&useSSL=false
     username: ${MYSQL_USERNAME:root}
     password: ${MYSQL_PASSWORD:uAiqwVwjJ8-i}
 rpc:

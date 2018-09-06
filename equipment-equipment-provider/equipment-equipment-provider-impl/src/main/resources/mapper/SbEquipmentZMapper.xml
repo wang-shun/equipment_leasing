@@ -214,7 +214,22 @@
       <if test="mainPara != null and mainPara != ''" >
         AND t.main_para = #{mainPara}
       </if>
+      <if test="isLease != null and isLease != ''" >
+        AND t.is_lease = #{isLease}
+      </if>
+      <if test="comp != null and comp != ''" >
+        AND t.comp = #{comp}
+      </if>
+      <if test="stateCode != null and stateCode != ''" >
+        AND t.state_code = #{stateCode}
+      </if>
     </where>
     order by t.create_at desc
   </select>
+
+  <update id="updateStateCodeByMonth">
+    update sb_equipment_z
+    set state_code = '0001'
+    where state_code = '0002' and status = 1 and is_lease = 1
+  </update>
 </mapper>

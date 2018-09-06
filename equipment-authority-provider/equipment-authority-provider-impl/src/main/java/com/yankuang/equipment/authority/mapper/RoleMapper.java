@@ -4,7 +4,6 @@ import com.yankuang.equipment.authority.model.Role;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 
 @Repository
@@ -20,8 +19,10 @@ public interface RoleMapper {
 
     Role findByName(String name);
 
+    List<Role> list(Role role);
+
     List<Role> findByUserCode(String code);
 
-    List<Role> list(Map role);
+    List<Role> findByDeptCode(String code);
 
 }

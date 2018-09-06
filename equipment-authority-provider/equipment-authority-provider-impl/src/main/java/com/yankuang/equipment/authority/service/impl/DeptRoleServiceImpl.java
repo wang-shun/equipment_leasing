@@ -29,20 +29,17 @@ public class DeptRoleServiceImpl implements DeptRoleService {
         return deptRoleMapper.findByDeptCodeAndRoleCode(map);
     }
 
-    public Boolean deleteByDeptCode(String code) {
-        return deptRoleMapper.deleteByDeptCode(code);
+    public Boolean deleteByDeptCodeAndRoleCode(Map map) {
+        return deptRoleMapper.deleteByDeptCodeAndRoleCode(map);
     }
 
-    public Boolean deleteByRoleCode(String code) {
-        return deptRoleMapper.deleteByRoleCode(code);
+    public boolean deleteByRoleCodes(List<String> codes) {
+        return deptRoleMapper.deleteByRoleCodes(codes);
     }
 
-    public List<DeptRole> findByRoleCode(String code) {
-        return deptRoleMapper.findByRoleCode(code);
+    public boolean deleteByDeptCodes(List<String> codes) {
+        return deptRoleMapper.deleteByDeptCodes(codes);
     }
 
-    public List<DeptRole> findByDeptCode(String code) {
-        return deptRoleMapper.findByDeptCode(code);
-    }
 
 }
