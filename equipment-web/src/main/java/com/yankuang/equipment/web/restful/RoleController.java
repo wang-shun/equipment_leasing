@@ -41,11 +41,7 @@ public class RoleController {
      * @return
      */
     @PostMapping
-    public CommonResponse create(@RequestBody String jsonString){
-        if (jsonString == null || "".equals(jsonString)) {
-            return CommonResponse.errorMsg("参数不能为空");
-        }
-        Role role= JsonUtils.jsonToPojo(jsonString, Role.class);
+    public CommonResponse create(@RequestBody Role role){
         String deptCode = role.getDeptCode();
         if (StringUtils.isEmpty(deptCode)) {
             return CommonResponse.errorMsg("部门deptCode不能为空");
@@ -61,7 +57,7 @@ public class RoleController {
             // 添加,添加关联表
             String roleCode = CodeUtil.getCode();
             role.setCode(roleCode);
-            role.setName(name);
+//            role.setName(name);
             role.setSorting((long) 1);
             role.setCreateBy("admin");
             role.setUpdateBy("admin");
@@ -112,11 +108,6 @@ public class RoleController {
         Boolean b = deptRoleService.deleteByRoleCodes(codes);
         if (!b) {
             return CommonResponse.errorMsg("删除角色部门关联表失败!");
-        }
-        b = roleAuthorityService.deleteByRoleCodes(codes);
-        // 删除角色权限关联表
-        if (!b) {
-            return CommonResponse.errorMsg("删除角色权限关联表失败!");
         }
         // 删除角色
         b = roleService.delete(codes);
@@ -173,8 +164,6 @@ public class RoleController {
         return CommonResponse.build(200, "更新成功", null);
     }
 
-
-
     /**
      * 根据code查询角色.
      * @param code
@@ -206,45 +195,6 @@ public class RoleController {
     }
 
     /**
-     * 角色授权.
-     * 权限ids
-     * 角色id
-     */
-    @PostMapping("/acls")
-    public CommonResponse createRoleAuthority(@RequestBody String jsonString) {
-
-        if (StringUtils.isEmpty(jsonString)) {
-            return CommonResponse.errorMsg("参数jsonString不能为空");
-        }
-        RoleAuthorityDTO roleAuthorityDTO = JsonUtils.jsonToPojo(jsonString, RoleAuthorityDTO.class);
-        String roleCode = roleAuthorityDTO.getRoleCode();
-        if (StringUtils.isEmpty(roleCode)) {
-            return CommonResponse.errorMsg("参数roleCode不能为空");
-        }
-        List<String> authorityCodes = roleAuthorityDTO.getAuthorityCodes();
-        if (StringUtils.isEmpty(authorityCodes)) {
-            return CommonResponse.errorMsg("参数authorityCodes不能为空");
-        }
-        // 遍历ids,根据角色roleId查和权限id查重角色和权限关联表
-        for (String authorityCode : authorityCodes) {
-            Map map = new HashMap();
-            map.put("roleCode", roleCode);
-            map.put("authorityCode", authorityCode);
-            RoleAuthority roleAuthority = roleAuthorityService.findByRoleAndAuthorityCodes(map);
-            if (StringUtils.isEmpty(roleAuthority)) {
-                RoleAuthority roleAuthority1 = new RoleAuthority();
-                roleAuthority1.setAuthorityCode(authorityCode);
-                roleAuthority1.setRoleCode(roleCode);
-                Boolean b = roleAuthorityService.create(roleAuthority1);
-                if (!b) {
-                    return CommonResponse.errorMsg("添加角色权限关联失败");
-                }
-            }
-        }
-        return CommonResponse.build(200, "角色授权成功", null);
-    }
-
-    /**
      * 根据部门code查询部门下所有角色.
      * @param deptCode
      * @return
@@ -254,4 +204,45 @@ public class RoleController {
         List<Role> roles = roleService.findByDeptCode(deptCode);
         return CommonResponse.ok(roles);
     }
+
+//    /**
+//     * 角色授权.
+//     * 权限ids
+//     * 角色id
+//     */
+//    @PostMapping("/acls")
+//    public CommonResponse createRoleAuthority(@RequestBody String jsonString) {
+//
+//        if (StringUtils.isEmpty(jsonString)) {
+//            return CommonResponse.errorMsg("参数jsonString不能为空");
+//        }
+//        RoleAuthorityDTO roleAuthorityDTO = JsonUtils.jsonToPojo(jsonString, RoleAuthorityDTO.class);
+//        String roleCode = roleAuthorityDTO.getRoleCode();
+//        if (StringUtils.isEmpty(roleCode)) {
+//            return CommonResponse.errorMsg("参数roleCode不能为空");
+//        }
+//        List<String> authorityCodes = roleAuthorityDTO.getAuthorityCodes();
+//        if (StringUtils.isEmpty(authorityCodes)) {
+//            return CommonResponse.errorMsg("参数authorityCodes不能为空");
+//        }
+//        // 遍历ids,根据角色roleId查和权限id查重角色和权限关联表
+//        for (String authorityCode : authorityCodes) {
+//            Map map = new HashMap();
+//            map.put("roleCode", roleCode);
+//            map.put("authorityCode", authorityCode);
+//            RoleAuthority roleAuthority = roleAuthorityService.findByRoleAndAuthorityCodes(map);
+//            if (StringUtils.isEmpty(roleAuthority)) {
+//                RoleAuthority roleAuthority1 = new RoleAuthority();
+//                roleAuthority1.setAuthorityCode(authorityCode);
+//                roleAuthority1.setRoleCode(roleCode);
+//                Boolean b = roleAuthorityService.create(roleAuthority1);
+//                if (!b) {
+//                    return CommonResponse.errorMsg("添加角色权限关联失败");
+//                }
+//            }
+//        }
+//        return CommonResponse.build(200, "角色授权成功", null);
+//    }
+
+
 }

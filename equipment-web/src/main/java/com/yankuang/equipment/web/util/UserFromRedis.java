@@ -35,16 +35,16 @@ public class UserFromRedis {
             return null;
         }
         // 解密redis中获取的用户信息
-        final Base64.Decoder decoder = Base64.getDecoder();
-        String decoderResult = null;
-        try {
-            decoderResult = new String(decoder.decode(userRedis), "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        logger.info("----- 解码后内容 : " + decoderResult + "------------");
+//        final Base64.Decoder decoder = Base64.getDecoder();
+//        String decoderResult = null;
+//        try {
+//            decoderResult = new String(decoder.decode(userRedis), "UTF-8");
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
+//        logger.info("----- 解码后内容 : " + decoderResult + "------------");
         // json转对象
-        UserDTO userFromRedis = JsonUtils.jsonToPojo(decoderResult, UserDTO.class);
+        UserDTO userFromRedis = JsonUtils.jsonToPojo(userRedis, UserDTO.class);
 
         return userFromRedis;
     }
