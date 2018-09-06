@@ -31,7 +31,7 @@ public class DeptController {
 
     /**
      * 添加部门.
-     * @param jsonString
+     * @param dept
      * @return
      */
     @PostMapping
