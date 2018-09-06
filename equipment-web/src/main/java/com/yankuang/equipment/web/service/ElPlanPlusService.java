@@ -223,6 +223,9 @@ public class ElPlanPlusService {
         }
     }
 
+    /**
+     * 月底对在租的设备进行解除锁定
+     */
     @Scheduled(cron = "0 59 23 L * ?")
     public void unbind () {
         logger.info(new Date() + " equipment unbind");
