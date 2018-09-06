@@ -352,6 +352,8 @@ public class ElPlanController {
             if (plan == null) {
                 return CommonResponse.errorMsg("该条租赁计划已过期");
             }
+            elPlan.setPlanType(plan.getPlanType());
+            elPlan.setPlanEquipmentType(plan.getPlanEquipmentType());
             if (plan.getElPlanItemList() != null && plan.getElPlanItemList().size() > 0) {
                 elPlan.setElPlanItemList(plan.getElPlanItemList());
             } else {

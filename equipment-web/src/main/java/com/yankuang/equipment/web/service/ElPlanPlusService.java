@@ -8,6 +8,7 @@ import com.yankuang.equipment.equipment.service.*;
 import com.yankuang.equipment.web.dto.ElPlanUseDTO;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.apache.log4j.Logger;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -35,6 +36,11 @@ public class ElPlanPlusService {
     @RpcConsumer
     ElPlanUseService elPlanUseService;
 
+    /**
+     * 审核租赁计划
+     * @param elPlan
+     * @return
+     */
     public CommonResponse approve(ElPlan elPlan) {
         try {
             logger.info("approve elPlan: " + JSON.toJSONString(elPlan));
@@ -42,7 +48,9 @@ public class ElPlanPlusService {
             // 租赁计划审核通过，仓库开始备货
             Boolean resT = true;
             if (Constants.PLANSTATUS_PASSED.equals(elPlan.getPlanStatus())
-                    && !StringUtils.isEmpty(elPlan.getPlanId())) {
+                    && !StringUtils.isEmpty(elPlan.getPlanId())
+                    && !(Constants.PLANEQUIPMENTTYPE_GENERIC.equals(elPlan.getPlanEquipmentType())
+                    && Constants.PLANTYPE_YEAR.equals(elPlan.getPlanType()))) {
                 ElPlan plan = elPlanService.findElPlanById(elPlan.getPlanId());
                 List<ElPlanItem> itemList = plan.getElPlanItemList();
                 if (itemList == null || itemList.size() == 0) {
@@ -56,7 +64,8 @@ public class ElPlanPlusService {
                     // 获取矿分区信息
                     Long positionId = item.getPositionId();
                     if (StringUtils.isEmpty(positionId)) {
-                        return CommonResponse.errorException("备货异常");
+                        //return CommonResponse.errorException("备货异常");
+                        continue;
                     }
                     // 获取设备小类
                     String smallType = item.getSmallTypeCode();
@@ -93,6 +102,7 @@ public class ElPlanPlusService {
                             if (!StringUtils.isEmpty(equipmentName)) {
                                 sbEquipmentT.setName(equipmentName);
                             }
+                            sbEquipmentT.setIsLease((byte)1);
                             List<SbEquipmentT> sbListTI = sbEquipmentTService.list(sbEquipmentT, 1, 1000).getList();
                             if (sbListTI != null && sbListTI.size() > 0) {
                                 sbListT.addAll(sbListTI);
@@ -115,6 +125,8 @@ public class ElPlanPlusService {
                             elPlanUse.setIsDel((byte) 1);
                             elPlanUse.setVersion(0l);
                             elPlanUse.setEquipmentId(sbT.getId());
+                            sbT.setStateCode("0001");
+                            sbEquipmentTService.update(sbT);
                             elPlanUse.setEquipmentType(Constants.PLANEQUIPMENTTYPE_GENERIC);
                             elPlanUse.setStatus("1");
                             elPlanUse.setUpdateAt(new Date());
@@ -154,6 +166,7 @@ public class ElPlanPlusService {
                             if (!StringUtils.isEmpty(equipmentName)) {
                                 sbEquipmentZ.setName(equipmentName);
                             }
+                            sbEquipmentZ.setIsLease((byte)1);
                             List<SbEquipmentZ> sbListZI = sbEquipmentZService.list(sbEquipmentZ, 1, 1000).getList();
                             if (sbListZI != null && sbListZI.size() > 0) {
                                 sbListZ.addAll(sbListZI);
@@ -180,6 +193,8 @@ public class ElPlanPlusService {
                             elPlanUse.setIsDel((byte) 1);
                             elPlanUse.setVersion(0l);
                             elPlanUse.setEquipmentId(sbZ.getId());
+                            sbZ.setStateCode("0001");
+                            sbEquipmentZService.update(sbZ);
                             elPlanUse.setEquipmentType(Constants.PLANEQUIPMENTTYPE_INTEGRATED);
                             elPlanUse.setStatus("1");
                             elPlanUse.setBigTypeCode(sbZ.getSbtypeOne());
@@ -208,6 +223,33 @@ public class ElPlanPlusService {
         }
     }
 
+    @Scheduled(cron = "0 59 23 L * ?")
+    public void unbind () {
+        logger.info(new Date() + " equipment unbind");
+
+        // 通用设备解除绑定
+        SbEquipmentT sbT = new SbEquipmentT();
+        sbT.setIsLease((byte)1);
+        sbT.setStateCode("0001");
+        List<SbEquipmentT> listT = sbEquipmentTService.list(sbT, 1, 100000).getList();
+        for (SbEquipmentT sbTI: listT) {
+            sbTI.setStateCode("0002");
+            sbEquipmentTService.update(sbTI);
+        }
+
+        // 综机设备解除锁定
+        SbEquipmentZ sbZ = new SbEquipmentZ();
+        sbZ.setIsLease((byte)1);
+        sbZ.setStateCode("0001");
+        List<SbEquipmentZ> listZ = sbEquipmentZService.list(sbZ, 1, 100000).getList();
+
+    }
+
+    /**
+     * 查询租赁计划内备用设备
+     * @param elPlanUse
+     * @return
+     */
     public List<ElPlanUseDTO> findElPlanUseList(ElPlanUse elPlanUse) {
 
         // 设置状态为备用
