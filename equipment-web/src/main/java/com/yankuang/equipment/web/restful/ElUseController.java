@@ -198,6 +198,7 @@ public class ElUseController {
             elUseMap.put("usePosition",elUse.getUsePosition());
             elUseMap.put("startTime", elUse.getStartTime());
             elUseMap.put("endTime", elUse.getEndTime());
+            elUseMap.put("useEquipmentType",elUse.getUseEquipmentType());
         }
         return CommonResponse.ok(elUseService.list(page, size, elUseMap));
     }
@@ -435,6 +436,7 @@ public class ElUseController {
             elUseMap.put("usePosition",elUse.getUsePosition());
             elUseMap.put("startTime", elUse.getStartTime());
             elUseMap.put("endTime", elUse.getEndTime());
+            elUseMap.put("useEquipmentType",elUse.getUseEquipmentType());
         }
         return CommonResponse.ok(elUseService.listTz(page, size, elUseMap));
     }
