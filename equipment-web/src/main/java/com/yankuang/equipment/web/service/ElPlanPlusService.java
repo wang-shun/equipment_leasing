@@ -103,6 +103,7 @@ public class ElPlanPlusService {
                                 sbEquipmentT.setName(equipmentName);
                             }
                             sbEquipmentT.setIsLease((byte)1);
+                            sbEquipmentT.setStateCode("0001");
                             List<SbEquipmentT> sbListTI = sbEquipmentTService.list(sbEquipmentT, 1, 1000).getList();
                             if (sbListTI != null && sbListTI.size() > 0) {
                                 sbListT.addAll(sbListTI);
@@ -125,7 +126,7 @@ public class ElPlanPlusService {
                             elPlanUse.setIsDel((byte) 1);
                             elPlanUse.setVersion(0l);
                             elPlanUse.setEquipmentId(sbT.getId());
-                            sbT.setStateCode("0001");
+                            sbT.setStateCode("0002");
                             sbEquipmentTService.update(sbT);
                             elPlanUse.setEquipmentType(Constants.PLANEQUIPMENTTYPE_GENERIC);
                             elPlanUse.setStatus("1");
@@ -167,6 +168,7 @@ public class ElPlanPlusService {
                                 sbEquipmentZ.setName(equipmentName);
                             }
                             sbEquipmentZ.setIsLease((byte)1);
+                            sbEquipmentZ.setStateCode("0001");
                             List<SbEquipmentZ> sbListZI = sbEquipmentZService.list(sbEquipmentZ, 1, 1000).getList();
                             if (sbListZI != null && sbListZI.size() > 0) {
                                 sbListZ.addAll(sbListZI);
@@ -193,7 +195,7 @@ public class ElPlanPlusService {
                             elPlanUse.setIsDel((byte) 1);
                             elPlanUse.setVersion(0l);
                             elPlanUse.setEquipmentId(sbZ.getId());
-                            sbZ.setStateCode("0001");
+                            sbZ.setStateCode("0002");
                             sbEquipmentZService.update(sbZ);
                             elPlanUse.setEquipmentType(Constants.PLANEQUIPMENTTYPE_INTEGRATED);
                             elPlanUse.setStatus("1");
@@ -230,21 +232,15 @@ public class ElPlanPlusService {
     public void unbind () {
         logger.info(new Date() + " equipment unbind");
 
-        // 通用设备解除绑定
-        SbEquipmentT sbT = new SbEquipmentT();
-        sbT.setIsLease((byte)1);
-        sbT.setStateCode("0001");
-        List<SbEquipmentT> listT = sbEquipmentTService.list(sbT, 1, 100000).getList();
-        for (SbEquipmentT sbTI: listT) {
-            sbTI.setStateCode("0002");
-            sbEquipmentTService.update(sbTI);
-        }
+        try {
+            // 通用设备解除绑定
+            elPlanUseService.unbindSbT();
 
-        // 综机设备解除锁定
-        SbEquipmentZ sbZ = new SbEquipmentZ();
-        sbZ.setIsLease((byte)1);
-        sbZ.setStateCode("0001");
-        List<SbEquipmentZ> listZ = sbEquipmentZService.list(sbZ, 1, 100000).getList();
+            // 综机设备解除锁定
+            elPlanUseService.unbindSbZ();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
