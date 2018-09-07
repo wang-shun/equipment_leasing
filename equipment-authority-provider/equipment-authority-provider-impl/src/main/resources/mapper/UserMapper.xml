@@ -88,6 +88,7 @@
     <update id="update" parameterType="com.yankuang.equipment.authority.model.User">
         UPDATE el_user
         <set>
+            <if test="account != null and account != ''">account = #{account},</if>
             <if test="name != null and name != ''">name = #{name},</if>
             <if test="token != null and token != ''">token = #{token},</if>
             <if test="sex != null and sex != ''">sex = #{sex},</if>

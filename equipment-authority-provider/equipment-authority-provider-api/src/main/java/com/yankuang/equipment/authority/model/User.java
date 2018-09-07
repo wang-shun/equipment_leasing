@@ -57,4 +57,6 @@ public class User implements Serializable {
 
     private List<RoleSmall> roles;
 
+    private List<String> roleCodes;
+
 }

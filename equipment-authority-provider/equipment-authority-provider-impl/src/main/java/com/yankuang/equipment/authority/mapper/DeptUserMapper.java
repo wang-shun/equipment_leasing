@@ -11,13 +11,13 @@ public interface DeptUserMapper {
 
     Boolean create(DeptUser deptUser);
 
-    Boolean deleteByUserCode(String code);
+    Boolean deleteByUserCode(List<String> codes);
 
-    Boolean deleteByDeptCode(String code);
+    Boolean deleteByDeptCode(List<String> codes);
 
-    DeptUser findByUserCode(String code);
+    List<DeptUser> findByUserCode(List<String> codes);
 
-    List<DeptUser> findByDeptCode(String code);
+    List<DeptUser> findByDeptCode(List<String> codes);
 
     List<DeptUser> findByDeptCodeAndUserCode(Map map);
 
