@@ -15,9 +15,9 @@
 
   <insert id="create" parameterType="com.yankuang.equipment.authority.model.DeptUser" >
     insert into el_department_user_mapping
-      (dept_code, user_code, project_code, status)
+      (dept_code, user_code, project_code)
     values
-      (#{deptCode}, #{userCode}, "sb001", 1)
+      (#{deptCode}, #{userCode}, "sb001")
   </insert>
 
   <update id="deleteByUserCode" parameterType="List">
@@ -38,17 +38,23 @@
     </foreach>
   </update>
 
-  <select id="findByDeptCode" resultMap="BaseResultMap" parameterType="String">
+  <select id="findByDeptCode" resultMap="BaseResultMap" parameterType="List">
     SELECT <include refid="Base_Column_List"/>
     FROM el_department_user_mapping
-    WHERE dept_code = #{deptCode}
+    WHERE dept_code in
+    <foreach collection="list" item="code" separator="," open="(" close=")">
+      #{code}
+    </foreach>
     AND status != 99
   </select>
 
-  <select id="findByUserCode" resultMap="BaseResultMap" parameterType="String">
+  <select id="findByUserCode" resultMap="BaseResultMap" parameterType="List">
     SELECT <include refid="Base_Column_List"/>
     FROM el_department_user_mapping
-    WHERE user_code= #{userCode}
+    WHERE user_code in
+    <foreach collection="list" item="code" separator="," open="(" close=")">
+      #{code}
+    </foreach>
     AND status != 99
   </select>
 

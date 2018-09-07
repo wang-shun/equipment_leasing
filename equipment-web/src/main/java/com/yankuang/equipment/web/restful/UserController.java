@@ -139,7 +139,9 @@ public class UserController {
     private UserDTO getUserDTO(List<AuthorityTreeDTO> authoritys, List<RoleDTO> roles, User loginUser) {
         UserDTO userDTO = new UserDTO();
         // 用户角色列表
-        List<RoleUser> roleUsers = roleUserService.findByUserCode(loginUser.getCode());
+        List<String> userCodes = new ArrayList<>();
+        userCodes.add(loginUser.getCode());
+        List<RoleUser> roleUsers = roleUserService.findByUserCode(userCodes);
         if (roleUsers == null || roleUsers.size() == 0) {
             return userDTO;
         }
@@ -208,9 +210,9 @@ public class UserController {
         if (StringUtils.isEmpty(deptCode)) {
             return CommonResponse.errorMsg("用户部门code不能为空");
         }
-        List<RoleSmall> roles = user.getRoles();
-        if (StringUtils.isEmpty(roles)) {
-            return CommonResponse.errorMsg("用户角色roles不能为空");
+        List<String> roleCodes = user.getRoleCodes();
+        if (StringUtils.isEmpty(roleCodes)) {
+            return CommonResponse.errorMsg("用户角色roleCodes不能为空");
         }
         User userCheck = userService.findByAccount(user.getAccount());
         if (!StringUtils.isEmpty(userCheck)) {
@@ -235,9 +237,9 @@ public class UserController {
             return CommonResponse.errorMsg("用户关联部门失败");
         }
         //  用户角色表添加
-        for (RoleSmall role : roles) {
+        for (String roleCode : roleCodes) {
             RoleUser roleUser = new RoleUser();
-            roleUser.setRoleCode(role.getCode());
+            roleUser.setRoleCode(roleCode);
             roleUser.setUserCode(user2.getCode());
             Boolean b3 = roleUserService.create(roleUser);
             if (!b3) {
@@ -260,6 +262,14 @@ public class UserController {
             return CommonResponse.errorMsg("请选择要删除的数据!");
         }
         List<String> codes = codesDTO.getCodes();
+        // 删除用户部门
+        if (!StringUtils.isEmpty(deptUserService.findByUserCode(codes))) {
+            deptUserService.deleteByUserCode(codes);
+        }
+        // 删除用户角色
+        if (!StringUtils.isEmpty(roleUserService.findByUserCode(codes))) {
+            roleUserService.deleteByRoleCode(codes);
+        }
         Boolean b = userService.delete(codes);
         if (!b) {
             return CommonResponse.errorMsg("删除失败!");
@@ -271,25 +281,47 @@ public class UserController {
     /**
      * 根据code修改用户.
      *
-     * @param jsonString
+     * @param user
      * @return
      */
     @PutMapping()
-    public CommonResponse update(@RequestBody String jsonString) {
-        if (jsonString == null || "".equals(jsonString)) {
+    public CommonResponse update(@RequestBody User user) {
+        if (StringUtils.isEmpty(user)) {
             return CommonResponse.errorMsg("参数不能为空");
         }
-        User user = JsonUtils.jsonToPojo(jsonString, User.class);
-        if (user.getCode() == null || "".equals(user.getCode())) {
+        if (StringUtils.isEmpty(user.getCode())) {
             return CommonResponse.errorMsg("code不能为空");
         }
-        //todo
+        List<String> userCodes = new ArrayList<>();
+        userCodes.add(user.getCode());
+        if (!StringUtils.isEmpty(deptUserService.findByUserCode(userCodes))) {
+            // 删除用户部门旧关系
+            deptUserService.deleteByUserCode(userCodes);
+            // 添加用户部门新关系
+            DeptUser deptUser = new DeptUser();
+            deptUser.setDeptCode(user.getDeptCode());
+            deptUser.setUserCode(user.getCode());
+            deptUserService.create(deptUser);
+        }
+
+        if (!StringUtils.isEmpty(roleUserService.findByUserCode(userCodes))) {
+            // 删除用户角色旧关系
+            roleUserService.deleteByUserCode(userCodes);
+            // 添加用户角色新关系
+            List<String> roleCodes = user.getRoleCodes();
+            for (String roleCode : roleCodes) {
+                RoleUser roleUser = new RoleUser();
+                roleUser.setRoleCode(roleCode);
+                roleUser.setUserCode(user.getCode());
+                roleUserService.create(roleUser);
+            }
+        }
         user.setUpdateBy("登陆人");
         Boolean b = userService.update(user);
-        if (b) {
-            return CommonResponse.build(200, "更新成功", null);
+        if (!b) {
+            return CommonResponse.errorTokenMsg("更新失败");
         }
-        return CommonResponse.errorTokenMsg("更新失败");
+        return CommonResponse.ok("更新成功");
     }
 
 
