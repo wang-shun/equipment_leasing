@@ -69,7 +69,7 @@ public class DeptController {
     }
 
     /**
-     * 根据codes删除权限，单个或批量
+     * 根据codes删除部门，单个或批量
      * @param jsonString
      * @return
      */

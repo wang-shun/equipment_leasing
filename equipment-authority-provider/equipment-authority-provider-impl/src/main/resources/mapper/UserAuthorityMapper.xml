@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yankuang.equipment.authority.mapper.UserAuthorityMapper" >
+
+  <resultMap id="BaseResultMap" type="com.yankuang.equipment.authority.model.UserAuthority" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="user_code" property="userCode" jdbcType="VARCHAR" />
+    <result column="authority_code" property="authorityCode" jdbcType="VARCHAR" />
+    <result column="project_code" property="projectCode" jdbcType="VARCHAR"/>
+    <result column="status" property="status" jdbcType="TINYINT" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, user_code, authority_code, project_code, status
+  </sql>
+
+  <insert id="create" parameterType="com.yankuang.equipment.authority.model.UserAuthority">
+    insert into el_user_authority_mapping
+      (user_code, authority_code, project_code)
+    values
+      (#{userCode}, #{authorityCode}, "sb001")
+  </insert>
+
+  <update id="deleteByAuthorityCodes" parameterType="java.util.List">
+    UPDATE el_user_authority_mapping
+    <set>
+      status = 99
+    </set>
+    WHERE authority_code in
+    <foreach collection="list" item="code" separator="," open="(" close=")">
+      #{code}
+    </foreach>
+  </update>
+
+  <update id="deleteByUserCodes" parameterType="java.util.List">
+    UPDATE el_user_authority_mapping
+    <set>
+      status = 99
+    </set>
+    WHERE user_code in
+    <foreach collection="list" item="code" separator="," open="(" close=")">
+      #{code}
+    </foreach>
+  </update>
+
+  <select id="findByUserCodes" parameterType="List" resultMap="BaseResultMap" >
+    SELECT <include refid="Base_Column_List" />
+    FROM el_role_user_mapping
+    WHERE user_code in
+    <foreach collection="list" item="code" separator="," open="(" close=")">
+      #{code}
+    </foreach>
+    AND status != 99
+  </select>
+
+  <select id="findByAuthorityCodes" parameterType="List" resultMap="BaseResultMap" >
+    SELECT <include refid="Base_Column_List" />
+    FROM el_role_user_mapping
+    WHERE authority_code in
+    <foreach collection="list" item="code" separator="," open="(" close=")">
+      #{code}
+    </foreach>
+    AND status != 99
+  </select>
+
+  <select id="findByUserAndAuthorityCodes" parameterType="Map" resultMap="BaseResultMap" >
+    SELECT <include refid="Base_Column_List" />
+    FROM el_user_authority_mapping
+    WHERE user_code = #{userCode}
+    and authority_Code = #{authorityCode}
+    and status != 99
+  </select>
+
+</mapper>

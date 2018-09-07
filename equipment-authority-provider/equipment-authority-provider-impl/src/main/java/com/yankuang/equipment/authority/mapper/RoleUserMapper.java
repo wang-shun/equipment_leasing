@@ -4,6 +4,7 @@ import com.yankuang.equipment.authority.model.RoleUser;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 
 @Repository
@@ -11,12 +12,14 @@ public interface RoleUserMapper {
 
     Boolean create(RoleUser roleUser);
 
-    Boolean deleteByUserCode(String code);
+    Boolean deleteByUserCode(List<String> codes);
 
-    Boolean deleteByRoleCode(String code);
+    Boolean deleteByRoleCode(List<String> codes);
 
-    List<RoleUser> findByUserCode(String code);
+    List<RoleUser> findByUserCode(List<String> codes);
 
-    List<RoleUser> findByRoleCode(String code);
+    List<RoleUser> findByRoleCode(List<String> codes);
+
+    List<RoleUser> findByRoleCodeAndUserCode(Map map);
 
 }
