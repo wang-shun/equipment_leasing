@@ -115,14 +115,14 @@
     <select id="select" parameterType="Long" resultMap="BaseResultMap">
         SELECT t1.id, t1.approve_code, t1.code, t1.sorting, t1.is_del, t1.status, t1.use_by, DATE_FORMAT(t1.use_at,'%Y-%m-%d %H:%i:%s') as use_at, t1.use_position, t1.use_equipment_type,
         t1.approve_by, DATE_FORMAT(t1.approve_at,'%Y-%m-%d %H:%i:%s') as approve_at, t1.approve_opinion, t1.create_by, DATE_FORMAT(t1.create_at,'%Y-%m-%d %H:%i:%s') as create_at, t1.update_by, DATE_FORMAT(t1.update_at,'%Y-%m-%d %H:%i:%s') as update_at,
-        t1.version, t1.remarks, t1.is_use,org.name AS name,user.name AS userName
+        t1.version, t1.remarks, t1.is_use,dept.name AS name,user.name AS userName
         FROM el_use t1
-        LEFT JOIN el_organization org
-        ON t1.use_position = org.id
+        LEFT JOIN el_department dept
+        ON t1.use_position = dept.id
         LEFT JOIN el_user user
         ON t1.use_by = user.code
         WHERE t1.id = #{id,jdbcType=BIGINT}
-        AND org.status != 99
+        AND dept.status != 99
     </select>
 
     <update id="delete" parameterType="Long">
@@ -134,10 +134,10 @@
     <select id="list" parameterType="map" resultMap="BaseResultMap">
         SELECT t1.id, t1.approve_code, t1.code, t1.sorting, t1.is_del, t1.status, t1.use_by, DATE_FORMAT(t1.use_at,'%Y-%m-%d %H:%i:%s') as use_at, t1.use_position, t1.use_equipment_type,
         t1.approve_by, DATE_FORMAT(t1.approve_at,'%Y-%m-%d %H:%i:%s') as approve_at, t1.approve_opinion, t1.create_by, DATE_FORMAT(t1.create_at,'%Y-%m-%d %H:%i:%s') as create_at, t1.update_by, DATE_FORMAT(t1.update_at,'%Y-%m-%d %H:%i:%s') as update_at,
-        t1.version, t1.remarks, t1.is_use,org.name AS name,user.name AS userName
+        t1.version, t1.remarks, t1.is_use,dept.name AS name,user.name AS userName
         FROM el_use t1
-        LEFT JOIN el_organization org
-        ON t1.use_position = org.id
+        LEFT JOIN el_department dept
+        ON t1.use_position = dept.id
         LEFT JOIN el_user user
         ON t1.use_by = user.code
         WHERE 1=1
@@ -203,7 +203,7 @@
         </if>
         AND t1.is_del != 99
         AND is_use = #{isUse,jdbcType=TINYINT}
-        AND org.status != 99
+        AND dept.status != 99
         AND user.status != 99
         ORDER BY create_at DESC
     </select>
