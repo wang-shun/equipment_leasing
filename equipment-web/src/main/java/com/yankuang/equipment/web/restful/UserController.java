@@ -45,6 +45,9 @@ public class UserController {
     @RpcConsumer
     AuthorityService authorityService;
 
+    @RpcConsumer
+    UserAuthorityService userAuthorityService;
+
     /**
      * 用户退出登录.
      */
@@ -186,7 +189,6 @@ public class UserController {
         }
         return authorityTreeUtil.menuList(trees);
     }
-
 
 
     /**
@@ -383,6 +385,46 @@ public class UserController {
             return CommonResponse.errorMsg("启用失败");
         }
         return CommonResponse.build(200, "启用成功", null);
+    }
+
+
+    /**
+     * 用户授权.
+     *
+     * @param userAuthorityDTO
+     * @return
+     */
+    @PostMapping("/acls")
+    public CommonResponse createRoleAuthority(@RequestBody UserAuthorityDTO userAuthorityDTO) {
+
+        if (StringUtils.isEmpty(userAuthorityDTO)) {
+            return CommonResponse.errorMsg("参数不能为空");
+        }
+        String userCode = userAuthorityDTO.getUserCode();
+        if (StringUtils.isEmpty(userCode)) {
+            return CommonResponse.errorMsg("参数userCode不能为空");
+        }
+        List<String> authorityCodes = userAuthorityDTO.getAuthorityCodes();
+        if (StringUtils.isEmpty(authorityCodes)) {
+            return CommonResponse.errorMsg("参数authorityCodes不能为空");
+        }
+        // 遍历authorityCodes,根据用户code查和权限code查重用户和权限关联表
+        for (String authorityCode : authorityCodes) {
+            Map map = new HashMap();
+            map.put("userCode", userCode);
+            map.put("authorityCode", authorityCode);
+            UserAuthority userAuthority = userAuthorityService.findByUserAndAuthorityCodes(map);
+            if (StringUtils.isEmpty(userAuthority)) {
+                UserAuthority userAuthority1 = new UserAuthority();
+                userAuthority1.setAuthorityCode(authorityCode);
+                userAuthority1.setUserCode(userCode);
+                Boolean b = userAuthorityService.create(userAuthority1);
+                if (!b) {
+                    return CommonResponse.errorMsg("添加用户权限关联失败");
+                }
+            }
+        }
+        return CommonResponse.build(200, "用户授权成功", null);
     }
 
 }
