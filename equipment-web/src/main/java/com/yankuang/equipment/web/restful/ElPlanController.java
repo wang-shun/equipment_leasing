@@ -1,6 +1,9 @@
 package com.yankuang.equipment.web.restful;
 
 import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.PageInfo;
+import com.yankuang.equipment.authority.model.Dept;
+import com.yankuang.equipment.authority.service.DeptService;
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.Constants;
 import com.yankuang.equipment.common.util.JsonUtils;
@@ -44,6 +47,9 @@ public class ElPlanController {
 
     @RpcConsumer
     ElUseService elUseService;
+
+    @RpcConsumer
+    DeptService deptService;
 
     /**
      * 创建通用设备月度租赁计划
@@ -524,5 +530,17 @@ public class ElPlanController {
             }
         }
         return CommonResponse.ok(elPlanUseService.list(page, size, elPlanUseMap));
+    }
+
+    @GetMapping
+    public CommonResponse find(@RequestParam(value = "page", defaultValue = "1") Integer page,
+                                     @RequestParam(value = "size", defaultValue = "20") Integer size,
+                                     @RequestParam Byte type,
+                               @RequestParam String pCode) {
+        Map map = new HashMap();
+        map.put("type", type);
+        map.put("pcode",pCode);
+        PageInfo<Dept> deptPageInfo = deptService.findByPage(page, size, map);
+        return CommonResponse.ok(deptPageInfo);
     }
 }
