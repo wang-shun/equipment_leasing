@@ -3,8 +3,6 @@ package com.yankuang.equipment.equipment.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
-
-import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -98,17 +96,7 @@ public class SbEquipmentT implements Serializable {
     @Range(min = 0,max = 99,message = "财务费用折旧年限必须在0~99之间!")
     private Byte costYears;
 
-    private Double leaseRate;
-
-    private Double repairRatio;
-
-    private Double manageFeeRatio;
-
-    private Double equipmentUseRatio;
-
     private Double dayLeaseFee;
-
-    private Double newRatio;
 
     private String mainPara;
     private String para1;
@@ -442,52 +430,12 @@ public class SbEquipmentT implements Serializable {
         this.costYears = costYears;
     }
 
-    public Double getLeaseRate() {
-        return leaseRate;
-    }
-
-    public void setLeaseRate(Double leaseRate) {
-        this.leaseRate = leaseRate;
-    }
-
-    public Double getRepairRatio() {
-        return repairRatio;
-    }
-
-    public void setRepairRatio(Double repairRatio) {
-        this.repairRatio = repairRatio;
-    }
-
-    public Double getManageFeeRatio() {
-        return manageFeeRatio;
-    }
-
-    public void setManageFeeRatio(Double manageFeeRatio) {
-        this.manageFeeRatio = manageFeeRatio;
-    }
-
-    public Double getEquipmentUseRatio() {
-        return equipmentUseRatio;
-    }
-
-    public void setEquipmentUseRatio(Double equipmentUseRatio) {
-        this.equipmentUseRatio = equipmentUseRatio;
-    }
-
     public Double getDayLeaseFee() {
         return dayLeaseFee;
     }
 
     public void setDayLeaseFee(Double dayLeaseFee) {
         this.dayLeaseFee = dayLeaseFee;
-    }
-
-    public Double getNewRatio() {
-        return newRatio;
-    }
-
-    public void setNewRatio(Double newRatio) {
-        this.newRatio = newRatio;
     }
 
     public String getMainPara() {
