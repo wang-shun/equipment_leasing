@@ -188,8 +188,11 @@ public class ElUseController {
             if (elUse == null){
                 return CommonResponse.errorMsg("传入对象为空");
             }
-            User user = userService.findByName(elUse.getUseBy());
-            if (user != null){
+            if (elUse.getUseBy() != null && !"".equals(elUse.getUseBy())) {
+                User user = userService.findByName(elUse.getUseBy());
+                if (user == null) {
+                    return CommonResponse.build(500,"不存在该用户",null);
+                }
                 elUseMap.put("useBy", user.getCode());
             }
             elUseMap.put("usePosition",elUse.getUsePosition());
@@ -422,8 +425,11 @@ public class ElUseController {
             if (elUse == null){
                 return CommonResponse.errorMsg("传入对象为空");
             }
-            User user = userService.findByName(elUse.getUseBy());
-            if (user != null){
+            if (elUse.getUseBy() != null && !"".equals(elUse.getUseBy())) {
+                User user = userService.findByName(elUse.getUseBy());
+                if (user == null) {
+                    return CommonResponse.build(500,"不存在该用户",null);
+                }
                 elUseMap.put("useBy", user.getCode());
             }
             elUseMap.put("usePosition",elUse.getUsePosition());
