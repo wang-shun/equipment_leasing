@@ -66,7 +66,6 @@ public class UserController {
         if (StringUtils.isEmpty(user)) {
             return CommonResponse.errorMsg("参数不能为空");
         }
-        // todo 改成account登录
         String account = user.getAccount();
         if (StringUtils.isEmpty(account)) {
             return CommonResponse.errorMsg("account不能为空");
@@ -81,60 +80,60 @@ public class UserController {
         final Base64.Decoder decoder = Base64.getDecoder();
         String token = "";
         User loginUser = userService.findByAccount(account);
-        log.info("根据用户名查询的用户信息" + loginUser.toString());
-        if (loginUser != null && !password.equals(loginUser.getPassword())) {
+        if (StringUtils.isEmpty(loginUser)) {
+            return CommonResponse.errorTokenMsg("账号不存在");
+        }
+        if (!password.equals(loginUser.getPassword())) {
+            System.out.println(loginUser.getPassword());
             return CommonResponse.errorTokenMsg("密码错误");
         }
-        if (loginUser != null && password.equals(loginUser.getPassword())) {
-            log.info(loginUser.toString());
-            List<Authority> authorities1 = authorityService.findByUserCode(loginUser.getCode());
-            for (Authority authority : authorities1) {
-                AuthorityTreeDTO authorityDTO = new AuthorityTreeDTO();
-                authorityDTO.setUrl(authority.getUrl());
-                authorityDTO.setCode(authority.getCode());
-                authorityDTO.setPcode(authority.getPcode());
-                authorityDTO.setLevel(authority.getLevel());
-                authorityDTO.setType(authority.getType());
-                authorityDTO.setName(authority.getName());
-                authorityDTO.setSorting(authority.getSorting());
-                authorityDTO.setIcon(authority.getIcon());
-                authoritys.add(authorityDTO);
-            }
-            List<Role> roles1 = roleService.findByUserCode(loginUser.getCode());
-            for (Role role : roles1) {
-                RoleDTO roleDTO = new RoleDTO();
-                roleDTO.setCode(role.getCode());
-                roleDTO.setName(role.getName());
-                roles.add(roleDTO);
-            }
-            // 登录验证成功，获取用户基本信息，角色信息，权限信息
-            UserDTO userDTO1 = getUserDTO(authoritys, roles, loginUser);
-            // redis中存放的key
-            token = CodeUtil.getCode();
-            userDTO1.setToken(token);
-            // user对象信息转json加密base64作为值存放redis
-            final Base64.Encoder encoder = Base64.getEncoder();
-            String encodedResult = "";
-            try {
-                // 转字节
-                final byte[] textByte = JsonUtils.objectToJson(userDTO1).getBytes("UTF-8");
-                // 加密
-                encodedResult = encoder.encodeToString(textByte);
-                log.info(encodedResult);
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-            // 存放redis,暂时2小时
-            redis.set(token, JsonUtils.objectToJson(userDTO1), 7200);
-            // 更新user数据库表，记录最新一次登录保存的redis的key(token)
-            User u = new User();
-            u.setCode(loginUser.getCode());
-            u.setToken(token);
-            userService.update(u);
-            // 返回加密用户信息包含token
-            return CommonResponse.ok(encodedResult);
+        log.info("根据用户名查询的用户信息" + loginUser.toString());
+        List<Authority> authorities1 = authorityService.findByUserCode(loginUser.getCode());
+        for (Authority authority : authorities1) {
+            AuthorityTreeDTO authorityDTO = new AuthorityTreeDTO();
+            authorityDTO.setUrl(authority.getUrl());
+            authorityDTO.setCode(authority.getCode());
+            authorityDTO.setPcode(authority.getPcode());
+            authorityDTO.setLevel(authority.getLevel());
+            authorityDTO.setType(authority.getType());
+            authorityDTO.setName(authority.getName());
+            authorityDTO.setSorting(authority.getSorting());
+            authorityDTO.setIcon(authority.getIcon());
+            authoritys.add(authorityDTO);
         }
-        return CommonResponse.errorTokenMsg("用户不存在");
+        List<Role> roles1 = roleService.findByUserCode(loginUser.getCode());
+        for (Role role : roles1) {
+            RoleDTO roleDTO = new RoleDTO();
+            roleDTO.setCode(role.getCode());
+            roleDTO.setName(role.getName());
+            roles.add(roleDTO);
+        }
+        // 登录验证成功，获取用户基本信息，角色信息，权限信息
+        UserDTO userDTO1 = getUserDTO(authoritys, roles, loginUser);
+        // redis中存放的key
+        token = CodeUtil.getCode();
+        userDTO1.setToken(token);
+        // user对象信息转json加密base64作为值存放redis
+        final Base64.Encoder encoder = Base64.getEncoder();
+        String encodedResult = "";
+        try {
+            // 转字节
+            final byte[] textByte = JsonUtils.objectToJson(userDTO1).getBytes("UTF-8");
+            // 加密
+            encodedResult = encoder.encodeToString(textByte);
+            log.info(encodedResult);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        // 存放redis,暂时2小时
+        redis.set(token, JsonUtils.objectToJson(userDTO1), 7200);
+        // 更新user数据库表，记录最新一次登录保存的redis的key(token)
+        User u = new User();
+        u.setCode(loginUser.getCode());
+        u.setToken(token);
+        userService.update(u);
+        // 返回加密用户信息包含token
+        return CommonResponse.ok(encodedResult);
     }
 
     private UserDTO getUserDTO(List<AuthorityTreeDTO> authoritys, List<RoleDTO> roles, User loginUser) {
@@ -186,36 +185,6 @@ public class UserController {
         return authorityTreeUtil.menuList(trees);
     }
 
-    /**
-     * 根据code查询用户....
-     *
-     * @param code
-     * @return
-     */
-    @GetMapping(value = "/{code}")
-    public CommonResponse findById(@PathVariable String code) {
-        return CommonResponse.ok(userService.findByCode(code));
-    }
-
-    /**
-     * 根据codes删除用户.
-     *
-     * @param codesDTO
-     * @return
-     */
-    @DeleteMapping
-    public CommonResponse delete(@RequestBody CodesDTO codesDTO) {
-        if (StringUtils.isEmpty(codesDTO)) {
-            return CommonResponse.errorMsg("请选择要删除的数据!");
-        }
-        List<String> codes = codesDTO.getCodes();
-        Boolean b = userService.delete(codes);
-        if (!b) {
-            return CommonResponse.errorMsg("删除失败!");
-        }
-        return CommonResponse.ok("删除成功!");
-
-    }
 
 
     /**
@@ -280,6 +249,26 @@ public class UserController {
     }
 
     /**
+     * 根据codes删除用户.
+     *
+     * @param codesDTO
+     * @return
+     */
+    @DeleteMapping
+    public CommonResponse delete(@RequestBody CodesDTO codesDTO) {
+        if (StringUtils.isEmpty(codesDTO)) {
+            return CommonResponse.errorMsg("请选择要删除的数据!");
+        }
+        List<String> codes = codesDTO.getCodes();
+        Boolean b = userService.delete(codes);
+        if (!b) {
+            return CommonResponse.errorMsg("删除失败!");
+        }
+        return CommonResponse.ok("删除成功!");
+
+    }
+
+    /**
      * 根据code修改用户.
      *
      * @param jsonString
@@ -302,6 +291,19 @@ public class UserController {
         }
         return CommonResponse.errorTokenMsg("更新失败");
     }
+
+
+    /**
+     * 根据code查询用户....
+     *
+     * @param code
+     * @return
+     */
+    @GetMapping(value = "/{code}")
+    public CommonResponse findById(@PathVariable String code) {
+        return CommonResponse.ok(userService.findByCode(code));
+    }
+
 
     /**
      * 用户列表分页查询

@@ -15,7 +15,11 @@ public class User implements Serializable {
 
     private Long id;
 
+    private String code;
+
     private String name;
+
+    private String account;
 
     private String token;
 
@@ -44,10 +48,6 @@ public class User implements Serializable {
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createAt;
-
-    private String code;
-
-    private String account;
 
     private String projectCode;
 

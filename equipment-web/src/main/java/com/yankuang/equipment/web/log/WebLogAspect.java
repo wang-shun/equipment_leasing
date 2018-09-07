@@ -311,7 +311,6 @@ public class WebLogAspect {
         UserDTO userFromRedis = JsonUtils.jsonToPojo(userRedis, UserDTO.class);
         // 打印日志信息
         logger.info("访问用户，{}", userFromRedis.toString());
-        //TODO 获取请求路径url,验证权限
         List<RoleDTO> roles = userFromRedis.getRoles();
         List<AuthorityTreeDTO> authorities = userFromRedis.getAuthoritys();
         for (RoleDTO roleDTO : roles) {

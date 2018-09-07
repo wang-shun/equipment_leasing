@@ -14,8 +14,8 @@
   </sql>
 
   <insert id="create" parameterType="com.yankuang.equipment.authority.model.RoleUser">
-    insert into el_role_user_mapping (role_code, user_code, project_code, status)
-    values (#{roleId}, #{userId}, "sb001", 1)
+    insert into el_role_user_mapping (role_code, user_code, project_code)
+    values (#{roleCode}, #{userCode}, "sb001")
   </insert>
 
   <delete id="deleteByUserCode" parameterType="java.lang.String" >
