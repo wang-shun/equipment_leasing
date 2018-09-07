@@ -183,16 +183,22 @@ public class ElUseController {
                                   @RequestParam Integer size,
                                   @RequestParam String jsonString){
         Map elUseMap = new HashMap();
-        if (!StringUtils.isEmpty(jsonString)){
+        if (jsonString != null || "".equals(jsonString)){
             ElUse elUse = JsonUtils.jsonToPojo(jsonString,ElUse.class);
             if (elUse == null){
                 return CommonResponse.errorMsg("传入对象为空");
             }
-            User user = userService.findByName(elUse.getUseBy());
-            elUseMap.put("useBy", user.getCode());
+            if (elUse.getUseBy() != null && !"".equals(elUse.getUseBy())) {
+                User user = userService.findByName(elUse.getUseBy());
+                if (user == null) {
+                    return CommonResponse.build(500,"不存在该用户",null);
+                }
+                elUseMap.put("useBy", user.getCode());
+            }
             elUseMap.put("usePosition",elUse.getUsePosition());
             elUseMap.put("startTime", elUse.getStartTime());
             elUseMap.put("endTime", elUse.getEndTime());
+            elUseMap.put("useEquipmentType",elUse.getUseEquipmentType());
         }
         return CommonResponse.ok(elUseService.list(page, size, elUseMap));
     }
@@ -420,11 +426,17 @@ public class ElUseController {
             if (elUse == null){
                 return CommonResponse.errorMsg("传入对象为空");
             }
-            User user = userService.findByName(elUse.getUseBy());
-            elUseMap.put("useBy", user.getCode());
+            if (elUse.getUseBy() != null && !"".equals(elUse.getUseBy())) {
+                User user = userService.findByName(elUse.getUseBy());
+                if (user == null) {
+                    return CommonResponse.build(500,"不存在该用户",null);
+                }
+                elUseMap.put("useBy", user.getCode());
+            }
             elUseMap.put("usePosition",elUse.getUsePosition());
             elUseMap.put("startTime", elUse.getStartTime());
             elUseMap.put("endTime", elUse.getEndTime());
+            elUseMap.put("useEquipmentType",elUse.getUseEquipmentType());
         }
         return CommonResponse.ok(elUseService.listTz(page, size, elUseMap));
     }
