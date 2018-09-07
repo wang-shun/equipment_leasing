@@ -41,34 +41,34 @@
     <update id="update" parameterType="com.yankuang.equipment.equipment.model.ElUseItem">
         UPDATE el_use_item
         <set>
-            <if test="useId != null" >
+            <if test="useId != null " >
                 use_id = #{useId,jdbcType=BIGINT},
             </if>
-            <if test="equipmentId != null" >
+            <if test="equipmentId != null " >
                 equipment_id = #{equipmentId,jdbcType=BIGINT},
             </if>
-            <if test="mainParamName != null" >
+            <if test="mainParamName != null and mainParamName != ''" >
                 main_param_name = #{mainParamName,jdbcType=VARCHAR},
             </if>
-            <if test="mainParamValue != null" >
+            <if test="mainParamValue != null and manParamValue != ''" >
                 main_param_value = #{mainParamValue,jdbcType=VARCHAR},
             </if>
             <if test="equipmentNum != null" >
                 equipment_num = #{equipmentNum,jdbcType=INTEGER},
             </if>
-            <if test="equipmentEffect != null" >
+            <if test="equipmentEffect != null and equipmentEffect != ''" >
                 equipment_effect = #{equipmentEffect,jdbcType=VARCHAR},
             </if>
             <if test="equipmentPosition != null" >
                 equipment_position = #{equipmentPosition,jdbcType=BIGINT},
             </if>
-            <if test="remarks != null" >
+            <if test="remarks != null and remarks != ''" >
                 remarks = #{remarks,jdbcType=VARCHAR},
             </if>
-            <if test="status != null" >
+            <if test="status != null and status != ''" >
                 status = #{status,jdbcType=VARCHAR},
             </if>
-            <if test="code != null" >
+            <if test="code != null and code != ''" >
                 code = #{code,jdbcType=VARCHAR},
             </if>
             <if test="planUseId != null">
@@ -98,28 +98,28 @@
         <if test="equipmentId != null" >
             AND equipment_id = #{equipmentId,jdbcType=BIGINT}
         </if>
-        <if test="mainParamName != null" >
+        <if test="mainParamName != null and mainParamName != ''" >
             AND main_param_name = #{mainParamName,jdbcType=VARCHAR}
         </if>
-        <if test="mainParamValue != null" >
+        <if test="mainParamValue != null and mainParamValue != ''" >
             AND main_param_value = #{mainParamValue,jdbcType=VARCHAR}
         </if>
-        <if test="equipmentNum != null" >
+        <if test="equipmentNum != null " >
             AND equipment_num = #{equipmentNum,jdbcType=INTEGER}
         </if>
-        <if test="equipmentEffect != null" >
+        <if test="equipmentEffect != null and equipmentEffect != ''" >
             AND equipment_effect = #{equipmentEffect,jdbcType=VARCHAR}
         </if>
         <if test="equipmentPosition != null" >
             AND equipment_position = #{equipmentPosition,jdbcType=BIGINT}
         </if>
-        <if test="remarks != null" >
+        <if test="remarks != null and remarks != ''" >
             AND remarks = #{remarks,jdbcType=VARCHAR}
         </if>
-        <if test="status != null" >
+        <if test="status != null and status != ''" >
             AND status = #{status,jdbcType=VARCHAR}
         </if>
-        <if test="code != null" >
+        <if test="code != null and code != ''" >
             AND code = #{code,jdbcType=VARCHAR}
         </if>
         <if test="planUseId != null">
