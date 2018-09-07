@@ -183,13 +183,15 @@ public class ElUseController {
                                   @RequestParam Integer size,
                                   @RequestParam String jsonString){
         Map elUseMap = new HashMap();
-        if (!StringUtils.isEmpty(jsonString)){
+        if (jsonString != null || "".equals(jsonString)){
             ElUse elUse = JsonUtils.jsonToPojo(jsonString,ElUse.class);
             if (elUse == null){
                 return CommonResponse.errorMsg("传入对象为空");
             }
             User user = userService.findByName(elUse.getUseBy());
-            elUseMap.put("useBy", user.getCode());
+            if (user != null){
+                elUseMap.put("useBy", user.getCode());
+            }
             elUseMap.put("usePosition",elUse.getUsePosition());
             elUseMap.put("startTime", elUse.getStartTime());
             elUseMap.put("endTime", elUse.getEndTime());
@@ -421,7 +423,9 @@ public class ElUseController {
                 return CommonResponse.errorMsg("传入对象为空");
             }
             User user = userService.findByName(elUse.getUseBy());
-            elUseMap.put("useBy", user.getCode());
+            if (user != null){
+                elUseMap.put("useBy", user.getCode());
+            }
             elUseMap.put("usePosition",elUse.getUsePosition());
             elUseMap.put("startTime", elUse.getStartTime());
             elUseMap.put("endTime", elUse.getEndTime());
