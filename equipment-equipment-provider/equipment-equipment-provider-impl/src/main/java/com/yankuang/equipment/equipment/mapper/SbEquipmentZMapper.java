@@ -22,4 +22,5 @@ public interface SbEquipmentZMapper {
 
     int deletes(@Param("ids") List<Long> ids);
 
+    int updateStateCodeByMonth();
 }

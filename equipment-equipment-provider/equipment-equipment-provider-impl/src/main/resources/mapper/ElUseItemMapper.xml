@@ -85,10 +85,10 @@
     </update>
 
     <select id="list" parameterType="map" resultMap="BaseResultMap">
-        SELECT t1.*,org.name AS name,sb.name AS sbName
+        SELECT t1.*,dept.name AS name,sb.name AS sbName
         FROM el_use_item t1
-        LEFT JOIN el_organization org
-        ON t1.equipment_position = org.id
+        LEFT JOIN el_department dept
+        ON t1.equipment_position = dept.id
         LEFT JOIN sb_position sb
         ON t1.equipment_effect = sb.code
         WHERE 1=1
@@ -128,22 +128,22 @@
         <if test="useAt != null">
             AND use_at = #{useAt,jdbcType=TIMESTAMP}
         </if>
-        AND org.status != 99
+        AND dept.status != 99
         AND t1.status != 99
         AND sb.status != 99
         AND is_use = #{isUse,jdbcType=TINYINT}
     </select>
 
     <select id="findById" resultMap="BaseResultMap" parameterType="Long">
-        SELECT t1.*,org.name as name,sb.name AS sbName
+        SELECT t1.*,dept.name as name,sb.name AS sbName
         FROM el_use_item t1
-        LEFT JOIN el_organization org
-        ON t1.equipment_position = org.id
+        LEFT JOIN el_department dept
+        ON t1.equipment_position = dept.id
         LEFT JOIN sb_position sb
         ON t1.equipment_effect = sb.code
         WHERE item_id = #{itemId,jdbcType=BIGINT}
         AND t1.status != 99
-        AND org.status != 99
+        AND dept.status != 99
         AND sb.status != 99
     </select>
 
@@ -160,14 +160,14 @@
     </update>
 
     <select id="findByUseId" parameterType="Long" resultMap="BaseResultMap">
-        SELECT t1.*,org.name as name,sb.name AS sbName
+        SELECT t1.*,dept.name as name,sb.name AS sbName
         FROM el_use_item t1
-        LEFT JOIN el_organization org
-        ON t1.equipment_position = org.id
+        LEFT JOIN el_department dept
+        ON t1.equipment_position = dept.id
         LEFT JOIN sb_position sb
         ON t1.equipment_effect = sb.code
         WHERE t1.use_id = #{useId,jdbcType=BIGINT}
-        AND org.status != 99
+        AND dept.status != 99
         AND sb.status != 99
         AND t1.status != 99
     </select>
