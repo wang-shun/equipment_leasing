@@ -1,6 +1,8 @@
 package com.yankuang.equipment.web.restful;
 
 import com.github.pagehelper.PageInfo;
+import com.yankuang.equipment.authority.model.User;
+import com.yankuang.equipment.authority.service.UserService;
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.common.util.StringUtils;
@@ -42,6 +44,9 @@ public class ElUseController {
 
     @RpcConsumer
     SbEquipmentZService sbEquipmentZService;
+
+    @RpcConsumer
+    UserService userService;
 
     /**
      * @method 领用申请添加功能
@@ -183,7 +188,8 @@ public class ElUseController {
             if (elUse == null){
                 return CommonResponse.errorMsg("传入对象为空");
             }
-            elUseMap.put("useBy", elUse.getUseBy());
+            User user = userService.findByName(elUse.getUseBy());
+            elUseMap.put("useBy", user.getCode());
             elUseMap.put("usePosition",elUse.getUsePosition());
             elUseMap.put("startTime", elUse.getStartTime());
             elUseMap.put("endTime", elUse.getEndTime());
@@ -414,7 +420,8 @@ public class ElUseController {
             if (elUse == null){
                 return CommonResponse.errorMsg("传入对象为空");
             }
-            elUseMap.put("useBy", elUse.getUseBy());
+            User user = userService.findByName(elUse.getUseBy());
+            elUseMap.put("useBy", user.getCode());
             elUseMap.put("usePosition",elUse.getUsePosition());
             elUseMap.put("startTime", elUse.getStartTime());
             elUseMap.put("endTime", elUse.getEndTime());
