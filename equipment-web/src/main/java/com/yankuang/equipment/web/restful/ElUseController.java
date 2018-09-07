@@ -299,12 +299,17 @@ public class ElUseController {
         }
 
         ElUse elUse = JsonUtils.jsonToPojo(jsonString,ElUse.class);
-
+        if (elUse == null){
+            return CommonResponse.build(500,"该审核对象不存在",null);
+        }
         if (elUse.getId() == null){
             return CommonResponse.errorMsg("id不能为空");
         }
         ElUse chooseElUse = elUseService.select(elUse.getId());
-        if (chooseElUse.getStatus() != "2"){
+        if (chooseElUse == null ){
+            return CommonResponse.build(500,"该审核对象不存在",null);
+        }
+        if (!"2".equals(chooseElUse.getStatus())){
             return CommonResponse.errorMsg("该数据未处于审核状态");
         }
         elUse.setApproveBy(1L);//TODO 待redis开发完，先写死
@@ -341,7 +346,9 @@ public class ElUseController {
         }
 
         ElUse elUse = JsonUtils.jsonToPojo(jsonString,ElUse.class);
-
+        if (elUse == null){
+            return CommonResponse.build(500,"该审核对象不存在",null);
+        }
         if (elUse.getId() == null){
             return CommonResponse.errorMsg("id不能为空");
         }
@@ -349,7 +356,7 @@ public class ElUseController {
         if (chooseElUse == null){
             return CommonResponse.errorMsg("没有该数据");
         }
-        if (chooseElUse.getStatus() != "2"){
+        if (!"2".equals(chooseElUse.getStatus())){
             return CommonResponse.errorMsg("该数据未处于审核状态");
         }
         elUse.setApproveBy(1L);//TODO 待redis开发完，先写死
@@ -441,12 +448,17 @@ public class ElUseController {
         }
 
         ElUse elUse = JsonUtils.jsonToPojo(jsonString,ElUse.class);
-
+        if (elUse == null){
+            return CommonResponse.build(500,"该审核对象不存在",null);
+        }
         if (elUse.getId() == null){
             return CommonResponse.errorMsg("id不能为空");
         }
         ElUse chooseElUse = elUseService.select(elUse.getId());
-        if (chooseElUse.getStatus() != "2"){
+        if (elUse == null){
+            return CommonResponse.build(500,"该审核对象不存在",null);
+        }
+        if (!"2".equals(chooseElUse.getStatus())){
             return CommonResponse.errorMsg("该数据未处于审核状态");
         }
         elUse.setApproveBy(1L);//TODO 待redis开发完，先写死
