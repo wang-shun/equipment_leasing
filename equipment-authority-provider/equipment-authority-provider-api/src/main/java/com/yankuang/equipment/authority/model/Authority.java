@@ -9,6 +9,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Table(name = "el_authority")
 @Data
@@ -57,5 +58,7 @@ public class Authority implements Serializable {
     private String projectCode;
 
     private String pname;
+
+    private List<Authority> childList;
 
 }

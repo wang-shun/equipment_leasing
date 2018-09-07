@@ -6,6 +6,8 @@ import lombok.Data;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Table(name = "el_user")
 @Data
@@ -49,8 +51,10 @@ public class User implements Serializable {
 
     private String projectCode;
 
-    private String roleName;
+    private String deptCode;
 
     private String deptName;
+
+    private List<RoleSmall> roles;
 
 }

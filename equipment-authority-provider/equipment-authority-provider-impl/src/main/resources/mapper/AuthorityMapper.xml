@@ -62,6 +62,9 @@
             <if test="url != null and url != '' ">
                 url = #{url},
             </if>
+            <if test="icon != null and icon != '' ">
+                icon = #{icon},
+            </if>
             <if test="type != null and type != '' ">
                 type = #{type},
             </if>

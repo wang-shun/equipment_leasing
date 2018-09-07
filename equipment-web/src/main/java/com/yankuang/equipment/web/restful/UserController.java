@@ -34,9 +34,6 @@ public class UserController {
     UserService userService;
 
     @RpcConsumer
-    RoleAuthorityService roleAuthorityService;
-
-    @RpcConsumer
     RoleUserService roleUserService;
 
     @RpcConsumer
@@ -53,7 +50,6 @@ public class UserController {
      */
     @PostMapping(value = "/loginOut")
     public CommonResponse loginOut(HttpServletRequest request) {
-        // 登录先去redis中查看登陆状态
         String token = request.getHeader("token");
         redis.del(token);
         return CommonResponse.build(200, "您已经成功退出登录", null);
@@ -62,29 +58,29 @@ public class UserController {
     /**
      * 用户登录.
      *
-     * @param jsonString
+     * @param user
      * @return
      */
     @PostMapping(value = "/login")
-    public CommonResponse login(@RequestBody String jsonString) {
-        if (jsonString == null || "".equals(jsonString)) {
+    public CommonResponse login(@RequestBody User user) {
+        if (StringUtils.isEmpty(user)) {
             return CommonResponse.errorMsg("参数不能为空");
         }
-        UserIn user = JsonUtils.jsonToPojo(jsonString, UserIn.class);
-        String name = user.getUsername();
-        if (StringUtils.isEmpty(name)) {
-            return CommonResponse.errorMsg("用户名不能为空");
+        // todo 改成account登录
+        String account = user.getAccount();
+        if (StringUtils.isEmpty(account)) {
+            return CommonResponse.errorMsg("account不能为空");
         }
         String password = user.getPassword();
         if (StringUtils.isEmpty(password)) {
             return CommonResponse.errorMsg("密码不能为空");
         }
-        log.info("--------- 用户登录信息:" + name + ":" + password);
+        log.info("--------- 用户登录信息:" + account + ":" + password);
         List<AuthorityTreeDTO> authoritys = new ArrayList<>();
         List<RoleDTO> roles = new ArrayList<>();
         final Base64.Decoder decoder = Base64.getDecoder();
         String token = "";
-        User loginUser = userService.findByName(name);
+        User loginUser = userService.findByAccount(account);
         log.info("根据用户名查询的用户信息" + loginUser.toString());
         if (loginUser != null && !password.equals(loginUser.getPassword())) {
             return CommonResponse.errorTokenMsg("密码错误");
@@ -204,15 +200,14 @@ public class UserController {
     /**
      * 根据codes删除用户.
      *
-     * @param jsonString
+     * @param codesDTO
      * @return
      */
     @DeleteMapping
-    public CommonResponse delete(@RequestBody String jsonString) {
-        if (StringUtils.isEmpty(jsonString)) {
+    public CommonResponse delete(@RequestBody CodesDTO codesDTO) {
+        if (StringUtils.isEmpty(codesDTO)) {
             return CommonResponse.errorMsg("请选择要删除的数据!");
         }
-        CodesDTO codesDTO = JsonUtils.jsonToPojo(jsonString, CodesDTO.class);
         List<String> codes = codesDTO.getCodes();
         Boolean b = userService.delete(codes);
         if (!b) {
@@ -226,51 +221,40 @@ public class UserController {
     /**
      * 添加用户.
      *
-     * @param jsonString
+     * @param user
      * @return
      */
     @PostMapping()
-    public CommonResponse create(@RequestBody String jsonString) {
-        if (jsonString == null || "".equals(jsonString)) {
+    public CommonResponse create(@RequestBody User user) {
+        if (StringUtils.isEmpty(user)) {
             return CommonResponse.errorMsg("参数不能为空");
         }
-        UserIn user = JsonUtils.jsonToPojo(jsonString, UserIn.class);
-
         if (StringUtils.isEmpty(user.getAccount())) {
             return CommonResponse.errorMsg("账号 不能为空");
         }
         if (StringUtils.isEmpty(user.getName())) {
             return CommonResponse.errorMsg("用户名 不能为空");
         }
-        String roleCode = user.getRoleCode();
-        if (StringUtils.isEmpty(roleCode)) {
-            return CommonResponse.errorMsg("用户角色id 不能为空");
-        }
-        // todo
         String deptCode = user.getDeptCode();
         if (StringUtils.isEmpty(deptCode)) {
             return CommonResponse.errorMsg("用户部门code不能为空");
+        }
+        List<RoleSmall> roles = user.getRoles();
+        if (StringUtils.isEmpty(roles)) {
+            return CommonResponse.errorMsg("用户角色roles不能为空");
         }
         User userCheck = userService.findByAccount(user.getAccount());
         if (!StringUtils.isEmpty(userCheck)) {
             return CommonResponse.errorMsg("账号已存在,请勿重复添加");
         }
-        User user1 = new User();
-        user1.setCode(CodeUtil.getCode());
-        user1.setPassword("123456");
-        user1.setAccount(user.getAccount());
-        user1.setName(user.getName());
-        user1.setMail(user.getMail());
-        user1.setSex(user.getSex());
-        user1.setSorting(user.getSorting());
-        user1.setTelephone(user.getTelephone());
-        user1.setRemark(user.getRemark());
+        user.setCode(CodeUtil.getCode());
+        user.setPassword("123456");
         //TODO 从redis中获取登陆人姓名
-        user1.setUpdateBy("admin");
-        user1.setCreateBy("admin");
-        Boolean b = userService.create(user1);
+        user.setUpdateBy("admin");
+        user.setCreateBy("admin");
+        Boolean b = userService.create(user);
         if (!b == true) {
-            return CommonResponse.errorMsg("添加失败");
+            return CommonResponse.errorMsg("添加用户失败");
         }
         //  用户部门关系表添加
         User user2 = userService.findByAccount(user.getAccount());
@@ -282,13 +266,16 @@ public class UserController {
             return CommonResponse.errorMsg("用户关联部门失败");
         }
         //  用户角色表添加
-        RoleUser roleUser = new RoleUser();
-        roleUser.setRoleCode(roleCode);
-        roleUser.setUserCode(user2.getCode());
-        Boolean b3 = roleUserService.create(roleUser);
-        if (!b3) {
-            return CommonResponse.errorMsg("用户关联角色失败");
+        for (RoleSmall role : roles) {
+            RoleUser roleUser = new RoleUser();
+            roleUser.setRoleCode(role.getCode());
+            roleUser.setUserCode(user2.getCode());
+            Boolean b3 = roleUserService.create(roleUser);
+            if (!b3) {
+                return CommonResponse.errorMsg("用户关联角色失败");
+            }
         }
+
         return CommonResponse.ok("用户添加成功");
     }
 
