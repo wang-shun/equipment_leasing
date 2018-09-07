@@ -42,12 +42,7 @@
     <result column="position_code" property="positionCode" jdbcType="VARCHAR" />
     <result column="state_code" property="stateCode" jdbcType="VARCHAR" />
     <result column="cost_years" property="costYears" jdbcType="TINYINT" />
-    <result column="lease_rate" property="leaseRate" jdbcType="DOUBLE" />
-    <result column="repair_ratio" property="repairRatio" jdbcType="DOUBLE" />
-    <result column="manage_fee_ratio" property="manageFeeRatio" jdbcType="DOUBLE" />
-    <result column="equipment_use_ratio" property="equipmentUseRatio" jdbcType="DOUBLE" />
     <result column="day_lease_fee" property="dayLeaseFee" jdbcType="DOUBLE" />
-    <result column="new_ratio" property="newRatio" jdbcType="DOUBLE" />
     <result column="main_para" property="mainPara" jdbcType="VARCHAR" />
     <result column="para1" property="para1" jdbcType="VARCHAR" />
     <result column="para2" property="para2" jdbcType="VARCHAR" />
@@ -63,8 +58,8 @@
     factory, prod_date, prod_code, ma_code, ma_start_date, ma_end_date, proof, proof_code, 
     license, arrive_date, use_date, comp, contranct, buy_price, is_new, ware, is_rfid, 
     asset_code, status, create_by, create_at, update_by, update_at, version, position_code, 
-    state_code, cost_years, lease_rate, repair_ratio, manage_fee_ratio, equipment_use_ratio, 
-    day_lease_fee, new_ratio, main_para, para1, para2, para3, para4, para5, para6, para7, para8
+    state_code, cost_years,
+    day_lease_fee, main_para, para1, para2, para3, para4, para5, para6, para7, para8
   </sql>
   <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select t.*,t1.name as sbtype_one_name,t2.name as sbtype_two_name,t3.name as sbtype_three_name,t4.name as sbmodel_name
@@ -107,8 +102,7 @@
       create_by, create_at,
       update_by, update_at,
       position_code, state_code, cost_years, 
-      lease_rate, repair_ratio, manage_fee_ratio, 
-      equipment_use_ratio, day_lease_fee, new_ratio,
+      day_lease_fee,
       main_para, para1, para2, para3, para4, para5, para6, para7, para8
       )
     values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
@@ -123,8 +117,7 @@
       #{createBy,jdbcType=VARCHAR}, CURRENT_TIMESTAMP(),
       #{updateBy,jdbcType=VARCHAR}, CURRENT_TIMESTAMP(),
       #{positionCode,jdbcType=VARCHAR}, #{stateCode,jdbcType=VARCHAR}, #{costYears,jdbcType=TINYINT}, 
-      #{leaseRate,jdbcType=DOUBLE}, #{repairRatio,jdbcType=DOUBLE}, #{manageFeeRatio,jdbcType=DOUBLE}, 
-      #{equipmentUseRatio,jdbcType=DOUBLE}, #{dayLeaseFee,jdbcType=DOUBLE}, #{newRatio,jdbcType=DOUBLE},
+      #{dayLeaseFee,jdbcType=DOUBLE},
       #{mainPara,jdbcType=VARCHAR},#{para1,jdbcType=VARCHAR},#{para2,jdbcType=VARCHAR},
       #{para3,jdbcType=VARCHAR},#{para4,jdbcType=VARCHAR},#{para5,jdbcType=VARCHAR},
       #{para6,jdbcType=VARCHAR},#{para7,jdbcType=VARCHAR},#{para8,jdbcType=VARCHAR}
@@ -163,12 +156,7 @@
       position_code = #{positionCode,jdbcType=VARCHAR},
       state_code = #{stateCode,jdbcType=VARCHAR},
       cost_years = #{costYears,jdbcType=TINYINT},
-      lease_rate = #{leaseRate,jdbcType=DOUBLE},
-      repair_ratio = #{repairRatio,jdbcType=DOUBLE},
-      manage_fee_ratio = #{manageFeeRatio,jdbcType=DOUBLE},
-      equipment_use_ratio = #{equipmentUseRatio,jdbcType=DOUBLE},
       day_lease_fee = #{dayLeaseFee,jdbcType=DOUBLE},
-      new_ratio = #{newRatio,jdbcType=DOUBLE},
       main_para = #{mainPara,jdbcType=VARCHAR},
       para1 = #{para1,jdbcType=VARCHAR},
       para2 = #{para2,jdbcType=VARCHAR},
