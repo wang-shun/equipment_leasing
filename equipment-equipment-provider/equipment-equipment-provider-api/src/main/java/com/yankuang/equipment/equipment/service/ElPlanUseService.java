@@ -38,4 +38,16 @@ public interface ElPlanUseService {
      * @return
      */
     PageInfo<ElPlanUse> list(Integer page, Integer size, Map elPlanUseMap);
+
+    /**
+     * 对在租的通用设备进行解除锁定
+     * @return
+     */
+    boolean unbindSbT();
+
+    /**
+     * 对在租的通用设备进行解除锁定
+     * @return
+     */
+    boolean unbindSbZ();
 }
