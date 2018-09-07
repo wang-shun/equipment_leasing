@@ -51,31 +51,31 @@
     <update id="update" parameterType="ElUse">
         UPDATE el_use
         <set >
-            <if test="approveCode != null" >
+            <if test="approveCode != null and approveCode != ''" >
                 approve_code = #{approveCode,jdbcType=VARCHAR},
             </if>
-            <if test="code != null" >
+            <if test="code != null and code != ''" >
                 code = #{code,jdbcType=VARCHAR},
             </if>
-            <if test="sorting != null" >
+            <if test="sorting != null and sorting != ''" >
                 sorting = #{sorting,jdbcType=VARCHAR},
             </if>
-            <if test="isDel != null" >
+            <if test="isDel != null " >
                 is_del = #{isDel,jdbcType=TINYINT},
             </if>
-            <if test="status != null" >
+            <if test="status != null and status != ''" >
                 status = #{status,jdbcType=VARCHAR},
             </if>
-            <if test="useBy != null" >
+            <if test="useBy != null and useBy != ''" >
                 use_by = #{useBy,jdbcType=VARCHAR},
             </if>
             <if test="useAt != null" >
                 use_at = #{useAt,jdbcType=TIMESTAMP},
             </if>
-            <if test="usePosition != null" >
+            <if test="usePosition != null " >
                 use_position = #{usePosition,jdbcType=BIGINT},
             </if>
-            <if test="useEquipmentType != null" >
+            <if test="useEquipmentType != null and useEquipmentType != ''"  >
                 use_equipment_type = #{useEquipmentType,jdbcType=VARCHAR},
             </if>
             <if test="approveBy != null" >
@@ -84,28 +84,28 @@
             <if test="approveAt != null" >
                 approve_at = #{approveAt,jdbcType=TIMESTAMP},
             </if>
-            <if test="approveOpinion != null" >
+            <if test="approveOpinion != null and approveOpinion != ''" >
                 approve_opinion = #{approveOpinion,jdbcType=VARCHAR},
             </if>
-            <if test="createBy != null" >
+            <if test="createBy != null and createBy != ''" >
                 create_by = #{createBy,jdbcType=VARCHAR},
             </if>
             <if test="createAt != null" >
                 create_at = #{createAt,jdbcType=TIMESTAMP},
             </if>
-            <if test="updateBy != null" >
+            <if test="updateBy != null and updateBy != ''" >
                 update_by = #{updateBy,jdbcType=VARCHAR},
             </if>
             <if test="updateAt != null" >
                 update_at = #{updateAt,jdbcType=TIMESTAMP},
             </if>
-            <if test="version != null" >
+            <if test="version != null and version != ''" >
                 version = #{version,jdbcType=VARCHAR},
             </if>
-            <if test="remarks != null" >
+            <if test="remarks != null and remarks != ''" >
                 remarks = #{remarks,jdbcType=VARCHAR},
             </if>
-            <if test="isUse != null">
+            <if test="isUse != null ">
                 is_use = #{isUse,jdbcType=TINYINT}
             </if>
         </set>
@@ -141,31 +141,31 @@
         LEFT JOIN el_user user
         ON t1.use_by = user.code
         WHERE 1=1
-        <if test="approveCode != null" >
+        <if test="approveCode != null and approveCode != ''" >
             AND t1.approve_code = #{approveCode,jdbcType=VARCHAR}
         </if>
-        <if test="code != null" >
+        <if test="code != null and code != ''" >
             AND t1.code = #{code,jdbcType=VARCHAR}
         </if>
-        <if test="sorting != null" >
+        <if test="sorting != null and sorting != ''" >
             AND t1.sorting = #{sorting,jdbcType=VARCHAR}
         </if>
         <if test="isDel != null" >
             AND t1.is_del = #{isDel,jdbcType=TINYINT}
         </if>
-        <if test="status != null" >
+        <if test="status != null and status != ''" >
             AND t1.status = #{status,jdbcType=VARCHAR}
         </if>
-        <if test="useBy != null" >
+        <if test="useBy != null and useBy != ''" >
             AND t1.use_by = #{useBy,jdbcType=VARCHAR}
         </if>
-        <if test="useAt != null" >
+        <if test="useAt != null " >
             AND t1.use_at = #{useAt,jdbcType=TIMESTAMP}
         </if>
-        <if test="usePosition != null" >
+        <if test="usePosition != null and usePosition != ''" >
             AND t1.use_position = #{usePosition,jdbcType=VARCHAR}
         </if>
-        <if test="useEquipmentType != null" >
+        <if test="useEquipmentType != null and useEquipmentType != ''" >
             AND t1.use_equipment_type = #{useEquipmentType,jdbcType=VARCHAR}
         </if>
         <if test="approveBy != null" >
@@ -174,31 +174,31 @@
         <if test="approveAt != null" >
             AND t1.approve_at = #{approveAt,jdbcType=TIMESTAMP}
         </if>
-        <if test="approveOpinion != null" >
+        <if test="approveOpinion != null and approveOpinion != ''" >
             AND t1.approve_opinion = #{approveOpinion,jdbcType=VARCHAR}
         </if>
-        <if test="createBy != null" >
+        <if test="createBy != null and createBy != ''" >
             AND t1.create_by = #{createBy,jdbcType=VARCHAR}
         </if>
         <if test="createAt != null" >
             AND t1.create_at = #{createAt,jdbcType=TIMESTAMP}
         </if>
-        <if test="updateBy != null" >
+        <if test="updateBy != null and updateBy != ''" >
             AND t1.update_by = #{updateBy,jdbcType=VARCHAR}
         </if>
         <if test="updateAt != null" >
             AND t1.update_at = #{updateAt,jdbcType=TIMESTAMP}
         </if>
-        <if test="version != null" >
+        <if test="version != null and version != ''" >
             AND t1.version = #{version,jdbcType=VARCHAR}
         </if>
-        <if test="remarks != null" >
+        <if test="remarks != null and remarks != ''" >
             AND t1.remarks = #{remarks,jdbcType=VARCHAR}
         </if>
-        <if test="startTime != null">
+        <if test="startTime != null and startTime != ''">
             AND t1.use_at >= #{startTime,jdbcType=TIMESTAMP}
         </if>
-        <if test="endTime != null">
+        <if test="endTime != null and endTime != ''">
             AND t1.use_at &lt;= #{endTime,jdbcType=TIMESTAMP}
         </if>
         AND t1.is_del != 99
