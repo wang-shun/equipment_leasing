@@ -7,7 +7,6 @@ import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @Table(name = "el_user")
 @Data
@@ -39,14 +38,14 @@ public class User implements Serializable {
 
     private String updateBy;
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date updateAt;
 
     private Long sorting;
 
     private Long version;
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createAt;
 
     private String projectCode;
@@ -55,7 +54,9 @@ public class User implements Serializable {
 
     private String deptName;
 
-    private List<RoleSmall> roles;
+    private List<ResultSmall> roles;
+
+    private List<ResultSmall> authorities;
 
     private List<String> roleCodes;
 

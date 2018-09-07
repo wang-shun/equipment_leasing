@@ -328,14 +328,36 @@ public class UserController {
 
 
     /**
-     * 根据code查询用户....
+     * 根据code查询用户详情.
      *
      * @param code
      * @return
      */
     @GetMapping(value = "/{code}")
     public CommonResponse findById(@PathVariable String code) {
-        return CommonResponse.ok(userService.findByCode(code));
+
+        User user = userService.findByCode(code);
+        List<Role> roleList = roleService.findByUserCode(code);
+        // 用户角色
+        List<ResultSmall> roles = new ArrayList<>();
+        for (Role role : roleList) {
+            ResultSmall resultSmall = new ResultSmall();
+            resultSmall.setName(role.getName());
+            resultSmall.setCode(role.getCode());
+            roles.add(resultSmall);
+        }
+        user.setRoles(roles);
+        // 用户权限
+        List<Authority> authoritieList = authorityService.findByUserCode(code);
+        List<ResultSmall> authorities = new ArrayList<>();
+        for (Authority authority : authoritieList) {
+            ResultSmall resultSmall = new ResultSmall();
+            resultSmall.setName(authority.getName());
+            resultSmall.setCode(authority.getCode());
+            authorities.add(resultSmall);
+        }
+        user.setAuthorities(authorities);
+        return CommonResponse.ok(user);
     }
 
 
