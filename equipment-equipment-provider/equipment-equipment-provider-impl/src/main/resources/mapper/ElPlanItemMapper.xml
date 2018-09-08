@@ -289,12 +289,12 @@
       e1.specification_code  as specification_code,
       e1.status as status
       FROM el_plan_item e1
-      left join sb_type e3 on e1.big_type_code = e3.code and e3.status= 1
-      left join el_department t2 on e1.position_id = t2.id and t2.status= 1
-      left join sb_type e4 on e1.middle_type_code = e4.code and e4.status= 1
-      left join sb_type e5 on e1.small_type_code = e5.code and e5.status= 1
-      left join sb_model e6 on e1.specification_code = e6.code and e6.status= 1
-      left join sb_position e7 on e1.effect_code = e7.code and e7.status= 1
+      left join sb_type e3 on e1.big_type_code = e3.code
+      left join el_department t2 on e1.position_id = t2.id
+      left join sb_type e4 on e1.middle_type_code = e4.code
+      left join sb_type e5 on e1.small_type_code = e5.code
+      left join sb_model e6 on e1.specification_code = e6.code
+      left join sb_position e7 on e1.effect_code = e7.code
     WHERE e1.plan_id = #{planId} and e1.status = '1'
   </select>
     <select id="findByItemId" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -319,12 +319,12 @@
       e1.small_type_code as small_type_code,
       e1.specification_code  as specification_code
       FROM el_plan_item e1
-      left join sb_type e3 on e1.big_type_code = e3.code and e3.status= 1
-      left join el_department t2 on e1.position_id = t2.id and t2.status= 1
-      left join sb_type e4 on e1.middle_type_code = e4.code and e4.status= 1
-      left join sb_type e5 on e1.small_type_code = e5.code and e5.status= 1
-      left join sb_model e6 on e1.specification_code = e6.code and e6.status= 1
-      left join sb_position e7 on e1.effect_code = e7.code and e7.status= 1
+      left join sb_type e3 on e1.big_type_code = e3.code
+      left join el_department t2 on e1.position_id = t2.id
+      left join sb_type e4 on e1.middle_type_code = e4.code
+      left join sb_type e5 on e1.small_type_code = e5.code
+      left join sb_model e6 on e1.specification_code = e6.code
+      left join sb_position e7 on e1.effect_code = e7.code
     WHERE e1.item_id = #{itemId} and e1.status = '1'
   </select>
     <update id="update" parameterType="com.yankuang.equipment.equipment.model.ElPlanItem">

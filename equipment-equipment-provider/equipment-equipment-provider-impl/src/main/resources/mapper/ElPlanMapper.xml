@@ -175,7 +175,7 @@
         p1.plan_sorting AS plan_sorting,
         p1.plan_version AS plan_version
         FROM el_plan p1
-        left join el_department p2 on p1.plan_position = p2.code and p2.status = 1
+        left join el_department p2 on p1.plan_position = p2.code
         WHERE p1.plan_id = #{planId} AND p1.plan_is_del = 0
     </select>
 
@@ -281,7 +281,7 @@
         e1.plan_sorting AS plan_sorting,
         e1.plan_version AS plan_version
         FROM el_plan e1
-        left join el_department e2 on e2.code = e1.plan_position and e2.status = 1
+        left join el_department e2 on e2.code = e1.plan_position
         <where>
             1 = 1 AND e1.plan_is_del = 0
             <if test="planYear != null and planYear != ''" >
@@ -458,7 +458,7 @@
         </trim>
     </insert>
 <!--根据多条件查询计划对象-->
-    <select id="findByCreatorId" parameterType="ElPlan" resultMap="ElPlanMap">
+    <select id="findByCreatorId" parameterType="com.yankuang.equipment.equipment.model.ElPlan" resultMap="ElPlanMap">
         SELECT <include refid="cols_all"/>
         FROM el_plan
         WHERE
