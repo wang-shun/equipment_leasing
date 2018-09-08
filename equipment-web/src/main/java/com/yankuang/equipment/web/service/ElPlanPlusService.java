@@ -148,7 +148,7 @@ public class ElPlanPlusService {
                     if (Constants.PLANEQUIPMENTTYPE_INTEGRATED.equals(plan.getPlanEquipmentType())) {
                         // TODO 设备管理中心编码暂定
                         SbPosition position = new SbPosition();
-                        position.setPosition("84");
+                        position.setPosition("28");
                         List<SbPosition> sbPositions = sbPositionService.list(position, 1, 1000).getList();
                         for (SbPosition sbPosition : sbPositions) {
                             SbEquipmentZ sbEquipmentZ = new SbEquipmentZ();
