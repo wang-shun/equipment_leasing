@@ -498,7 +498,7 @@ public class ElPlanController {
             elPlan.setPlanEquipmentType(elPlanDTO.getPlanEquipmentType());
             elPlan.setPlanType(elPlanDTO.getPlanType());
             List<ElPlan> elPlans = elPlanService.findByCreatorId(elPlan);
-            if (elPlans.size() <= 0) {
+            if (elPlans == null || elPlans.size() <= 0) {
                 return CommonResponse.ok();
             }
             List<String> planIds = new ArrayList<>();
