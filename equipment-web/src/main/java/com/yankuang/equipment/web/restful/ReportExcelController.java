@@ -28,7 +28,7 @@ public class ReportExcelController {
      * @throws IOException
      */
     @GetMapping("excelDetails")
-    protected void excelDetails(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void excelDetails(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         List<GeneralMechanicalDetails> list = new ArrayList<GeneralMechanicalDetails>();
 
@@ -192,7 +192,7 @@ public class ReportExcelController {
     }
 
     /**
-     * 综机折旧修理费表
+     * 综机设备使用清单
      * @param request
      * @param response
      * @throws IOException
@@ -262,7 +262,7 @@ public class ReportExcelController {
     }
 
     /**
-     * 综机折旧修理费汇总表
+     * 综机折旧修理费汇总表（综机折旧修理费月报（煤业）、综机折旧修理费月报（东华）、煤业综机折旧修理费、东华综机折旧修理费可用）
      * @param request
      * @param response
      * @throws IOException

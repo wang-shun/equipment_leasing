@@ -1293,7 +1293,7 @@ public class ExcelUtil {
 
     /**
      * 功能 :获取表单导出数据
-     * 表名：2018年综机折旧修理费汇总表
+     * 表名：2018年综机折旧修理费汇总表（综机折旧修理费月报（煤业）、综机折旧修理费月报（东华）、煤业综机折旧修理费、东华综机折旧修理费可用）
      */
     public HSSFWorkbook comprehensiveDepreciationRCostCollect(List<ComprehensiveDepreciationRCostCollect> list) {
 
@@ -1665,7 +1665,6 @@ public class ExcelUtil {
     public HSSFWorkbook comprehensiveMachineryDRCostMonthly(List<ComprehensiveMachineryDRCostMonthly> list) {
 
         //第一行表头字段，合并单元格时字段跨几列就将该字段重复几次
-        //此处的标题需要进行判断，进行多次复用（煤业综机折旧修理费、东华综机折旧修理费、皆可用）
         String[] excelHeader0 = {  "2018年综机折旧修理费月报（汇总）---6月份", "", "", "", "", "", "", "", ""};
         String[] headnum0 = { "0,0,0,8", "0,0,0,8","0,0,0,8","0,0,0,8","0,0,0,8","0,0,0,8","0,0,0,8","0,0,0,8","0,0,0,8"};
 
@@ -1959,7 +1958,6 @@ public class ExcelUtil {
     public HSSFWorkbook comprehensiveMachineryDRCostMonthlyCollect(List<ComprehensiveMachineryDRCostMonthlyCollect> list) {
 
         //第一行表头字段，合并单元格时字段跨几列就将该字段重复几次
-        //此处的标题需要进行判断，进行多次复用（煤业综机折旧修理费、东华综机折旧修理费、皆可用）
         String[] excelHeader0 = {  "2018年综机折旧修理费月报（汇总）---6月份", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""};
         String[] headnum0 = { "0,0,0,18", "0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18"};
 
