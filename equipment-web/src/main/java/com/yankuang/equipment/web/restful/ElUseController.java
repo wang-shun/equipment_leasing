@@ -14,10 +14,7 @@ import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author boms
@@ -117,17 +114,38 @@ public class ElUseController {
 
         List<ElUseItem> elUseItems = elUse.getElUseItems();
 
-        if (elUseItems == null){
+        if (elUseItems == null || elUseItems.size() <= 0){
             return CommonResponse.ok();
         }
         //更新领用明细表
         for (ElUseItem elUseItem:elUseItems){
             if (elUseItem.getItemId() == null){
-                return CommonResponse.build(520,"id不能为空",null);
-            }
-
-            if (elUseItemService.update(elUseItem) == false){
-                return CommonResponse.build(500,"更新失败",null);
+                elUseItem.setUseId(elUse.getId());
+                if (elUseItem.getEquipmentId() == null){
+                    return CommonResponse.build(500,"设备id不能为空",null);
+                }
+                if (elUseItem.getEquipmentEffect() == null || " ".equals(elUseItem.getEquipmentEffect())){
+                    return CommonResponse.build(500,"功能位置不能为空",null);
+                }
+                if (elUseItem.getPlanUseId() == null){
+                    return CommonResponse.build(500,"id不能为空",null);
+                }
+                if (elUseItem.getEquipmentPosition() == null|| "".equals(elUseItem.getEquipmentPosition())){
+                    return CommonResponse.build(500,"领用单位不能为空",null);
+                }
+                Integer equipmentNum = elUseItem.getEquipmentNum() == null?1:elUseItem.getEquipmentNum();
+                String equipmentStatus = (elUseItem.getStatus() == null || " ".equals(elUseItem.getStatus()))?"1":elUseItem.getStatus();
+                elUseItem.setStatus(equipmentStatus);
+                String equipmentCode = (elUseItem.getCode() == null || " ".equals(elUseItem.getStatus()))?"1": elUseItem.getCode();
+                elUseItem.setStatus(equipmentCode);
+                elUseItem.setEquipmentPosition(elUse.getUsePosition());
+                elUseItem.setEquipmentNum(equipmentNum);
+                Date date = elUseItem.getUseAt() == null?new Date():elUse.getUseAt();
+                elUseItem.setUseAt(date);
+                elUseItem.setIsUse((byte)1);
+                if (elUseItemService.create(elUseItem) == false){
+                    return CommonResponse.build(500,"更新失败",null);
+                }
             }
         }
         return CommonResponse.ok();
@@ -189,11 +207,18 @@ public class ElUseController {
                 return CommonResponse.errorMsg("传入对象为空");
             }
             if (elUse.getUseBy() != null && !"".equals(elUse.getUseBy())) {
-                User user = userService.findByName(elUse.getUseBy());
-                if (user == null) {
+                List<User> users = userService.findByName(elUse.getUseBy());
+                if (users == null || users.size() <= 0) {
                     return CommonResponse.build(500,"不存在该用户",null);
                 }
-                elUseMap.put("useBy", user.getCode());
+                //循环获取领用code
+                List<String> useByList = new ArrayList<>();
+                for (User user:users){
+                    if (user != null){
+                        useByList.add(user.getCode());
+                    }
+                }
+                elUseMap.put("useByList", useByList);
             }
             elUseMap.put("usePosition",elUse.getUsePosition());
             elUseMap.put("startTime", elUse.getStartTime());
@@ -427,11 +452,17 @@ public class ElUseController {
                 return CommonResponse.errorMsg("传入对象为空");
             }
             if (elUse.getUseBy() != null && !"".equals(elUse.getUseBy())) {
-                User user = userService.findByName(elUse.getUseBy());
-                if (user == null) {
+                List<User> users = userService.findByName(elUse.getUseBy());
+                if (users == null || users.size() <= 0) {
                     return CommonResponse.build(500,"不存在该用户",null);
                 }
-                elUseMap.put("useBy", user.getCode());
+                List<String> useByList = new ArrayList<>();
+                for (User user:users){
+                    if (user != null){
+                        useByList.add(user.getCode());
+                    }
+                }
+                elUseMap.put("useByList", useByList);
             }
             elUseMap.put("usePosition",elUse.getUsePosition());
             elUseMap.put("startTime", elUse.getStartTime());

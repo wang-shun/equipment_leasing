@@ -57,7 +57,7 @@ public class ElUseServiceImpl implements ElUseService{
         elUse.setIsUse((byte)1);
         int num = Integer.parseInt(elUseMapper.create(elUse)+"");
         List<ElUseItem> elUseItems = elUse.getElUseItems();
-        if (elUseItems == null){
+        if (elUseItems == null || elUseItems.size() <= 0){
             return false;
         }
         for (ElUseItem elUseItem:elUseItems){

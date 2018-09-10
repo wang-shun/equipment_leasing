@@ -525,6 +525,7 @@ public class ElPlanController {
             elPlanUseMap.put("effectCode",elPlanDTO.getEffectCode());
             elPlanUseMap.put("equipmentModel",elPlanDTO.getEquipmentModel());
             elPlanUseMap.put("equipmentFactory",elPlanDTO.getEquipmentFactory());
+            elPlanUseMap.put("equipmentCode",elPlanDTO.getEquipmentCode());
             if(elPlanUseService.list(page,size,elPlanUseMap) == null){
                 return CommonResponse.ok();
             }

@@ -86,6 +86,4 @@ public class ElPlanUse implements Serializable {
     private String assetCode;
 
     private String positionCode;
-
-    private String itemId;
 }
