@@ -72,6 +72,7 @@ public class RoleController {
             // 添加,添加关联表
             String roleCode = getCode(deptCode);
             role.setCode(roleCode);
+            role.setProjectCode("sb001");
             role.setSorting((long) 1);
             role.setCreateBy("admin");
             role.setUpdateBy("admin");

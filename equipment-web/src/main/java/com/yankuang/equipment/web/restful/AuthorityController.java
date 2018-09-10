@@ -82,6 +82,7 @@ public class AuthorityController {
         // 不存在 ，添加权限
         if (StringUtils.isEmpty(au)) {
             authority.setCode(getCode());
+            // todo redis中获得
             authority.setCreateBy("admin");
             authority.setUpdateBy("admin");
             authority.setProjectCode("sb001");
