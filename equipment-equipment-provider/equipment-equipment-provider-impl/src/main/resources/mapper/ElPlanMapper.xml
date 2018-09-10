@@ -147,36 +147,36 @@
     </sql>
 
     <select id="findById" parameterType="java.lang.String" resultMap="ElPlanMap" >
-        SELECT e1.plan_id AS plan_id,
-        e1.plan_year AS plan_year,
-        e1.plan_month AS plan_month,
-        e1.plan_quarter AS plan_quarter,
-        e1.plan_position AS plan_position,
-        e2.name AS plan_position_name,
-        e1.plan_remarks AS plan_remarks,
-        e1.plan_opinion AS plan_opinion,
-        e1.plan_creator_id AS plan_creator_id,
-        e1.plan_creator_name AS plan_creator_name,
-        e1.plan_status AS plan_status,
-        e1.plan_approve_time AS plan_approve_time,
-        from_unixtime(e1.plan_approve_time/1000, '%Y-%m-%d %H:%I:%S') AS approve_time_str,
-        e1.plan_approver_id AS plan_approver_id,
-        e1.plan_approver_name AS plan_approver_name,
-        e1.plan_equipment_type AS plan_equipment_type,
-        e1.plan_type AS plan_type,
-        e1.plan_is_del AS plan_is_del,
-        e1.plan_create_time AS plan_create_time,
-        from_unixtime(e1.plan_create_time/1000, '%Y-%m-%d %H:%I:%S') AS create_time_str,
-        e1.plan_update_time AS plan_update_time,
-        from_unixtime(e1.plan_update_time/1000, '%Y-%m-%d %H:%I:%S') AS update_time_str,
-        e1.plan_code AS plan_code,
-        e1.plan_updator_id AS plan_updator_id,
-        e1.plan_updator_name AS plan_updator_name,
-        e1.plan_sorting AS plan_sorting,
-        e1.plan_version AS plan_version
-        FROM el_plan e1
-        left join el_organization e2 on e2.id = e1.plan_position and e2.status = 1
-        WHERE plan_id = #{planId} AND plan_is_del = 0
+        SELECT p1.plan_id AS plan_id,
+        p1.plan_year AS plan_year,
+        p1.plan_month AS plan_month,
+        p1.plan_quarter AS plan_quarter,
+        p1.plan_position AS plan_position,
+        p2.name AS plan_position_name,
+        p1.plan_remarks AS plan_remarks,
+        p1.plan_opinion AS plan_opinion,
+        p1.plan_creator_id AS plan_creator_id,
+        p1.plan_creator_name AS plan_creator_name,
+        p1.plan_status AS plan_status,
+        p1.plan_approve_time AS plan_approve_time,
+        from_unixtime(p1.plan_approve_time/1000, '%Y-%m-%d %H:%I:%S') AS approve_time_str,
+        p1.plan_approver_id AS plan_approver_id,
+        p1.plan_approver_name AS plan_approver_name,
+        p1.plan_equipment_type AS plan_equipment_type,
+        p1.plan_type AS plan_type,
+        p1.plan_is_del AS plan_is_del,
+        p1.plan_create_time AS plan_create_time,
+        from_unixtime(p1.plan_create_time/1000, '%Y-%m-%d %H:%I:%S') AS create_time_str,
+        p1.plan_update_time AS plan_update_time,
+        from_unixtime(p1.plan_update_time/1000, '%Y-%m-%d %H:%I:%S') AS update_time_str,
+        p1.plan_code AS plan_code,
+        p1.plan_updator_id AS plan_updator_id,
+        p1.plan_updator_name AS plan_updator_name,
+        p1.plan_sorting AS plan_sorting,
+        p1.plan_version AS plan_version
+        FROM el_plan p1
+        left join el_department p2 on p1.plan_position = p2.code
+        WHERE p1.plan_id = #{planId} AND p1.plan_is_del = 0
     </select>
 
     <update id="update" parameterType="com.yankuang.equipment.equipment.model.ElPlan">
@@ -281,7 +281,7 @@
         e1.plan_sorting AS plan_sorting,
         e1.plan_version AS plan_version
         FROM el_plan e1
-        left join el_organization e2 on e2.id = e1.plan_position and e2.status = 1
+        left join el_department e2 on e2.code = e1.plan_position
         <where>
             1 = 1 AND e1.plan_is_del = 0
             <if test="planYear != null and planYear != ''" >
@@ -458,12 +458,12 @@
         </trim>
     </insert>
 <!--根据多条件查询计划对象-->
-    <select id="findByCreatorId" parameterType="ElPlan" resultMap="ElPlanMap">
+    <select id="findByCreatorId" parameterType="com.yankuang.equipment.equipment.model.ElPlan" resultMap="ElPlanMap">
         SELECT <include refid="cols_all"/>
         FROM el_plan
         WHERE
         1=1
-        <if test="planId != null" >
+        <if test="planId != null">
             AND plan_id = #{planId}
         </if>
         <if test="planYear != null" >
@@ -475,34 +475,34 @@
         <if test="planQuarter != null" >
             AND plan_quarter = #{planQuarter}
         </if>
-        <if test="planPosition != null" >
+        <if test="planPosition != null and planPosition != ''" >
             AND plan_position = #{planPosition}
         </if>
-        <if test="planRemarks != null" >
+        <if test="planRemarks != null and planRemarks != ''" >
             AND plan_remarks = #{planRemarks}
         </if>
-        <if test="planOpinion != null" >
+        <if test="planOpinion != null and planOpinion != ''" >
             AND plan_opinion = #{planOpinion}
         </if>
-        <if test="planCreatorId != null" >
+        <if test="planCreatorId != null and planCreatorId != ''" >
             AND plan_creator_id = #{planCreatorId}
         </if>
-        <if test="planCreatorName != null" >
+        <if test="planCreatorName != null and planCreatorName != ''" >
             AND plan_creator_name = #{planCreatorName}
         </if>
-        <if test="planStatus != null" >
+        <if test="planStatus != null and planStatus != ''" >
             AND plan_status = #{planStatus}
         </if>
         <if test="planApproveTime != null" >
             AND plan_approve_time = #{planApproveTime}
         </if>
-        <if test="planApproverId != null" >
+        <if test="planApproverId != null and planApproverId != ''" >
             AND plan_approver_id = #{planApproverId}
         </if>
-        <if test="planApproverName != null" >
+        <if test="planApproverName != null and planApproverName != ''" >
             AND plan_approver_name = #{planApproverName}
         </if>
-        <if test="planEquipmentType != null" >
+        <if test="planEquipmentType != null and planEquipmentType != ''" >
             AND plan_equipment_type = #{planEquipmentType}
         </if>
         <if test='planEquipmentType == "1" '>
@@ -517,19 +517,19 @@
         <if test="planUpdateTime != null" >
             AND plan_update_time = #{planUpdateTime}
         </if>
-        <if test="planCode != null" >
+        <if test="planCode != null and planCode != ''" >
             AND plan_code = #{planCode}
         </if>
-        <if test="planUpdatorId != null" >
+        <if test="planUpdatorId != null and planUpdatorId != ''" >
             AND plan_updator_id = #{planUpdatorId}
         </if>
-        <if test="planUpdatorName != null" >
+        <if test="planUpdatorName != null and planUpdatorName != ''" >
             AND plan_updator_name = #{planUpdatorName}
         </if>
-        <if test="planSorting != null" >
+        <if test="planSorting != null and planSorting != ''" >
             AND plan_sorting = #{planSorting}
         </if>
-        <if test="planVersion != null" >
+        <if test="planVersion != null and planVersion != ''" >
             AND plan_version = #{planVersion}
         </if>
         AND plan_is_del != 1

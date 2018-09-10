@@ -5,9 +5,9 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class RoleAuthorityDTO {
+public class UserAuthorityDTO {
 
-    private String roleCode;
+    private String userCode;
 
     private List<String> authorityCodes;
 

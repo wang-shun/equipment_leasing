@@ -27,6 +27,8 @@ public class AuthorityTreeUtils {
                 mapArr.setUrl(x.getUrl());
                 mapArr.setSorting(x.getSorting());
                 mapArr.setIcon(x.getIcon());
+                mapArr.setRemark(x.getRemark());
+                mapArr.setCreateAt(x.getCreateAt());
                 mapArr.setChildList(menuChild(x.getCode()));
                 list.add(mapArr);
             }
@@ -47,6 +49,8 @@ public class AuthorityTreeUtils {
                 childArray.setUrl(a.getUrl());
                 childArray.setSorting(a.getSorting());
                 childArray.setIcon(a.getIcon());
+                childArray.setRemark(a.getRemark());
+                childArray.setCreateAt(a.getCreateAt());
                 childArray.setChildList(menuChild(a.getCode()));
                 lists.add(childArray);
             }

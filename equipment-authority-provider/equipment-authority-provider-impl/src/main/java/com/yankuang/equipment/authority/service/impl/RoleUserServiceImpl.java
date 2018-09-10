@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RpcProvider
@@ -20,20 +21,24 @@ public class RoleUserServiceImpl implements RoleUserService {
         return roleUserMapper.create(roleUser);
     }
 
-    public Boolean deleteByUserCode(String code) {
-        return roleUserMapper.deleteByUserCode(code);
+    public Boolean deleteByUserCode(List<String> codes) {
+        return roleUserMapper.deleteByUserCode(codes);
     }
 
-    public Boolean deleteByRoleCode(String code) {
-        return roleUserMapper.deleteByRoleCode(code);
+    public Boolean deleteByRoleCode(List<String> codes) {
+        return roleUserMapper.deleteByRoleCode(codes);
     }
 
-    public List<RoleUser> findByUserCode(String code) {
-        return roleUserMapper.findByUserCode(code);
+    public List<RoleUser> findByUserCode(List<String> codes) {
+        return roleUserMapper.findByUserCode(codes);
     }
 
-    public List<RoleUser> findByRoleCode(String code) {
-        return roleUserMapper.findByRoleCode(code);
+    public List<RoleUser> findByRoleCode(List<String> codes) {
+        return roleUserMapper.findByRoleCode(codes);
+    }
+
+    public List<RoleUser> findByRoleCodeAndUserCode(Map map) {
+        return roleUserMapper.findByRoleCodeAndUserCode(map);
     }
 
 

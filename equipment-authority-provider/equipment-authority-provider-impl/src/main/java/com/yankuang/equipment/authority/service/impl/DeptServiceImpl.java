@@ -35,8 +35,8 @@ public class DeptServiceImpl implements DeptService {
         return deptMapper.findByCode(code);
     }
 
-    public Dept findByName(String name) {
-        return deptMapper.findByName(name);
+    public Dept findByNameAndPcode(Map map) {
+        return deptMapper.findByNameAndPcode(map);
     }
 
     public List<Dept> findAll() {

@@ -64,4 +64,12 @@ public class ElPlanUse implements Serializable {
     private String effectCode;
 
     private String equipmentFactory;
+
+    private String smallTypeName;
+
+    private String middleTypeName;
+
+    private String bigTypeName;
+
+    private String effectName;
 }

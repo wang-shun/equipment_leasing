@@ -17,7 +17,7 @@ public interface AuthorityMapper {
 
     Authority findByCode(String code);
 
-    Authority findByName(String name);
+    Authority findByNameAndPcode(Map map);
 
     List<Authority> findByUserCode(String code);
 

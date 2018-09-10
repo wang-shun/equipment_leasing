@@ -6,7 +6,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class RoleSmall  implements Serializable {
+public class ResultSmall implements Serializable {
 
     private String code;
 

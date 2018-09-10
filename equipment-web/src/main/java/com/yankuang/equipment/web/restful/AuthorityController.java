@@ -3,6 +3,7 @@ package com.yankuang.equipment.web.restful;
 import com.github.pagehelper.PageInfo;
 import com.yankuang.equipment.authority.model.Authority;
 import com.yankuang.equipment.authority.service.AuthorityService;
+import com.yankuang.equipment.authority.service.CodeService;
 import com.yankuang.equipment.authority.service.RoleAuthorityService;
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.JsonUtils;
@@ -29,23 +30,34 @@ public class AuthorityController {
     AuthorityService authorityService;
 
     @RpcConsumer
-    RoleAuthorityService roleAuthorityService;
+    CodeService codeService;
+
+    /**
+     * 获取数据库id最大值生成.
+     * @return
+     */
+    private String getCode() {
+
+        Map map = new HashMap();
+        map.put("tableName", "el_authority");
+        Long idMax = codeService.findIdMax(map);
+        idMax += 1 ;
+        String code = CodeUtil.getFixedLengthCode(idMax.toString(),4);
+        return code;
+
+    }
 
     /**
      * 添加权限.
      * type=1 添加权限菜单
      * rype=2 添加权限按钮
      *
-     * @param jsonString
+     * @param authority
      * @return
      */
     @PostMapping
     @Transactional
-    public CommonResponse create(@RequestBody String jsonString) {
-        if (jsonString == null || "".equals(jsonString)) {
-            return CommonResponse.errorMsg("参数不能为空");
-        }
-        Authority authority = JsonUtils.jsonToPojo(jsonString, Authority.class);
+    public CommonResponse create(@RequestBody Authority authority) {
         String name = authority.getName();
         if (StringUtils.isEmpty(name)) {
             return CommonResponse.errorTokenMsg("权限name不能为空");
@@ -62,11 +74,15 @@ public class AuthorityController {
         if (StringUtils.isEmpty(sorting)) {
             return CommonResponse.errorTokenMsg("权限sorting不能为空");
         }
-        // 根据权限名称查重
-        Authority au = authorityService.findByName(name);
+        // 根据权限名和pcode称查重
+        Map map = new HashMap();
+        map.put("name", name);
+        map.put("pcode", pcode);
+        Authority au = authorityService.findByNameAndPcode(map);
         // 不存在 ，添加权限
         if (StringUtils.isEmpty(au)) {
-            authority.setCode(CodeUtil.getCode());
+            authority.setCode(getCode());
+            // todo redis中获得
             authority.setCreateBy("admin");
             authority.setUpdateBy("admin");
             authority.setProjectCode("sb001");
@@ -162,6 +178,7 @@ public class AuthorityController {
             tree.setSorting(authority.getSorting());
             tree.setIcon(authority.getIcon());
             tree.setCreateAt(authority.getCreateAt());
+            tree.setRemark(authority.getRemark());
             trees.add(tree);
         }
         AuthorityTreeUtils treeUtils = new AuthorityTreeUtils();

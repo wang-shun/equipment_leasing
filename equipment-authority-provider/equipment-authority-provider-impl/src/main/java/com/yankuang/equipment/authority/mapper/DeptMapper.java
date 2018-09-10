@@ -17,7 +17,7 @@ public interface DeptMapper {
 
     Dept findByCode(String code);
 
-    Dept findByName(String name);
+    Dept findByNameAndPcode(Map map);
 
     List<Dept> list(Map map);
 

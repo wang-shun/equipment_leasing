@@ -18,28 +18,51 @@
     values (#{roleCode}, #{userCode}, "sb001")
   </insert>
 
-  <delete id="deleteByUserCode" parameterType="java.lang.String" >
+  <delete id="deleteByUserCode" parameterType="List" >
     UPDATE el_role_user_mapping
     SET status = 99
-    WHERE user_code = #{userCode}
+    WHERE user_code in
+    <foreach collection="list" item="code" separator="," open="(" close=")">
+      #{code}
+    </foreach>
   </delete>
 
-  <delete id="deleteByRoleCode" parameterType="java.lang.String" >
+  <delete id="deleteByRoleCode" parameterType="List" >
     UPDATE el_role_user_mapping
     SET status = 99
-    WHERE role_code = #{roleCode}
+    WHERE role_code in
+    <foreach collection="list" item="code" separator="," open="(" close=")">
+      #{code}
+    </foreach>
   </delete>
 
-  <select id="findByUserCode" parameterType="String" resultMap="BaseResultMap" >
+  <select id="findByUserCode" parameterType="List" resultMap="BaseResultMap" >
     SELECT <include refid="Base_Column_List" />
     FROM el_role_user_mapping
-    WHERE user_code = #{userCode}
+    WHERE user_code in
+    <foreach collection="list" item="code" separator="," open="(" close=")">
+      #{code}
+    </foreach>
+    AND status != 99
   </select>
 
-  <select id="findByRoleCode" parameterType="long" resultMap="BaseResultMap" >
+  <select id="findByRoleCode" parameterType="List" resultMap="BaseResultMap" >
     SELECT <include refid="Base_Column_List" />
     FROM el_role_user_mapping
-    WHERE role_code= #{roleCode}
+    WHERE role_code in
+    <foreach collection="list" item="code" separator="," open="(" close=")">
+      #{code}
+    </foreach>
+    AND status != 99
+  </select>
+
+  <select id="findByRoleCodeAndUserCode" resultMap="BaseResultMap" parameterType="Map">
+    select
+    <include refid="Base_Column_List"/>
+    from el_role_user_mapping
+    where role_code = #{roleCode}
+    and user_code = #{userCode}
+    and status != 99
   </select>
 
 </mapper>

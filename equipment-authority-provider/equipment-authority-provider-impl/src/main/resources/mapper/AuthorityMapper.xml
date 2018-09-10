@@ -96,11 +96,12 @@
         AND a1.status != 99
     </select>
 
-    <select id="findByName" parameterType="String" resultMap="BaseResultMap">
+    <select id="findByNameAndPcode" parameterType="Map" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM el_authority
         WHERE name = #{name}
+        and pcode = #{pcode}
         AND status != 99
     </select>
 
@@ -108,19 +109,12 @@
         select
         a.name,a.level,a.type,a.url,a.sorting,a.icon,a.code,a.pcode
         from el_authority a
-        left join el_role_authority_mapping ra
-        on a.code = ra.authority_code
-        left join el_role r
-        on r.code = ra.role_code
-        left join el_role_user_mapping ru
-        on r.code = ru.role_code
+        left join el_user_authority_mapping ua
+        on a.code = ua.authority_code
         left join el_user u
-        on u.code = ru.user_code
+        on u.code = ua.user_code
         WHERE a.status != 99
-        and ra.status != 99
-        and r.status != 99
-        and ru.status != 99
-        and u.status != 99
+        and ua.status != 99
         and u.code = #{code}
         ORDER BY a.create_at DESC
     </select>
@@ -144,6 +138,5 @@
         </where>
         order by create_at desc
     </select>
-
 
 </mapper>

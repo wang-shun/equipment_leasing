@@ -1,6 +1,8 @@
 package com.yankuang.equipment.web.restful;
 
 import com.github.pagehelper.PageInfo;
+import com.yankuang.equipment.authority.model.User;
+import com.yankuang.equipment.authority.service.UserService;
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.common.util.StringUtils;
@@ -42,6 +44,9 @@ public class ElUseController {
 
     @RpcConsumer
     SbEquipmentZService sbEquipmentZService;
+
+    @RpcConsumer
+    UserService userService;
 
     /**
      * @method 领用申请添加功能
@@ -178,15 +183,22 @@ public class ElUseController {
                                   @RequestParam Integer size,
                                   @RequestParam String jsonString){
         Map elUseMap = new HashMap();
-        if (!StringUtils.isEmpty(jsonString)){
+        if (jsonString != null || "".equals(jsonString)){
             ElUse elUse = JsonUtils.jsonToPojo(jsonString,ElUse.class);
             if (elUse == null){
                 return CommonResponse.errorMsg("传入对象为空");
             }
-            elUseMap.put("useBy", elUse.getUseBy());
+            if (elUse.getUseBy() != null && !"".equals(elUse.getUseBy())) {
+                User user = userService.findByName(elUse.getUseBy());
+                if (user == null) {
+                    return CommonResponse.build(500,"不存在该用户",null);
+                }
+                elUseMap.put("useBy", user.getCode());
+            }
             elUseMap.put("usePosition",elUse.getUsePosition());
             elUseMap.put("startTime", elUse.getStartTime());
             elUseMap.put("endTime", elUse.getEndTime());
+            elUseMap.put("useEquipmentType",elUse.getUseEquipmentType());
         }
         return CommonResponse.ok(elUseService.list(page, size, elUseMap));
     }
@@ -299,12 +311,17 @@ public class ElUseController {
         }
 
         ElUse elUse = JsonUtils.jsonToPojo(jsonString,ElUse.class);
-
+        if (elUse == null){
+            return CommonResponse.build(500,"该审核对象不存在",null);
+        }
         if (elUse.getId() == null){
             return CommonResponse.errorMsg("id不能为空");
         }
         ElUse chooseElUse = elUseService.select(elUse.getId());
-        if (chooseElUse.getStatus() != "2"){
+        if (chooseElUse == null ){
+            return CommonResponse.build(500,"该审核对象不存在",null);
+        }
+        if (!"2".equals(chooseElUse.getStatus())){
             return CommonResponse.errorMsg("该数据未处于审核状态");
         }
         elUse.setApproveBy(1L);//TODO 待redis开发完，先写死
@@ -341,7 +358,9 @@ public class ElUseController {
         }
 
         ElUse elUse = JsonUtils.jsonToPojo(jsonString,ElUse.class);
-
+        if (elUse == null){
+            return CommonResponse.build(500,"该审核对象不存在",null);
+        }
         if (elUse.getId() == null){
             return CommonResponse.errorMsg("id不能为空");
         }
@@ -349,7 +368,7 @@ public class ElUseController {
         if (chooseElUse == null){
             return CommonResponse.errorMsg("没有该数据");
         }
-        if (chooseElUse.getStatus() != "2"){
+        if (!"2".equals(chooseElUse.getStatus())){
             return CommonResponse.errorMsg("该数据未处于审核状态");
         }
         elUse.setApproveBy(1L);//TODO 待redis开发完，先写死
@@ -407,10 +426,17 @@ public class ElUseController {
             if (elUse == null){
                 return CommonResponse.errorMsg("传入对象为空");
             }
-            elUseMap.put("useBy", elUse.getUseBy());
+            if (elUse.getUseBy() != null && !"".equals(elUse.getUseBy())) {
+                User user = userService.findByName(elUse.getUseBy());
+                if (user == null) {
+                    return CommonResponse.build(500,"不存在该用户",null);
+                }
+                elUseMap.put("useBy", user.getCode());
+            }
             elUseMap.put("usePosition",elUse.getUsePosition());
             elUseMap.put("startTime", elUse.getStartTime());
             elUseMap.put("endTime", elUse.getEndTime());
+            elUseMap.put("useEquipmentType",elUse.getUseEquipmentType());
         }
         return CommonResponse.ok(elUseService.listTz(page, size, elUseMap));
     }
@@ -441,12 +467,17 @@ public class ElUseController {
         }
 
         ElUse elUse = JsonUtils.jsonToPojo(jsonString,ElUse.class);
-
+        if (elUse == null){
+            return CommonResponse.build(500,"该审核对象不存在",null);
+        }
         if (elUse.getId() == null){
             return CommonResponse.errorMsg("id不能为空");
         }
         ElUse chooseElUse = elUseService.select(elUse.getId());
-        if (chooseElUse.getStatus() != "2"){
+        if (elUse == null){
+            return CommonResponse.build(500,"该审核对象不存在",null);
+        }
+        if (!"2".equals(chooseElUse.getStatus())){
             return CommonResponse.errorMsg("该数据未处于审核状态");
         }
         elUse.setApproveBy(1L);//TODO 待redis开发完，先写死

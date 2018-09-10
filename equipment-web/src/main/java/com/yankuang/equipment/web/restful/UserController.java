@@ -45,6 +45,28 @@ public class UserController {
     @RpcConsumer
     AuthorityService authorityService;
 
+    @RpcConsumer
+    UserAuthorityService userAuthorityService;
+
+    @RpcConsumer
+    CodeService codeService;
+
+    /**
+     * 获取数据库id最大值生成.
+     *
+     * @return
+     */
+    private String getCode(String deptCode) {
+
+        Map map = new HashMap();
+        map.put("tableName", "el_user");
+        Long idMax = codeService.findIdMax(map);
+        idMax += 1 ;
+        String code = CodeUtil.getFixedLengthCode(idMax.toString(), 4);
+        return deptCode + code;
+
+    }
+
     /**
      * 用户退出登录.
      */
@@ -139,12 +161,15 @@ public class UserController {
     private UserDTO getUserDTO(List<AuthorityTreeDTO> authoritys, List<RoleDTO> roles, User loginUser) {
         UserDTO userDTO = new UserDTO();
         // 用户角色列表
-        List<RoleUser> roleUsers = roleUserService.findByUserCode(loginUser.getCode());
+        List<String> userCodes = new ArrayList<>();
+        userCodes.add(loginUser.getCode());
+        List<RoleUser> roleUsers = roleUserService.findByUserCode(userCodes);
         if (roleUsers == null || roleUsers.size() == 0) {
             return userDTO;
         }
         userDTO.setId(loginUser.getId());
         userDTO.setName(loginUser.getName());
+        userDTO.setProjectCode(loginUser.getProjectCode());
         // 用户角色列表
         userDTO.setRoles(roles);
         List<RoleDTO> roles1 = roles.stream()
@@ -161,8 +186,6 @@ public class UserController {
             // 用户权限idlist
             userDTO.setAuthoritys(getTree(authoritys));
         }
-
-        System.out.println(userDTO.toJsonString());
         return userDTO;
     }
 
@@ -186,7 +209,6 @@ public class UserController {
     }
 
 
-
     /**
      * 添加用户.
      *
@@ -208,19 +230,24 @@ public class UserController {
         if (StringUtils.isEmpty(deptCode)) {
             return CommonResponse.errorMsg("用户部门code不能为空");
         }
-        List<RoleSmall> roles = user.getRoles();
-        if (StringUtils.isEmpty(roles)) {
-            return CommonResponse.errorMsg("用户角色roles不能为空");
+//        String projectCode = user.getProjectCode();
+//        if (StringUtils.isEmpty(projectCode)) {
+//            return CommonResponse.errorMsg("用户projectCode不能为空");
+//        }
+        List<String> roleCodes = user.getRoleCodes();
+        if (StringUtils.isEmpty(roleCodes)) {
+            return CommonResponse.errorMsg("用户角色roleCodes不能为空");
         }
         User userCheck = userService.findByAccount(user.getAccount());
         if (!StringUtils.isEmpty(userCheck)) {
             return CommonResponse.errorMsg("账号已存在,请勿重复添加");
         }
-        user.setCode(CodeUtil.getCode());
+        user.setCode(getCode(deptCode));
         user.setPassword("123456");
-        //TODO 从redis中获取登陆人姓名
+        //TODO 从redis中获取登陆人姓名项目code
         user.setUpdateBy("admin");
         user.setCreateBy("admin");
+        user.setProjectCode("sb001");
         Boolean b = userService.create(user);
         if (!b == true) {
             return CommonResponse.errorMsg("添加用户失败");
@@ -235,9 +262,9 @@ public class UserController {
             return CommonResponse.errorMsg("用户关联部门失败");
         }
         //  用户角色表添加
-        for (RoleSmall role : roles) {
+        for (String roleCode : roleCodes) {
             RoleUser roleUser = new RoleUser();
-            roleUser.setRoleCode(role.getCode());
+            roleUser.setRoleCode(roleCode);
             roleUser.setUserCode(user2.getCode());
             Boolean b3 = roleUserService.create(roleUser);
             if (!b3) {
@@ -260,6 +287,14 @@ public class UserController {
             return CommonResponse.errorMsg("请选择要删除的数据!");
         }
         List<String> codes = codesDTO.getCodes();
+        // 删除用户部门
+        if (!StringUtils.isEmpty(deptUserService.findByUserCode(codes))) {
+            deptUserService.deleteByUserCode(codes);
+        }
+        // 删除用户角色
+        if (!StringUtils.isEmpty(roleUserService.findByUserCode(codes))) {
+            roleUserService.deleteByRoleCode(codes);
+        }
         Boolean b = userService.delete(codes);
         if (!b) {
             return CommonResponse.errorMsg("删除失败!");
@@ -271,37 +306,81 @@ public class UserController {
     /**
      * 根据code修改用户.
      *
-     * @param jsonString
+     * @param user
      * @return
      */
     @PutMapping()
-    public CommonResponse update(@RequestBody String jsonString) {
-        if (jsonString == null || "".equals(jsonString)) {
+    public CommonResponse update(@RequestBody User user) {
+        if (StringUtils.isEmpty(user)) {
             return CommonResponse.errorMsg("参数不能为空");
         }
-        User user = JsonUtils.jsonToPojo(jsonString, User.class);
-        if (user.getCode() == null || "".equals(user.getCode())) {
+        if (StringUtils.isEmpty(user.getCode())) {
             return CommonResponse.errorMsg("code不能为空");
         }
-        //todo
+        List<String> userCodes = new ArrayList<>();
+        userCodes.add(user.getCode());
+        if (!StringUtils.isEmpty(deptUserService.findByUserCode(userCodes))) {
+            // 删除用户部门旧关系
+            deptUserService.deleteByUserCode(userCodes);
+            // 添加用户部门新关系
+            DeptUser deptUser = new DeptUser();
+            deptUser.setDeptCode(user.getDeptCode());
+            deptUser.setUserCode(user.getCode());
+            deptUserService.create(deptUser);
+        }
+
+        if (!StringUtils.isEmpty(roleUserService.findByUserCode(userCodes))) {
+            // 删除用户角色旧关系
+            roleUserService.deleteByUserCode(userCodes);
+            // 添加用户角色新关系
+            List<String> roleCodes = user.getRoleCodes();
+            for (String roleCode : roleCodes) {
+                RoleUser roleUser = new RoleUser();
+                roleUser.setRoleCode(roleCode);
+                roleUser.setUserCode(user.getCode());
+                roleUserService.create(roleUser);
+            }
+        }
         user.setUpdateBy("登陆人");
         Boolean b = userService.update(user);
-        if (b) {
-            return CommonResponse.build(200, "更新成功", null);
+        if (!b) {
+            return CommonResponse.errorTokenMsg("更新失败");
         }
-        return CommonResponse.errorTokenMsg("更新失败");
+        return CommonResponse.ok("更新成功");
     }
 
 
     /**
-     * 根据code查询用户....
+     * 根据code查询用户详情.
      *
      * @param code
      * @return
      */
     @GetMapping(value = "/{code}")
     public CommonResponse findById(@PathVariable String code) {
-        return CommonResponse.ok(userService.findByCode(code));
+
+        User user = userService.findByCode(code);
+        List<Role> roleList = roleService.findByUserCode(code);
+        // 用户角色
+        List<ResultSmall> roles = new ArrayList<>();
+        for (Role role : roleList) {
+            ResultSmall resultSmall = new ResultSmall();
+            resultSmall.setName(role.getName());
+            resultSmall.setCode(role.getCode());
+            roles.add(resultSmall);
+        }
+        user.setRoles(roles);
+        // 用户权限
+        List<Authority> authoritieList = authorityService.findByUserCode(code);
+        List<ResultSmall> authorities = new ArrayList<>();
+        for (Authority authority : authoritieList) {
+            ResultSmall resultSmall = new ResultSmall();
+            resultSmall.setName(authority.getName());
+            resultSmall.setCode(authority.getCode());
+            authorities.add(resultSmall);
+        }
+        user.setAuthorities(authorities);
+        return CommonResponse.ok(user);
     }
 
 
@@ -351,6 +430,46 @@ public class UserController {
             return CommonResponse.errorMsg("启用失败");
         }
         return CommonResponse.build(200, "启用成功", null);
+    }
+
+
+    /**
+     * 用户授权.
+     *
+     * @param userAuthorityDTO
+     * @return
+     */
+    @PostMapping("/acls")
+    public CommonResponse createRoleAuthority(@RequestBody UserAuthorityDTO userAuthorityDTO) {
+
+        if (StringUtils.isEmpty(userAuthorityDTO)) {
+            return CommonResponse.errorMsg("参数不能为空");
+        }
+        String userCode = userAuthorityDTO.getUserCode();
+        if (StringUtils.isEmpty(userCode)) {
+            return CommonResponse.errorMsg("参数userCode不能为空");
+        }
+        List<String> authorityCodes = userAuthorityDTO.getAuthorityCodes();
+        if (StringUtils.isEmpty(authorityCodes)) {
+            return CommonResponse.errorMsg("参数authorityCodes不能为空");
+        }
+        // 遍历authorityCodes,根据用户code查和权限code查重用户和权限关联表
+        for (String authorityCode : authorityCodes) {
+            Map map = new HashMap();
+            map.put("userCode", userCode);
+            map.put("authorityCode", authorityCode);
+            UserAuthority userAuthority = userAuthorityService.findByUserAndAuthorityCodes(map);
+            if (StringUtils.isEmpty(userAuthority)) {
+                UserAuthority userAuthority1 = new UserAuthority();
+                userAuthority1.setAuthorityCode(authorityCode);
+                userAuthority1.setUserCode(userCode);
+                Boolean b = userAuthorityService.create(userAuthority1);
+                if (!b) {
+                    return CommonResponse.errorMsg("添加用户权限关联失败");
+                }
+            }
+        }
+        return CommonResponse.build(200, "用户授权成功", null);
     }
 
 }

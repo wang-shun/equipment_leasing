@@ -2,6 +2,7 @@ package com.yankuang.equipment.web.restful;
 
 import com.github.pagehelper.PageInfo;
 import com.yankuang.equipment.authority.model.Dept;
+import com.yankuang.equipment.authority.service.CodeService;
 import com.yankuang.equipment.authority.service.DeptService;
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.JsonUtils;
@@ -26,8 +27,27 @@ import java.util.Map;
 @RestController
 @RequestMapping("/v1/depts")
 public class DeptController {
+
     @RpcConsumer
     DeptService deptService;
+
+    @RpcConsumer
+    CodeService codeService;
+
+    /**
+     * 获取数据库id最大值生成.
+     * @return
+     */
+    private String getCode() {
+
+        Map map = new HashMap();
+        map.put("tableName", "el_department");
+        Long idMax = codeService.findIdMax(map);
+        idMax += 1 ;
+        String code = CodeUtil.getFixedLengthCode(idMax.toString(),4);
+        return code;
+
+    }
 
     /**
      * 添加部门.
@@ -52,12 +72,15 @@ public class DeptController {
         if (StringUtils.isEmpty(pcode)) {
             return CommonResponse.errorMsg("部门pcode不能为空");
         }
-
-        Dept dept1 = deptService.findByName(name);
+        // 根据部门名和pcode称查重
+        Map map = new HashMap();
+        map.put("name", name);
+        map.put("pcode", pcode);
+        Dept dept1 = deptService.findByNameAndPcode(map);
         if (dept1 != null) {
             return CommonResponse.ok("部门已存在，请勿重复添加");
         }
-        dept.setCode(CodeUtil.getCode());
+        dept.setCode(getCode());
         dept.setCreateBy("admin");
         dept.setUpdateBy("admin");
         dept.setProjectCode("sb001");
@@ -69,7 +92,7 @@ public class DeptController {
     }
 
     /**
-     * 根据codes删除权限，单个或批量
+     * 根据codes删除部门，单个或批量
      * @param jsonString
      * @return
      */
