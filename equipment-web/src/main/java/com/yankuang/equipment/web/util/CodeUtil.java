@@ -14,11 +14,11 @@ public class CodeUtil {
     /**
      * 获取固定长度的字符串，长度不够在前面补充0
      *
-     * @param str
-     * @param length
+     * @param str 字符串
+     * @param length code长度
      * @return
      */
-    public static String getFixedLengthStr(String str, int length) {
+    public static String getFixedLengthCode(String str, int length) {
         if (StringUtils.isEmpty(str)) {
             return null;
         }
@@ -32,5 +32,8 @@ public class CodeUtil {
         }
         return str;
     }
+
+
+
 
 }

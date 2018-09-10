@@ -2,6 +2,7 @@ package com.yankuang.equipment.web.restful;
 
 import com.yankuang.equipment.authority.model.DeptRole;
 import com.yankuang.equipment.authority.model.Role;
+import com.yankuang.equipment.authority.service.CodeService;
 import com.yankuang.equipment.authority.service.DeptRoleService;
 import com.yankuang.equipment.authority.service.RoleService;
 import com.yankuang.equipment.common.util.CommonResponse;
@@ -29,6 +30,25 @@ public class RoleController {
     @RpcConsumer
     DeptRoleService deptRoleService;
 
+    @RpcConsumer
+    CodeService codeService;
+
+    /**
+     * 获取数据库id最大值生成.
+     *
+     * @return
+     */
+    private String getCode(String deptCode) {
+
+        Map map = new HashMap();
+        map.put("tableName", "el_role");
+        Long idMax = codeService.findIdMax(map);
+        idMax += 1 ;
+        String code = CodeUtil.getFixedLengthCode(idMax.toString(), 4);
+        return deptCode + code;
+
+    }
+
     /**
      * 添加角色，关联部门.
      *
@@ -50,7 +70,7 @@ public class RoleController {
         // 角色不存在
         if (StringUtils.isEmpty(roleCheck)) {
             // 添加,添加关联表
-            String roleCode = CodeUtil.getCode();
+            String roleCode = getCode(deptCode);
             role.setCode(roleCode);
             role.setSorting((long) 1);
             role.setCreateBy("admin");

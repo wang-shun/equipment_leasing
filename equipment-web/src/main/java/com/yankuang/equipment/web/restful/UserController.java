@@ -48,6 +48,25 @@ public class UserController {
     @RpcConsumer
     UserAuthorityService userAuthorityService;
 
+    @RpcConsumer
+    CodeService codeService;
+
+    /**
+     * 获取数据库id最大值生成.
+     *
+     * @return
+     */
+    private String getCode(String deptCode) {
+
+        Map map = new HashMap();
+        map.put("tableName", "el_user");
+        Long idMax = codeService.findIdMax(map);
+        idMax += 1 ;
+        String code = CodeUtil.getFixedLengthCode(idMax.toString(), 4);
+        return deptCode + code;
+
+    }
+
     /**
      * 用户退出登录.
      */
@@ -220,7 +239,7 @@ public class UserController {
         if (!StringUtils.isEmpty(userCheck)) {
             return CommonResponse.errorMsg("账号已存在,请勿重复添加");
         }
-        user.setCode(CodeUtil.getCode());
+        user.setCode(getCode(deptCode));
         user.setPassword("123456");
         //TODO 从redis中获取登陆人姓名
         user.setUpdateBy("admin");
