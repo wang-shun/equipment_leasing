@@ -72,4 +72,20 @@ public class ElPlanUse implements Serializable {
     private String bigTypeName;
 
     private String effectName;
+
+    private Integer equipmentNum;
+
+    private String equipmentSpecification;
+
+    private String equipmentParamName;
+
+    private String equipmentParamValue;
+
+    private String techCode;
+
+    private String assetCode;
+
+    private String positionCode;
+
+    private String itemId;
 }
