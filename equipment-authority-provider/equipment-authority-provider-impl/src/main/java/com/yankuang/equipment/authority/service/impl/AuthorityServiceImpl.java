@@ -41,8 +41,8 @@ public class AuthorityServiceImpl implements AuthorityService {
         return authorityMapper.findByCode(code);
     }
 
-    public Authority findByName(String name) {
-        return authorityMapper.findByName(name);
+    public Authority findByNameAndPcode(Map map) {
+        return authorityMapper.findByNameAndPcode(map);
     }
 
     public List<Authority> findAll() {

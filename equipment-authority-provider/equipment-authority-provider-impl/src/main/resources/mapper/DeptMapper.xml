@@ -22,7 +22,7 @@
     </resultMap>
 
     <sql id="Base_Column_List" >
-        id, name, code, pcode, level, sorting, remark, create_by, update_by, version, status, project_code
+        id, name,type, code, pcode, level, sorting, remark, create_by, update_by, version, status, project_code
     </sql>
 
     <insert id="create" parameterType="com.yankuang.equipment.authority.model.Dept">

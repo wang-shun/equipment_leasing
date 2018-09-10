@@ -96,11 +96,12 @@
         AND a1.status != 99
     </select>
 
-    <select id="findByName" parameterType="String" resultMap="BaseResultMap">
+    <select id="findByNameAndPcode" parameterType="Map" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM el_authority
         WHERE name = #{name}
+        and pcode = #{pcode}
         AND status != 99
     </select>
 
