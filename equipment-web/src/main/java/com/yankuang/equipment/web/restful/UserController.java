@@ -48,6 +48,25 @@ public class UserController {
     @RpcConsumer
     UserAuthorityService userAuthorityService;
 
+    @RpcConsumer
+    CodeService codeService;
+
+    /**
+     * 获取数据库id最大值生成.
+     *
+     * @return
+     */
+    private String getCode(String deptCode) {
+
+        Map map = new HashMap();
+        map.put("tableName", "el_user");
+        Long idMax = codeService.findIdMax(map);
+        idMax += 1 ;
+        String code = CodeUtil.getFixedLengthCode(idMax.toString(), 4);
+        return deptCode + code;
+
+    }
+
     /**
      * 用户退出登录.
      */
@@ -150,6 +169,7 @@ public class UserController {
         }
         userDTO.setId(loginUser.getId());
         userDTO.setName(loginUser.getName());
+        userDTO.setProjectCode(loginUser.getProjectCode());
         // 用户角色列表
         userDTO.setRoles(roles);
         List<RoleDTO> roles1 = roles.stream()
@@ -166,8 +186,6 @@ public class UserController {
             // 用户权限idlist
             userDTO.setAuthoritys(getTree(authoritys));
         }
-
-        System.out.println(userDTO.toJsonString());
         return userDTO;
     }
 
@@ -212,6 +230,10 @@ public class UserController {
         if (StringUtils.isEmpty(deptCode)) {
             return CommonResponse.errorMsg("用户部门code不能为空");
         }
+//        String projectCode = user.getProjectCode();
+//        if (StringUtils.isEmpty(projectCode)) {
+//            return CommonResponse.errorMsg("用户projectCode不能为空");
+//        }
         List<String> roleCodes = user.getRoleCodes();
         if (StringUtils.isEmpty(roleCodes)) {
             return CommonResponse.errorMsg("用户角色roleCodes不能为空");
@@ -220,11 +242,12 @@ public class UserController {
         if (!StringUtils.isEmpty(userCheck)) {
             return CommonResponse.errorMsg("账号已存在,请勿重复添加");
         }
-        user.setCode(CodeUtil.getCode());
+        user.setCode(getCode(deptCode));
         user.setPassword("123456");
-        //TODO 从redis中获取登陆人姓名
+        //TODO 从redis中获取登陆人姓名项目code
         user.setUpdateBy("admin");
         user.setCreateBy("admin");
+        user.setProjectCode("sb001");
         Boolean b = userService.create(user);
         if (!b == true) {
             return CommonResponse.errorMsg("添加用户失败");
