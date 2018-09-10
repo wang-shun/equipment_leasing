@@ -52,8 +52,11 @@ public class DeptController {
         if (StringUtils.isEmpty(pcode)) {
             return CommonResponse.errorMsg("部门pcode不能为空");
         }
-
-        Dept dept1 = deptService.findByName(name);
+        // 根据部门名和pcode称查重
+        Map map = new HashMap();
+        map.put("name", name);
+        map.put("pcode", pcode);
+        Dept dept1 = deptService.findByNameAndPcode(map);
         if (dept1 != null) {
             return CommonResponse.ok("部门已存在，请勿重复添加");
         }

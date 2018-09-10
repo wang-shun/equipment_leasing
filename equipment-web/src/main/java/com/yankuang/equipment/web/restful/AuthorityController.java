@@ -58,7 +58,7 @@ public class AuthorityController {
         if (StringUtils.isEmpty(sorting)) {
             return CommonResponse.errorTokenMsg("权限sorting不能为空");
         }
-        // 根据权限名称查重
+        // 根据权限名和pcode称查重
         Map map = new HashMap();
         map.put("name", name);
         map.put("pcode", pcode);

@@ -16,7 +16,7 @@ public interface DeptService {
 
     Dept findByCode(String code);
 
-    Dept findByName(String name);
+    Dept findByNameAndPcode(Map map);
 
     List<Dept> findAll();
 

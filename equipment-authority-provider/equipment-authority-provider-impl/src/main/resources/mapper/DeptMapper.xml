@@ -22,7 +22,7 @@
     </resultMap>
 
     <sql id="Base_Column_List" >
-        id, name,type, code, pcode, level, sorting, remark, create_by, update_by, version, status, project_code
+        id, name,type, code, pcode, level, sorting, remark,address,create_at,update_at, create_by, update_by, version, status, project_code
     </sql>
 
     <insert id="create" parameterType="com.yankuang.equipment.authority.model.Dept">
@@ -89,10 +89,11 @@
         AND d1.status != 99
     </select>
 
-    <select id="findByName" parameterType="String" resultMap="BaseResultMap" >
+    <select id="findByNameAndPcode" parameterType="Map" resultMap="BaseResultMap" >
         SELECT <include refid="Base_Column_List" />
         FROM el_department
         WHERE name = #{name}
+        and pcode = #{pcode}
         AND status != 99
     </select>
 
