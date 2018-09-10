@@ -16,7 +16,7 @@ public interface AuthorityService {
 
     PageInfo<Authority> findByPage(Integer page, Integer size, Map map);
 
-    Authority findByName(String name);
+    Authority findByNameAndPcode(Map map);
 
     List<Authority> findAll();
 

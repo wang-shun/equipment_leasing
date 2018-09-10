@@ -36,16 +36,12 @@ public class AuthorityController {
      * type=1 添加权限菜单
      * rype=2 添加权限按钮
      *
-     * @param jsonString
+     * @param authority
      * @return
      */
     @PostMapping
     @Transactional
-    public CommonResponse create(@RequestBody String jsonString) {
-        if (jsonString == null || "".equals(jsonString)) {
-            return CommonResponse.errorMsg("参数不能为空");
-        }
-        Authority authority = JsonUtils.jsonToPojo(jsonString, Authority.class);
+    public CommonResponse create(@RequestBody Authority authority) {
         String name = authority.getName();
         if (StringUtils.isEmpty(name)) {
             return CommonResponse.errorTokenMsg("权限name不能为空");
@@ -62,8 +58,11 @@ public class AuthorityController {
         if (StringUtils.isEmpty(sorting)) {
             return CommonResponse.errorTokenMsg("权限sorting不能为空");
         }
-        // 根据权限名称查重
-        Authority au = authorityService.findByName(name);
+        // 根据权限名和pcode称查重
+        Map map = new HashMap();
+        map.put("name", name);
+        map.put("pcode", pcode);
+        Authority au = authorityService.findByNameAndPcode(map);
         // 不存在 ，添加权限
         if (StringUtils.isEmpty(au)) {
             authority.setCode(CodeUtil.getCode());
@@ -162,6 +161,7 @@ public class AuthorityController {
             tree.setSorting(authority.getSorting());
             tree.setIcon(authority.getIcon());
             tree.setCreateAt(authority.getCreateAt());
+            tree.setRemark(authority.getRemark());
             trees.add(tree);
         }
         AuthorityTreeUtils treeUtils = new AuthorityTreeUtils();
