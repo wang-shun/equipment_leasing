@@ -3,6 +3,7 @@ package com.yankuang.equipment.web.restful;
 import com.github.pagehelper.PageInfo;
 import com.yankuang.equipment.authority.model.Authority;
 import com.yankuang.equipment.authority.service.AuthorityService;
+import com.yankuang.equipment.authority.service.CodeService;
 import com.yankuang.equipment.authority.service.RoleAuthorityService;
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.JsonUtils;
@@ -29,7 +30,22 @@ public class AuthorityController {
     AuthorityService authorityService;
 
     @RpcConsumer
-    RoleAuthorityService roleAuthorityService;
+    CodeService codeService;
+
+    /**
+     * 获取数据库id最大值生成.
+     * @return
+     */
+    private String getCode() {
+
+        Map map = new HashMap();
+        map.put("tableName", "el_authority");
+        Long idMax = codeService.findIdMax(map);
+        idMax += 1 ;
+        String code = CodeUtil.getFixedLengthCode(idMax.toString(),4);
+        return code;
+
+    }
 
     /**
      * 添加权限.
@@ -65,7 +81,8 @@ public class AuthorityController {
         Authority au = authorityService.findByNameAndPcode(map);
         // 不存在 ，添加权限
         if (StringUtils.isEmpty(au)) {
-            authority.setCode(CodeUtil.getCode());
+            authority.setCode(getCode());
+            // todo redis中获得
             authority.setCreateBy("admin");
             authority.setUpdateBy("admin");
             authority.setProjectCode("sb001");
