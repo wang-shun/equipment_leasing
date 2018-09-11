@@ -81,7 +81,7 @@
 
     <select id="findByCode" parameterType="String" resultMap="BaseResultMap" >
         SELECT
-         d1.name,d2.name as pname, d1.code, d1.pcode, d1.level, d1.sorting, d1.remark, d1.create_by, d1.update_by, d1.version, d1.status, d1.project_code,d1.type
+         d1.id, d1.name,d2.name as pname, d1.code, d1.pcode, d1.level, d1.sorting, d1.remark, d1.create_by, d1.update_by, d1.version, d1.status, d1.project_code,d1.type
         FROM el_department d1
         left join el_department d2
         on d1.pcode = d2.code
