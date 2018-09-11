@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yankuang.equipment.equipment.mapper.*;
 import com.yankuang.equipment.equipment.model.ElPlanUse;
+import com.yankuang.equipment.equipment.model.SbEquipmentT;
 import com.yankuang.equipment.equipment.service.ElPlanUseService;
 import com.yankuang.equipment.equipment.service.SbTypeService;
 import io.terminus.boot.rpc.common.annotation.RpcProvider;
@@ -48,10 +49,20 @@ public class ElPlanUseServiceImpl implements ElPlanUseService {
     public PageInfo<ElPlanUse> list(Integer page, Integer size, Map elPlanUseMap){
         PageHelper.startPage(page,size);
         List<ElPlanUse> elPlanUses = elPlanUseMapper.list(elPlanUseMap);
-        for (ElPlanUse elPlanUse:elPlanUses){
-            elPlanUse.setSmallTypeName(sbTypeMapper.findByCode(elPlanUse.getSmallTypeCode()).getName());
-            elPlanUse.setMiddleTypeName(sbTypeMapper.findByCode(elPlanUse.getMiddleTypeCode()).getName());
-            elPlanUse.setBigTypeName(sbTypeMapper.findByCode(elPlanUse.getBigTypeCode()).getName());
+        if (elPlanUses != null && elPlanUses.size() >0 ) {
+            for (ElPlanUse elPlanUse : elPlanUses) {
+                elPlanUse.setSmallTypeName(sbTypeMapper.findByCode(elPlanUse.getSmallTypeCode()).getName());
+                elPlanUse.setMiddleTypeName(sbTypeMapper.findByCode(elPlanUse.getMiddleTypeCode()).getName());
+                elPlanUse.setBigTypeName(sbTypeMapper.findByCode(elPlanUse.getBigTypeCode()).getName());
+                if ("1".equals(elPlanUse.getEquipmentType())) {
+                    elPlanUse.setTechCode(sbEquipmentTMapper.findById(elPlanUse.getEquipmentId()).getTechCode());
+                    elPlanUse.setAssetCode(sbEquipmentTMapper.findById(elPlanUse.getEquipmentId()).getAssetCode());
+                }
+                if ("2".equals(elPlanUse.getEquipmentType())){
+                    elPlanUse.setTechCode(sbEquipmentZMapper.findById(elPlanUse.getEquipmentId()).getTechCode());
+                    elPlanUse.setAssetCode(sbEquipmentZMapper.findById(elPlanUse.getEquipmentId()).getAssetCode());
+                }
+            }
         }
         PageInfo<ElPlanUse> pageInfo = new PageInfo<ElPlanUse>(elPlanUses);
         return pageInfo;

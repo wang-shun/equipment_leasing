@@ -521,10 +521,11 @@ public class ElPlanController {
             elPlanUseMap.put("smallTypeCode",elPlanDTO.getSmallTypeCode());
             elPlanUseMap.put("middleTypeCode",elPlanDTO.getMiddleTypeCode());
             elPlanUseMap.put("bigTypeCode",elPlanDTO.getBigTypeCode());
-            elPlanUseMap.put("equipmentCode",elPlanDTO.getEquipmentCode());
+            elPlanUseMap.put("equipmentName",elPlanDTO.getEquipmentName());
             elPlanUseMap.put("effectCode",elPlanDTO.getEffectCode());
             elPlanUseMap.put("equipmentModel",elPlanDTO.getEquipmentModel());
             elPlanUseMap.put("equipmentFactory",elPlanDTO.getEquipmentFactory());
+            elPlanUseMap.put("equipmentCode",elPlanDTO.getEquipmentCode());
             if(elPlanUseService.list(page,size,elPlanUseMap) == null){
                 return CommonResponse.ok();
             }

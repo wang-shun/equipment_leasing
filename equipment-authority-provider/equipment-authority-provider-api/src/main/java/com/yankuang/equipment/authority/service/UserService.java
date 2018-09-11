@@ -14,7 +14,7 @@ public interface UserService {
 
     Boolean update(User user);
 
-    User findByName(String name);
+    List<User> findByName(String name);
 
     User findByAccount(String account);
 

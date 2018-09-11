@@ -39,47 +39,15 @@ public class ExcelUtil {
 
         // 生成一种样式
         HSSFCellStyle style = wb.createCellStyle();
-        // 设置样式
-        style.setBorderBottom(HSSFCellStyle.BORDER_THIN);//下边框
-        style.setBorderLeft(HSSFCellStyle.BORDER_THIN);//左边框
-        style.setBorderRight(HSSFCellStyle.BORDER_THIN);//右边框
-        style.setBorderTop(HSSFCellStyle.BORDER_THIN);//上边框
-        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
-
-        // 生成一种字体
-        HSSFFont font = wb.createFont();
-        // 设置字体
-        font.setFontName("微软雅黑");
-        // 设置字体大小
-        font.setFontHeightInPoints((short) 12);
-        // 字体加粗
-        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
-        // 在样式中引用这种字体
-        style.setFont(font);
+        this.style1(style,wb);
 
         // 生成并设置另一个样式
         HSSFCellStyle style2 = wb.createCellStyle();
-        style2.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-        style2.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-        style2.setBorderRight(HSSFCellStyle.BORDER_THIN);
-        style2.setBorderTop(HSSFCellStyle.BORDER_THIN);
-        style2.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        style2.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
-
-        // 生成另一种字体2
-        HSSFFont font2 = wb.createFont();
-        // 设置字体
-        font2.setFontName("微软雅黑");
-        // 设置字体大小
-        font2.setFontHeightInPoints((short) 12);
-        // 在样式2中引用这种字体
-        style.setFont(font2);
+        this.style2(style2);
 
         // 第一行表头
         HSSFRow row = sheet.createRow(0);
         row.setHeightInPoints(30);//设置行高
-
         this.first_column(row,sheet,style,excelHeader0,headnum0);
 
         // 第二行表头
@@ -192,42 +160,15 @@ public class ExcelUtil {
 
         // 生成一种样式
         HSSFCellStyle style = wb.createCellStyle();
-        // 设置样式
-        style.setBorderBottom(HSSFCellStyle.BORDER_THIN);//下边框
-        style.setBorderLeft(HSSFCellStyle.BORDER_THIN);//左边框
-        style.setBorderRight(HSSFCellStyle.BORDER_THIN);//右边框
-        style.setBorderTop(HSSFCellStyle.BORDER_THIN);//上边框
-        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
-
-        // 生成一种字体
-        HSSFFont font = wb.createFont();
-        // 设置字体
-        font.setFontName("微软雅黑");
-        // 设置字体大小
-        font.setFontHeightInPoints((short) 12);
-        // 字体加粗
-        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
-        // 在样式中引用这种字体
-        style.setFont(font);
+        this.style1(style,wb);
 
         // 生成并设置另一个样式
         HSSFCellStyle style2 = wb.createCellStyle();
-        style2.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-        style2.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-        style2.setBorderRight(HSSFCellStyle.BORDER_THIN);
-        style2.setBorderTop(HSSFCellStyle.BORDER_THIN);
-        style2.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        style2.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+        this.style2(style2);
 
         // 生成并设置另一个样式
         HSSFCellStyle style3 = wb.createCellStyle();
-        style3.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-        style3.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-        style3.setBorderRight(HSSFCellStyle.BORDER_THIN);
-        style3.setBorderTop(HSSFCellStyle.BORDER_THIN);
-        style3.setAlignment(HSSFCellStyle.ALIGN_LEFT);
-        style3.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+        this.style3(style3);
 
         // 第一行表头
         HSSFRow row = sheet.createRow(0);
@@ -329,42 +270,15 @@ public class ExcelUtil {
 
         // 生成一种样式
         HSSFCellStyle style = wb.createCellStyle();
-        // 设置样式
-        style.setBorderBottom(HSSFCellStyle.BORDER_THIN);//下边框
-        style.setBorderLeft(HSSFCellStyle.BORDER_THIN);//左边框
-        style.setBorderRight(HSSFCellStyle.BORDER_THIN);//右边框
-        style.setBorderTop(HSSFCellStyle.BORDER_THIN);//上边框
-        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
-
-        // 生成一种字体
-        HSSFFont font = wb.createFont();
-        // 设置字体
-        font.setFontName("微软雅黑");
-        // 设置字体大小
-        font.setFontHeightInPoints((short) 12);
-        // 字体加粗
-        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
-        // 在样式中引用这种字体
-        style.setFont(font);
+        this.style1(style,wb);
 
         // 生成并设置另一个样式
         HSSFCellStyle style2 = wb.createCellStyle();
-        style2.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-        style2.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-        style2.setBorderRight(HSSFCellStyle.BORDER_THIN);
-        style2.setBorderTop(HSSFCellStyle.BORDER_THIN);
-        style2.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        style2.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+        this.style2(style2);
 
         // 生成并设置另一个样式
         HSSFCellStyle style3 = wb.createCellStyle();
-        style3.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-        style3.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-        style3.setBorderRight(HSSFCellStyle.BORDER_THIN);
-        style3.setBorderTop(HSSFCellStyle.BORDER_THIN);
-        style3.setAlignment(HSSFCellStyle.ALIGN_LEFT);
-        style3.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+        this.style3(style3);
 
         // 第一行表头
         HSSFRow row = sheet.createRow(0);
@@ -503,7 +417,6 @@ public class ExcelUtil {
         String[] excelHeader3 = {  "","","南屯煤矿", "兴隆庄", "鲍店", "东滩", "济二", "济三","杨村",""};
         String[] headnum3 = { "3,3,2,2", "3,3,3,3", "3,3,4,4", "3,3,5,5", "3,3,6,6", "3,3,7,7", "3,3,7,7"};
 
-
         //最后一行
         String[] excelHeader5 = {  "备注：以上中类汇总含新投入设备管理费用", "", "","", "", "","","","",""};
         int c = list.size();
@@ -517,42 +430,15 @@ public class ExcelUtil {
 
         // 生成一种样式
         HSSFCellStyle style = wb.createCellStyle();
-        // 设置样式
-        style.setBorderBottom(HSSFCellStyle.BORDER_THIN);//下边框
-        style.setBorderLeft(HSSFCellStyle.BORDER_THIN);//左边框
-        style.setBorderRight(HSSFCellStyle.BORDER_THIN);//右边框
-        style.setBorderTop(HSSFCellStyle.BORDER_THIN);//上边框
-        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
-
-        // 生成一种字体
-        HSSFFont font = wb.createFont();
-        // 设置字体
-        font.setFontName("微软雅黑");
-        // 设置字体大小
-        font.setFontHeightInPoints((short) 12);
-        // 字体加粗
-        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
-        // 在样式中引用这种字体
-        style.setFont(font);
+        this.style1(style,wb);
 
         // 生成并设置另一个样式
         HSSFCellStyle style2 = wb.createCellStyle();
-        style2.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-        style2.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-        style2.setBorderRight(HSSFCellStyle.BORDER_THIN);
-        style2.setBorderTop(HSSFCellStyle.BORDER_THIN);
-        style2.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        style2.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+        this.style2(style2);
 
         // 生成并设置另一个样式
         HSSFCellStyle style3 = wb.createCellStyle();
-        style3.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-        style3.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-        style3.setBorderRight(HSSFCellStyle.BORDER_THIN);
-        style3.setBorderTop(HSSFCellStyle.BORDER_THIN);
-        style3.setAlignment(HSSFCellStyle.ALIGN_LEFT);
-        style3.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+        this.style3(style3);
 
         // 第一行表头
         HSSFRow row = sheet.createRow(0);
@@ -734,48 +620,15 @@ public class ExcelUtil {
 
         // 生成一种样式
         HSSFCellStyle style = wb.createCellStyle();
-        // 设置样式
-        style.setBorderBottom(HSSFCellStyle.BORDER_THIN);//下边框
-        style.setBorderLeft(HSSFCellStyle.BORDER_THIN);//左边框
-        style.setBorderRight(HSSFCellStyle.BORDER_THIN);//右边框
-        style.setBorderTop(HSSFCellStyle.BORDER_THIN);//上边框
-        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
-
-        // 生成一种字体
-        HSSFFont font = wb.createFont();
-        // 设置字体
-        font.setFontName("微软雅黑");
-        // 设置字体大小
-        font.setFontHeightInPoints((short) 12);
-        // 字体加粗
-        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
-        // 在样式中引用这种字体
-        style.setFont(font);
+        this.style1(style,wb);
 
         // 生成并设置另一个样式
         HSSFCellStyle style2 = wb.createCellStyle();
-        style2.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-        style2.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-        style2.setBorderRight(HSSFCellStyle.BORDER_THIN);
-        style2.setBorderTop(HSSFCellStyle.BORDER_THIN);
-        style2.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        style2.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+        this.style2(style2);
 
         // 生成并设置另一个样式
         HSSFCellStyle style3 = wb.createCellStyle();
-        style3.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-        style3.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-        style3.setBorderRight(HSSFCellStyle.BORDER_THIN);
-        style3.setBorderTop(HSSFCellStyle.BORDER_THIN);
-        style3.setAlignment(HSSFCellStyle.ALIGN_LEFT);
-        style3.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
-        // 生成另一种字体3
-        HSSFFont font3 = wb.createFont();
-        // 设置字体大小
-        font3.setFontHeightInPoints((short) 12);
-        // 在样式2中引用这种字体
-        style3.setFont(font3);
+        this.style3(style3);
 
         // 第一行表头
         HSSFRow row = sheet.createRow(0);
@@ -890,63 +743,29 @@ public class ExcelUtil {
 
         // 生成一种样式
         HSSFCellStyle style = wb.createCellStyle();
-        // 设置样式
-        style.setBorderBottom(HSSFCellStyle.BORDER_THIN);//下边框
-        style.setBorderLeft(HSSFCellStyle.BORDER_THIN);//左边框
-        style.setBorderRight(HSSFCellStyle.BORDER_THIN);//右边框
-        style.setBorderTop(HSSFCellStyle.BORDER_THIN);//上边框
-        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
-
-        // 生成一种字体
-        HSSFFont font = wb.createFont();
-        // 设置字体
-        font.setFontName("微软雅黑");
-        // 设置字体大小
-        font.setFontHeightInPoints((short) 12);
-        // 字体加粗
-        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
-        // 在样式中引用这种字体
-        style.setFont(font);
+        this.style1(style,wb);
 
         // 生成并设置另一个样式
         HSSFCellStyle style2 = wb.createCellStyle();
-        style2.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-        style2.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-        style2.setBorderRight(HSSFCellStyle.BORDER_THIN);
-        style2.setBorderTop(HSSFCellStyle.BORDER_THIN);
-        style2.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        style2.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+        this.style2(style2);
 
         // 生成并设置另一个样式
         HSSFCellStyle style3 = wb.createCellStyle();
-        style3.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-        style3.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-        style3.setBorderRight(HSSFCellStyle.BORDER_THIN);
-        style3.setBorderTop(HSSFCellStyle.BORDER_THIN);
-        style3.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        style3.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
-        // 生成另一种字体3
-        HSSFFont font3 = wb.createFont();
-        // 设置字体大小
-        font3.setFontHeightInPoints((short) 12);
-        // 在样式2中引用这种字体
-        style3.setFont(font3);
-
+        this.style3(style3);
 
         // 第一行表头
         HSSFRow row = sheet.createRow(0);
         row.setHeightInPoints(30);//设置行高
-        this.first_column(row,sheet,style,excelHeader0,headnum0);
+        this.first02(row,sheet,style,excelHeader0,headnum0);
 
         // 第二行表头
         row = sheet.createRow(1);
         row.setHeightInPoints(30);//设置行高
-        this.first_column(row,sheet,style3,excelHeader1,headnum1);
+        this.first02(row,sheet,style3,excelHeader1,headnum1);
         // 第三行表头
         row = sheet.createRow(2);
         row.setHeightInPoints(30);//设置行高
-        this.first_column(row,sheet,style,excelHeader2,headnum2);
+        this.first02(row,sheet,style,excelHeader2,headnum2);
 
         // 第五行数据
         for (int i = 0; i < list.size(); i++) {
@@ -1293,7 +1112,7 @@ public class ExcelUtil {
 
     /**
      * 功能 :获取表单导出数据
-     * 表名：2018年综机折旧修理费汇总表
+     * 表名：2018年综机折旧修理费汇总表（综机折旧修理费月报（煤业）、综机折旧修理费月报（东华）、煤业综机折旧修理费、东华综机折旧修理费可用）
      */
     public HSSFWorkbook comprehensiveDepreciationRCostCollect(List<ComprehensiveDepreciationRCostCollect> list) {
 
@@ -1317,33 +1136,11 @@ public class ExcelUtil {
 
         // 生成一种样式
         HSSFCellStyle style = wb.createCellStyle();
-        // 设置样式
-        style.setBorderBottom(HSSFCellStyle.BORDER_THIN);//下边框
-        style.setBorderLeft(HSSFCellStyle.BORDER_THIN);//左边框
-        style.setBorderRight(HSSFCellStyle.BORDER_THIN);//右边框
-        style.setBorderTop(HSSFCellStyle.BORDER_THIN);//上边框
-        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
-
-        // 生成一种字体
-        HSSFFont font = wb.createFont();
-        // 设置字体
-        font.setFontName("微软雅黑");
-        // 设置字体大小
-        font.setFontHeightInPoints((short) 12);
-        // 字体加粗
-        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
-        // 在样式中引用这种字体
-        style.setFont(font);
+        this.style1(style,wb);
 
         // 生成并设置另一个样式
         HSSFCellStyle style2 = wb.createCellStyle();
-        style2.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-        style2.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-        style2.setBorderRight(HSSFCellStyle.BORDER_THIN);
-        style2.setBorderTop(HSSFCellStyle.BORDER_THIN);
-        style2.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        style2.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+        this.style2(style2);
 
         // 第一行表头
         HSSFRow row = sheet.createRow(0);
@@ -1665,7 +1462,6 @@ public class ExcelUtil {
     public HSSFWorkbook comprehensiveMachineryDRCostMonthly(List<ComprehensiveMachineryDRCostMonthly> list) {
 
         //第一行表头字段，合并单元格时字段跨几列就将该字段重复几次
-        //此处的标题需要进行判断，进行多次复用（煤业综机折旧修理费、东华综机折旧修理费、皆可用）
         String[] excelHeader0 = {  "2018年综机折旧修理费月报（汇总）---6月份", "", "", "", "", "", "", "", ""};
         String[] headnum0 = { "0,0,0,8", "0,0,0,8","0,0,0,8","0,0,0,8","0,0,0,8","0,0,0,8","0,0,0,8","0,0,0,8","0,0,0,8"};
 
@@ -1684,33 +1480,11 @@ public class ExcelUtil {
 
         // 生成一种样式
         HSSFCellStyle style = wb.createCellStyle();
-        // 设置样式
-        style.setBorderBottom(HSSFCellStyle.BORDER_THIN);//下边框
-        style.setBorderLeft(HSSFCellStyle.BORDER_THIN);//左边框
-        style.setBorderRight(HSSFCellStyle.BORDER_THIN);//右边框
-        style.setBorderTop(HSSFCellStyle.BORDER_THIN);//上边框
-        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
-
-        // 生成一种字体
-        HSSFFont font = wb.createFont();
-        // 设置字体
-        font.setFontName("微软雅黑");
-        // 设置字体大小
-        font.setFontHeightInPoints((short) 12);
-        // 字体加粗
-        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
-        // 在样式中引用这种字体
-        style.setFont(font);
+        this.style1(style,wb);
 
         // 生成并设置另一个样式
         HSSFCellStyle style2 = wb.createCellStyle();
-        style2.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-        style2.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-        style2.setBorderRight(HSSFCellStyle.BORDER_THIN);
-        style2.setBorderTop(HSSFCellStyle.BORDER_THIN);
-        style2.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        style2.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+        this.style2(style2);
 
         // 生成并设置另一个样式
         HSSFCellStyle style3 = wb.createCellStyle();
@@ -1722,15 +1496,6 @@ public class ExcelUtil {
         style3.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
         style3.setWrapText(true);
 
-        // 生成并设置另一个样式
-        HSSFCellStyle style4 = wb.createCellStyle();
-        style4.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-        style4.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-        style4.setBorderRight(HSSFCellStyle.BORDER_THIN);
-        style4.setBorderTop(HSSFCellStyle.BORDER_THIN);
-        style4.setAlignment(HSSFCellStyle.ALIGN_LEFT);
-        style4.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
-
         // 生成一种字体
         HSSFFont font2 = wb.createFont();
         // 设置字体
@@ -1740,7 +1505,11 @@ public class ExcelUtil {
         // 字体加粗
         font2.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
         // 在样式中引用这种字体
-        style3.setFont(font);
+        style3.setFont(font2);
+
+        // 生成并设置另一个样式
+        HSSFCellStyle style4 = wb.createCellStyle();
+        this.style3(style4);
 
         // 第一行表头
         HSSFRow row = sheet.createRow(0);
@@ -1959,7 +1728,6 @@ public class ExcelUtil {
     public HSSFWorkbook comprehensiveMachineryDRCostMonthlyCollect(List<ComprehensiveMachineryDRCostMonthlyCollect> list) {
 
         //第一行表头字段，合并单元格时字段跨几列就将该字段重复几次
-        //此处的标题需要进行判断，进行多次复用（煤业综机折旧修理费、东华综机折旧修理费、皆可用）
         String[] excelHeader0 = {  "2018年综机折旧修理费月报（汇总）---6月份", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""};
         String[] headnum0 = { "0,0,0,18", "0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18","0,0,0,18"};
 
@@ -1978,33 +1746,11 @@ public class ExcelUtil {
 
         // 生成一种样式
         HSSFCellStyle style = wb.createCellStyle();
-        // 设置样式
-        style.setBorderBottom(HSSFCellStyle.BORDER_THIN);//下边框
-        style.setBorderLeft(HSSFCellStyle.BORDER_THIN);//左边框
-        style.setBorderRight(HSSFCellStyle.BORDER_THIN);//右边框
-        style.setBorderTop(HSSFCellStyle.BORDER_THIN);//上边框
-        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
-
-        // 生成一种字体
-        HSSFFont font = wb.createFont();
-        // 设置字体
-        font.setFontName("微软雅黑");
-        // 设置字体大小
-        font.setFontHeightInPoints((short) 12);
-        // 字体加粗
-        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
-        // 在样式中引用这种字体
-        style.setFont(font);
+       this.style1(style,wb);
 
         // 生成并设置另一个样式
         HSSFCellStyle style2 = wb.createCellStyle();
-        style2.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-        style2.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-        style2.setBorderRight(HSSFCellStyle.BORDER_THIN);
-        style2.setBorderTop(HSSFCellStyle.BORDER_THIN);
-        style2.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        style2.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+        this.style2(style2);
 
         // 第一行表头
         HSSFRow row = sheet.createRow(0);
@@ -2386,11 +2132,7 @@ public class ExcelUtil {
 
     /**
      * 第一行合并单元格，填充数据
-     * @param row
-     * @param sheet
-     * @param style
-     * @param excelHeader0
-     * @param headnum0
+     *
      */
     private void first_column(HSSFRow row,HSSFSheet sheet,HSSFCellStyle style,String[] excelHeader0 ,String[] headnum0){
 
@@ -2425,17 +2167,13 @@ public class ExcelUtil {
 
     /**
      * 第二行合并单元格，填充数据
-     * @param row
-     * @param sheet
-     * @param style
-     * @param excelHeader1
-     * @param headnum1
+     *
      */
     private void first02(HSSFRow row,HSSFSheet sheet,HSSFCellStyle style,String[] excelHeader1 ,String[] headnum1){
 
         for (int i = 0; i < excelHeader1.length; i++) {
 //            sheet.autoSizeColumn(i, true);// 自动调整宽度
-            sheet.setColumnWidth(i,5500);
+            sheet.setColumnWidth(i,20*256);
             HSSFCell cell = row.createCell(i);
             cell.setCellValue(excelHeader1[i]);
             cell.setCellStyle(style);
@@ -2452,7 +2190,7 @@ public class ExcelUtil {
 
         // 动态合并单元格
         for (int i = 0; i < headnum1.length; i++) {
-            sheet.setColumnWidth(i,5500);
+            sheet.setColumnWidth(i,20*256);
             String[] temp = headnum1[i].split(",");
             Integer startrow = Integer.parseInt(temp[0]);
             Integer overrow = Integer.parseInt(temp[1]);
@@ -2465,11 +2203,7 @@ public class ExcelUtil {
 
     /**
      * 最后一行(倒数第二行也可)合并单元格，填充数据
-     * @param row
-     * @param sheet
-     * @param style3
-     * @param excelHeader3
-     * @param headnum3
+     *
      */
     private void last_column(List list,HSSFRow row,HSSFSheet sheet,HSSFCellStyle style3,String[] excelHeader3 ,String[] headnum3){
 
@@ -2499,11 +2233,72 @@ public class ExcelUtil {
         }
 
     }
+    /**
+     * 生成样式1
+     *
+     */
+     private void style1(HSSFCellStyle style,HSSFWorkbook wb){
+
+         // 设置样式
+         style.setBorderBottom(HSSFCellStyle.BORDER_THIN);//下边框
+         style.setBorderLeft(HSSFCellStyle.BORDER_THIN);//左边框
+         style.setBorderRight(HSSFCellStyle.BORDER_THIN);//右边框
+         style.setBorderTop(HSSFCellStyle.BORDER_THIN);//上边框
+         style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+         style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+
+         // 生成一种字体
+         HSSFFont font = wb.createFont();
+         // 设置字体
+         font.setFontName("微软雅黑");
+         // 设置字体大小
+         font.setFontHeightInPoints((short) 12);
+         // 字体加粗
+         font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+         // 在样式中引用这种字体
+         style.setFont(font);
+     }
+
+    /**
+     * 生成样式2
+     *
+     */
+    private void style2(HSSFCellStyle style2){
+
+        style2.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+        style2.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+        style2.setBorderRight(HSSFCellStyle.BORDER_THIN);
+        style2.setBorderTop(HSSFCellStyle.BORDER_THIN);
+        style2.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        style2.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+
+//        // 生成另一种字体2
+//        HSSFFont font2 = wb.createFont();
+//        // 设置字体
+//        font2.setFontName("微软雅黑");
+//        // 设置字体大小
+//        font2.setFontHeightInPoints((short) 12);
+//        // 在样式2中引用这种字体
+//        style2.setFont(font2);
+
+    }
+
+    /**
+     * 生成样式3
+     *
+     */
+    private void style3(HSSFCellStyle style3){
+        style3.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+        style3.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+        style3.setBorderRight(HSSFCellStyle.BORDER_THIN);
+        style3.setBorderTop(HSSFCellStyle.BORDER_THIN);
+        style3.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+        style3.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+    }
 
     /**
      *  数字小写转大写
-     * @param v
-     * @return
+     *
      */
     public static String change(double v) {
             if (v < 0 || v > MAX_VALUE) {
@@ -2537,9 +2332,9 @@ public class ExcelUtil {
                     rs = rs + DIGIT.charAt(ch - '0') + UNIT.charAt(j);
                 }
             }
-//		if (!rs.endsWith("分")) {
-//			rs = rs + "整";
-//		}
+		if (!rs.endsWith("分")) {
+			rs = rs + "整";
+		}
             rs = rs.replaceAll("亿万", "亿");
             return rs;
         }
