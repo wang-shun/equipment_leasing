@@ -82,6 +82,8 @@ public class ElPlanDTO implements Serializable {
 
     private String equipmentFactory;
 
+    private String equipmentName;
+
     public String getPlanId() {
         return planId;
     }
@@ -378,8 +380,55 @@ public class ElPlanDTO implements Serializable {
         this.equipmentFactory = equipmentFactory;
     }
 
+    public String getEquipmentName() {
+        return equipmentName;
+    }
+
+    public void setEquipmentName(String equipmentName) {
+        this.equipmentName = equipmentName;
+    }
+
     @Override
     public String toString() {
-        return "ElPlanDTO{" + "planId='" + planId + '\'' + ", planYear='" + planYear + '\'' + ", planMonth='" + planMonth + '\'' + ", planQuarter='" + planQuarter + '\'' + ", planPosition='" + planPosition + '\'' + ", planPositionName='" + planPositionName + '\'' + ", planRemarks='" + planRemarks + '\'' + ", planOpinion='" + planOpinion + '\'' + ", planCreatorId='" + planCreatorId + '\'' + ", planStatus='" + planStatus + '\'' + ", planApproveTime=" + planApproveTime + ", approveTimeStr='" + approveTimeStr + '\'' + ", planApproverId='" + planApproverId + '\'' + ", planApproverName='" + planApproverName + '\'' + ", planEquipmentType='" + planEquipmentType + '\'' + ", planType='" + planType + '\'' + ", planIsDel=" + planIsDel + ", planCreateTime=" + planCreateTime + ", createTimeStr='" + createTimeStr + '\'' + ", planUpdateTime=" + planUpdateTime + ", updateTimeStr='" + updateTimeStr + '\'' + ", planCode='" + planCode + '\'' + ", planUpdatorId='" + planUpdatorId + '\'' + ", planUpdatorName='" + planUpdatorName + '\'' + ", planSorting='" + planSorting + '\'' + ", planVersion='" + planVersion + '\'' + ", planCreatorName='" + planCreatorName + '\'' + ", elPlanItemList=" + elPlanItemList + ", page=" + page + ", size=" + size + ", smallTypeCode='" + smallTypeCode + '\'' + ", middleTypeCode='" + middleTypeCode + '\'' + ", bigTypeCode='" + bigTypeCode + '\'' + ", equipmentCode='" + equipmentCode + '\'' + ", effectCode='" + effectCode + '\'' + ", equipmentModel='" + equipmentModel + '\'' + ", equipmentFactory='" + equipmentFactory + '\'' + '}';
+        return "ElPlanDTO{" +
+                "planId='" + planId + '\'' +
+                ", planYear='" + planYear + '\'' +
+                ", planMonth='" + planMonth + '\'' +
+                ", planQuarter='" + planQuarter + '\'' +
+                ", planPosition='" + planPosition + '\'' +
+                ", planPositionName='" + planPositionName + '\'' +
+                ", planRemarks='" + planRemarks + '\'' +
+                ", planOpinion='" + planOpinion + '\'' +
+                ", planCreatorId='" + planCreatorId + '\'' +
+                ", planStatus='" + planStatus + '\'' +
+                ", planApproveTime=" + planApproveTime +
+                ", approveTimeStr='" + approveTimeStr + '\'' +
+                ", planApproverId='" + planApproverId + '\'' +
+                ", planApproverName='" + planApproverName + '\'' +
+                ", planEquipmentType='" + planEquipmentType + '\'' +
+                ", planType='" + planType + '\'' +
+                ", planIsDel=" + planIsDel +
+                ", planCreateTime=" + planCreateTime +
+                ", createTimeStr='" + createTimeStr + '\'' +
+                ", planUpdateTime=" + planUpdateTime +
+                ", updateTimeStr='" + updateTimeStr + '\'' +
+                ", planCode='" + planCode + '\'' +
+                ", planUpdatorId='" + planUpdatorId + '\'' +
+                ", planUpdatorName='" + planUpdatorName + '\'' +
+                ", planSorting='" + planSorting + '\'' +
+                ", planVersion='" + planVersion + '\'' +
+                ", planCreatorName='" + planCreatorName + '\'' +
+                ", elPlanItemList=" + elPlanItemList +
+                ", page=" + page +
+                ", size=" + size +
+                ", smallTypeCode='" + smallTypeCode + '\'' +
+                ", middleTypeCode='" + middleTypeCode + '\'' +
+                ", bigTypeCode='" + bigTypeCode + '\'' +
+                ", equipmentCode='" + equipmentCode + '\'' +
+                ", effectCode='" + effectCode + '\'' +
+                ", equipmentModel='" + equipmentModel + '\'' +
+                ", equipmentFactory='" + equipmentFactory + '\'' +
+                ", equipmentName='" + equipmentName + '\'' +
+                '}';
     }
 }
