@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yankuang.equipment.equipment.mapper.ZjSbUseItemMapper" >
+    <resultMap id="BaseResultMap" type="com.yankuang.equipment.equipment.model.ZjSbUseItem" >
+        <result column="equipment_num" property="equipmentNum" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="model_name" property="modelName" jdbcType="VARCHAR" />
+        <result column="department_name" property="departmentName" jdbcType="VARCHAR" />
+        <result column="position_name" property="positionName" jdbcType="VARCHAR" />
+        <result column="z_name" property="zName" jdbcType="VARCHAR" />
+        <result column="tech_code" property="techCode" jdbcType="VARCHAR" />
+        <result column="comp" property="comp" jdbcType="VARCHAR" />
+        <result column="is_new" property="isNew" jdbcType="TINYINT" />
+        <result column="use_at" property="useAt" jdbcType="TIMESTAMP" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+    equipment_num,remark,model_name,department_name,position_name, z_name,tech_code,comp,is_new,use_at
+  </sql>
+
+    <select id="listEquipmentReceipt" parameterType="map" resultType="Map">
+        SELECT t1.equipment_num AS equipmentNum,t1.remarks AS remark,t1.use_at AS useAt,dept.name AS departmentName,po.name AS positionName,model.name AS modelName,
+        z.tech_code AS techCode,z.comp AS comp, z.is_new AS isNew,z.name AS zName
+        FROM el_use_item t1
+        LEFT JOIN el_department dept
+        ON t1.equipment_position = dept.id
+        LEFT JOIN sb_position po
+        ON t1.equipment_effect = po.code
+        LEFT JOIN sb_model model
+        ON t1.equipment_id = model.id
+        LEFT JOIN sb_equipment_z z
+        ON t1.equipment_id = z.id
+        WHERE 1=1
+        <if test="use_at!=null">
+            and t1.use_at = #{use_at,jdbcType=TIMESTAMP}
+        </if>
+    </select>
+</mapper>
