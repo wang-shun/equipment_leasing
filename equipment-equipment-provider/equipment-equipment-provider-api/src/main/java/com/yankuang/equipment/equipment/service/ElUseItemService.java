@@ -1,6 +1,7 @@
 package com.yankuang.equipment.equipment.service;
 
 import com.github.pagehelper.PageInfo;
+import com.yankuang.equipment.equipment.model.DtkList;
 import com.yankuang.equipment.equipment.model.ElUseItem;
 
 import java.util.List;
@@ -66,4 +67,20 @@ public interface ElUseItemService {
      * @return
      */
     PageInfo<ElUseItem> listTz(Integer page, Integer size,Map elUseItemMap);
+
+    /**
+     * @method 更新退租领用标记
+     * @param elUseItem
+     * @return
+     */
+    Integer updateByEquipmentId(ElUseItem elUseItem);
+
+//    /**
+//     * @method
+//     * @param dtkList
+//     * @return
+//     */
+//    List<DtkList> dtkReport(DtkList dtkList);
+
+    PageInfo<DtkList> dtkReport(Integer page, Integer size,Map dtkListMap);
 }

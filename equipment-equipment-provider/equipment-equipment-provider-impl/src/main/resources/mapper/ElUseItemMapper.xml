@@ -19,6 +19,19 @@
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="sbName" property="sbName" jdbcType="VARCHAR"/>
         <result column="cost_a1" property="costA1" javaType="DOUBLE"/>
+        <result column="sign" property="sign" jdbcType="BIGINT"/>
+    </resultMap>
+    <resultMap id="dtkListMap" type="com.yankuang.equipment.equipment.model.DtkList" >
+        <result column="sbName" property="sbName" jdbcType="VARCHAR"/>
+        <result column="equipment_num" property="equipmentNum" jdbcType="INTEGER"/>
+        <result column="equipmentModel" property="equipmentModel" jdbcType="VARCHAR"/>
+        <result column="cost_a1" property="costA1" javaType="DOUBLE"/>
+        <result column="use_at" property="useAt" jdbcType="TIMESTAMP"/>
+        <result column="remarks" property="remarks" jdbcType="VARCHAR"/>
+        <result column="deptName" property="deptName" jdbcType="VARCHAR"/>
+        <result column="equipment_effect" property="equipmentEffect" jdbcType="VARCHAR"/>
+        <result column="equipment_id" property="equipmentId" jdbcType="BIGINT"/>
+        <result column="sign" property="sign" jdbcType="BIGINT"/>
     </resultMap>
     <sql id="Base_Column_List" >
         item_id, use_id, equipment_id, main_param_name, main_param_value, equipment_num,
@@ -79,6 +92,9 @@
             </if>
             <if test="costA1 != null" >
                 cost_a1 = #{costA1,jdbcType=DOUBLE},
+            </if>
+            <if test="sign != null">
+                sign = #{sign,jdbcType=BIGINT},
             </if>
         </set>
         WHERE item_id = #{itemId,jdbcType=BIGINT}
@@ -184,5 +200,37 @@
                 and is_use = #{isUse}
             </if>
         </where>
+    </select>
+
+    <update id="updateByEquipmentId" parameterType="ElUseItem">
+        UPDATE el_use_item
+        SET sign = #{sign}
+        WHERE equipment_id = #{equipmentId}
+        AND status != 99
+        AND is_use = 1
+        AND sign is null
+    </update>
+
+    <!--东滩矿综掘面综机设备使用清单-->
+    <select id="dtkReport" parameterType="DtkList" resultMap="dtkListMap">
+        select sb.name AS sbName,t1.equipment_num,t2.equipment_model AS equipmentModel,t1.cost_a1,t1.use_at,t1.remarks,t1.equipment_id,t1.sign from el_use_item t1
+        left join sb_equipment_z sb on t1.equipment_id = sb.id
+        left join el_plan_use t2 on t1.plan_use_id = t2.id
+        left join el_department depart on t1.equipment_position = depart.id
+        where sb.status != 99
+        and t1.status != 99
+        and t2.is_del != 99
+        and t1.is_use = 2
+        and depart.name = #{deptName}
+        and t1.equipment_effect = #{equipmentEffect}
+    </select>
+
+    <select id="selectTime" parameterType="DtkList" resultType="Date">
+        SELECT use_at
+        FROM el_use_item
+        WHERE status != 99
+        and equipment_id = #{equipmentId}
+        and sign = #{sign}
+        and is_use = 1
     </select>
 </mapper>

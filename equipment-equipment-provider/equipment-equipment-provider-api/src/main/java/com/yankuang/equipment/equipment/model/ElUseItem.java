@@ -50,6 +50,8 @@ public class ElUseItem implements Serializable{
 
     private Double costA1;
 
+    private Long sign;
+
     public Long getItemId() {
         return itemId;
     }
@@ -169,5 +171,13 @@ public class ElUseItem implements Serializable{
 
     public void setIsUse(Byte isUse) {
         this.isUse = isUse;
+    }
+
+    public Long getSign() {
+        return sign;
+    }
+
+    public void setSign(Long sign) {
+        this.sign = sign;
     }
 }
