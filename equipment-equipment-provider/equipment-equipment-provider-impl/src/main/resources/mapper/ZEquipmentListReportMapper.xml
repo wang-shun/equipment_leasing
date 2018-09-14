@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yankuang.equipment.equipment.mapper.ZEquipmentListReportMapper" >
+  <resultMap id="BaseResultMap" type="com.yankuang.equipment.equipment.model.ListZReport" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="use_dept_name" property="useDeptName" jdbcType="VARCHAR" />
+    <result column="number" property="number" jdbcType="VARCHAR" />
+    <result column="create_excel_name" property="createExcelName" jdbcType="VARCHAR" />
+    <result column="status_name" property="statusName" jdbcType="VARCHAR" />
+    <result column="sure_name" property="sureName" jdbcType="VARCHAR" />
+    <result column="sum" property="sum" javaType="DOUBLE" />
+    <result column="use_dept_code" property="useDeptCode" jdbcType="VARCHAR" />
+    <result column="create_excel_code" property="createExcelCode" jdbcType="VARCHAR" />
+    <result column="status_code" property="statusCode" jdbcType="VARCHAR" />
+    <result column="sure_code" property="sureCode" jdbcType="VARCHAR" />
+    <result column="use_at" property="useAt" jdbcType="TIMESTAMP" />
+    <result column="equipment_position" property="equipmentPosition" jdbcType="VARCHAR" />
+    <result column="use_year" property="useYear" jdbcType="VARCHAR" />
+    <result column="use_month" property="useMonth" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, use_dept_name, number, create_excel_name, status_name, sure_name, sum, use_dept_code, create_excel_code, status_code, sure_code, use_at, equipment_position,
+    use_year, use_month, type
+  </sql>
+  <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="com.yankuang.equipment.equipment.model.ListZReport" >
+    insert into el_zEquipmentList_report (id, use_dept_name, number, create_excel_name, status_name,
+    sure_name, sum, use_dept_code, create_excel_code, status_code, sure_code, use_at, equipment_position,
+    use_year, use_month, type)
+    values (#{id,jdbcType=BIGINT}, #{useDeptName,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR},
+      #{createExcelName,jdbcType=VARCHAR}, #{statusName,jdbcType=VARCHAR}, #{sureName,jdbcType=VARCHAR},
+      #{sum,javaType=DOUBLE}, #{useDeptCode,jdbcType=VARCHAR}, #{createExcelCode,jdbcType=VARCHAR},
+      #{statusCode,jdbcType=VARCHAR}, #{sureCode,jdbcType=VARCHAR}, #{useAt,jdbcType=TIMESTAMP},
+       #{equipmentPosition,jdbcType=VARCHAR}, #{useYear,jdbcType=VARCHAR}, #{useMonth,jdbcType=VARCHAR},
+        #{type,jdbcType=TINYINT})
+  </insert>
+</mapper>

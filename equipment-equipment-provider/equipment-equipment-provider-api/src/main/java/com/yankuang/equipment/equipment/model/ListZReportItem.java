@@ -6,10 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
 
-@Data
 @Entity
+@Data
 @Table(name = "el_zEquipmentList_report_item")
-public class ZEquipmentListReportItem implements Serializable {
+public class ListZReportItem implements Serializable {
     private Long id;
 
     private String name;
@@ -28,5 +28,7 @@ public class ZEquipmentListReportItem implements Serializable {
 
     private String remark;
 
-    private String reportId;
+    private Long reportId;
+
+    private String equipmentCode;
 }
