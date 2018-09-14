@@ -1,9 +1,11 @@
 package com.yankuang.equipment.equipment.service;
 
+import com.github.pagehelper.PageInfo;
 import com.yankuang.equipment.equipment.model.ListZReport;
 import com.yankuang.equipment.equipment.model.ListZReportItem;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ZEquipmentReportService {
 
@@ -13,4 +15,13 @@ public interface ZEquipmentReportService {
      * @return
      */
     Boolean create(ListZReport listZReport, List<ListZReportItem> listZReportItems);
+
+    /**
+     * 分页查询列表
+     * @param page
+     * @param size
+     * @param listZReportMap
+     * @return
+     */
+    PageInfo<ListZReportItem> findByPage(Integer page, Integer size, Map listZReportMap);
 }

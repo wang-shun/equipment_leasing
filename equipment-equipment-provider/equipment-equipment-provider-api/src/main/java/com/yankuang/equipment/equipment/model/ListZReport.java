@@ -42,5 +42,4 @@ public class ListZReport implements Serializable {
     private String useMonth;
 
     private Byte type;
-
 }

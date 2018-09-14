@@ -44,4 +44,6 @@ public class ZEquipmentDTO implements Serializable {
     private String useAtString;
 
     private List<ListZReportItem> listZReportItems;
+
+    private ListZReportItem listZReportItem;
 }

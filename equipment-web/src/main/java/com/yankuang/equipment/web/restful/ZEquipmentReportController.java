@@ -10,6 +10,7 @@ import com.yankuang.equipment.equipment.model.ListZReportItem;
 import com.yankuang.equipment.equipment.service.ElUseItemService;
 import com.yankuang.equipment.equipment.service.ZEquipmentReportService;
 import com.yankuang.equipment.web.dto.ZEquipmentDTO;
+import com.yankuang.equipment.web.util.DateConverterConfig;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
@@ -78,10 +79,59 @@ public class ZEquipmentReportController {
             return CommonResponse.build(200, "报表没有数据", null);
         }
         ListZReport listZReport = new ListZReport();
+        //实体类属性数据转换到dto中
         BeanUtils.copyProperties(zEquipmentDTO,listZReport);
         if (zEquipmentReportService.create(listZReport,ListZReportItems)) {
             return CommonResponse.ok("创建成功");
         }
         return CommonResponse.build(500,"创建失败",null);
     }
+
+    /**
+     * 分页查询报表历史
+     * @param page
+     * @param size
+     * @param jsonString
+     * @return
+     */
+    @GetMapping("/findByPage")
+    public CommonResponse findByPage(@RequestParam Integer page,
+                                        @RequestParam Integer size,
+                                        @RequestParam String jsonString) {
+        if (StringUtils.isEmpty(jsonString)){
+            return CommonResponse.build(500,"查询条件不能为空",null);
+        }
+        ZEquipmentDTO zEquipmentDTO = JsonUtils.jsonToPojo(jsonString,ZEquipmentDTO.class);
+
+        //传入查询条件
+        Map listZReportMap = new HashMap();
+        listZReportMap.put("id",zEquipmentDTO.getId());
+        listZReportMap.put("useDeptName",zEquipmentDTO.getUseDeptName());
+        listZReportMap.put("number",zEquipmentDTO.getNumber());
+        listZReportMap.put("createExcelName",zEquipmentDTO.getCreateExcelName());
+        listZReportMap.put("statusName",zEquipmentDTO.getStatusName());
+        listZReportMap.put("sureName",zEquipmentDTO.getSureName());
+        listZReportMap.put("sum",zEquipmentDTO.getSum());
+        listZReportMap.put("useDeptCode",zEquipmentDTO.getUseDeptCode());
+        listZReportMap.put("createExcelCode",zEquipmentDTO.getCreateExcelCode());
+        listZReportMap.put("statusCode",zEquipmentDTO.getStatusCode());
+        listZReportMap.put("sureCode",zEquipmentDTO.getSureCode());
+        listZReportMap.put("equipmentPosition",zEquipmentDTO.getEquipmentPosition());
+        listZReportMap.put("useYear",zEquipmentDTO.getUseYear());
+        listZReportMap.put("useMonth",zEquipmentDTO.getUseMonth());
+        listZReportMap.put("type",zEquipmentDTO.getType());
+        listZReportMap.put("listZReportItem",zEquipmentDTO.getListZReportItem());
+
+        String useAtString = zEquipmentDTO.getUseAtString();
+        if (useAtString != null && !"".equals(useAtString)){
+            DateConverterConfig dateConverterConfig = new DateConverterConfig();
+            dateConverterConfig.convert(useAtString);
+            listZReportMap.put("useAt",useAtString);
+        }else {
+            listZReportMap.put("useAt",zEquipmentDTO.getUseAt());
+        }
+
+        return CommonResponse.ok(zEquipmentReportService.findByPage(page,size,listZReportMap));
+    }
+
 }
