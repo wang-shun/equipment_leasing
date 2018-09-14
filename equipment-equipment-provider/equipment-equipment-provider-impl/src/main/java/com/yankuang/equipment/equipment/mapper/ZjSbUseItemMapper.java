@@ -11,4 +11,6 @@ public interface ZjSbUseItemMapper {
 
     List<ZjSbUseItem> listEquipmentReceipt(Map zjSbUseItem);
 
+    Integer create(ZjSbUseItem zjSbUseItem);
+
 }

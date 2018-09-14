@@ -15,23 +15,30 @@ import java.util.Map;
 @Service
 @RpcProvider
 public class ZjSbUseItemServiceImpl implements ZjSbUseItemService {
+
     @Autowired
     ZjSbUseItemMapper zjSbUseItemMapper;
+
+    @Autowired
+    SbElFeeServiceImpl sbElFeeService;
 
     public PageInfo<ZjSbUseItem> listEquipmentReceipt(Integer page, Integer size, Map zjSbUseItemMap){
         PageHelper.startPage(page,size);
         List<ZjSbUseItem> zjSbUseItems = zjSbUseItemMapper.listEquipmentReceipt(zjSbUseItemMap);
-//        if (elUseItems == null){
-//            return null;
-//        }
-//        //分页查询将设备信息添加上
-//        for (ElUseItem elUseItem:elUseItems){
-//            SbEquipmentT sbEquipmentT = sbEquipmentTMapper.findById(elUseItem.getEquipmentId());
-//            elUseItem.setSbEquipmentT(sbEquipmentT);
-//        }
         PageInfo<ZjSbUseItem> pageInfo = new PageInfo<ZjSbUseItem>(zjSbUseItems);
         return pageInfo;
     }
+
+    /**
+     * @method 更新综机设备使用交接单
+     * @param zjSbUseItem
+     * @return
+     */
+    public Boolean create(ZjSbUseItem zjSbUseItem){
+        return zjSbUseItemMapper.create(zjSbUseItem) >=0;
+    }
+
+
 
 
 }

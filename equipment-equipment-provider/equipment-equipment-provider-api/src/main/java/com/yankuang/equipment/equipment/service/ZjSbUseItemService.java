@@ -16,4 +16,11 @@ public interface ZjSbUseItemService {
      * @return
      */
     PageInfo<ZjSbUseItem> listEquipmentReceipt(Integer page, Integer size, Map zjSbUseItemMap);
+
+    /**
+     * @method 更新综机设备使用交接单
+     * @param zjSbUseItem
+     * @return
+     */
+    Boolean create(ZjSbUseItem zjSbUseItem);
 }

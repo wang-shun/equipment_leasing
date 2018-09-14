@@ -1,23 +1,36 @@
 package com.yankuang.equipment.equipment.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 综机设备使用交接单
  *
  */
+@Data
+@Entity
+@Table(name = "el_zjsb_use_item")
 public class ZjSbUseItem implements Serializable {
 
-    private String modelName;//使用地点，功能位置
+    private Long receiptId;//交接单id
+
+    private Long useId;//领用申请Id
+
+    private Long equipmentId;//设备Id
+
+    private String equipmentEffect;//使用地点，功能位置
 
     private String departmentName;//领用单位
 
-    private String positionName;//设备名称
+    private String zName;//设备名称
 
-    private String zName;//设备型号
+    private String equipmentModel;//设备型号
 
     private Integer equipmentNum;//数量
 
@@ -27,88 +40,22 @@ public class ZjSbUseItem implements Serializable {
 
     private Byte isNew;//是否是新的
 
+    private String stubUnit;//存根单位
+
     private String remark;//备注
 
-    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
-    private Date useAt;//领用时间
+    private Byte isUse;//领用、退租 1.领用 2.退租
 
-    public String getModelName() {
-        return modelName;
-    }
+//    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
+    private String useAt;//领用时间
 
-    public void setModelName(String modelName) {
-        this.modelName = modelName;
-    }
+    private String dateTime;
 
-    public String getDepartmentName() {
-        return departmentName;
-    }
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    private Date updateAt;//更新修改时间
 
-    public void setDepartmentName(String departmentName) {
-        this.departmentName = departmentName;
-    }
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    private Date createAt;//创建时间
 
-    public String getPositionName() {
-        return positionName;
-    }
 
-    public void setPositionName(String positionName) {
-        this.positionName = positionName;
-    }
-
-    public String getzName() {
-        return zName;
-    }
-
-    public void setzName(String zName) {
-        this.zName = zName;
-    }
-
-    public Integer getEquipmentNum() {
-        return equipmentNum;
-    }
-
-    public void setEquipmentNum(Integer equipmentNum) {
-        this.equipmentNum = equipmentNum;
-    }
-
-    public String getTechCode() {
-        return techCode;
-    }
-
-    public void setTechCode(String techCode) {
-        this.techCode = techCode;
-    }
-
-    public String getComp() {
-        return comp;
-    }
-
-    public void setComp(String comp) {
-        this.comp = comp;
-    }
-
-    public Byte getIsNew() {
-        return isNew;
-    }
-
-    public void setIsNew(Byte isNew) {
-        this.isNew = isNew;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    public Date getUseAt() {
-        return useAt;
-    }
-
-    public void setUseAt(Date useAt) {
-        this.useAt = useAt;
-    }
 }

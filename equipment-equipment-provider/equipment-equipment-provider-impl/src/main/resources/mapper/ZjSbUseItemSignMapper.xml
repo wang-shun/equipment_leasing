@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yankuang.equipment.equipment.mapper.ZjSbUseItemSignMapper" >
+    <resultMap id="BaseResultMap" type="com.yankuang.equipment.equipment.model.ZjSbUseItemSign" >
+        <result column="id" property="id" jdbcType="BIGINT" />
+        <result column="equipment_management" property="equipmentManagement" jdbcType="VARCHAR" />
+        <result column="building_user" property="buildingUser" jdbcType="VARCHAR" />
+        <result column="handover" property="handover" jdbcType="VARCHAR" />
+        <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+        <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id,equipment_management,building_user,handover,create_at,update_at
+    </sql>
+
+    <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="com.yankuang.equipment.equipment.model.ZjSbUseItemSign">
+        INSERT INTO el_zjsb_use_item_sign(
+        id,equipment_management,building_user,handover,create_at,update_at
+        )
+        VALUES
+        (#{id,jdbcType=BIGINT},#{equipmentManagement,jdbcType=VARCHAR},
+        #{buildingUser,jdbcType=VARCHAR},#{handover,jdbcType=VARCHAR},
+        #{createAt,jdbcType=TIMESTAMP},
+        #{updateAt,jdbcType=TIMESTAMP})
+    </insert>
+
+    <select id="findByHandoverTime" parameterType="String" resultType="INTEGER">
+        select count(*) from el_zjsb_use_item_sign
+        where 1=1 and handover=#{handover}
+    </select>
+
+    <select id="list" parameterType="map" resultMap="BaseResultMap">
+        SELECT zjsh.* FROM el_zjsb_use_item_sign zjsbsign
+        LEFT JOIN el_zjsb_use_item zjsh
+        ON zjsbsign.id=zjsh.receipt_id
+        <where>
+            1 = 1
+            <if test="handover != null">
+                and handover = #{handover,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>
