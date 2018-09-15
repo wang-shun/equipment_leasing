@@ -37,4 +37,20 @@ public class DtkList implements Serializable {
     private Long day;
 
     private String unit;
+
+    private Integer centerMonth;
+
+    private Integer centerYear;
+
+    private Long useId;
+
+    private String assetUnit;
+
+    private String sbCode;
+
+    private String deptCode;
+
+    private Double sum;//求总和
+
+    private Byte kb;//用来判断矿别
 }

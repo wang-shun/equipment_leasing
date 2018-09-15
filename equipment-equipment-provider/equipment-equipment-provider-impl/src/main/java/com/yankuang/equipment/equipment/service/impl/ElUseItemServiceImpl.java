@@ -87,54 +87,27 @@ public class ElUseItemServiceImpl implements ElUseItemService{
         return elUseItemMapper.updateByEquipmentId(elUseItem);
     }
 
-    public PageInfo<DtkList> dtkReport(Integer page, Integer size,Map dtkListMap){
-        PageHelper.startPage(page,size);
-        DtkList dtkList = (DtkList) dtkListMap.get("dtkList");
+    public DtkList findSign(DtkList dtkList){
         //查询退租的记录
-        List<DtkList> dtkLists = elUseItemMapper.dtkReport(dtkList);
-        if (dtkLists == null || dtkLists.size() <= 0){
-            return null;
-        }
-        for (DtkList dtkList1:dtkLists){
-            //查询对应领用时间
-            Date startTime = elUseItemMapper.selectTime(dtkList);
-            Date endTime = dtkList1.getUseAt();
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            String startString,endString;
-            Calendar  cale;
-            //若领用时间为空，则将月初作为领用时间
-            if (startTime == null){
-                cale = Calendar.getInstance();
-                cale.add(Calendar.MONTH, 0);
-                cale.set(Calendar.DAY_OF_MONTH, 1);
-                startString = formatter.format(cale.getTime());
-            }else {
-                startString = formatter.format(startTime);
-            }
-            //若退租时间为空，则将月末作为退租时间
-            if (endTime == null){
-                cale = Calendar.getInstance();
-                cale.add(Calendar.MONTH, 1);
-                cale.set(Calendar.DAY_OF_MONTH, 0);
-                endString = formatter.format(cale.getTime());
-            }else{
-                endString = formatter.format(endTime);
-            }
-            //获取租用天数
-            try
-            {
-                Date beginDate = formatter.parse(startString);
-                Date endDate= formatter.parse(endString);
-                Long day=(endDate.getTime()-beginDate.getTime())/(24*60*60*1000);
-                Double costA1Fee = dtkList.getCostA1() * dtkList.getEquipmentNum() * day;
-                dtkList1.setCostA1Fee(costA1Fee);
-                dtkList1.setDay(day);
-                dtkList1.setUnit("台");//TODO 没有单位字段，暂时写死
-             } catch (Exception e) {// TODO 自动生成 catch 块
-                e.printStackTrace();
-            }
-        }
+        DtkList dtkLists = elUseItemMapper.dtkReport(dtkList);
+        return dtkLists;
+    }
+
+    public List<DtkList> findReportLY(DtkList dtkList){
+        return elUseItemMapper.findReportLY(dtkList);
+    }
+
+    public PageInfo<DtkList> dtkReportPage(Integer page,Integer size,List<DtkList> dtkLists){
+        PageHelper.startPage(page,size);
         PageInfo<DtkList> pageInfo = new PageInfo<DtkList>(dtkLists);
         return pageInfo;
+    }
+
+    public Boolean findKB(DtkList dtkList){
+        if (elUseItemMapper.findKB(dtkList) > 0){
+            return true;
+        }
+
+        return false;
     }
 }

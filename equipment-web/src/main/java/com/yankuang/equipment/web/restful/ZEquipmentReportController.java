@@ -8,6 +8,7 @@ import com.yankuang.equipment.equipment.model.DtkList;
 import com.yankuang.equipment.equipment.model.ListZReport;
 import com.yankuang.equipment.equipment.model.ListZReportItem;
 import com.yankuang.equipment.equipment.service.ElUseItemService;
+import com.yankuang.equipment.equipment.service.SbElFeeService;
 import com.yankuang.equipment.equipment.service.ZEquipmentReportService;
 import com.yankuang.equipment.web.dto.ZEquipmentDTO;
 import com.yankuang.equipment.web.util.DateConverterConfig;
@@ -15,9 +16,9 @@ import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @CrossOrigin(maxAge = 3600)
 @RestController
@@ -30,6 +31,9 @@ public class ZEquipmentReportController {
     @RpcConsumer
     ZEquipmentReportService zEquipmentReportService;
 
+    @RpcConsumer
+    SbElFeeService sbElFeeService;
+
     /**
      * @method 查询报表列表
      * @param page
@@ -40,14 +44,59 @@ public class ZEquipmentReportController {
     @GetMapping
     public CommonResponse ZReportSelect(@RequestParam Integer page,
                                         @RequestParam Integer size,
-                                        @RequestParam String jsonString) {
+                                        @RequestParam String jsonString) throws ParseException {
+
+        Long day;
+        Double sum = 0.0;
+
         if (StringUtils.isEmpty(jsonString)){
             return CommonResponse.build(500,"返回对象不能为空",null);
         }
-        Map elUseItemMap = new HashMap();
         DtkList dtkList = JsonUtils.jsonToPojo(jsonString,DtkList.class);
+
+        //判断是否是查询历史记录报表
+        if (zEquipmentReportService.find(dtkList)){
+            return CommonResponse.ok(findByPage(page,size,jsonString));
+        }
+
+        //获取满足条件的领用记录
+        List<DtkList> dtkListLYs = elUseItemService.findReportLY(dtkList);
+        //获取计费时间段，用来传参
+        Date date = new Date();
+        Calendar chargingDate = Calendar.getInstance();
+        chargingDate.setTime(date);
+        int month = chargingDate.get(Calendar.MONTH);
+        int year = chargingDate.get(Calendar.YEAR);
+
+        Date endDate = new SimpleDateFormat("yyyy-M-dd").parse( year + "-" + month + "-20" );
+        Date startDate = new SimpleDateFormat("yyyy-M-dd").parse(year + "-" + (month -1) + "-21");
+        //循环获取
+        for (DtkList dtkListLY:dtkListLYs){
+            if (dtkListLY.getSign() == null || "".equals(dtkListLY)){
+               day = sbElFeeService.CalEquipmentElDays(dtkListLY.getUseId(),null,dtkListLY.getEquipmentId(),startDate,endDate);
+            }else {
+                DtkList findSign = elUseItemService.findSign(dtkListLY);
+               day = sbElFeeService.CalEquipmentElDays(dtkListLY.getUseId(),findSign.getUseId(),dtkListLY.getEquipmentId(),startDate,endDate);
+            }
+            Double costA1Fee = dtkList.getCostA1() * dtkList.getEquipmentNum() * day;
+            sum += costA1Fee;
+            dtkListLY.setCostA1Fee(costA1Fee);
+            dtkListLY.setDay(day);
+            dtkList.setUseAt(dtkListLY.getUseAt());
+        }
+
+        dtkList.setSum(sum);
+
+        PageInfo pageInfo = elUseItemService.dtkReportPage(page,size,dtkListLYs);
+        Map elUseItemMap = new HashMap();
+        elUseItemMap.put("pageInfo",pageInfo);
+
+        if(elUseItemService.findKB(dtkList)){
+            dtkList.setKb((byte)1);
+        }else {
+            dtkList.setKb((byte)2);
+        }
         elUseItemMap.put("dtkList",dtkList);
-        PageInfo pageInfo = elUseItemService.dtkReport(page,size,elUseItemMap);
 
         return CommonResponse.ok(elUseItemMap);
     }
@@ -94,33 +143,31 @@ public class ZEquipmentReportController {
      * @param jsonString
      * @return
      */
-    @GetMapping("/findByPage")
-    public CommonResponse findByPage(@RequestParam Integer page,
-                                        @RequestParam Integer size,
-                                        @RequestParam String jsonString) {
-        if (StringUtils.isEmpty(jsonString)){
-            return CommonResponse.build(500,"查询条件不能为空",null);
-        }
+    public PageInfo<ListZReportItem> findByPage(Integer page,
+                                        Integer size,
+                                        String jsonString) {
         ZEquipmentDTO zEquipmentDTO = JsonUtils.jsonToPojo(jsonString,ZEquipmentDTO.class);
 
         //传入查询条件
         Map listZReportMap = new HashMap();
-        listZReportMap.put("id",zEquipmentDTO.getId());
-        listZReportMap.put("useDeptName",zEquipmentDTO.getUseDeptName());
-        listZReportMap.put("number",zEquipmentDTO.getNumber());
-        listZReportMap.put("createExcelName",zEquipmentDTO.getCreateExcelName());
-        listZReportMap.put("statusName",zEquipmentDTO.getStatusName());
-        listZReportMap.put("sureName",zEquipmentDTO.getSureName());
-        listZReportMap.put("sum",zEquipmentDTO.getSum());
-        listZReportMap.put("useDeptCode",zEquipmentDTO.getUseDeptCode());
-        listZReportMap.put("createExcelCode",zEquipmentDTO.getCreateExcelCode());
-        listZReportMap.put("statusCode",zEquipmentDTO.getStatusCode());
-        listZReportMap.put("sureCode",zEquipmentDTO.getSureCode());
-        listZReportMap.put("equipmentPosition",zEquipmentDTO.getEquipmentPosition());
-        listZReportMap.put("useYear",zEquipmentDTO.getUseYear());
-        listZReportMap.put("useMonth",zEquipmentDTO.getUseMonth());
-        listZReportMap.put("type",zEquipmentDTO.getType());
-        listZReportMap.put("listZReportItem",zEquipmentDTO.getListZReportItem());
+//        listZReportMap.put("id",zEquipmentDTO.getId());
+//        listZReportMap.put("useDeptName",zEquipmentDTO.getUseDeptName());
+//        listZReportMap.put("number",zEquipmentDTO.getNumber());
+//        listZReportMap.put("createExcelName",zEquipmentDTO.getCreateExcelName());
+//        listZReportMap.put("statusName",zEquipmentDTO.getStatusName());
+//        listZReportMap.put("sureName",zEquipmentDTO.getSureName());
+//        listZReportMap.put("sum",zEquipmentDTO.getSum());
+//        listZReportMap.put("useDeptCode",zEquipmentDTO.getUseDeptCode());
+//        listZReportMap.put("createExcelCode",zEquipmentDTO.getCreateExcelCode());
+//        listZReportMap.put("statusCode",zEquipmentDTO.getStatusCode());
+//        listZReportMap.put("sureCode",zEquipmentDTO.getSureCode());
+//        listZReportMap.put("equipmentPosition",zEquipmentDTO.getEquipmentPosition());
+//        listZReportMap.put("useYear",zEquipmentDTO.getUseYear());
+//        listZReportMap.put("useMonth",zEquipmentDTO.getUseMonth());
+//        listZReportMap.put("type",zEquipmentDTO.getType());
+//        listZReportMap.put("listZReportItem",zEquipmentDTO.getListZReportItem());
+        //将DTO转化成对应的map
+        BeanUtils.copyProperties(zEquipmentDTO,listZReportMap);
 
         String useAtString = zEquipmentDTO.getUseAtString();
         if (useAtString != null && !"".equals(useAtString)){
@@ -131,7 +178,7 @@ public class ZEquipmentReportController {
             listZReportMap.put("useAt",zEquipmentDTO.getUseAt());
         }
 
-        return CommonResponse.ok(zEquipmentReportService.findByPage(page,size,listZReportMap));
+        return zEquipmentReportService.findByPage(page,size,listZReportMap);
     }
 
 }

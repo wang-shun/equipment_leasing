@@ -1,6 +1,7 @@
 package com.yankuang.equipment.equipment.service;
 
 import com.github.pagehelper.PageInfo;
+import com.yankuang.equipment.equipment.model.DtkList;
 import com.yankuang.equipment.equipment.model.ListZReport;
 import com.yankuang.equipment.equipment.model.ListZReportItem;
 
@@ -24,4 +25,11 @@ public interface ZEquipmentReportService {
      * @return
      */
     PageInfo<ListZReportItem> findByPage(Integer page, Integer size, Map listZReportMap);
+
+    /**
+     * 查询是否是历史报表记录
+     * @param dtkList
+     * @return
+     */
+    Boolean find(DtkList dtkList);
 }

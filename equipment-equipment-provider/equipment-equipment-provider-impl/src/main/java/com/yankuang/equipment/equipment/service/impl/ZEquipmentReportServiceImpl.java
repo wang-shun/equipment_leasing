@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yankuang.equipment.equipment.mapper.ZEquipmentListReportItemMapper;
 import com.yankuang.equipment.equipment.mapper.ZEquipmentListReportMapper;
+import com.yankuang.equipment.equipment.model.DtkList;
 import com.yankuang.equipment.equipment.model.ListZReport;
 import com.yankuang.equipment.equipment.model.ListZReportItem;
 import com.yankuang.equipment.equipment.service.ZEquipmentReportService;
@@ -70,5 +71,13 @@ public class ZEquipmentReportServiceImpl implements ZEquipmentReportService {
         }
         PageInfo<ListZReportItem> pageInfo = new PageInfo<ListZReportItem>(listZReportItems);
         return pageInfo;
+    }
+
+    public Boolean find(DtkList dtkList){
+        if(zEquipmentListReportMapper.find(dtkList)>0){
+            return true;
+        }
+
+        return false;
     }
 }

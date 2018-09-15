@@ -91,4 +91,59 @@
       AND type =  #{type,jdbcType=TINYINT}
     </if>
   </select>
+
+  <select id="find" parameterType="map" resultType="INTEGER">
+    SELECT COUNT(1)
+    FROM el_zEquipmentList_report
+    WHERE
+    1=1
+    <if test="id != null">
+      AND id = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="useDeptName != null and useDeptName != '' ">
+      AND use_dept_name = #{useDeptName,jdbcType=VARCHAR}
+    </if>
+    <if test="number != null and number != '' ">
+      AND number =  #{number,jdbcType=VARCHAR}
+    </if>
+    <if test="createExcelName != null and createExcelName != '' ">
+      AND create_excel_name =  #{createExcelName,jdbcType=VARCHAR}
+    </if>
+    <if test="statusName != null and statusName != '' ">
+      AND status_name =  #{statusName,jdbcType=VARCHAR}
+    </if>
+    <if test="sureName != null and sureName != '' ">
+      AND sure_name =  #{sureName,jdbcType=VARCHAR}
+    </if>
+    <if test="sum != null">
+      AND sum =  #{sum,javaType=DOUBLE}
+    </if>
+    <if test="useDeptCode != null and useDeptCode != '' ">
+      AND use_dept_code =  #{useDeptCode,jdbcType=VARCHAR}
+    </if>
+    <if test="createExcelCode != null and createExcelCode != '' ">
+      AND create_excel_code =  #{createExcelCode,jdbcType=VARCHAR}
+    </if>
+    <if test="statusCode != null and statusCode != '' ">
+      AND status_code =  #{statusCode,jdbcType=VARCHAR}
+    </if>
+    <if test="sureCode != null and sureCode != '' ">
+      AND sure_code =  #{sureCode,jdbcType=VARCHAR}
+    </if>
+    <if test="useAt != null ">
+      AND use_at =  #{sureCode,jdbcType=TIMESTAMP}
+    </if>
+    <if test="equipmentPosition != null and equipmentPosition != '' ">
+      AND equipment_position =  #{equipmentPosition,jdbcType=VARCHAR}
+    </if>
+    <if test="useYear != null and useYear != '' ">
+      AND use_year =  #{useYear,jdbcType=VARCHAR}
+    </if>
+    <if test="useMonth != null and useMonth != '' ">
+      AND use_month =  #{useMonth,jdbcType=VARCHAR}
+    </if>
+    <if test="type != null">
+      AND type =  #{type,jdbcType=TINYINT}
+    </if>
+  </select>
 </mapper>

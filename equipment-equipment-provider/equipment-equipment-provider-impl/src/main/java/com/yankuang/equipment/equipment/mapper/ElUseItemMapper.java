@@ -1,11 +1,9 @@
 package com.yankuang.equipment.equipment.mapper;
 
-import com.github.pagehelper.PageInfo;
 import com.yankuang.equipment.equipment.model.DtkList;
 import com.yankuang.equipment.equipment.model.ElUseItem;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -29,8 +27,10 @@ public interface ElUseItemMapper {
 
     Integer updateByEquipmentId(ElUseItem elUseItem);
 
-    List<DtkList> dtkReport(DtkList dtkList);
+    DtkList dtkReport(DtkList dtkList);
 
-    Date selectTime(DtkList dtkList);
+    List<DtkList> findReportLY(DtkList dtkList);
+
+    Integer findKB(DtkList dtkList);
 
 }

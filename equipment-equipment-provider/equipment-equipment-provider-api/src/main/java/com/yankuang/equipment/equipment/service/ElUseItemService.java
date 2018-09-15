@@ -75,12 +75,33 @@ public interface ElUseItemService {
      */
     Integer updateByEquipmentId(ElUseItem elUseItem);
 
-//    /**
-//     * @method
-//     * @param dtkList
-//     * @return
-//     */
-//    List<DtkList> dtkReport(DtkList dtkList);
+    /**
+     * 查询设备对应的退租记录
+     * @param dtkList
+     * @return
+     */
+    DtkList findSign(DtkList dtkList);
 
-    PageInfo<DtkList> dtkReport(Integer page, Integer size,Map dtkListMap);
+    /**
+     * 查询没有退租的设备对应的领用记录
+     * @param dtkList
+     * @return
+     */
+    List<DtkList> findReportLY(DtkList dtkList);
+
+    /**
+     * 分页查询清单报表
+     * @param page
+     * @param size
+     * @param dtkLists
+     * @return
+     */
+    PageInfo<DtkList> dtkReportPage(Integer page,Integer size,List<DtkList> dtkLists);
+
+    /**
+     * 判断矿别
+     * @param dtkList
+     * @return
+     */
+    Boolean findKB(DtkList dtkList);
 }

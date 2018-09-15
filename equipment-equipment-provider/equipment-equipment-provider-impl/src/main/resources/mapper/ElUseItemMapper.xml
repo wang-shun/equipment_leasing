@@ -32,6 +32,12 @@
         <result column="equipment_effect" property="equipmentEffect" jdbcType="VARCHAR"/>
         <result column="equipment_id" property="equipmentId" jdbcType="BIGINT"/>
         <result column="sign" property="sign" jdbcType="BIGINT"/>
+        <result column="center_month" property="centerMonth" jdbcType="INTEGER"/>
+        <result column="center_year" property="centerYear" jdbcType="INTEGER"/>
+        <result column="use_id" property="useId" jdbcType="BIGINT"/>
+        <result column="assetUnit" property="assetUnit" jdbcType="VARCHAR"/>
+        <result column="sbCode" property="sbCode" jdbcType="VARCHAR"/>
+        <result column="deptCode" property="deptCode" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List" >
         item_id, use_id, equipment_id, main_param_name, main_param_value, equipment_num,
@@ -213,7 +219,7 @@
 
     <!--东滩矿综掘面综机设备使用清单-->
     <select id="dtkReport" parameterType="DtkList" resultMap="dtkListMap">
-        select sb.name AS sbName,t1.equipment_num,t2.equipment_model AS equipmentModel,t1.cost_a1,t1.use_at,t1.remarks,t1.equipment_id,t1.sign from el_use_item t1
+        select sb.asset_unit AS assetUnit,sb.name AS sbName,t1.equipment_num,t2.equipment_model AS equipmentModel,t1.cost_a1,t1.use_at,t1.remarks,t1.equipment_id,t1.sign from el_use_item t1
         left join sb_equipment_z sb on t1.equipment_id = sb.id
         left join el_plan_use t2 on t1.plan_use_id = t2.id
         left join el_department depart on t1.equipment_position = depart.id
@@ -221,16 +227,42 @@
         and t1.status != 99
         and t2.is_del != 99
         and t1.is_use = 2
-        and depart.name = #{deptName}
+        and t1.equipment_id = #{equipmentId}
+        and depart.code = #{deptCode}
         and t1.equipment_effect = #{equipmentEffect}
+        and t2.center_month = #{centerMonth}
+        and t2.center_year = #{centerYear}
     </select>
 
-    <select id="selectTime" parameterType="DtkList" resultType="Date">
-        SELECT use_at
-        FROM el_use_item
-        WHERE status != 99
-        and equipment_id = #{equipmentId}
-        and sign = #{sign}
-        and is_use = 1
+    <select id="findReportLY" parameterType="DtkList" resultMap="dtkListMap">
+        select sb.asset_unit AS assetUnit,sb.name AS sbName,t1.equipment_num,t2.equipment_model AS equipmentModel,t1.cost_a1,t1.use_at,t1.remarks,t1.equipment_id,t1.sign from el_use_item t1
+        left join sb_equipment_z sb on t1.equipment_id = sb.id
+        left join el_plan_use t2 on t1.plan_use_id = t2.id
+        left join el_department depart on t1.equipment_position = depart.id
+        where sb.status != 99
+        and t1.status != 99
+        and t2.is_del != 99
+        and t1.is_use = 1
+        and depart.code = #{deptCode}
+        and t1.equipment_effect = #{equipmentEffect}
+        and t2.center_month = #{centerMonth}
+        and t2.center_year = #{centerYear}
+    </select>
+    
+    <select id="findKB" parameterType="DtkList" resultType="INTEGER">
+        select count(1) from el_use_item t1
+        left join sb_equipment_z sb on t1.equipment_id = sb.id
+        left join el_plan_use t2 on t1.plan_use_id = t2.id
+        left join el_department depart on t1.equipment_position = depart.id
+        where sb.status != 99
+        and t1.status != 99
+        and t2.is_del != 99
+        and t1.is_use = 1
+        and t1.equipment_id = #{equipmentId}
+        and depart.code = #{deptCode}
+        and t1.equipment_effect = #{equipmentEffect}
+        and t2.center_month = #{centerMonth}
+        and t2.center_year = #{centerYear}
+        and (depart.name like "%济宁%" or depart.name like "%兖州%")
     </select>
 </mapper>
