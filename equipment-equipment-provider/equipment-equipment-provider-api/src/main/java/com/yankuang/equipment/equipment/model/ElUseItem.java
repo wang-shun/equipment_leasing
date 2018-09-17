@@ -46,7 +46,7 @@ public class ElUseItem implements Serializable{
 
     private String sbName;
 
-    private String name;
+    private String name;//部门名称
 
     private Double costA1;
 

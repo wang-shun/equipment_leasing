@@ -54,6 +54,15 @@ public class ZEquipmentReportController {
         }
         DtkList dtkList = JsonUtils.jsonToPojo(jsonString,DtkList.class);
 
+        if (dtkList.getUseYear() == null || "".equals(dtkList.getUseYear())) {
+            return CommonResponse.build(500,"领用年份不能为空",null);
+        }
+
+        if ( dtkList.getUseMonth() == null && "".equals(dtkList.getUseMonth())){
+            return CommonResponse.build(500,"领用月份不能为空",null);
+        }
+        dtkList.setCenterYear(Integer.parseInt(dtkList.getUseYear()));
+        dtkList.setCenterMonth(Integer.parseInt(dtkList.getUseMonth()));
         //判断是否是查询历史记录报表
         if (zEquipmentReportService.find(dtkList)){
             return CommonResponse.ok(findByPage(page,size,jsonString));
@@ -75,10 +84,20 @@ public class ZEquipmentReportController {
             if (dtkListLY.getSign() == null || "".equals(dtkListLY)){
                day = sbElFeeService.CalEquipmentElDays(dtkListLY.getUseId(),null,dtkListLY.getEquipmentId(),startDate,endDate);
             }else {
+                dtkListLY.setStartDate(startDate);
                 DtkList findSign = elUseItemService.findSign(dtkListLY);
+                if (findSign == null){
+                    continue;
+                }
                day = sbElFeeService.CalEquipmentElDays(dtkListLY.getUseId(),findSign.getUseId(),dtkListLY.getEquipmentId(),startDate,endDate);
             }
-            Double costA1Fee = dtkList.getCostA1() * dtkList.getEquipmentNum() * day;
+            if (dtkListLY.getCostA1() == null){
+                return CommonResponse.build(500,"没有日租赁费",null);
+            }
+            if (dtkListLY.getEquipmentNum() == null){
+                return CommonResponse.build(500,"没有设备数量",null);
+            }
+            Double costA1Fee = dtkListLY.getCostA1() * dtkListLY.getEquipmentNum() * day;
             sum += costA1Fee;
             dtkListLY.setCostA1Fee(costA1Fee);
             dtkListLY.setDay(day);
@@ -90,11 +109,10 @@ public class ZEquipmentReportController {
         PageInfo pageInfo = elUseItemService.dtkReportPage(page,size,dtkListLYs);
         Map elUseItemMap = new HashMap();
         elUseItemMap.put("pageInfo",pageInfo);
-
-        if(elUseItemService.findKB(dtkList)){
-            dtkList.setKb((byte)1);
-        }else {
-            dtkList.setKb((byte)2);
+        if (elUseItemService.findKB(dtkList)) {
+            dtkList.setKb((byte) 1);
+        } else {
+            dtkList.setKb((byte) 2);
         }
         elUseItemMap.put("dtkList",dtkList);
 
