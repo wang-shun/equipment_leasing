@@ -185,4 +185,14 @@
             </if>
         </where>
     </select>
+
+    <select id="findElUseItemTL" parameterType="com.yankuang.equipment.equipment.model.ElUseItem" resultMap="BaseResultMap">
+        select u1.*,dept.name as name from el_use_item u1
+        left join el_use u2 on u1.use_id = u2.id
+        left join el_department dept on u1.equipment_position = dept.id
+        where u1.is_use = 1
+        and u2.use_equipment_type = 1
+        and u1.equipment_position = #{equipmentPosition}
+        and u1.status != 99
+    </select>
 </mapper>

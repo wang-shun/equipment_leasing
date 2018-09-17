@@ -50,6 +50,8 @@ public class ElUseItem implements Serializable{
 
     private Double costA1;
 
+    private Long sign;
+
     public Long getItemId() {
         return itemId;
     }

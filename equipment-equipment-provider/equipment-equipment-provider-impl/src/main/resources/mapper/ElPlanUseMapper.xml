@@ -34,6 +34,9 @@
         <result column="equipmentParamName" property="equipmentParamName" jdbcType="VARCHAR"/>
         <result column="equipmentParamValue" property="equipmentParamValue" jdbcType="VARCHAR"/>
         <result column="positionCode" property="positionCode" jdbcType="VARCHAR"/>
+        <result column="bigTypeName" property="bigTypeName" jdbcType="VARCHAR"/>
+        <result column="middleTypeName" property="middleTypeName" jdbcType="VARCHAR"/>
+        <result column="smallTypeName" property="smallTypeName" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List" >
     id, center_year, center_month, position_id, plan_type, plan_id, plan_item_id, equipment_type,
@@ -42,9 +45,26 @@
     equipment_name, equipment_model, effect_code, equipment_factory
   </sql>
     <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-        select
-        <include refid="Base_Column_List" />
-        from el_plan_use
+        SELECT     t1.id, t1.center_year, t1.center_month, t1.position_id, t1.plan_type, t1.plan_id, t1.plan_item_id, t1.equipment_type,
+        t1.equipment_id, t1.sorting, t1.status, t1.is_del, t1.remarks, t1.create_by, t1.create_at, t1.update_by,
+        t1.update_at, t1.version, t1.small_type_code, t1.middle_type_code, t1.big_type_code, t1.equipment_code,
+        t1.equipment_name, t1.equipment_factory,
+        item.equipment_num as equipmentNum,
+        t1.equipment_model AS equipmentSpecification,
+        item.specification_code as equipment_model,
+        item.equipment_param_name AS equipmentParamName,
+        item.equipment_param_value as equipmentParamValue,
+        sb.code AS positionCode,
+        type1.name as bigTypeName,
+        type2.name as middleTypeName,
+        type3.name as smallTypeName,
+        t1.effect_code as effectName,
+        item.effect_code as effect_code
+        FROM el_plan_use t1
+        LEFT JOIN el_plan_item item ON t1.plan_item_id = item.item_id
+        left join sb_type type1 on type1.code = t1.big_type_code
+        left join sb_type type2 on type2.code = t1.middle_type_code
+        left join sb_type type3 on type3.code = t1.small_type_code
         where id = #{id,jdbcType=BIGINT}
     </select>
     <delete id="delete" parameterType="java.lang.Long" >

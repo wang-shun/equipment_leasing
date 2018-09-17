@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yankuang.equipment.equipment.mapper.ElFeePositionTMapper" >
+  <resultMap id="BaseResultMap" type="com.yankuang.equipment.equipment.model.ElFeePositionT" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="sorting" property="sorting" jdbcType="BIGINT" />
+    <result column="status" property="status" jdbcType="BIGINT" />
+    <result column="version" property="version" jdbcType="VARCHAR" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="create_by" property="createBy" jdbcType="BIGINT" />
+    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="BIGINT" />
+    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+    <result column="export_at" property="exportAt" jdbcType="TIMESTAMP" />
+    <result column="middle_name" property="middleName" jdbcType="VARCHAR" />
+    <result column="middle_code" property="middleCode" jdbcType="VARCHAR" />
+    <result column="position_map" property="positionMap" jdbcType="VARCHAR" />
+    <result column="total_fee" property="totalFee" jdbcType="DOUBLE" />
+    <result column="report_year" property="reportYear" jdbcType="VARCHAR" />
+    <result column="report_month" property="reportMonth" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, code, sorting, status, version, remarks, create_by, create_at, update_by, update_at, 
+    export_at, middle_name, middle_code, position_map, total_fee, report_year, report_month
+  </sql>
+  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from el_fee_position_t
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <update id="delete" parameterType="java.lang.Long" >
+    update el_fee_position_t set status = 99
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <insert id="insert" parameterType="com.yankuang.equipment.equipment.model.ElFeePositionT" >
+    insert into el_fee_position_t (code, sorting,
+      status, version, remarks, 
+      create_by, create_at, update_by, 
+      update_at, export_at, middle_name, 
+      middle_code, position_map, total_fee, 
+      report_year, report_month)
+    values (#{code,jdbcType=VARCHAR}, #{sorting,jdbcType=BIGINT},
+      #{status,jdbcType=BIGINT}, #{version,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, 
+      #{createBy,jdbcType=BIGINT}, #{createAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=BIGINT}, 
+      #{updateAt,jdbcType=TIMESTAMP}, #{exportAt,jdbcType=TIMESTAMP}, #{middleName,jdbcType=VARCHAR}, 
+      #{middleCode,jdbcType=VARCHAR}, #{positionMap,jdbcType=VARCHAR}, #{totalFee,jdbcType=DOUBLE}, 
+      #{reportYear,jdbcType=VARCHAR}, #{reportMonth,jdbcType=VARCHAR})
+  </insert>
+
+  <update id="update" parameterType="com.yankuang.equipment.equipment.model.ElFeePositionT" >
+    update el_fee_position_t
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="sorting != null" >
+        sorting = #{sorting,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=BIGINT},
+      </if>
+      <if test="createAt != null" >
+        create_at = #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=BIGINT},
+      </if>
+      <if test="updateAt != null" >
+        update_at = #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="exportAt != null" >
+        export_at = #{exportAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="middleName != null" >
+        middle_name = #{middleName,jdbcType=VARCHAR},
+      </if>
+      <if test="middleCode != null" >
+        middle_code = #{middleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="positionMap != null" >
+        position_map = #{positionMap,jdbcType=VARCHAR},
+      </if>
+      <if test="totalFee != null" >
+        total_fee = #{totalFee,jdbcType=DOUBLE},
+      </if>
+      <if test="reportYear != null" >
+        report_year = #{reportYear,jdbcType=VARCHAR},
+      </if>
+      <if test="reportMonth != null" >
+        report_month = #{reportMonth,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -77,4 +77,8 @@ public class ElUseItemServiceImpl implements ElUseItemService{
         PageInfo<ElUseItem> pageInfo = new PageInfo<ElUseItem>(elUseItems);
         return pageInfo;
     }
+
+    public List<ElUseItem> findElUseItemTL(ElUseItem elUseItem) {
+        return elUseItemMapper.findElUseItemTL(elUseItem);
+    }
 }

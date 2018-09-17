@@ -23,4 +23,6 @@ public interface ElUseItemMapper {
     List<ElUseItem> findByUseId(Long useId);
 
     ElUseItem findByCondition(Map map);
+
+    List<ElUseItem> findElUseItemTL(ElUseItem elUseItem);
 }

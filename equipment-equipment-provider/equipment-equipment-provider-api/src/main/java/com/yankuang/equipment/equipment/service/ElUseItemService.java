@@ -66,4 +66,11 @@ public interface ElUseItemService {
      * @return
      */
     PageInfo<ElUseItem> listTz(Integer page, Integer size,Map elUseItemMap);
+
+    /**
+     * 查询通用设备领用记录
+     * @param elUseItem
+     * @return
+     */
+    List<ElUseItem> findElUseItemTL(ElUseItem elUseItem);
 }
