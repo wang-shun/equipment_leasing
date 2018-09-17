@@ -9,10 +9,10 @@ import com.yankuang.equipment.common.util.Constants;
 import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.equipment.model.ElPlanItem;
 import com.yankuang.equipment.equipment.model.ElPlanUse;
+import com.yankuang.equipment.equipment.model.SbPosition;
 import com.yankuang.equipment.equipment.service.ElPlanUseService;
 import com.yankuang.equipment.equipment.service.ElUseService;
 import com.yankuang.equipment.web.dto.ElPlanDTO;
-import io.swagger.util.Json;
 import org.apache.log4j.Logger;
 import org.springframework.util.StringUtils;
 import com.yankuang.equipment.equipment.model.ElPlan;
@@ -521,10 +521,11 @@ public class ElPlanController {
             elPlanUseMap.put("smallTypeCode",elPlanDTO.getSmallTypeCode());
             elPlanUseMap.put("middleTypeCode",elPlanDTO.getMiddleTypeCode());
             elPlanUseMap.put("bigTypeCode",elPlanDTO.getBigTypeCode());
-            elPlanUseMap.put("equipmentCode",elPlanDTO.getEquipmentCode());
+            elPlanUseMap.put("equipmentName",elPlanDTO.getEquipmentName());
             elPlanUseMap.put("effectCode",elPlanDTO.getEffectCode());
             elPlanUseMap.put("equipmentModel",elPlanDTO.getEquipmentModel());
             elPlanUseMap.put("equipmentFactory",elPlanDTO.getEquipmentFactory());
+            elPlanUseMap.put("equipmentCode",elPlanDTO.getEquipmentCode());
             if(elPlanUseService.list(page,size,elPlanUseMap) == null){
                 return CommonResponse.ok();
             }
@@ -542,5 +543,20 @@ public class ElPlanController {
         map.put("pcode",pCode);
         PageInfo<Dept> deptPageInfo = deptService.findByPage(page, size, map);
         return CommonResponse.ok(deptPageInfo);
+    }
+
+    @GetMapping(value = "/findPositionList")
+    public CommonResponse findPositionList(@RequestParam(value = "planPosition") String planPosition) {
+
+        if (StringUtils.isEmpty(planPosition)) {
+            return CommonResponse.errorMsg("提出单位code不得为空");
+        }
+
+        List<SbPosition> list = elPlanPlusService.findPositionList(planPosition);
+        if (list == null || list.size() <= 0) {
+            return CommonResponse.build(200, "查询结果为空", null);
+        }
+
+        return CommonResponse.ok(list);
     }
 }

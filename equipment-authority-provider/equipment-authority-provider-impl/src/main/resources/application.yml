@@ -1,7 +1,6 @@
 spring:
   application:
-#    name: equipment-authority-provider
-    name: eq-authority-pro
+    name: equipment-authority-provider
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
 #    url: jdbc:mysql://${MYSQL_HOST:47.94.211.172}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:yankuang_equipment}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=CTT&useSSL=false
@@ -11,8 +10,7 @@ spring:
 rpc:
   mode: true
   dubbo:
-#    module: equipment-authority-provider .
-    module: eq-authority-pro
+    module: equipment-authority-provider
     registryAddress: ${ZOOKEEPER_HOST:127.0.0.1}:${ZOOKEEPER_PORT:2181}
     port: 20880
 

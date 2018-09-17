@@ -139,8 +139,15 @@
         LEFT JOIN el_department dept
         ON t1.use_position = dept.id
         LEFT JOIN el_user user
-        ON t1.use_by = user.code
+        ON user.code = t1.use_by
         WHERE 1=1
+        <if test="useByList != null">
+           and user.code IN
+            <foreach item="planIds" index="useByList" collection="useByList"
+                      open="(" separator="," close=")">
+            #{planIds}
+        </foreach>
+        </if>
         <if test="approveCode != null and approveCode != ''" >
             AND t1.approve_code = #{approveCode,jdbcType=VARCHAR}
         </if>

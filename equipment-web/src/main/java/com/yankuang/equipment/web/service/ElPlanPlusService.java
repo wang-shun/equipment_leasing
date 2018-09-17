@@ -1,6 +1,8 @@
 package com.yankuang.equipment.web.service;
 
 import com.alibaba.fastjson.JSON;
+import com.yankuang.equipment.authority.model.Dept;
+import com.yankuang.equipment.authority.service.DeptService;
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.Constants;
 import com.yankuang.equipment.equipment.model.*;
@@ -35,6 +37,10 @@ public class ElPlanPlusService {
 
     @RpcConsumer
     ElPlanUseService elPlanUseService;
+
+    @RpcConsumer
+    DeptService deptService;
+
 
     /**
      * 审核租赁计划
@@ -139,8 +145,8 @@ public class ElPlanPlusService {
                             elPlanUse.setSmallTypeCode(sbT.getSbtypeThree());
                             elPlanUse.setEquipmentCode(sbT.getCode());
                             elPlanUse.setEquipmentName(sbT.getName());
-                            elPlanUse.setEffectCode(item.getEffectCode());
-                            elPlanUse.setEquipmentModel(item.getSpecificationCode());
+                            elPlanUse.setEffectCode(item.getItemEffect());
+                            elPlanUse.setEquipmentModel(item.getEquipmentSpecification());
                             elPlanUse.setEquipmentFactory(sbT.getFactory());
                             resT = elPlanUseService.create(elPlanUse) > 0;
                         }
@@ -204,8 +210,8 @@ public class ElPlanPlusService {
                             elPlanUse.setSmallTypeCode(sbZ.getSbtypeThree());
                             elPlanUse.setEquipmentCode(sbZ.getCode());
                             elPlanUse.setEquipmentName(sbZ.getName());
-                            elPlanUse.setEffectCode(item.getEffectCode());
-                            elPlanUse.setEquipmentModel(item.getSpecificationCode());
+                            elPlanUse.setEffectCode(item.getItemEffect());
+                            elPlanUse.setEquipmentModel(item.getEquipmentSpecification());
                             elPlanUse.setEquipmentFactory(sbZ.getFactory());
                             resT = elPlanUseService.create(elPlanUse) > 0;
                         }
@@ -340,5 +346,24 @@ public class ElPlanPlusService {
             }
         }
         return elPlanUseDTOS;
+    }
+
+    /**
+     * 查询功能位置下拉列表
+     * @param planPosition
+     * @return
+     */
+    public List<SbPosition> findPositionList(String planPosition) {
+        Dept dept = deptService.findByCode(planPosition);
+        if (dept == null) {
+            return null;
+        }
+        SbPosition sbPosition = new SbPosition();
+        sbPosition.setPosition(dept.getId().toString());
+        List<SbPosition> list = sbPositionService.list(sbPosition, 1, 1000).getList();
+        if (list == null || list.size() <= 0) {
+            return null;
+        }
+        return list;
     }
 }

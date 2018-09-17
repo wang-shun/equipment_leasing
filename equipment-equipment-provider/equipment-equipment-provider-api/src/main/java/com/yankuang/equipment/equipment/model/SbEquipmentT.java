@@ -3,8 +3,6 @@ package com.yankuang.equipment.equipment.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
-
-import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -74,6 +72,7 @@ public class SbEquipmentT implements Serializable {
     private Byte isNew;
 
     private String ware;
+    private String wareName;
 
     private Byte isRfid;
 
@@ -98,17 +97,7 @@ public class SbEquipmentT implements Serializable {
     @Range(min = 0,max = 99,message = "财务费用折旧年限必须在0~99之间!")
     private Byte costYears;
 
-    private Double leaseRate;
-
-    private Double repairRatio;
-
-    private Double manageFeeRatio;
-
-    private Double equipmentUseRatio;
-
     private Double dayLeaseFee;
-
-    private Double newRatio;
 
     private String mainPara;
     private String para1;
@@ -119,6 +108,7 @@ public class SbEquipmentT implements Serializable {
     private String para6;
     private String para7;
     private String para8;
+    private String assetComp;
 
     public Long getId() {
         return id;
@@ -352,6 +342,14 @@ public class SbEquipmentT implements Serializable {
         this.ware = ware == null ? null : ware.trim();
     }
 
+    public String getWareName() {
+        return wareName;
+    }
+
+    public void setWareName(String wareName) {
+        this.wareName = wareName;
+    }
+
     public Byte getIsRfid() {
         return isRfid;
     }
@@ -442,52 +440,12 @@ public class SbEquipmentT implements Serializable {
         this.costYears = costYears;
     }
 
-    public Double getLeaseRate() {
-        return leaseRate;
-    }
-
-    public void setLeaseRate(Double leaseRate) {
-        this.leaseRate = leaseRate;
-    }
-
-    public Double getRepairRatio() {
-        return repairRatio;
-    }
-
-    public void setRepairRatio(Double repairRatio) {
-        this.repairRatio = repairRatio;
-    }
-
-    public Double getManageFeeRatio() {
-        return manageFeeRatio;
-    }
-
-    public void setManageFeeRatio(Double manageFeeRatio) {
-        this.manageFeeRatio = manageFeeRatio;
-    }
-
-    public Double getEquipmentUseRatio() {
-        return equipmentUseRatio;
-    }
-
-    public void setEquipmentUseRatio(Double equipmentUseRatio) {
-        this.equipmentUseRatio = equipmentUseRatio;
-    }
-
     public Double getDayLeaseFee() {
         return dayLeaseFee;
     }
 
     public void setDayLeaseFee(Double dayLeaseFee) {
         this.dayLeaseFee = dayLeaseFee;
-    }
-
-    public Double getNewRatio() {
-        return newRatio;
-    }
-
-    public void setNewRatio(Double newRatio) {
-        this.newRatio = newRatio;
     }
 
     public String getMainPara() {
@@ -560,5 +518,13 @@ public class SbEquipmentT implements Serializable {
 
     public void setPara8(String para8) {
         this.para8 = para8;
+    }
+
+    public String getAssetComp() {
+        return assetComp;
+    }
+
+    public void setAssetComp(String assetComp) {
+        this.assetComp = assetComp;
     }
 }

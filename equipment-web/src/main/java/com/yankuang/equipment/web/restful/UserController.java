@@ -160,13 +160,13 @@ public class UserController {
 
     private UserDTO getUserDTO(List<AuthorityTreeDTO> authoritys, List<RoleDTO> roles, User loginUser) {
         UserDTO userDTO = new UserDTO();
-        // 用户角色列表
-        List<String> userCodes = new ArrayList<>();
-        userCodes.add(loginUser.getCode());
-        List<RoleUser> roleUsers = roleUserService.findByUserCode(userCodes);
-        if (roleUsers == null || roleUsers.size() == 0) {
-            return userDTO;
-        }
+//        // 用户角色列表
+//        List<String> userCodes = new ArrayList<>();
+//        userCodes.add(loginUser.getCode());
+//        List<RoleUser> roleUsers = roleUserService.findByUserCode(userCodes);
+//        if (roleUsers == null || roleUsers.size() == 0) {
+//            return userDTO;
+//        }
         userDTO.setId(loginUser.getId());
         userDTO.setName(loginUser.getName());
         userDTO.setProjectCode(loginUser.getProjectCode());
