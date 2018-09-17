@@ -252,7 +252,13 @@ public class ElUseController {
             return CommonResponse.errorMsg("id不能为空");
         }
         ElUse elUse = elUseService.select(itemId);
+        if (elUse == null){
+            return CommonResponse.build(500,"不存在该记录",null);
+        }
         List<ElUseItem> elUseItems = elUseItemService.findByUseId(itemId);
+        if (elUseItems == null || elUseItems.size() <= 0){
+            return CommonResponse.build(500,"不存在该记录",null);
+        }
         //循环获取设备对象
         if ("1".equals(elUse.getUseEquipmentType())) {
             for (ElUseItem elUseItem : elUseItems) {
@@ -517,6 +523,7 @@ public class ElUseController {
         elUse.setStatus("4");
         List<ElUseItem> elUseItems = elUseItemService.findByUseId(elUse.getId());
         ElPlanUse elPlanUse = new ElPlanUse();
+        ElUseItem elUseItemSign = new ElUseItem();
         //由于同意退租所以将租用的设备状态更改成备用状态
         for (ElUseItem elUseItem:elUseItems){
             elPlanUse.setUpdateBy(1L);//TODO 待redis开发完，先写死
@@ -526,10 +533,18 @@ public class ElUseController {
             if(elPlanUseService.update(elPlanUse)==null){
                 return CommonResponse.build(500,"更新失败",null);
             }
+            elUseItemSign.setSign(elUseItem.getItemId());
+            elUseItemSign.setItemId(elUseItem.getItemId());
+            //在退租记录中添加标记
+            elUseItemService.update(elUseItemSign);
+            elUseItemSign.setEquipmentId(elUseItem.getEquipmentId());
+            //在领用记录中添加标记
+            elUseItemService.updateByEquipmentId(elUseItemSign);
         }
         if(elUseService.update(elUse)==false){
             return CommonResponse.build(500,"退租明细更新失败",null);
         }
+
         return  CommonResponse.ok();
     }
 }
