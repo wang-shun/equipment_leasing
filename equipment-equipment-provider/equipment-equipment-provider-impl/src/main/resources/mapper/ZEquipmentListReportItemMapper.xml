@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yankuang.equipment.equipment.mapper.ZEquipmentListReportItemMapper" >
+  <resultMap id="BaseResultMap" type="com.yankuang.equipment.equipment.model.ListZReportItem" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="equipment_model" property="equipmentModel" jdbcType="VARCHAR" />
+    <result column="equipment_unit" property="equipmentUnit" jdbcType="VARCHAR" />
+    <result column="equipment_num" property="equipmentNum" jdbcType="INTEGER" />
+    <result column="cost_a1" property="costA1" javaType="DOUBLE" />
+    <result column="day" property="day" jdbcType="BIGINT" />
+    <result column="sum" property="sum" javaType="DOUBLE" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="report_id" property="reportId" jdbcType="INTEGER" />
+    <result column="equipment_code" property="equipmentCode" jdbcType="VARCHAR"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, equipment_model, equipment_unit, equipment_num, cost_a1, day, sum, remark,
+    report_id,equipment_code
+  </sql>
+  <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="com.yankuang.equipment.equipment.model.ListZReportItem" >
+    insert into el_zEquipmentList_report_item (id, name, equipment_model,
+      equipment_unit, equipment_num, cost_a1,
+      day, sum, remark, report_id,equipment_code
+      )
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{equipmentModel,jdbcType=VARCHAR},
+      #{equipmentUnit,jdbcType=VARCHAR}, #{equipmentNum,jdbcType=INTEGER}, #{costA1,javaType=DOUBLE},
+      #{day,jdbcType=BIGINT}, #{sum,javaType=DOUBLE}, #{remark,jdbcType=VARCHAR}, #{reportId,jdbcType=INTEGER},
+      #{equipmentCode,jdbcType=VARCHAR}
+      )
+  </insert>
+
+  <select id="list" parameterType="map" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/>
+    FROM el_zEquipmentList_report_item
+    WHERE
+      1=1
+    <if test="id != null">
+      AND id = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="name != null and name != '' ">
+      AND name = #{name,jdbcType=VARCHAR}
+    </if>
+    <if test="equipmentModel != null and equipmentModel != '' ">
+      AND equipment_model = #{equipmentModel,jdbcType=VARCHAR}
+    </if>
+    <if test="equipmentUnit != null and equipmentUnit != '' ">
+      AND equipment_unit = #{equipmentUnit,jdbcType=VARCHAR}
+    </if>
+    <if test="equipmentNum != null">
+      AND equipment_num = #{equipmentNum,jdbcType=INTEGER}
+    </if>
+    <if test="costA1 != null ">
+      AND cost_a1 = #{costA1,javaType=DOUBLE}
+    </if>
+    <if test="day != null">
+      AND day = #{day,jdbcType=BIGINT}
+    </if>
+    <if test="sum != null">
+      AND sum =#{sum,javaType=DOUBLE}
+    </if>
+    <if test="remark != null and remark != ''">
+      AND remark =  #{remark,jdbcType=VARCHAR}
+    </if>
+    <if test="reportId != null">
+      AND report_id = #{reportId,jdbcType=INTEGER}
+    </if>
+    <if test="equipmentCode != null and equipmentCode != ''">
+      AND equipment_code = #{equipmentCode,jdbcType=VARCHAR}
+    </if>
+  </select>
+</mapper>
