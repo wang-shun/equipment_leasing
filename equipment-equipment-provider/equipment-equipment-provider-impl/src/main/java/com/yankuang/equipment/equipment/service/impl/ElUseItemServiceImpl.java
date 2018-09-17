@@ -4,12 +4,17 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yankuang.equipment.equipment.mapper.ElUseItemMapper;
 import com.yankuang.equipment.equipment.mapper.SbEquipmentTMapper;
+import com.yankuang.equipment.equipment.model.DtkList;
 import com.yankuang.equipment.equipment.model.ElUseItem;
 import com.yankuang.equipment.equipment.service.ElUseItemService;
 import io.terminus.boot.rpc.common.annotation.RpcProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -76,5 +81,34 @@ public class ElUseItemServiceImpl implements ElUseItemService{
 //        }
         PageInfo<ElUseItem> pageInfo = new PageInfo<ElUseItem>(elUseItems);
         return pageInfo;
+    }
+
+    public Integer updateByEquipmentId(ElUseItem elUseItem){
+        return elUseItemMapper.updateByEquipmentId(elUseItem);
+    }
+
+    public DtkList findSign(DtkList dtkList){
+        //查询退租的记录
+        DtkList dtkLists = elUseItemMapper.dtkReport(dtkList);
+        return dtkLists;
+    }
+
+    public List<DtkList> findReportLY(DtkList dtkList){
+
+        return elUseItemMapper.findReportLY(dtkList);
+    }
+
+    public PageInfo<DtkList> dtkReportPage(Integer page,Integer size,List<DtkList> dtkLists){
+        PageHelper.startPage(page,size);
+        PageInfo<DtkList> pageInfo = new PageInfo<DtkList>(dtkLists);
+        return pageInfo;
+    }
+
+    public Boolean findKB(DtkList dtkList){
+        if (elUseItemMapper.findKB(dtkList) > 0){
+            return true;
+        }
+
+        return false;
     }
 }
