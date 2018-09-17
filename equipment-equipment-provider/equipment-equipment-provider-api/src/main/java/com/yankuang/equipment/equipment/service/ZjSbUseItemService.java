@@ -23,4 +23,6 @@ public interface ZjSbUseItemService {
      * @return
      */
     Boolean create(ZjSbUseItem zjSbUseItem);
+
+    PageInfo<ZjSbUseItem> list(Integer page, Integer size, Map zjSbUseItemMap);
 }

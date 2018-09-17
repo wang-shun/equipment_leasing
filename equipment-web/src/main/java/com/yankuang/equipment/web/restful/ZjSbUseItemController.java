@@ -15,7 +15,7 @@ import java.util.Map;
 
 /**
  * @author xhh
- *
+ * 综机设备使用交接单
  */
 
 @CrossOrigin(maxAge = 3600)
@@ -59,11 +59,10 @@ public class ZjSbUseItemController {
         //通过日期查询
         Integer count = zjSbUseItemSignService.findByHandoverTime(zjSbUseItem.getUseAt());
         if(count>0){
-            zjSbUseItemSignService.list(page,size,zjSbUseItemMap);
-            return CommonResponse.ok();
+            return CommonResponse.ok(zjSbUseItemService.list(page,size,zjSbUseItemMap));
         }else{
-            zjSbUseItemService.listEquipmentReceipt(page,size,zjSbUseItemMap);
-            return CommonResponse.ok();
+
+            return CommonResponse.ok(zjSbUseItemService.listEquipmentReceipt(page,size,zjSbUseItemMap));
         }
 
     }

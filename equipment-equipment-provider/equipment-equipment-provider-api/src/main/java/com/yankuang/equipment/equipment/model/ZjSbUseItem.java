@@ -7,16 +7,17 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 /**
- * 综机设备使用交接单
+ * 综机设备使用(停用)交接单
  *
  */
 @Data
 @Entity
 @Table(name = "el_zjsb_use_item")
 public class ZjSbUseItem implements Serializable {
+
+    private Long id;
 
     private Long receiptId;//交接单id
 
@@ -28,7 +29,7 @@ public class ZjSbUseItem implements Serializable {
 
     private String departmentName;//领用单位
 
-    private String zName;//设备名称
+    private String equName;//设备名称
 
     private String equipmentModel;//设备型号
 
@@ -48,8 +49,6 @@ public class ZjSbUseItem implements Serializable {
 
 //    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private String useAt;//领用时间
-
-    private String dateTime;
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updateAt;//更新修改时间

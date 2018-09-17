@@ -29,6 +29,13 @@ public class ZjSbUseItemServiceImpl implements ZjSbUseItemService {
         return pageInfo;
     }
 
+    public PageInfo<ZjSbUseItem> list(Integer page, Integer size, Map zjSbUseItemMap){
+        PageHelper.startPage(page,size);
+        List<ZjSbUseItem> zjSbUseItems = zjSbUseItemMapper.list(zjSbUseItemMap);
+        PageInfo<ZjSbUseItem> pageInfo = new PageInfo<ZjSbUseItem>(zjSbUseItems);
+        return pageInfo;
+    }
+
     /**
      * @method 更新综机设备使用交接单
      * @param zjSbUseItem

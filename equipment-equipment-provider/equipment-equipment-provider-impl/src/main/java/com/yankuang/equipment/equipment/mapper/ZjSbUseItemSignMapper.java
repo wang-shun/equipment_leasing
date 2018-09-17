@@ -14,6 +14,4 @@ public interface ZjSbUseItemSignMapper {
 
     Integer findByHandoverTime(String handover);
 
-    List<ZjSbUseItem> list(Map zjSbUseItem);
-
 }

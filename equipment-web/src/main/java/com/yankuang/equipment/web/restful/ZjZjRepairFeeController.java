@@ -22,9 +22,8 @@ public class ZjZjRepairFeeController {
     @RpcConsumer
     ZjSbUseItemService zjSbUseItemService;
 
-
     /**
-     * @method 分页查询领用记录
+     * @method 查询记录
      * @param page
      * @param size
      * @return
@@ -40,12 +39,7 @@ public class ZjZjRepairFeeController {
 
         return CommonResponse.ok(zjSbUseItemService.listEquipmentReceipt(page, size, zjSbUseItemMap));
     }
- //需要的参数
-    /**
-     * 矿的名称，需要公示去计算综机折旧修理费
-     * 需要判断月份，
-     * 1、年固定资产折旧费：设备原值/设备折旧年限
-     * 2.年修理费：设备原值*1.5%
-     */
+
+
 
 }

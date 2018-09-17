@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RpcProvider
@@ -50,13 +49,6 @@ public class ZjSbUseItemSignServiceImpl implements ZjSbUseItemSignService {
         }
 
         return true;
-    }
-
-    public PageInfo<ZjSbUseItem> list(Integer page, Integer size, Map zjSbUseItemMap){
-        PageHelper.startPage(page,size);
-        List<ZjSbUseItem> zjSbUseItems = zjSbUseItemSignMapper.list(zjSbUseItemMap);
-        PageInfo<ZjSbUseItem> pageInfo = new PageInfo<ZjSbUseItem>(zjSbUseItems);
-        return pageInfo;
     }
 
     public int findByHandoverTime(String handover){

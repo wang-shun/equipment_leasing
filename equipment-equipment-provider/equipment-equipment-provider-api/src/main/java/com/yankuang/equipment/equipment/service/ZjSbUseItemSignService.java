@@ -18,6 +18,4 @@ public interface ZjSbUseItemSignService {
 
     int findByHandoverTime(String handover);
 
-    PageInfo<ZjSbUseItem> list(Integer page, Integer size, Map zjSbUseItemMap);
-
 }

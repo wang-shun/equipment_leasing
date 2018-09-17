@@ -29,17 +29,7 @@
         where 1=1 and handover=#{handover}
     </select>
 
-    <select id="list" parameterType="map" resultMap="BaseResultMap">
-        SELECT zjsh.* FROM el_zjsb_use_item_sign zjsbsign
-        LEFT JOIN el_zjsb_use_item zjsh
-        ON zjsbsign.id=zjsh.receipt_id
-        <where>
-            1 = 1
-            <if test="handover != null">
-                and handover = #{handover,jdbcType=VARCHAR}
-            </if>
-        </where>
-    </select>
+
 
 
 </mapper>

@@ -3,12 +3,14 @@
 <mapper namespace="com.yankuang.equipment.equipment.mapper.ZjSbUseItemMapper" >
     <resultMap id="BaseResultMap" type="com.yankuang.equipment.equipment.model.ZjSbUseItem" >
         <result column="receipt_id" property="receiptId" jdbcType="BIGINT" />
+        <result column="use_id" property="useId" jdbcType="BIGINT" />
+        <result column="equipment_id" property="equipmentId" jdbcType="BIGINT" />
         <result column="equipment_num" property="equipmentNum" jdbcType="INTEGER" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
         <result column="equipment_effect" property="equipmentEffect" jdbcType="VARCHAR" />
         <result column="department_name" property="departmentName" jdbcType="VARCHAR" />
         <result column="equipment_model" property="equipmentModel" jdbcType="VARCHAR" />
-        <result column="z_name" property="zName" jdbcType="VARCHAR" />
+        <result column="equ_Name" property="equName" jdbcType="VARCHAR" />
         <result column="tech_code" property="techCode" jdbcType="VARCHAR" />
         <result column="comp" property="comp" jdbcType="VARCHAR" />
         <result column="is_new" property="isNew" jdbcType="TINYINT" />
@@ -19,17 +21,19 @@
         <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
     </resultMap>
     <sql id="Base_Column_List" >
-        receipt_id,equipment_num,remarks,equipment_effect,department_name,equipment_model, z_name,tech_code,
-        comp,is_new,is_use,use_at,create_at,update_at
+        use_id,equipment_id,receipt_id,equipment_num,remarks,equipment_effect,department_name,equipment_model, equ_Name,tech_code,
+        comp,is_new,stub_unit,is_use,use_at,create_at,update_at
    </sql>
 
     <select id="listEquipmentReceipt" parameterType="map" resultMap="BaseResultMap">
         SELECT t1.equipment_num AS equipmentNum,t1.remarks AS remark,t1.use_at AS useAt,
         t1.equipment_effect AS equipmentEffect,
         t1.is_use AS isUse,
+        t1.use_id AS useId,
+        t1.equipment_id AS equipmentId,
         dept.name AS departmentName,
         plan.equipment_model AS equipmentModel,
-        z.tech_code AS techCode,z.comp AS comp, z.is_new AS isNew,z.name AS zName
+        z.tech_code AS techCode,z.asset_comp AS comp, z.is_new AS isNew,z.name AS equName
         FROM el_use_item t1
         LEFT JOIN el_department dept
         ON t1.equipment_position = dept.id
@@ -48,18 +52,31 @@
         AND dept.status != 99
         AND t1.status != 99
         AND plan.status != 99
-        AND z.status != 99
+        AND z.status != 99 ORDER BY t1.use_at desc
     </select>
 
     <insert id="create" parameterType="com.yankuang.equipment.equipment.model.ZjSbUseItem" >
-      insert into el_zjsb_use_item (receipt_id, equipment_num, remark,
+      insert into el_zjsb_use_item (use_id,equipment_id,receipt_id, equipment_num, remark,
       equipment_effect, department_name, equipment_model,
-      z_name, tech_code, comp,
-      is_new, stub_unit, use_at, create_at, update_at)
-      values (#{receiptId,jdbcType=BIGINT}, #{equipmentNum,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR},
+      equ_Name, tech_code, comp,
+      is_new,is_use,stub_unit, use_at, create_at, update_at)
+      values (#{useId,jdbcType=BIGINT},#{equipmentId,jdbcType=BIGINT},#{receiptId,jdbcType=BIGINT},
+      #{equipmentNum,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR},
       #{equipmentEffect,jdbcType=VARCHAR}, #{departmentName,jdbcType=VARCHAR}, #{equipmentModel,jdbcType=VARCHAR},
-      #{zName,jdbcType=VARCHAR}, #{techCode,jdbcType=VARCHAR}, #{comp,jdbcType=BIGINT},
-      #{isNew,jdbcType=TINYINT}, #{stubUnit,jdbcType=VARCHAR}, #{useAt,jdbcType=VARCHAR},
+      #{equName,jdbcType=VARCHAR}, #{techCode,jdbcType=VARCHAR}, #{comp,jdbcType=BIGINT},
+      #{isNew,jdbcType=TINYINT}, #{isUse,jdbcType=TINYINT}, #{stubUnit,jdbcType=VARCHAR}, #{useAt,jdbcType=VARCHAR},
       #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP})
   </insert>
+
+    <select id="list" parameterType="map" resultMap="BaseResultMap">
+        SELECT zjsb.* FROM  el_zjsb_use_item zjsb
+        LEFT JOIN el_zjsb_use_item_sign zjsbsign
+        ON zjsbsign.id=zjsb.receipt_id
+        <where>
+            1 = 1
+            <if test="handover != null">
+                and zjsbsign.handover = #{handover,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
 </mapper>
