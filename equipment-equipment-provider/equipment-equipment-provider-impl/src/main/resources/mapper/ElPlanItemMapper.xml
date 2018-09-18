@@ -299,7 +299,7 @@
   </select>
     <select id="findByItemId" parameterType="java.lang.String" resultMap="BaseResultMap">
     SELECT
-      e1.item_id as item_id,
+      distinct e1.item_id as item_id,
       e1.plan_id as plan_id,
       e1.position_id as position_id,
       e1.equipment_name as equipment_name,

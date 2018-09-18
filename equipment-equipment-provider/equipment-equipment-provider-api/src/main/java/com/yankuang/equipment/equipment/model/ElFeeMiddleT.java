@@ -4,12 +4,13 @@ import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
 @Entity
 @Table(name = "el_fee_middle_t")
-public class ElFeeMiddleT {
+public class ElFeeMiddleT implements Serializable {
     private Long id;
 
     private String code;
@@ -59,5 +60,9 @@ public class ElFeeMiddleT {
     private String reportYear;
 
     private String reportMonth;
+
+    private Integer pageNum;
+
+    private Integer pageSize;
 
 }
