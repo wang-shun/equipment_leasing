@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yankuang.equipment.equipment.mapper.ReportEquipmentZMonthMapper">
+  <resultMap id="BaseResultMap" type="com.yankuang.equipment.equipment.model.ReportEquipmentZMonth">
+    <result column="id" jdbcType="TINYINT" property="id" />
+    <result column="year" jdbcType="VARCHAR" property="year" />
+    <result column="report_name" jdbcType="VARCHAR" property="reportName" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
+    <result column="version" jdbcType="BIGINT" property="version" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id,year,report_name,remark,status,create_by,create_at,update_by,update_at,version
+  </sql>
+  <insert id="insert" parameterType="com.yankuang.equipment.equipment.model.ReportEquipmentZMonth">
+    insert into report_equipment_z_month (id, year, report_name, 
+      remark, status, create_by, 
+      create_at, update_by, update_at, 
+      version)
+    values (#{id,jdbcType=TINYINT}, #{year,jdbcType=VARCHAR}, #{reportName,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{createBy,jdbcType=VARCHAR}, 
+      #{createAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateAt,jdbcType=TIMESTAMP}, 
+      #{version,jdbcType=BIGINT})
+  </insert>
+  <select id="findByYear" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from report_equipment_z_month
+    where status = '1' and year = #{year,jdbcType=VARCHAR}
+  </select>
+</mapper>

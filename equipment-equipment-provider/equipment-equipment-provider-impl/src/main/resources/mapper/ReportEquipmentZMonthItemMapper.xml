@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yankuang.equipment.equipment.mapper.ReportEquipmentZMonthItemMapper">
+  <resultMap id="BaseResultMap" type="com.yankuang.equipment.equipment.model.ReportEquipmentZMonthItem">
+    <result column="id" jdbcType="TINYINT" property="id" />
+    <result column="dept_code" jdbcType="VARCHAR" property="deptCode" />
+    <result column="dept_name" jdbcType="VARCHAR" property="deptName" />
+    <result column="dept_type" jdbcType="VARCHAR" property="deptType" />
+    <result column="year_plan_val" jdbcType="DOUBLE" property="yearPlanVal" />
+    <result column="month01" jdbcType="DOUBLE" property="month01" />
+    <result column="month02" jdbcType="DOUBLE" property="month02" />
+    <result column="month03" jdbcType="DOUBLE" property="month03" />
+    <result column="month04" jdbcType="DOUBLE" property="month04" />
+    <result column="month05" jdbcType="DOUBLE" property="month05" />
+    <result column="month06" jdbcType="DOUBLE" property="month06" />
+    <result column="month07" jdbcType="DOUBLE" property="month07" />
+    <result column="month08" jdbcType="DOUBLE" property="month08" />
+    <result column="month09" jdbcType="DOUBLE" property="month09" />
+    <result column="month10" jdbcType="DOUBLE" property="month10" />
+    <result column="month11" jdbcType="DOUBLE" property="month11" />
+    <result column="month12" jdbcType="DOUBLE" property="month12" />
+    <result column="report_id" jdbcType="TINYINT" property="reportId" />
+    <result column="rowno" jdbcType="VARCHAR" property="rowno" />
+    <result column="month_plan_val" jdbcType="DOUBLE" property="monthPlanVal" />
+    <result column="plan_val" jdbcType="DOUBLE" property="planVal" />
+    <result column="sum_val" jdbcType="DOUBLE" property="sumVal" />
+    <result column="sum_plan_val" jdbcType="DOUBLE" property="sumPlanVal" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, dept_code,dept_name,dept_type,year_plan_val,month01,month02,month03,month04,month05,month06,month07,
+    month08,month09,month10,month11,month12,report_id
+  </sql>
+  <insert id="insert" parameterType="com.yankuang.equipment.equipment.model.ReportEquipmentZMonthItem">
+    insert into report_equipment_z_month_item (id, dept_code, dept_name, 
+      dept_type, year_plan_val, month01, 
+      month02, month03, month04, 
+      month05, month06, month07, 
+      month08, month09, month10, 
+      month11, month12, report_id
+      )
+    values (#{id,jdbcType=TINYINT}, #{deptCode,jdbcType=VARCHAR}, #{deptName,jdbcType=VARCHAR}, 
+      #{deptType,jdbcType=VARCHAR}, #{yearPlanVal,jdbcType=DOUBLE}, #{month01,jdbcType=DOUBLE}, 
+      #{month02,jdbcType=DOUBLE}, #{month03,jdbcType=DOUBLE}, #{month04,jdbcType=DOUBLE}, 
+      #{month05,jdbcType=DOUBLE}, #{month06,jdbcType=DOUBLE}, #{month07,jdbcType=DOUBLE}, 
+      #{month08,jdbcType=DOUBLE}, #{month09,jdbcType=DOUBLE}, #{month10,jdbcType=DOUBLE}, 
+      #{month11,jdbcType=DOUBLE}, #{month12,jdbcType=DOUBLE}, #{reportId,jdbcType=TINYINT}
+      )
+  </insert>
+
+  <select id="listByExportId" resultMap="BaseResultMap">
+    SELECT
+    @rowno:=@rowno + 1 AS rowno,t.dept_code,t.dept_name,t.year_plan_val,round((t.year_plan_val/12),0) month_plan_val,
+    round(t.year_plan_val,0) plan_val,t.month01,t.month02,t.month03,t.month04,t.month05,
+    t.month06,t.month07,t.month08,t.month09,t.month10,t.month11,t.month12,
+    round(t.month01+t.month02+t.month03+t.month04+t.month05+t.month06+t.month07+t.month08+t.month09+t.month10+t.month11+t.month12,4) sum_val,
+    round(t.month01+t.month02+t.month03+t.month04+t.month05+t.month06+t.month07+t.month08+t.month09+t.month10+t.month11+t.month12-t.year_plan_val,0) sum_plan_val
+    FROM report_equipment_z_month_item t,(SELECT @rowno:=0) b
+    where 1=1
+    <if test="exportId != null and exportId != ''" >
+      AND t.report_id =  #{exportId}
+    </if>
+    <if test="deptType != null and deptType != ''" >
+      AND t.dept_type = #{deptType}
+    </if>
+  </select>
+
+  <select id="sumByExportId" resultMap="BaseResultMap">
+    select  '小计' dept_name,round(sum(year_plan_val),4) year_plan_val,round(sum(month_plan_val),0) month_plan_val,
+    round(sum(plan_val),0) plan_val,
+    sum(month01) month01,sum(month02) month02,sum(month03) month03,sum(month04) month04,sum(month05) month05,sum(month06) month06,
+    sum(month07) month07,sum(month08) month08,sum(month09) month09,sum(month10) month10,sum(month11) month11,sum(month12) month12,
+    round(sum(sum_val),4) sum_val,round(sum(sum_plan_val),0) sum_plan_val
+    from
+    (SELECT
+    '' AS dept_name,t.year_plan_val,(t.year_plan_val/12) month_plan_val,
+    round(t.year_plan_val,0) plan_val,t.month01,t.month02,t.month03,t.month04,t.month05,
+    t.month06,t.month07,t.month08,t.month09,t.month10,t.month11,t.month12,
+    round(t.month01+t.month02+t.month03+t.month04+t.month05+t.month06+t.month07+t.month08+t.month09+t.month10+t.month11+t.month12,4) sum_val,
+    round(t.month01+t.month02+t.month03+t.month04+t.month05+t.month06+t.month07+t.month08+t.month09+t.month10+t.month11+t.month12-t.year_plan_val,0) sum_plan_val
+    FROM report_equipment_z_month_item t
+    where 1=1
+    <if test="exportId != null and exportId != ''" >
+      AND t.report_id =  #{exportId}
+    </if>
+    <if test="deptType != null and deptType != ''" >
+      AND t.dept_type = #{deptType}
+    </if>
+    ) s
+    group by s.dept_name
+  </select>
+</mapper>
