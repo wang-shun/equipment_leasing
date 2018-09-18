@@ -1,5 +1,6 @@
 package com.yankuang.equipment.equipment.mapper;
 
+import com.yankuang.equipment.equipment.model.DtkList;
 import com.yankuang.equipment.equipment.model.ElUseItem;
 import org.springframework.stereotype.Repository;
 
@@ -23,4 +24,13 @@ public interface ElUseItemMapper {
     List<ElUseItem> findByUseId(Long useId);
 
     ElUseItem findByCondition(Map map);
+
+    Integer updateByEquipmentId(ElUseItem elUseItem);
+
+    DtkList dtkReport(DtkList dtkList);
+
+    List<DtkList> findReportLY(DtkList dtkList);
+
+    Integer findKB(DtkList dtkList);
+
 }

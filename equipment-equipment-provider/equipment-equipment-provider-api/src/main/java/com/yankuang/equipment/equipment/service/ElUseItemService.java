@@ -1,6 +1,7 @@
 package com.yankuang.equipment.equipment.service;
 
 import com.github.pagehelper.PageInfo;
+import com.yankuang.equipment.equipment.model.DtkList;
 import com.yankuang.equipment.equipment.model.ElUseItem;
 
 import java.util.List;
@@ -66,4 +67,41 @@ public interface ElUseItemService {
      * @return
      */
     PageInfo<ElUseItem> listTz(Integer page, Integer size,Map elUseItemMap);
+
+    /**
+     * @method 更新退租领用标记
+     * @param elUseItem
+     * @return
+     */
+    Integer updateByEquipmentId(ElUseItem elUseItem);
+
+    /**
+     * 查询设备对应的退租记录
+     * @param dtkList
+     * @return
+     */
+    DtkList findSign(DtkList dtkList);
+
+    /**
+     * 查询没有退租的设备对应的领用记录
+     * @param dtkList
+     * @return
+     */
+    List<DtkList> findReportLY(DtkList dtkList);
+
+    /**
+     * 分页查询清单报表
+     * @param page
+     * @param size
+     * @param dtkLists
+     * @return
+     */
+    PageInfo<DtkList> dtkReportPage(Integer page,Integer size,List<DtkList> dtkLists);
+
+    /**
+     * 判断矿别
+     * @param dtkList
+     * @return
+     */
+    Boolean findKB(DtkList dtkList);
 }
