@@ -30,7 +30,6 @@
         <result column="equipment_factory" property="equipmentFactory" jdbcType="VARCHAR" />
         <result column="effectName" property="effectName" jdbcType="VARCHAR"/>
         <result column="equipmentNum" property="equipmentNum" jdbcType="INTEGER"/>
-        <result column="equipmentSpecification" property="equipmentSpecification" jdbcType="VARCHAR"/>
         <result column="equipmentParamName" property="equipmentParamName" jdbcType="VARCHAR"/>
         <result column="equipmentParamValue" property="equipmentParamValue" jdbcType="VARCHAR"/>
         <result column="positionCode" property="positionCode" jdbcType="VARCHAR"/>
@@ -204,12 +203,10 @@
         SELECT     t1.id, t1.center_year, t1.center_month, t1.position_id, t1.plan_type, t1.plan_id, t1.plan_item_id, t1.equipment_type,
         t1.equipment_id, t1.sorting, t1.status, t1.is_del, t1.remarks, t1.create_by, t1.create_at, t1.update_by,
         t1.update_at, t1.version, t1.small_type_code, t1.middle_type_code, t1.big_type_code, t1.equipment_code,
-        t1.equipment_name, t1.equipment_model, t1.effect_code, t1.equipment_factory, sb.name as effectName, item.equipment_num as equipmentNum,
-        item.equipment_specification AS equipmentSpecification,item.equipment_param_name AS equipmentParamName,item.equipment_param_value as equipmentParamValue,
-        sb.code AS positionCode
+        t1.equipment_name, t1.equipment_model, t1.effect_code, t1.equipment_factory, t1.effect_code as effectName, item.equipment_num as equipmentNum,
+        item.equipment_param_name AS equipmentParamName,item.equipment_param_value as equipmentParamValue,
+        t1.effect_code AS positionCode
         FROM el_plan_use t1
-        LEFT JOIN sb_position sb
-        ON sb.code = t1.effect_code
         LEFT JOIN el_plan_item item
         ON t1.plan_item_id = item.item_id
         WHERE plan_item_id IN
@@ -260,7 +257,6 @@
             AND t1.equipment_factory = #{equipmentFactory}
         </if>
         AND t1.status = 2
-        AND sb.status != 99
         AND item.status != 99
         AND t1.is_del = 1
     </select>
