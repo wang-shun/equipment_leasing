@@ -159,16 +159,13 @@
     </select>
 
     <select id="findById" resultMap="BaseResultMap" parameterType="Long">
-        SELECT t1.*,dept.name as name,sb.name AS sbName
+        SELECT t1.*,dept.name as name,t1.equipment_effect AS sbName
         FROM el_use_item t1
         LEFT JOIN el_department dept
         ON t1.equipment_position = dept.id
-        LEFT JOIN sb_position sb
-        ON t1.equipment_effect = sb.code
         WHERE item_id = #{itemId,jdbcType=BIGINT}
         AND t1.status != 99
         AND dept.status != 99
-        AND sb.status != 99
     </select>
 
     <update id="delete" parameterType="Long">

@@ -8,13 +8,11 @@ import com.yankuang.equipment.equipment.service.ElFeeDetailTService;
 import io.terminus.boot.rpc.common.annotation.RpcProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RpcProvider
-@Transactional
 public class ElFeeDetailTServiceImpl implements ElFeeDetailTService {
 
     @Autowired

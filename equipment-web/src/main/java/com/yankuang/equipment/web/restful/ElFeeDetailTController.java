@@ -7,7 +7,6 @@ import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.equipment.model.ElFeeDetailT;
 import com.yankuang.equipment.equipment.model.ElPlanUse;
-import com.yankuang.equipment.equipment.model.ElUse;
 import com.yankuang.equipment.equipment.model.ElUseItem;
 import com.yankuang.equipment.equipment.service.ElFeeDetailTService;
 import com.yankuang.equipment.equipment.service.ElPlanUseService;
@@ -17,6 +16,7 @@ import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -42,32 +42,24 @@ public class ElFeeDetailTController {
 
     /**
      * 查询导出数据
-     * @param pageSize
-     * @param pageNum
-     * @param positionCode
-     * @param exportAt
+     * @param detailTs
      * @return
      */
     @GetMapping
-    public CommonResponse findElFeeDetailTs(@RequestParam Integer pageSize,
-                                            @RequestParam Integer pageNum,
-                                            @RequestParam String positionCode,
-                                            @RequestParam String exportAt) {
+    public CommonResponse findElFeeDetailTs(ElFeeDetailT detailTs) {
 
         try {
-            if (StringUtils.isEmpty(positionCode)) {
+            if (detailTs == null || StringUtils.isEmpty(detailTs.getPositionCode())) {
                 return CommonResponse.errorMsg("请补充矿处单位");
             }
-            if (StringUtils.isEmpty(exportAt)) {
+            if (detailTs == null || StringUtils.isEmpty(detailTs.getExportAtStr())) {
                 return CommonResponse.errorMsg("请补充导出时间");
             }
-            String reportYear = exportAt.split("-")[0];
-            String reportMonth = exportAt.split("-")[1];
-            ElFeeDetailT elFeeDetailT = new ElFeeDetailT();
-            elFeeDetailT.setReportYear(reportYear);
-            elFeeDetailT.setReportMonth(reportMonth);
-            elFeeDetailT.setPositionCode(positionCode);
-            List<ElFeeDetailT> historyList = elFeeDetailTService.findElFeeDetailTs(elFeeDetailT, pageNum, pageSize);
+            String reportYear = detailTs.getExportAtStr().split("-")[0];
+            String reportMonth = detailTs.getExportAtStr().split("-")[1];
+            detailTs.setReportYear(reportYear);
+            detailTs.setReportMonth(reportMonth);
+            List<ElFeeDetailT> historyList = elFeeDetailTService.findElFeeDetailTs(detailTs, detailTs.getPageNum(), detailTs.getPageSize());
             if (historyList != null && historyList.size() > 0) {
                 return CommonResponse.ok(historyList);
             }
@@ -75,7 +67,7 @@ public class ElFeeDetailTController {
             Date startDate = new SimpleDateFormat("yyyy-MM-dd").parse(reportYear+"-"+(Integer.valueOf(reportMonth)-1)+"-"+21);
             Date endDate = new SimpleDateFormat("yyyy-MM-dd").parse(reportYear+"-"+(Integer.valueOf(reportMonth))+"-"+20);
             HashMap<String, String> map = new HashMap<>();
-            map.put("pcode", positionCode);
+            map.put("pcode", detailTs.getPositionCode());
             List<Dept> depts = deptService.findByPage(1, 1000, map).getList();
             List<ElUseItem> elUseItemList = new ArrayList<>();
             for (Dept d : depts) {
@@ -96,21 +88,21 @@ public class ElFeeDetailTController {
                     continue;
                 }
                 if (uItem.getSign() == null) {
-                    days = sbElFeeService.CalEquipmentElDays(uItem.getItemId(), null, uItem.getEquipmentId(), startDate, endDate);
+                    days = sbElFeeService.CalEquipmentElDays(uItem.getUseId(), null, uItem.getEquipmentId(), startDate, endDate);
                 } else {
                     Long uItemTId = uItem.getSign();
                     ElUseItem uItemT = elUseItemService.findById(uItemTId);
-                    if (uItemT.getUseAt().after(startDate)) {
-                        days = sbElFeeService.CalEquipmentElDays(uItem.getItemId(), uItemTId, uItem.getEquipmentId(), startDate, endDate);
+                    if (uItemT != null && uItemT.getUseAt().after(startDate)) {
+                        days = sbElFeeService.CalEquipmentElDays(uItem.getUseId(), uItemT.getUseId(), uItem.getEquipmentId(), startDate, endDate);
                     }
                 }
                 ElFeeDetailT detailT = new ElFeeDetailT();
-                Dept de = deptService.findByCode(positionCode);
+                Dept de = deptService.findByCode(detailTs.getPositionCode());
                 if (de == null) {
                     continue;
                 }
                 detailT.setPositionName(de.getName());
-                detailT.setPositionCode(positionCode);
+                detailT.setPositionCode(detailTs.getPositionCode());
                 ElPlanUse planUse = elPlanUseService.findById(uItem.getPlanUseId());
                 detailT.setMiddleTypeName(planUse.getMiddleTypeName());
                 detailT.setMiddleTypeCode(planUse.getMiddleTypeCode());
@@ -120,17 +112,27 @@ public class ElFeeDetailTController {
                 detailT.setTechCode(planUse.getTechCode());
                 detailT.setModelName(planUse.getEquipmentSpecification());
                 detailT.setModelCode(planUse.getEquipmentModel());
-                detailT.setModelName(planUse.getEquipmentSpecification());
                 detailT.setEffectName(planUse.getEffectName());
                 detailT.setEffectCode(planUse.getEffectCode());
                 detailT.setElDays(days);
                 detailT.setCostA1(uItem.getCostA1());
                 Double a3Rate = sbElFeeService.CalDayElFeeA3T_rate(uItem.getUseId(), uItem.getEquipmentId());
-                detailT.setCostA3((a3Rate-1)*uItem.getCostA1());
-                detailT.setTotalFee(uItem.getCostA1()*days+(a3Rate-1)*uItem.getCostA1());
+                double a3s = (a3Rate-1)*uItem.getCostA1();
+                BigDecimal b = new BigDecimal(a3s);
+                double a3 = b.setScale(3,BigDecimal.ROUND_HALF_UP).doubleValue();
+                detailT.setCostA3(a3);
+                double totalFees = uItem.getCostA1()*days+(a3Rate-1)*uItem.getCostA1();
+                BigDecimal c = new BigDecimal(totalFees);
+                double totalFee = c.setScale(3,BigDecimal.ROUND_HALF_UP).doubleValue();
+                detailT.setTotalFee(totalFee);
                 detailT.setReportYear(reportYear);
                 detailT.setReportMonth(reportMonth);
                 detailT.setExportAt(endDate);
+                detailT.setExportAtStr(detailTs.getExportAtStr());
+                detailT.setEquipmentId(planUse.getEquipmentId());
+                detailT.setPageNum(detailTs.getPageNum());
+                detailT.setPageSize(detailTs.getPageSize());
+                detailT.setStatus(1L);
                 elFeeDetailTS.add(detailT);
             }
             return CommonResponse.ok(elFeeDetailTS);

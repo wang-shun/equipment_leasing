@@ -49,27 +49,27 @@
     update el_fee_detail_t set status = 99
     where id = #{id,jdbcType=BIGINT}
   </update>
-    <insert id="insertBatch" parameterType="com.yankuang.equipment.equipment.model.ElFeeDetailT" >
-        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+    <insert id="insertBatch" parameterType="java.util.List" >
         insert into el_fee_detail_t (code, status,
-          export_at, equipment_id, position_name,
-          position_code, middle_type_name, middle_type_code,
-          small_type_name, small_type_code, equipment_code,
-          tech_code, model_code, model_name,
-          effect_name, effect_code, el_days,
-          cost_a1, cost_a3, total_fee,
-          update_by, version, update_at,
-          create_by, remarks,
-          sorting, report_year, report_month
-          )
-        values (#{item.code,jdbcType=VARCHAR}, 1,
+        export_at, equipment_id, position_name,
+        position_code, middle_type_name, middle_type_code,
+        small_type_name, small_type_code, equipment_code,
+        tech_code, model_code, model_name,
+        effect_name, effect_code, el_days,
+        cost_a1, cost_a3, total_fee,
+        update_by, version,
+        create_by, remarks,
+        sorting, report_year, report_month
+        ) values
+        <foreach collection="list" item="item" index="index" open="" close="" separator=",">
+        (#{item.code,jdbcType=VARCHAR}, 1,
         #{item.exportAt,jdbcType=TIMESTAMP}, #{item.equipmentId,jdbcType=BIGINT}, #{item.positionName,jdbcType=VARCHAR},
         #{item.positionCode,jdbcType=VARCHAR}, #{item.middleTypeName,jdbcType=VARCHAR}, #{item.middleTypeCode,jdbcType=VARCHAR},
         #{item.smallTypeName,jdbcType=VARCHAR}, #{item.smallTypeCode,jdbcType=VARCHAR}, #{item.equipmentCode,jdbcType=VARCHAR},
         #{item.techCode,jdbcType=VARCHAR}, #{item.modelCode,jdbcType=VARCHAR}, #{item.modelName,jdbcType=VARCHAR},
         #{item.effectName,jdbcType=VARCHAR}, #{item.effectCode,jdbcType=VARCHAR}, #{item.elDays,jdbcType=BIGINT},
         #{item.costA1,jdbcType=DOUBLE}, #{item.costA3,jdbcType=DOUBLE}, #{item.totalFee,jdbcType=DOUBLE},
-        #{item.updateBy,jdbcType=BIGINT}, #{item.version,jdbcType=BIGINT}, #{item.updateAt,jdbcType=TIMESTAMP},
+        #{item.updateBy,jdbcType=BIGINT}, #{item.version,jdbcType=BIGINT},
         #{item.createBy,jdbcType=BIGINT}, #{item.remarks,jdbcType=VARCHAR},
         #{item.sorting,jdbcType=BIGINT}, #{item.reportYear,jdbcType=VARCHAR}, #{item.reportMonth,jdbcType=VARCHAR}
         )
