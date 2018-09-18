@@ -75,4 +75,8 @@ public class ElPlanUseServiceImpl implements ElPlanUseService {
     public boolean unbindSbZ(){
         return sbEquipmentZMapper.updateStateCodeByMonth() >= 0;
     }
+
+    public ElPlanUse findById(Long id) {
+        return elPlanUseMapper.findById(id);
+    }
 }

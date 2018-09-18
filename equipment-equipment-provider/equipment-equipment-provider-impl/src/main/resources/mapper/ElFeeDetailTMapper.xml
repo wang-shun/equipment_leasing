@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yankuang.equipment.equipment.mapper.ElFeeDetailTMapper" >
+  <resultMap id="BaseResultMap" type="com.yankuang.equipment.equipment.model.ElFeeDetailT" >
+      <id column="id" property="id" jdbcType="BIGINT" />
+      <result column="code" property="code" jdbcType="VARCHAR" />
+      <result column="status" property="status" jdbcType="BIGINT" />
+      <result column="export_at" property="exportAt" jdbcType="TIMESTAMP" />
+      <result column="equipment_id" property="equipmentId" jdbcType="BIGINT" />
+      <result column="position_name" property="positionName" jdbcType="VARCHAR" />
+      <result column="position_code" property="positionCode" jdbcType="VARCHAR" />
+      <result column="middle_type_name" property="middleTypeName" jdbcType="VARCHAR" />
+      <result column="middle_type_code" property="middleTypeCode" jdbcType="VARCHAR" />
+      <result column="small_type_name" property="smallTypeName" jdbcType="VARCHAR" />
+      <result column="small_type_code" property="smallTypeCode" jdbcType="VARCHAR" />
+      <result column="equipment_code" property="equipmentCode" jdbcType="VARCHAR" />
+      <result column="tech_code" property="techCode" jdbcType="VARCHAR" />
+      <result column="model_code" property="modelCode" jdbcType="VARCHAR" />
+      <result column="model_name" property="modelName" jdbcType="VARCHAR" />
+      <result column="effect_name" property="effectName" jdbcType="VARCHAR" />
+      <result column="effect_code" property="effectCode" jdbcType="VARCHAR" />
+      <result column="el_days" property="elDays" jdbcType="BIGINT" />
+      <result column="cost_a1" property="costA1" jdbcType="DOUBLE" />
+      <result column="cost_a3" property="costA3" jdbcType="DOUBLE" />
+      <result column="total_fee" property="totalFee" jdbcType="DOUBLE" />
+      <result column="update_by" property="updateBy" jdbcType="BIGINT" />
+      <result column="version" property="version" jdbcType="BIGINT" />
+      <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+      <result column="create_by" property="createBy" jdbcType="BIGINT" />
+      <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+      <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+      <result column="sorting" property="sorting" jdbcType="BIGINT" />
+      <result column="report_year" property="reportYear" jdbcType="VARCHAR" />
+      <result column="report_month" property="reportMonth" jdbcType="VARCHAR" />
+  </resultMap>
+    <sql id="Base_Column_List" >
+    id, code, status, export_at, equipment_id, position_name, position_code, middle_type_name,
+    middle_type_code, small_type_name, small_type_code, equipment_code, tech_code, model_code,
+    model_name, effect_name, effect_code, el_days, cost_a1, cost_a3, total_fee, update_by,
+    version, update_at, create_by, create_at, remarks, sorting, report_year, report_month
+  </sql>
+  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from el_fee_detail_t
+    where id = #{id,jdbcType=BIGINT} and status != 99
+  </select>
+  <update id="delete" parameterType="java.lang.Long" >
+    update el_fee_detail_t set status = 99
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+    <insert id="insertBatch" parameterType="java.util.List" >
+        insert into el_fee_detail_t (code, status,
+        export_at, equipment_id, position_name,
+        position_code, middle_type_name, middle_type_code,
+        small_type_name, small_type_code, equipment_code,
+        tech_code, model_code, model_name,
+        effect_name, effect_code, el_days,
+        cost_a1, cost_a3, total_fee,
+        update_by, version,
+        create_by, remarks,
+        sorting, report_year, report_month
+        ) values
+        <foreach collection="list" item="item" index="index" open="" close="" separator=",">
+        (#{item.code,jdbcType=VARCHAR}, 1,
+        #{item.exportAt,jdbcType=TIMESTAMP}, #{item.equipmentId,jdbcType=BIGINT}, #{item.positionName,jdbcType=VARCHAR},
+        #{item.positionCode,jdbcType=VARCHAR}, #{item.middleTypeName,jdbcType=VARCHAR}, #{item.middleTypeCode,jdbcType=VARCHAR},
+        #{item.smallTypeName,jdbcType=VARCHAR}, #{item.smallTypeCode,jdbcType=VARCHAR}, #{item.equipmentCode,jdbcType=VARCHAR},
+        #{item.techCode,jdbcType=VARCHAR}, #{item.modelCode,jdbcType=VARCHAR}, #{item.modelName,jdbcType=VARCHAR},
+        #{item.effectName,jdbcType=VARCHAR}, #{item.effectCode,jdbcType=VARCHAR}, #{item.elDays,jdbcType=BIGINT},
+        #{item.costA1,jdbcType=DOUBLE}, #{item.costA3,jdbcType=DOUBLE}, #{item.totalFee,jdbcType=DOUBLE},
+        #{item.updateBy,jdbcType=BIGINT}, #{item.version,jdbcType=BIGINT},
+        #{item.createBy,jdbcType=BIGINT}, #{item.remarks,jdbcType=VARCHAR},
+        #{item.sorting,jdbcType=BIGINT}, #{item.reportYear,jdbcType=VARCHAR}, #{item.reportMonth,jdbcType=VARCHAR}
+        )
+        </foreach>
+  </insert>
+
+  <update id="update" parameterType="com.yankuang.equipment.equipment.model.ElFeeDetailT" >
+      update el_fee_detail_t
+      <set >
+          <if test="code != null" >
+              code = #{code,jdbcType=VARCHAR},
+          </if>
+          <if test="status != null" >
+              status = #{status,jdbcType=BIGINT},
+          </if>
+          <if test="exportAt != null" >
+              export_at = #{exportAt,jdbcType=TIMESTAMP},
+          </if>
+          <if test="equipmentId != null" >
+              equipment_id = #{equipmentId,jdbcType=BIGINT},
+          </if>
+          <if test="positionName != null" >
+              position_name = #{positionName,jdbcType=VARCHAR},
+          </if>
+          <if test="positionCode != null" >
+              position_code = #{positionCode,jdbcType=VARCHAR},
+          </if>
+          <if test="middleTypeName != null" >
+              middle_type_name = #{middleTypeName,jdbcType=VARCHAR},
+          </if>
+          <if test="middleTypeCode != null" >
+              middle_type_code = #{middleTypeCode,jdbcType=VARCHAR},
+          </if>
+          <if test="smallTypeName != null" >
+              small_type_name = #{smallTypeName,jdbcType=VARCHAR},
+          </if>
+          <if test="smallTypeCode != null" >
+              small_type_code = #{smallTypeCode,jdbcType=VARCHAR},
+          </if>
+          <if test="equipmentCode != null" >
+              equipment_code = #{equipmentCode,jdbcType=VARCHAR},
+          </if>
+          <if test="techCode != null" >
+              tech_code = #{techCode,jdbcType=VARCHAR},
+          </if>
+          <if test="modelCode != null" >
+              model_code = #{modelCode,jdbcType=VARCHAR},
+          </if>
+          <if test="modelName != null" >
+              model_name = #{modelName,jdbcType=VARCHAR},
+          </if>
+          <if test="effectName != null" >
+              effect_name = #{effectName,jdbcType=VARCHAR},
+          </if>
+          <if test="effectCode != null" >
+              effect_code = #{effectCode,jdbcType=VARCHAR},
+          </if>
+          <if test="elDays != null" >
+              el_days = #{elDays,jdbcType=BIGINT},
+          </if>
+          <if test="costA1 != null" >
+              cost_a1 = #{costA1,jdbcType=DOUBLE},
+          </if>
+          <if test="costA3 != null" >
+              cost_a3 = #{costA3,jdbcType=DOUBLE},
+          </if>
+          <if test="totalFee != null" >
+              total_fee = #{totalFee,jdbcType=DOUBLE},
+          </if>
+          <if test="updateBy != null" >
+              update_by = #{updateBy,jdbcType=BIGINT},
+          </if>
+          <if test="version != null" >
+              version = #{version,jdbcType=BIGINT},
+          </if>
+          <if test="updateAt != null" >
+              update_at = #{updateAt,jdbcType=TIMESTAMP},
+          </if>
+          <if test="createBy != null" >
+              create_by = #{createBy,jdbcType=BIGINT},
+          </if>
+          <if test="createAt != null" >
+              create_at = #{createAt,jdbcType=TIMESTAMP},
+          </if>
+          <if test="remarks != null" >
+              remarks = #{remarks,jdbcType=VARCHAR},
+          </if>
+          <if test="sorting != null" >
+              sorting = #{sorting,jdbcType=BIGINT},
+          </if>
+          <if test="reportYear != null" >
+              report_year = #{reportYear,jdbcType=VARCHAR},
+          </if>
+          <if test="reportMonth != null" >
+              report_month = #{reportMonth,jdbcType=VARCHAR},
+          </if>
+      </set>
+      where id = #{id,jdbcType=BIGINT}
+  </update>
+
+    <select id="list" parameterType="com.yankuang.equipment.equipment.model.ElFeeDetailT" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from el_fee_detail_t
+        where 1 =1 and status != 99
+        <if test="reportYear != null">
+            and report_year = #{reportYear}
+        </if>
+        <if test="reportMonth != null">
+            and report_month = #{reportMonth}
+        </if>
+        <if test="positionCode != null">
+            and position_code = #{positionCode}
+        </if>
+    </select>
+
+</mapper>

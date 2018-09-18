@@ -159,16 +159,13 @@
     </select>
 
     <select id="findById" resultMap="BaseResultMap" parameterType="Long">
-        SELECT t1.*,dept.name as name,sb.name AS sbName
+        SELECT t1.*,dept.name as name,t1.equipment_effect AS sbName
         FROM el_use_item t1
         LEFT JOIN el_department dept
         ON t1.equipment_position = dept.id
-        LEFT JOIN sb_position sb
-        ON t1.equipment_effect = sb.code
         WHERE item_id = #{itemId,jdbcType=BIGINT}
         AND t1.status != 99
         AND dept.status != 99
-        AND sb.status != 99
     </select>
 
     <update id="delete" parameterType="Long">
@@ -210,6 +207,16 @@
         </where>
     </select>
 
+    <select id="findElUseItemTL" parameterType="com.yankuang.equipment.equipment.model.ElUseItem" resultMap="BaseResultMap">
+        select u1.*,dept.name as name from el_use_item u1
+        left join el_use u2 on u1.use_id = u2.id
+        left join el_department dept on u1.equipment_position = dept.id
+        where u1.is_use = 1
+        and u2.use_equipment_type = 1
+        and u1.equipment_position = #{equipmentPosition}
+        and u1.status != 99
+    </select>
+
     <update id="updateByEquipmentId" parameterType="ElUseItem">
         UPDATE el_use_item
         SET sign = #{sign}
@@ -249,7 +256,7 @@
         and depart.pcode = #{deptCode}
         and t1.equipment_effect = #{equipmentEffect}
     </select>
-    
+
     <select id="findKB" parameterType="DtkList" resultType="INTEGER">
         select count(1) from el_use_item t1
         left join sb_equipment_z sb on t1.equipment_id = sb.id

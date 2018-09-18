@@ -83,6 +83,10 @@ public class ElUseItemServiceImpl implements ElUseItemService{
         return pageInfo;
     }
 
+    public List<ElUseItem> findElUseItemTL(ElUseItem elUseItem) {
+        return elUseItemMapper.findElUseItemTL(elUseItem);
+    }
+
     public Integer updateByEquipmentId(ElUseItem elUseItem){
         return elUseItemMapper.updateByEquipmentId(elUseItem);
     }
