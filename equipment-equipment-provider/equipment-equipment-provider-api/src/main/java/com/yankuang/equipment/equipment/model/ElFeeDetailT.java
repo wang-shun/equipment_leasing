@@ -14,71 +14,71 @@ import java.util.Date;
 public class ElFeeDetailT implements Serializable {
     private Long id;
 
-    private String code;
+    private String reportYear; // 报表年度
 
-    private Long status;
+    private String reportMonth; // 报表月度
+
+    private String exportAtStr; // 导出时间 年度-月度
+
+    private Long status; // 状态 1:正常  99:删除
 
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date exportAt;
+    private Date exportAt; //导出时间
 
-    private Long equipmentId;
+    private Long equipmentId; //设备ID
 
-    private String positionName;
+    private String positionName; // 矿处单位名称
 
-    private String positionCode;
+    private String positionCode; // 矿处单位code
 
-    private String middleTypeName;
+    private String middleTypeName; // 中类名称
 
-    private String middleTypeCode;
+    private String middleTypeCode; // 中类code
 
-    private String smallTypeName;
+    private String smallTypeName; // 小类名称
 
-    private String smallTypeCode;
+    private String smallTypeCode; // 小类code
 
-    private String equipmentCode;
+    private String equipmentCode; // 设备识别码
 
-    private String techCode;
+    private String techCode; // 技术标识号
 
-    private String modelCode;
+    private String modelCode; // 规格型号code
 
-    private String modelName;
+    private String modelName; // 规格型号名称
 
-    private String effectName;
+    private String effectName; // 功能位置名称
 
-    private String effectCode;
+    private String effectCode; // 功能位置code
 
-    private Long elDays;
+    private Long elDays; // 租赁天数
 
-    private Double costA1;
+    private Double costA1; // 租赁价格
 
-    private Double costA3;
+    private Double costA3; // 调整金额
 
-    private Double totalFee;
+    private Double totalFee; // 合计
 
-    private Long updateBy;
+    private String remarks; // 备注
 
-    private Long version;
+    private Long updateBy; // 更新人ID
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date updateAt;
-
-    private Long createBy;
+    private Long version; // 版本
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date createAt;
+    private Date updateAt; // 更新时间
 
-    private String remarks;
+    private Long createBy; // 创建人ID
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date createAt; // 创建时间
+
+    private String code;
 
     private Long sorting;
-
-    private String reportYear;
-
-    private String reportMonth;
 
     private Integer pageNum;
 
     private Integer pageSize;
-
-    private String exportAtStr;
 
 }
