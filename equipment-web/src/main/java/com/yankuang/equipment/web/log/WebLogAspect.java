@@ -307,26 +307,27 @@ public class WebLogAspect {
         }
         // 刷新token时长
         redis.expire(token, 7200);
-        // json转对象
+        // json转对象  todo
         UserDTO userFromRedis = JsonUtils.jsonToPojo(userRedis, UserDTO.class);
         // 打印日志信息
         logger.info("访问用户，{}", userFromRedis.toString());
         List<RoleDTO> roles = userFromRedis.getRoles();
         List<AuthorityTreeDTO> authorities = userFromRedis.getAuthoritys();
-        for (RoleDTO roleDTO : roles) {
-            if (!"admin".equals(roleDTO.getName())) {
-                // 遍历权限列表比对请求投中权限code
-                List<AuthorityTreeDTO> au =
-                        authorities.stream().filter(authorityDTO ->
-                                authorityCode.equals(authorityDTO.getCode())).collect(Collectors.toList());
-                if (au.size() <= 0) {
-                    return CommonResponse.errorTokenMsg("无权限操作");
-                }
-            }
-        }
+        //  todo 根据authorityCode鉴权
+//        for (RoleDTO roleDTO : roles) {
+//            if (!"admin".equals(roleDTO.getName())) {
+//                // 遍历权限列表比对请求投中权限code
+//                List<AuthorityTreeDTO> au =
+//                        authorities.stream().filter(authorityDTO ->
+//                                authorityCode.equals(authorityDTO.getCode())).collect(Collectors.toList());
+//                if (au.size() <= 0) {
+//                    return CommonResponse.errorTokenMsg("无权限操作");
+//                }
+//            }
+//        }
+
         // 登录跟验证权限通过，接受相应方法返回值（可做相应处理），返回前端
 //        CommonResponse result = (CommonResponse) joinPoint.proceed();
-
 
         return joinPoint.proceed();
     }

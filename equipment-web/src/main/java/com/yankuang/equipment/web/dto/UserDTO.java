@@ -10,6 +10,8 @@ public class UserDTO implements Serializable {
 
     private Long id;
 
+    private String code;
+
     private String name;
 
     private String projectCode;
