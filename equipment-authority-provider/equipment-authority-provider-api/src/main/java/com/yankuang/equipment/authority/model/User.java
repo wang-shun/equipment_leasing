@@ -50,6 +50,8 @@ public class User implements Serializable {
 
     private String projectCode;
 
+    private Long deptId;
+
     private String deptCode;
 
     private String deptName;

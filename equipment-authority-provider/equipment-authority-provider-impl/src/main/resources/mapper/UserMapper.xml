@@ -20,13 +20,14 @@
         <result column="version" property="version" jdbcType="BIGINT"/>
         <result column="create_at" property="createAt" jdbcType="TIMESTAMP"/>
         <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="deptId" property="deptId" jdbcType="BIGINT"/>
         <result column="deptCode" property="deptCode" jdbcType="VARCHAR"/>
         <result column="deptName" property="deptName" jdbcType="VARCHAR"/>
         <result column="project_code" property="projectCode" jdbcType="VARCHAR"/>
     </resultMap>
 
-    <sql id="cols_exclude_id">
-        password,
+    <sql id="cols_all">
+        id,password,
         <include refid="cols_exclude_id_password"/>
     </sql>
 
@@ -71,7 +72,7 @@
 
     <insert id="create" parameterType="com.yankuang.equipment.authority.model.User">
         INSERT INTO el_user
-        (<include refid="cols_exclude_id"/>)
+        (<include refid="cols_all"/>)
         VALUES
         (<include refid="vals"/>)
     </insert>
@@ -120,7 +121,7 @@
         u.id,u.code,u.account,u.name,u.sex,u.telephone,u.mail,u.status,u.remark,u.version,u.sorting,
         u.update_by,u.update_at,
         u.create_by,u.create_at,
-        d.code as deptCode,d.name as deptName
+        d.id as deptId,d.code as deptCode,d.name as deptName
         from el_user u
         left join el_department_user_mapping du
         on du.user_code = u.code
@@ -135,18 +136,29 @@
 
     <select id="findByName" parameterType="String" resultMap="UserMap">
         select
-        <include refid="cols_exclude_id"/>
+        <include refid="cols_all"/>
         from el_user
         where name = #{name}
         and status != 99
     </select>
 
     <select id="findByAccount" parameterType="String" resultMap="UserMap">
-        select
-        <include refid="cols_exclude_id"/>
-        from el_user
-        where account = #{account}
-        and status != 99
+        SELECT
+        u.id,u.password,u.code,u.account,u.name,u.sex,u.telephone,u.mail,u.status,u.remark,u.version,u.sorting,
+        u.update_by,u.update_at,
+        u.create_by,u.create_at,
+        u.project_code,
+        d.id as deptId,d.code as deptCode,d.name as deptName
+        from el_user u
+        left join el_department_user_mapping du
+        on du.user_code = u.code
+        left join el_department d
+        on d.code = du.dept_code
+        where
+            u.account = #{account}
+            and u.status != 99
+            and du.status != 99
+            and d.status != 99
     </select>
 
     <select id="list" parameterType="java.util.HashMap" resultMap="UserMap">

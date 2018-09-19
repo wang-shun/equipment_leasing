@@ -22,4 +22,10 @@ public class UserDTO implements Serializable {
 
     private List<AuthorityTreeDTO> authoritys;
 
+    private Long deptId;
+
+    private String deptCode;
+
+    private String deptName;
+
 }

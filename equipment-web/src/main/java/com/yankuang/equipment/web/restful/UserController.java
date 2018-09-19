@@ -121,6 +121,8 @@ public class UserController {
             authorityDTO.setName(authority.getName());
             authorityDTO.setSorting(authority.getSorting());
             authorityDTO.setIcon(authority.getIcon());
+            authorityDTO.setRemark(authority.getRemark());
+            authorityDTO.setCreateAt(authority.getCreateAt());
             authoritys.add(authorityDTO);
         }
         List<Role> roles1 = roleService.findByUserCode(loginUser.getCode());
@@ -131,8 +133,12 @@ public class UserController {
             roles.add(roleDTO);
         }
         UserDTO userDTO = new UserDTO();
+        userDTO.setId(loginUser.getId());
         userDTO.setCode(loginUser.getCode());
         userDTO.setName(loginUser.getName());
+        userDTO.setDeptCode(loginUser.getDeptCode());
+        userDTO.setDeptId(loginUser.getId());
+        userDTO.setDeptName(loginUser.getDeptName());
         userDTO.setProjectCode(loginUser.getProjectCode());
         // redis中存放的key
         token = CodeUtil.getCode();
@@ -182,6 +188,8 @@ public class UserController {
             tree.setUrl(authority.getUrl());
             tree.setIcon(authority.getIcon());
             tree.setSorting(authority.getSorting());
+            tree.setRemark(authority.getRemark());
+            tree.setCreateAt(authority.getCreateAt());
             trees.add(tree);
         }
         return authorityTreeUtil.menuList(trees);
