@@ -93,4 +93,8 @@ public class DtkList implements Serializable {
     private List<ListZReportItem> listZReportItems;
 
     private ListZReportItem listZReportItem;
+
+    private Byte isNew;
+
+    private String feeDay;
 }
