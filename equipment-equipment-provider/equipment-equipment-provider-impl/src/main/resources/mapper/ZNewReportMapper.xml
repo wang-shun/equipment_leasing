@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yankuang.equipment.equipment.mapper.elZNewEquipmentListReportMapper" >
+    <resultMap id="BaseResultMap" type="com.yankuang.equipment.equipment.model.ZNewReport" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="equipment_model" property="equipmentModel" jdbcType="VARCHAR" />
+        <result column="equipment_unit" property="equipmentUnit" jdbcType="VARCHAR" />
+        <result column="equipment_num" property="equipmentNum" jdbcType="INTEGER" />
+        <result column="cost_a1" property="costA1" jdbcType="DOUBLE" />
+        <result column="day" property="day" jdbcType="BIGINT" />
+        <result column="sum" property="sum" jdbcType="DOUBLE" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="equipment_code" property="equipmentCode" jdbcType="VARCHAR" />
+        <result column="fee_day" property="feeDay" jdbcType="VARCHAR" />
+        <result column="use_dept_name" property="useDeptName" jdbcType="VARCHAR" />
+        <result column="number" property="number" jdbcType="VARCHAR" />
+        <result column="create_excel_name" property="createExcelName" jdbcType="VARCHAR" />
+        <result column="status_name" property="statusName" jdbcType="VARCHAR" />
+        <result column="sure_name" property="sureName" jdbcType="VARCHAR" />
+        <result column="fee_sum" property="feeSum" jdbcType="DOUBLE" />
+        <result column="use_at" property="useAt" jdbcType="TIMESTAMP" />
+        <result column="equipment_position" property="equipmentPosition" jdbcType="VARCHAR" />
+        <result column="use_year" property="useYear" jdbcType="VARCHAR" />
+        <result column="use_month" property="useMonth" jdbcType="VARCHAR" />
+        <result column="type" property="type" jdbcType="TINYINT" />
+        <result column="use_dept_code" property="useDeptCode" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+    id, name, equipment_model, equipment_unit, equipment_num, cost_a1, day, sum, remark,
+    equipment_code, fee_day, use_dept_name, number, create_excel_name, status_name, sure_name,
+    fee_sum, use_at, equipment_position, use_year, use_month, type, use_dept_code
+  </sql>
+    <insert id="create" parameterType="com.yankuang.equipment.equipment.model.ZNewReport" >
+    insert into el_zNewEquipmentList_report (id, name, equipment_model,
+      equipment_unit, equipment_num, cost_a1,
+      day, sum, remark, equipment_code,
+      fee_day, use_dept_name, number,
+      create_excel_name, status_name, sure_name,
+      fee_sum, use_at, equipment_position,
+      use_year, use_month, type,
+      use_dept_code)
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{equipmentModel,jdbcType=VARCHAR},
+      #{equipmentUnit,jdbcType=VARCHAR}, #{equipmentNum,jdbcType=INTEGER}, #{costA1,jdbcType=DOUBLE},
+      #{day,jdbcType=BIGINT}, #{sum,jdbcType=DOUBLE}, #{remark,jdbcType=VARCHAR}, #{equipmentCode,jdbcType=VARCHAR},
+      #{feeDay,jdbcType=VARCHAR}, #{useDeptName,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR},
+      #{createExcelName,jdbcType=VARCHAR}, #{statusName,jdbcType=VARCHAR}, #{sureName,jdbcType=VARCHAR},
+      #{feeSum,jdbcType=DOUBLE}, #{useAt,jdbcType=TIMESTAMP}, #{equipmentPosition,jdbcType=VARCHAR},
+      #{useYear,jdbcType=VARCHAR}, #{useMonth,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT},
+      #{useDeptCode,jdbcType=VARCHAR})
+  </insert>
+</mapper>
