@@ -69,7 +69,7 @@
         #{item.techCode,jdbcType=VARCHAR}, #{item.modelCode,jdbcType=VARCHAR}, #{item.modelName,jdbcType=VARCHAR},
         #{item.effectName,jdbcType=VARCHAR}, #{item.effectCode,jdbcType=VARCHAR}, #{item.elDays,jdbcType=BIGINT},
         #{item.costA1,jdbcType=DOUBLE}, #{item.costA3,jdbcType=DOUBLE}, #{item.totalFee,jdbcType=DOUBLE},
-        #{item.updateBy,jdbcType=BIGINT}, #{item.version,jdbcType=BIGINT},
+        #{item.updateBy,jdbcType=BIGINT}, 0,
         #{item.createBy,jdbcType=BIGINT}, #{item.remarks,jdbcType=VARCHAR},
         #{item.sorting,jdbcType=BIGINT}, #{item.reportYear,jdbcType=VARCHAR}, #{item.reportMonth,jdbcType=VARCHAR}
         )

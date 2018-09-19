@@ -4,11 +4,12 @@ import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Date;
 @Data
 @Entity
 @Table(name = "el_fee_quarter_t")
-public class ElFeeQuarterT {
+public class ElFeeQuarterT implements Serializable {
     private Long id;
 
     private String code;
