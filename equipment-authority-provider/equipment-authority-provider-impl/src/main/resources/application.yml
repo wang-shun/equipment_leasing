@@ -13,6 +13,7 @@ rpc:
     module: equipment-authority-provider
     registryAddress: ${ZOOKEEPER_HOST:47.94.211.172}:${ZOOKEEPER_PORT:2181}
     port: 20880
+    version: kcx_zl
 
 mybatis:
   mapper-locations: classpath*:mapper/*Mapper.xml
