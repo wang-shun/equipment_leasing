@@ -110,8 +110,8 @@ public class UserController {
             return CommonResponse.errorTokenMsg("密码错误");
         }
         log.info("根据用户名查询的用户信息" + loginUser.toString());
-        List<Authority> authorities1 = authorityService.findByUserCode(loginUser.getCode());
-        for (Authority authority : authorities1) {
+        List<Authority> authorityResult = authorityService.findByUserCode(loginUser.getCode());
+        for (Authority authority : authorityResult) {
             AuthorityTreeDTO authorityDTO = new AuthorityTreeDTO();
             authorityDTO.setUrl(authority.getUrl());
             authorityDTO.setCode(authority.getCode());
@@ -130,25 +130,35 @@ public class UserController {
             roleDTO.setName(role.getName());
             roles.add(roleDTO);
         }
-        // 登录验证成功，获取用户基本信息，角色信息，权限信息
-        UserDTO userDTO1 = getUserDTO(authoritys, roles, loginUser);
+        UserDTO userDTO = new UserDTO();
+        userDTO.setCode(loginUser.getCode());
+        userDTO.setName(loginUser.getName());
+        userDTO.setProjectCode(loginUser.getProjectCode());
         // redis中存放的key
         token = CodeUtil.getCode();
-        userDTO1.setToken(token);
+        userDTO.setToken(token);
+        userDTO.setRoles(roles);
+        // 当前登录用户的权限树列表
+        List<AuthorityTreeDTO> authorityTreeDTOS = getTree(authoritys);
+        // 1.redis中存放权限列表
+        userDTO.setAuthoritys(authoritys);
+        // 存放redis,暂时2小时
+        redis.set(token, JsonUtils.objectToJson(userDTO), 7200);
         // user对象信息转json加密base64作为值存放redis
+        userDTO.setAuthoritys(authorityTreeDTOS);
+        System.out.println("返给前端页面的是权限树型结构" + userDTO.toString());
         final Base64.Encoder encoder = Base64.getEncoder();
         String encodedResult = "";
         try {
             // 转字节
-            final byte[] textByte = JsonUtils.objectToJson(userDTO1).getBytes("UTF-8");
+            final byte[] textByte = JsonUtils.objectToJson(userDTO).getBytes("UTF-8");
             // 加密
             encodedResult = encoder.encodeToString(textByte);
             log.info(encodedResult);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        // 存放redis,暂时2小时
-        redis.set(token, JsonUtils.objectToJson(userDTO1), 7200);
+
         // 更新user数据库表，记录最新一次登录保存的redis的key(token)
         User u = new User();
         u.setCode(loginUser.getCode());
@@ -156,37 +166,6 @@ public class UserController {
         userService.update(u);
         // 返回加密用户信息包含token
         return CommonResponse.ok(encodedResult);
-    }
-
-    private UserDTO getUserDTO(List<AuthorityTreeDTO> authoritys, List<RoleDTO> roles, User loginUser) {
-        UserDTO userDTO = new UserDTO();
-//        // 用户角色列表
-//        List<String> userCodes = new ArrayList<>();
-//        userCodes.add(loginUser.getCode());
-//        List<RoleUser> roleUsers = roleUserService.findByUserCode(userCodes);
-//        if (roleUsers == null || roleUsers.size() == 0) {
-//            return userDTO;
-//        }
-        userDTO.setId(loginUser.getId());
-        userDTO.setName(loginUser.getName());
-        userDTO.setProjectCode(loginUser.getProjectCode());
-        // 用户角色列表
-        userDTO.setRoles(roles);
-        List<RoleDTO> roles1 = roles.stream()
-                .filter(roleDTO -> "admin".equals(roleDTO.getName()))
-                .collect(Collectors.toList());
-        if (roles1.size() > 0) {
-            List<AuthorityTreeDTO> authoritys1 = authoritys.stream().
-                    filter(authorityDTO -> 1 == authorityDTO.getType())
-                    .collect(Collectors.toList());
-            List<AuthorityTreeDTO> list = getTree(authoritys1);
-            // 用户权限idlist
-            userDTO.setAuthoritys(list);
-        } else {
-            // 用户权限idlist
-            userDTO.setAuthoritys(getTree(authoritys));
-        }
-        return userDTO;
     }
 
     private List<AuthorityTreeDTO> getTree(List<AuthorityTreeDTO> authoritys) {
@@ -230,10 +209,6 @@ public class UserController {
         if (StringUtils.isEmpty(deptCode)) {
             return CommonResponse.errorMsg("用户部门code不能为空");
         }
-//        String projectCode = user.getProjectCode();
-//        if (StringUtils.isEmpty(projectCode)) {
-//            return CommonResponse.errorMsg("用户projectCode不能为空");
-//        }
         List<String> roleCodes = user.getRoleCodes();
         if (StringUtils.isEmpty(roleCodes)) {
             return CommonResponse.errorMsg("用户角色roleCodes不能为空");
@@ -453,20 +428,17 @@ public class UserController {
         if (StringUtils.isEmpty(authorityCodes)) {
             return CommonResponse.errorMsg("参数authorityCodes不能为空");
         }
+        List<String> codes = new ArrayList<>();
+        codes.add(userCode);
+        userAuthorityService.deleteByUserCodes(codes);
         // 遍历authorityCodes,根据用户code查和权限code查重用户和权限关联表
         for (String authorityCode : authorityCodes) {
-            Map map = new HashMap();
-            map.put("userCode", userCode);
-            map.put("authorityCode", authorityCode);
-            UserAuthority userAuthority = userAuthorityService.findByUserAndAuthorityCodes(map);
-            if (StringUtils.isEmpty(userAuthority)) {
-                UserAuthority userAuthority1 = new UserAuthority();
-                userAuthority1.setAuthorityCode(authorityCode);
-                userAuthority1.setUserCode(userCode);
-                Boolean b = userAuthorityService.create(userAuthority1);
-                if (!b) {
-                    return CommonResponse.errorMsg("添加用户权限关联失败");
-                }
+            UserAuthority userAuthority1 = new UserAuthority();
+            userAuthority1.setAuthorityCode(authorityCode);
+            userAuthority1.setUserCode(userCode);
+            Boolean b = userAuthorityService.create(userAuthority1);
+            if (!b) {
+                return CommonResponse.errorMsg("添加用户权限关联失败");
             }
         }
         return CommonResponse.build(200, "用户授权成功", null);

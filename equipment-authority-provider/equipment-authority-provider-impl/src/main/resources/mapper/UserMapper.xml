@@ -138,6 +138,7 @@
         <include refid="cols_exclude_id"/>
         from el_user
         where name = #{name}
+        and status != 99
     </select>
 
     <select id="findByAccount" parameterType="String" resultMap="UserMap">
@@ -145,6 +146,7 @@
         <include refid="cols_exclude_id"/>
         from el_user
         where account = #{account}
+        and status != 99
     </select>
 
     <select id="list" parameterType="java.util.HashMap" resultMap="UserMap">

@@ -12,6 +12,8 @@ import java.util.List;
 public interface SbTypeMapper {
     int deleteById(Long id);
 
+    int deleteByPcode(@Param("p_code") String p_code);
+
     int create(SbType record);
 
     SbType findById(Long id);
@@ -22,5 +24,5 @@ public interface SbTypeMapper {
 
     List<SbType> list();
 
-    List<SbType> listByPcodeOrLevel(@Param("p_code") String p_code, @Param("p_level") int level);
+    List<SbType> listByPcodeOrLevel(@Param("p_code") String p_code, @Param("p_level") Integer level);
 }

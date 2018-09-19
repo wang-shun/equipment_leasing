@@ -50,4 +50,11 @@ public interface ElPlanUseService {
      * @return
      */
     boolean unbindSbZ();
+
+    /**
+     * ID查询
+     * @param id
+     * @return
+     */
+    ElPlanUse findById(Long id);
 }

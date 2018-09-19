@@ -25,6 +25,8 @@ public interface ElUseItemMapper {
 
     ElUseItem findByCondition(Map map);
 
+    List<ElUseItem> findElUseItemTL(ElUseItem elUseItem);
+
     Integer updateByEquipmentId(ElUseItem elUseItem);
 
     DtkList dtkReport(DtkList dtkList);
