@@ -21,4 +21,20 @@
       #{reportName,jdbcType=VARCHAR},#{createAt,jdbcType=TIMESTAMP},#{updateAt,jdbcType=TIMESTAMP})
   </insert>
 
+    <select id="findCostRepairList" parameterType="String" resultType="INTEGER">
+        select count(*) from report_zj_depreciation_cost
+        where 1=1 and year_month_time=#{yearMonthTime}
+    </select>
+
+    <select id="list" parameterType="map" resultMap="BaseResultMap">
+        SELECT zjdepcost.* FROM  report_zj_depreciation_cost zjdepcost
+        <where>
+            1 = 1
+            <if test="yearMonthTime != null">
+                and zjdepcost.year_month_time = #{yearMonthTime,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+
 </mapper>

@@ -3,7 +3,9 @@ package com.yankuang.equipment.equipment.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yankuang.equipment.equipment.mapper.ZjDepreciationCostReportItemMapper;
+import com.yankuang.equipment.equipment.mapper.ZjDepreciationCostReportMapper;
 import com.yankuang.equipment.equipment.mapper.ZjSbUseItemMapper;
+import com.yankuang.equipment.equipment.model.ZjDepreciationCostReport;
 import com.yankuang.equipment.equipment.model.ZjDepreciationCostReportItem;
 import com.yankuang.equipment.equipment.model.ZjSbUseItem;
 import com.yankuang.equipment.equipment.service.ZjDepreciationCostReportItemService;
@@ -22,6 +24,9 @@ public class ZjDepCostReportItemServiceImpl implements ZjDepreciationCostReportI
     @Autowired
     ZjDepreciationCostReportItemMapper zjDepreciationCostReportItemMapper;
 
+    @Autowired
+    ZjDepreciationCostReportMapper zjDepreciationCostReportMapper;
+
 
     /**
      * @method 创建综机折旧修理费
@@ -31,8 +36,5 @@ public class ZjDepCostReportItemServiceImpl implements ZjDepreciationCostReportI
     public Boolean create(ZjDepreciationCostReportItem zjDepreciationCostReportItem){
         return zjDepreciationCostReportItemMapper.create(zjDepreciationCostReportItem) >=0;
     }
-
-
-
 
 }

@@ -24,12 +24,6 @@ public class ZjDepreciationCostReportItem implements Serializable {
 
     private String deptType;//部门类型，分本部和外部
 
-    private Double subtotal;//小计
-
-    private Double accumulativeTotal;//累计
-
-    private Double total;//合计
-
     private Double januaryRepairsCost;//一月修理费
 
     private Double  februaryRepairsCost;//二月修理费
@@ -55,4 +49,7 @@ public class ZjDepreciationCostReportItem implements Serializable {
     private Double  decRepairsCost;//十二月修理费
 
     private Long reportId;//外键id
+
+    private Double deptSum;//合计
+
 }

@@ -32,5 +32,17 @@ public class ZjDepreciationCostReport implements Serializable {
 
     private Date updateAt;
 
-    private List<ZjDepreciationCostReportItem> zjDepreciationCostReportItems;
+    List<ZjDepreciationCostReportItem> zjDepreciationCostReportItems;
+
+    private List<ZjDepreciationCostReportItem> zjDepreciationCostReportItemsHome;//存放本部数据
+
+    private List<ZjDepreciationCostReportItem> zjDepreciationCostReportItemsExternal;//存放外部数据
+
+    private List<ZjDepreciationCostReportItemSumHome> zjDepreciationCostReportItemSumHomes;//存放本部合计、小计
+
+    private List<ZjDepreciationCostReportItemSumExternal> zjDepreciationCostReportItemSumExternals;//存放本部合计、小计
+
+    private List<ZjDepreciationCostReportItemAddUpSum> zjDepreciationCostReportItemAddUpSums;//存放本部和外部累计
+
+
 }
