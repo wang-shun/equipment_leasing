@@ -64,6 +64,29 @@
       #{sorting,jdbcType=BIGINT}, #{version,jdbcType=BIGINT}, #{reportYear,jdbcType=VARCHAR},
       #{reportMonth,jdbcType=VARCHAR})
   </insert>
+    <insert id="createBatch" parameterType="java.util.List" >
+    insert into el_fee_middle_t (code, status,
+      position_name, position_code, export_at,
+      middle_code, middle_name, equipment_num,
+      use_num, cost_a1, cost_a2,
+      cost_a3, total_fee, remarks,
+      approve_by, position_by, update_at,
+      update_by, create_by,
+      sorting, version, report_year,
+      report_month)
+    values
+    <foreach collection="list" item="item" index="index" open="" close="" separator=",">
+        (#{item.code,jdbcType=VARCHAR}, 1,
+        #{item.positionName,jdbcType=VARCHAR}, #{item.positionCode,jdbcType=VARCHAR}, #{item.exportAt,jdbcType=TIMESTAMP},
+        #{item.middleCode,jdbcType=VARCHAR}, #{item.middleName,jdbcType=VARCHAR}, #{item.equipmentNum,jdbcType=BIGINT},
+        #{item.useNum,jdbcType=BIGINT}, #{item.costA1,jdbcType=DOUBLE}, #{item.costA2,jdbcType=DOUBLE},
+        #{item.costA3,jdbcType=DOUBLE}, #{item.totalFee,jdbcType=DOUBLE}, #{item.remarks,jdbcType=VARCHAR},
+        #{item.approveBy,jdbcType=BIGINT}, #{item.positionBy,jdbcType=BIGINT}, #{item.updateAt,jdbcType=TIMESTAMP},
+        #{item.updateBy,jdbcType=BIGINT}, #{item.createBy,jdbcType=BIGINT},
+        #{item.sorting,jdbcType=BIGINT}, 0, #{item.reportYear,jdbcType=VARCHAR},
+        #{item.reportMonth,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
 
   <update id="update" parameterType="com.yankuang.equipment.equipment.model.ElFeeMiddleT" >
       update el_fee_middle_t
@@ -143,5 +166,19 @@
       </set>
       where id = #{id,jdbcType=BIGINT}
   </update>
+
+    <select id="list" parameterType="com.yankuang.equipment.equipment.model.ElFeeMiddleT" resultMap="BaseResultMap" >
+        select <include refid="Base_Column_List"/> from el_fee_middle_t
+        where 1 =1 and status != 99
+        <if test="reportYear != null and reportYear != ''" >
+            and report_year = #{reportYear}
+        </if>
+        <if test="reportMonth != null and reportMonth != ''" >
+            and report_month = #{reportMonth}
+        </if>
+        <if test="positionCode != null and positionCode != ''" >
+            and position_code = #{positionCode}
+        </if>
+    </select>
 
 </mapper>

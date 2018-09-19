@@ -52,8 +52,20 @@ public class SbTypeServiceImpl implements SbTypeService {
     }
 
     public void deleteById(Long id) {
-        sbTypeInfoMapper.deleteByTypeId(id);
-        sbTypeMapper.deleteById(id);
+        SbType sbType = sbTypeMapper.findById(id);
+        if(sbType != null){
+            List<SbType> sbTypes = sbTypeMapper.listByPcodeOrLevel(sbType.getCode(),null);
+            if(sbTypes!=null && sbTypes.size()>0){
+                for(int i=0;i<sbTypes.size();i++){
+                    SbType sbType1 = sbTypes.get(i);
+                    sbTypeMapper.deleteByPcode(sbType1.getCode());
+                    sbTypeInfoMapper.deleteByTypeId(sbType1.getId());
+                    sbTypeMapper.deleteById(sbType1.getId());
+                }
+            }
+            sbTypeInfoMapper.deleteByTypeId(sbType.getId());
+            sbTypeMapper.deleteById(sbType.getId());
+        }
     }
 
     public List<SbType> listByPcodeOrLevel(String p_code, int level) {

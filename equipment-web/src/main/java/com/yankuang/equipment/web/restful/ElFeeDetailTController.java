@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.yankuang.equipment.authority.model.Dept;
 import com.yankuang.equipment.authority.service.DeptService;
 import com.yankuang.equipment.common.util.CommonResponse;
+import com.yankuang.equipment.common.util.FeeUtils;
 import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.equipment.model.ElFeeDetailT;
 import com.yankuang.equipment.equipment.model.ElPlanUse;
@@ -118,13 +119,9 @@ public class ElFeeDetailTController {
                 detailT.setCostA1(uItem.getCostA1());
                 Double a3Rate = sbElFeeService.CalDayElFeeA3T_rate(uItem.getUseId(), uItem.getEquipmentId());
                 double a3s = (a3Rate-1)*uItem.getCostA1();
-                BigDecimal b = new BigDecimal(a3s);
-                double a3 = b.setScale(3,BigDecimal.ROUND_HALF_UP).doubleValue();
-                detailT.setCostA3(a3);
+                detailT.setCostA3(FeeUtils.scale(a3s, 3));
                 double totalFees = uItem.getCostA1()*days+(a3Rate-1)*uItem.getCostA1();
-                BigDecimal c = new BigDecimal(totalFees);
-                double totalFee = c.setScale(3,BigDecimal.ROUND_HALF_UP).doubleValue();
-                detailT.setTotalFee(totalFee);
+                detailT.setTotalFee(FeeUtils.scale(totalFees, 3));
                 detailT.setReportYear(reportYear);
                 detailT.setReportMonth(reportMonth);
                 detailT.setExportAt(endDate);
@@ -135,6 +132,11 @@ public class ElFeeDetailTController {
                 detailT.setStatus(1L);
                 elFeeDetailTS.add(detailT);
             }
+
+            if (elFeeDetailTS == null || elFeeDetailTS.size() <= 0) {
+                return CommonResponse.build(200, "查询结果为空", null);
+            }
+
             return CommonResponse.ok(elFeeDetailTS);
         } catch (ParseException e) {
             e.printStackTrace();

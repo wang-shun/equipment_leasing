@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/v1/reportEquipmentZMonth")
 public class ReportEquipmentZMonthController {
 
-    public static final Logger logger = Logger.getLogger(SbElFeeConfigController.class);
+    public static final Logger logger = Logger.getLogger(ReportEquipmentZMonthController.class);
 
     @RpcConsumer
     ReportEquipmentZMonthService reportEquipmentZMonthService;

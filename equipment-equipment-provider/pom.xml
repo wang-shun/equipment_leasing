@@ -16,9 +16,7 @@
         <module>equipment-equipment-provider-api</module>
     </modules>
 
-    <properties>
-        <spring.boot.version>1.5.2.RELEASE</spring.boot.version>
-    </properties>
+
 
     <dependencies>
         <dependency>

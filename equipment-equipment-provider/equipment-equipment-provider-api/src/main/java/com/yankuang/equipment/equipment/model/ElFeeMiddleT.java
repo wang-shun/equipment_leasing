@@ -1,5 +1,6 @@
 package com.yankuang.equipment.equipment.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -15,54 +16,59 @@ public class ElFeeMiddleT implements Serializable {
 
     private String code;
 
-    private Byte status;
+    private Byte status; // 状态 1：正常 2：删除
 
-    private String positionName;
+    private String positionName; // 矿处单位名称
 
-    private String positionCode;
+    private String positionCode; // 矿处单位code
 
-    private Date exportAt;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date exportAt; // 导出日期
 
-    private String middleCode;
+    private String reportYear; // 报表年度
 
-    private String middleName;
+    private String reportMonth; // 报表月度
 
-    private Long equipmentNum;
+    private String middleCode; // 中类code
 
-    private Long useNum;
+    private String middleName; // 中类名称
 
-    private Double costA1;
+    private Long equipmentNum; // 在藉数量
 
-    private Double costA2;
+    private Long useNum; // 使用数量
 
-    private Double costA3;
+    private Double costA1; // 租赁费
 
-    private Double totalFee;
+    private Double costA2; // 非正常损坏赔偿费
 
-    private String remarks;
+    private Double costA3; // 费用调整
 
-    private Long approveBy;
+    private Double totalFee; // 合计
 
-    private Long positionBy;
+    private String remarks; // 备注
 
-    private Date updateAt;
+    private String exportAtStr; // 导出月度 年度-月度
 
-    private Long updateBy;
+    private Long approveBy; // 审核人ID
 
-    private Date createAt;
+    private Long positionBy; // 矿方人ID
 
-    private Long createBy;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date updateAt; // 更新时间
 
-    private Long sorting;
+    private Long updateBy; // 更新人ID
 
-    private Long version;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date createAt; // 创建时间
 
-    private String reportYear;
+    private Long createBy; // 创建人ID
 
-    private String reportMonth;
+    private Long sorting; // 排序
 
-    private Integer pageNum;
+    private Long version; // 版本
 
-    private Integer pageSize;
+    private Integer pageNum; // 页码
+
+    private Integer pageSize; // 每页记录数
 
 }
