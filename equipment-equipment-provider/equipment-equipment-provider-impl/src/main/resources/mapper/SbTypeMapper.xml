@@ -55,6 +55,11 @@
     set status = 99
     where id = #{id,jdbcType=BIGINT}
   </delete>
+  <delete id="deleteByPcode" parameterType="java.util.List">
+    update sb_type
+    set status = 99
+    where pcode = #{p_code,jdbcType=VARCHAR}
+  </delete>
   <insert id="create" keyProperty="id" useGeneratedKeys="true" parameterType="com.yankuang.equipment.equipment.model.SbType">
     insert into sb_type (code, name,
       pcode, sorting, level,
