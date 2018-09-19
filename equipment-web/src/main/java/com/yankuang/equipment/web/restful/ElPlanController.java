@@ -508,7 +508,7 @@ public class ElPlanController {
                 elPlanItem.setPositionId(0L);//TODO 此值暂时写死
                 List<ElPlanItem> elPlanItems = elUseService.findByPlanId(elPlanItem);
                 if (elPlanItems.size() <= 0) {
-                    return CommonResponse.errorMsg("没有该计划");
+                    continue;
                 }
                 for (ElPlanItem elPlanItem1 : elPlanItems) {
                     planIds.add(elPlanItem1.getItemId());
