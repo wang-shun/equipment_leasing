@@ -1,5 +1,6 @@
 package com.yankuang.equipment.equipment.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -25,6 +26,7 @@ public class DtkList implements Serializable {
 
     private String equipmentModel;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date useAt;
 
     private String deptName;
@@ -85,6 +87,7 @@ public class DtkList implements Serializable {
 
     private Byte kb;//用来判断矿别
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date startDate;
 
     private List<ListZReportItem> listZReportItems;
