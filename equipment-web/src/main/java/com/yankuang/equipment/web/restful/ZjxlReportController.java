@@ -1,5 +1,6 @@
 package com.yankuang.equipment.web.restful;
 
+import com.fasterxml.jackson.databind.JsonSerializable;
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.common.util.StringUtils;
@@ -46,5 +47,51 @@ public class ZjxlReportController {
         }
 
         return CommonResponse.ok();
+    }
+
+    /**
+     * 综机折旧修理费查询
+     * @param page
+     * @param size
+     * @param jsonString
+     * @return
+     */
+    @GetMapping
+    public CommonResponse ZjxlReportSelect(@RequestParam Integer page,
+                                           @RequestParam Integer size,
+                                           @RequestParam String jsonString){
+        if (StringUtils.isEmpty(jsonString)){
+            return CommonResponse.build(500,"传入参数不能为空",null);
+        }
+        ZjxlReport zjxlReport = JsonUtils.jsonToPojo(jsonString,ZjxlReport.class);
+
+        if (zjxlReport == null){
+            return CommonResponse.build(500,"传入参数不能为空",null);
+        }
+
+        if(zjxlReport.getUseDepartment() == null || "".equals(zjxlReport.getUseDepartment())){
+            return CommonResponse.build(500,"使用单位不能为空",null);
+        }
+
+        if (zjxlReport.getZjxlYear() == null || "".equals(zjxlReport.getZjxlYear())){
+            return CommonResponse.build(500,"修理年限不能为空",null);
+        }
+
+        if (zjxlReport.getZjxlMonth() == null || "".equals(zjxlReport.getZjxlMonth())){
+            return CommonResponse.build(500,"修理月份不能为空",null);
+        }
+
+        if (zjxlReport.getZjxlDay() == null || "".equals(zjxlReport.getZjxlDay())){
+            return CommonResponse.build(500,"修理日期不能为空",null);
+        }
+
+        List<ZjxlReport> zjxlReports = zjxlReportService.list(zjxlReport);
+
+        if (zjxlReports != null && zjxlReports.size() > 0){
+            return CommonResponse.ok(zjxlReports);
+        }
+
+
+        return CommonResponse.ok(zjxlReports);
     }
 }

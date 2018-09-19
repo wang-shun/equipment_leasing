@@ -51,14 +51,23 @@ public class ElPlanUseServiceImpl implements ElPlanUseService {
         List<ElPlanUse> elPlanUses = elPlanUseMapper.list(elPlanUseMap);
         if (elPlanUses != null && elPlanUses.size() >0 ) {
             for (ElPlanUse elPlanUse : elPlanUses) {
+                if (sbTypeMapper.findByCode(elPlanUse.getSmallTypeCode()) == null){
+                    continue;
+                }
                 elPlanUse.setSmallTypeName(sbTypeMapper.findByCode(elPlanUse.getSmallTypeCode()).getName());
                 elPlanUse.setMiddleTypeName(sbTypeMapper.findByCode(elPlanUse.getMiddleTypeCode()).getName());
                 elPlanUse.setBigTypeName(sbTypeMapper.findByCode(elPlanUse.getBigTypeCode()).getName());
                 if ("1".equals(elPlanUse.getEquipmentType())) {
+                    if (sbEquipmentTMapper.findById(elPlanUse.getEquipmentId()) == null){
+                        continue;
+                    }
                     elPlanUse.setTechCode(sbEquipmentTMapper.findById(elPlanUse.getEquipmentId()).getTechCode());
                     elPlanUse.setAssetCode(sbEquipmentTMapper.findById(elPlanUse.getEquipmentId()).getAssetCode());
                 }
                 if ("2".equals(elPlanUse.getEquipmentType())){
+                    if(sbEquipmentZMapper.findById(elPlanUse.getEquipmentId()) == null){
+                        continue;
+                    }
                     elPlanUse.setTechCode(sbEquipmentZMapper.findById(elPlanUse.getEquipmentId()).getTechCode());
                     elPlanUse.setAssetCode(sbEquipmentZMapper.findById(elPlanUse.getEquipmentId()).getAssetCode());
                 }
