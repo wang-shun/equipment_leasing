@@ -30,6 +30,20 @@
     id, dept_code,dept_name,dept_type,year_plan_val,month01,month02,month03,month04,month05,month06,month07,
     month08,month09,month10,month11,month12,report_id
   </sql>
+
+  <select id="list" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from report_equipment_z_month_item t
+    where 1=1
+    <if test="reportId != null and reportId != ''" >
+      AND t.report_id =  #{reportId}
+    </if>
+    <if test="deptCode != null and deptCode != ''" >
+      AND t.dept_code =  #{deptCode}
+    </if>
+  </select>
+
   <insert id="insert" parameterType="com.yankuang.equipment.equipment.model.ReportEquipmentZMonthItem">
     insert into report_equipment_z_month_item (id, dept_code, dept_name, 
       dept_type, year_plan_val, month01, 
@@ -46,6 +60,24 @@
       #{month11,jdbcType=DOUBLE}, #{month12,jdbcType=DOUBLE}, #{reportId,jdbcType=TINYINT}
       )
   </insert>
+
+  <update id="update" parameterType="com.yankuang.equipment.equipment.model.ReportEquipmentZMonthItem" >
+    update report_equipment_z_month_item
+    set yearPlanVal = #{yearPlanVal,jdbcType=DOUBLE},
+      month01 = #{month01,jdbcType=DOUBLE},
+      month02 = #{month02,jdbcType=DOUBLE},
+      month03 = #{month03,jdbcType=DOUBLE},
+      month04 = #{month04,jdbcType=DOUBLE},
+      month05 = #{month05,jdbcType=DOUBLE},
+      month06 = #{month06,jdbcType=DOUBLE},
+      month07 = #{month07,jdbcType=DOUBLE},
+      month08 = #{month08,jdbcType=DOUBLE},
+      month09 = #{month09,jdbcType=DOUBLE},
+      month10 = #{month10,jdbcType=DOUBLE},
+      month11 = #{month11,jdbcType=DOUBLE},
+      month12 = #{month12,jdbcType=DOUBLE},
+    where id = #{id,jdbcType=BIGINT}
+  </update>
 
   <select id="listByExportId" resultMap="BaseResultMap">
     SELECT
