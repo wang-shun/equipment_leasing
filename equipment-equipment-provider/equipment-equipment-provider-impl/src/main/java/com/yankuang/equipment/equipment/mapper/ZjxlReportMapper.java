@@ -11,4 +11,7 @@ public interface ZjxlReportMapper {
     int create(ZjxlReport record);
 
     List<ZjxlReport> list(ZjxlReport zjxlReport);
+
+    List<ZjxlReport> listHome(String kb);
+
 }

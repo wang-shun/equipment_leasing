@@ -20,6 +20,6 @@ public interface ZjDepreciationCostReportService {
 
     ZjDepreciationCostReport list(Map zjCostRepairMap);
 
-    ZjDepreciationCostReport listzjxl(ZjxlReport zjxlReport);
+    ZjDepreciationCostReport listzjxl(ZjDepreciationCostReport zjxlReport);
 
 }
