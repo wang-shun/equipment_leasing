@@ -5,7 +5,6 @@ import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.common.util.StringUtils;
 import com.yankuang.equipment.equipment.model.ElOre;
 import com.yankuang.equipment.equipment.service.OreService;
-import io.netty.util.internal.StringUtil;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.web.bind.annotation.*;
 

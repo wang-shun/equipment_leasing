@@ -150,6 +150,14 @@ public class ZEquipmentReportController {
             return CommonResponse.build(500, "编号不能为空！", null);
         }
 
+        if (zEquipmentDTO.getUseAtString() != null && "".equals(zEquipmentDTO.getUseAtString())){
+            DateConverterConfig dateConverterConfig = new DateConverterConfig();
+            Date useAt = dateConverterConfig.convert(zEquipmentDTO.getUseAtString());
+            if (useAt != null ){
+                zEquipmentDTO.setUseAt(useAt);
+            }
+        }
+
         List<ListZReportItem> ListZReportItems = zEquipmentDTO.getListZReportItems();
 
         //判断清单列表是否有数据
