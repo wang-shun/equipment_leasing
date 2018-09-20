@@ -17,15 +17,18 @@
     id,year,report_name,remark,status,create_by,create_at,update_by,update_at,version
   </sql>
   <insert id="insert" parameterType="com.yankuang.equipment.equipment.model.ReportEquipmentZMonth">
-    insert into report_equipment_z_month (id, year, report_name, 
-      remark, status, create_by, 
-      create_at, update_by, update_at, 
-      version)
-    values (#{id,jdbcType=TINYINT}, #{year,jdbcType=VARCHAR}, #{reportName,jdbcType=VARCHAR}, 
-      #{remark,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{createBy,jdbcType=VARCHAR}, 
-      #{createAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateAt,jdbcType=TIMESTAMP}, 
-      #{version,jdbcType=BIGINT})
+    insert into report_equipment_z_month (year, report_name,
+      remark, create_by,
+      create_at, update_by, update_at)
+    values (#{year,jdbcType=VARCHAR}, #{reportName,jdbcType=VARCHAR},
+      #{remark,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR},
+      CURRENT_TIMESTAMP(), #{updateBy,jdbcType=VARCHAR}, CURRENT_TIMESTAMP())
   </insert>
+  <update id="updateRemarkById" parameterType="com.yankuang.equipment.equipment.model.ReportEquipmentZMonth">
+    update report_equipment_z_month
+    set remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
   <select id="findByYear" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select
     <include refid="Base_Column_List" />

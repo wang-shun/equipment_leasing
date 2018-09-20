@@ -13,6 +13,8 @@ public interface ReportEquipmentZMonthItemMapper {
 
     int update(ReportEquipmentZMonthItem record);
 
+    int updateYearPlanValById(ReportEquipmentZMonthItem reportEquipmentZMonthItem);
+
     List<ReportEquipmentZMonthItem> list(ReportEquipmentZMonthItem record);
 
     List<ReportEquipmentZMonthItem> listByExportId(@Param("exportId") Long exportId,@Param("deptType") String deptType);
