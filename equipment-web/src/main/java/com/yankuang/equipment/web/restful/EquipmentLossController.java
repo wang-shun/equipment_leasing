@@ -3,21 +3,18 @@ package com.yankuang.equipment.web.restful;
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.common.util.StringUtils;
-import com.yankuang.equipment.equipment.model.ZNewReport;
-import com.yankuang.equipment.equipment.service.ZNewReportService;
+import com.yankuang.equipment.equipment.model.EquipmentLoss;
+import com.yankuang.equipment.equipment.service.EquipmentLossService;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * @author boms
- */
 @CrossOrigin(maxAge = 3600)
 @RestController
-@RequestMapping("/v1/newReport")
-public class ZNewEquipmentReportController {
+@RequestMapping("/v1/eloss")
+public class EquipmentLossController {
 
     @RpcConsumer
-    ZNewReportService zNewReportService;
+    EquipmentLossService equipmentLossService;
 
     /**
      * 保存新设备
@@ -31,29 +28,29 @@ public class ZNewEquipmentReportController {
             return CommonResponse.build(500,"传入参数不能为空",null);
         }
 
-        ZNewReport zNewReport = JsonUtils.jsonToPojo(jsonString,ZNewReport.class);
+        EquipmentLoss equipmentLoss = JsonUtils.jsonToPojo(jsonString,EquipmentLoss.class);
 
-        if (zNewReport == null){
+        if (equipmentLoss == null){
             return CommonResponse.build(500,"传入对象为空",null);
         }
 
-        if (zNewReport.getUseDeptCode() == null || "".equals(zNewReport.getUseDeptCode())){
+        if (equipmentLoss.getUseDeptCode() == null || "".equals(equipmentLoss.getUseDeptCode())){
             return CommonResponse.build(500,"使用单位Code不能为空",null);
         }
 
-        if (zNewReport.getUseMonth() == null || "".equals(zNewReport.getUseDeptName())){
+        if (equipmentLoss.getUseMonth() == null || "".equals(equipmentLoss.getUseDeptName())){
             return CommonResponse.build(500,"领用月份不能为空",null);
         }
 
-        if (zNewReport.getUseYear() == null || "".equals(zNewReport.getUseYear())){
+        if (equipmentLoss.getUseYear() == null || "".equals(equipmentLoss.getUseYear())){
             return CommonResponse.build(500,"领用年份不能为空",null);
         }
 
-        if (zNewReport.getUseDeptName() == null || "".equals(zNewReport.getUseDeptName())){
+        if (equipmentLoss.getUseDeptName() == null || "".equals(equipmentLoss.getUseDeptName())){
             return CommonResponse.build(500,"传入单位不能为空",null);
         }
 
-        if (zNewReportService.create(zNewReport)){
+        if (equipmentLossService.create(equipmentLoss)){
             return CommonResponse.ok();
         }
 
@@ -75,32 +72,28 @@ public class ZNewEquipmentReportController {
             return CommonResponse.build(500,"传入参数不能为空",null);
         }
 
-        ZNewReport zNewReport = JsonUtils.jsonToPojo(jsonString,ZNewReport.class);
+        EquipmentLoss equipmentLoss = JsonUtils.jsonToPojo(jsonString,EquipmentLoss.class);
 
-        if (zNewReport == null){
+        if (equipmentLoss == null){
             return CommonResponse.build(500,"传入对象为空",null);
         }
 
-        if (zNewReport.getUseDeptCode() == null || "".equals(zNewReport.getUseDeptCode())){
+        if (equipmentLoss.getUseDeptCode() == null || "".equals(equipmentLoss.getUseDeptCode())){
             return CommonResponse.build(500,"使用单位Code不能为空",null);
         }
 
-        if (zNewReport.getUseMonth() == null || "".equals(zNewReport.getUseMonth())){
+        if (equipmentLoss.getUseMonth() == null || "".equals(equipmentLoss.getUseMonth())){
             return CommonResponse.build(500,"领用月份不能为空",null);
         }
 
-        if (zNewReport.getUseYear() == null || "".equals(zNewReport.getUseYear())){
+        if (equipmentLoss.getUseYear() == null || "".equals(equipmentLoss.getUseYear())){
             return CommonResponse.build(500,"领用年份不能为空",null);
         }
 
-        if (zNewReport.getUseDeptName() == null || "".equals(zNewReport.getUseDeptName())){
+        if (equipmentLoss.getUseDeptName() == null || "".equals(equipmentLoss.getUseDeptName())){
             return CommonResponse.build(500,"传入单位不能为空",null);
         }
 
-        if (zNewReportService.list(zNewReport) != null && zNewReportService.list(zNewReport).size() > 0){
-            return CommonResponse.ok(zNewReportService.list(zNewReport));
-        }
-
-        return CommonResponse.ok(zNewReportService.select(zNewReport));
+        return CommonResponse.ok(equipmentLossService.list(equipmentLoss));
     }
 }

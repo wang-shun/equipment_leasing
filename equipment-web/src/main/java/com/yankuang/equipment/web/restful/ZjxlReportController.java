@@ -1,6 +1,5 @@
 package com.yankuang.equipment.web.restful;
 
-import com.fasterxml.jackson.databind.JsonSerializable;
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.common.util.StringUtils;
@@ -14,6 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * @author boms
+ */
 @RestController
 @CrossOrigin(maxAge = 3600)
 @RequestMapping("/v1/zjxl")

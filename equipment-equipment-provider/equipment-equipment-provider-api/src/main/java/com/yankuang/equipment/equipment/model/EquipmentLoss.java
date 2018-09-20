@@ -1,6 +1,5 @@
 package com.yankuang.equipment.equipment.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -8,10 +7,10 @@ import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
 
-@Table()
-@Data
 @Entity
-public class ZNewReport implements Serializable {
+@Data
+@Table(name = "el_equipment_loss")
+public class EquipmentLoss implements Serializable {
     private Long id;
 
     private String name;//设备名称
@@ -46,7 +45,6 @@ public class ZNewReport implements Serializable {
 
     private Double feeSum;//合计金额
 
-    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date useAt;//领用时间
 
     private String equipmentPosition;//功能位置
