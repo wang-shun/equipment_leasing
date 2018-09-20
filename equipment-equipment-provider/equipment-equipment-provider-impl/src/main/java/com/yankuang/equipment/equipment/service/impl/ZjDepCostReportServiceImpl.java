@@ -1,7 +1,10 @@
 package com.yankuang.equipment.equipment.service.impl;
 
+import com.yankuang.equipment.common.util.StringUtils;
+import com.yankuang.equipment.equipment.mapper.ZEquipmentListReportMapper;
 import com.yankuang.equipment.equipment.mapper.ZjDepreciationCostReportItemMapper;
 import com.yankuang.equipment.equipment.mapper.ZjDepreciationCostReportMapper;
+import com.yankuang.equipment.equipment.mapper.ZjxlReportMapper;
 import com.yankuang.equipment.equipment.model.*;
 import com.yankuang.equipment.equipment.service.ZjDepreciationCostReportService;
 import io.terminus.boot.rpc.common.annotation.RpcProvider;
@@ -24,14 +27,18 @@ public class ZjDepCostReportServiceImpl implements ZjDepreciationCostReportServi
     @Autowired
     ZjDepreciationCostReportItemMapper zjDepCReportItemMapper;
 
+    @Autowired
+    ZjxlReportMapper zjxlReportMapper;
+
+    @Autowired
+    ZEquipmentListReportMapper zEquipmentListReportMapper;
+
 
     public int findCostRepairList(String yearMonthTime){
 
         Integer count = zjDepreciationCostReportMapper.findCostRepairList(yearMonthTime);
         return count;
     }
-
-
 
     /**
      * @method 创建综机折旧修理费
@@ -46,7 +53,7 @@ public class ZjDepCostReportServiceImpl implements ZjDepreciationCostReportServi
         zjDepreciationCost.setAssetComp(zjDepreciationCostReport.getAssetComp());
         zjDepreciationCost.setReportName(zjDepreciationCostReport.getReportName());
         zjDepreciationCost.setRemark(zjDepreciationCostReport.getRemark());
-        zjDepreciationCost.setYearMonthTime(zjDepreciationCostReport.getYearMonthTime());
+        zjDepreciationCost.setYearTime(zjDepreciationCostReport.getYearTime());
         zjDepreciationCost.setCreateAt(new Date());
 
         zjDepreciationCostReportMapper.create(zjDepreciationCost);
@@ -59,6 +66,111 @@ public class ZjDepCostReportServiceImpl implements ZjDepreciationCostReportServi
         }
 
         return true;
+    }
+
+    public ZjDepreciationCostReport listzjxl(ZjxlReport zjxlReport){
+       //前端传过来 年份，月份，煤业或东华或汇总，本部矿或者是外部矿
+        //本部矿和外部矿不是前台传的需要自己区分
+        List<ZjxlReport> zjxlReports = zjxlReportMapper.list(zjxlReport);
+        List<ZjDepreciationCostReportItem> zjDepreciationCostReportItemList = new ArrayList<ZjDepreciationCostReportItem>();
+        ZjDepreciationCostReportItem zjDepreciationCostReportItem = new ZjDepreciationCostReportItem();
+        ZjDepreciationCostReport zjDepreciationCostReport = new ZjDepreciationCostReport();
+        List list = new ArrayList();
+//        list.
+        if (zjxlReport.getZjxlMonth() == null) {
+            for(ZjxlReport zjxl:zjxlReports) {
+                zjDepreciationCostReport.setYearTime(zjxl.getZjxlYear());
+                zjDepreciationCostReport.setCreateAt(new Date());
+                this.name(zjxl.getUseDepartment(),zjxl,zjDepreciationCostReportItem);
+            }
+         zjDepreciationCostReportItemList.add(zjDepreciationCostReportItem);
+         zjDepreciationCostReport.setZjDepreciationCostReportItems(zjDepreciationCostReportItemList);
+        }
+// else {//这边还需要判断
+//            if (zjxlReport.getZjxlMonth() == "1") {
+//                zjDepreciationCostReportItem.setJanuaryRepairsCost(zjxl.getSum());
+//            }
+//            if (zjxlReport.getZjxlMonth() == "2") {
+//                zjDepreciationCostReportItem.setFebruaryRepairsCost(zjxl.getSum());
+//            }
+//            if (zjxlReport.getZjxlMonth() == "3") {
+//                zjDepreciationCostReportItem.setMarchRepairsCost(zjxl.getSum());
+//            }
+//            if (zjxlReport.getZjxlMonth() == "4") {
+//                zjDepreciationCostReportItem.setAprilRepairsCost(zjxl.getSum());
+//            }
+//            if (zjxlReport.getZjxlMonth() == "5") {
+//                zjDepreciationCostReportItem.setMayRepairsCost(zjxl.getSum());
+//            }
+//            if (zjxlReport.getZjxlMonth() == "6") {
+//                zjDepreciationCostReportItem.setJuneRepairsCost(zjxl.getSum());
+//            }
+//            if (zjxlReport.getZjxlMonth() == "7") {
+//                zjDepreciationCostReportItem.setJulyRepairsCost(zjxl.getSum());
+//            }
+//            if (zjxlReport.getZjxlMonth() == "8") {
+//                zjDepreciationCostReportItem.setAugustRepairsCost(zjxl.getSum());
+//            }
+//            if (zjxlReport.getZjxlMonth() == "9") {
+//                zjDepreciationCostReportItem.setSepRepairsCost(zjxl.getSum());
+//            }
+//            if (zjxlReport.getZjxlMonth() == "10") {
+//                zjDepreciationCostReportItem.setOctRepairsCost(zjxl.getSum());
+//            }
+//            if (zjxlReport.getZjxlMonth() == "11") {
+//                zjDepreciationCostReportItem.setNovRepairsCost(zjxl.getSum());
+//            }
+//            if (zjxlReport.getZjxlMonth() == "12") {
+//                zjDepreciationCostReportItem.setDecRepairsCost(zjxl.getSum());
+//            }
+//            zjDepreciationCostReportItemList.add(zjDepreciationCostReportItem);
+//            zjDepreciationCostReport.setZjDepreciationCostReportItems(zjDepreciationCostReportItemList);
+//        }
+
+        return zjDepreciationCostReport;
+    }
+    private ZjDepreciationCostReportItem name(String deptName,ZjxlReport zjxl,ZjDepreciationCostReportItem zjDepreciationCostReportItem){
+        if(zjxl.getUseDepartment().equals(deptName)) {
+            zjDepreciationCostReportItem.setDeptName(zjxl.getUseDepartment());
+            //判断传过来的月份，将所得的月份数据存到对应的字段上
+            if (zjxl.getZjxlMonth().equals("1")) {
+                zjDepreciationCostReportItem.setJanuaryRepairsCost(zjxl.getSum());
+            }
+            if (zjxl.getZjxlMonth().equals("2")) {
+                zjDepreciationCostReportItem.setFebruaryRepairsCost(zjxl.getSum());
+            }
+            if (zjxl.getZjxlMonth().equals("3")) {
+                zjDepreciationCostReportItem.setMarchRepairsCost(zjxl.getSum());
+            }
+            if (zjxl.getZjxlMonth().equals("4")) {
+                zjDepreciationCostReportItem.setAprilRepairsCost(zjxl.getSum());
+            }
+            if (zjxl.getZjxlMonth().equals("5")) {
+                zjDepreciationCostReportItem.setMayRepairsCost(zjxl.getSum());
+            }
+            if (zjxl.getZjxlMonth().equals("6")) {
+                zjDepreciationCostReportItem.setJuneRepairsCost(zjxl.getSum());
+            }
+            if (zjxl.getZjxlMonth().equals("7")) {
+                zjDepreciationCostReportItem.setJulyRepairsCost(zjxl.getSum());
+            }
+            if (zjxl.getZjxlMonth().equals("8")) {
+                zjDepreciationCostReportItem.setAugustRepairsCost(zjxl.getSum());
+            }
+            if (zjxl.getZjxlMonth().equals("9")) {
+                zjDepreciationCostReportItem.setSepRepairsCost(zjxl.getSum());
+            }
+            if (zjxl.getZjxlMonth().equals("10")) {
+                zjDepreciationCostReportItem.setOctRepairsCost(zjxl.getSum());
+            }
+            if (zjxl.getZjxlMonth().equals("11")) {
+                zjDepreciationCostReportItem.setNovRepairsCost(zjxl.getSum());
+            }
+            if (zjxl.getZjxlMonth().equals("12")) {
+                zjDepreciationCostReportItem.setDecRepairsCost(zjxl.getSum());
+            }
+        }
+        return zjDepreciationCostReportItem;
     }
 
     public ZjDepreciationCostReport list(Map zjCostRepairMap){

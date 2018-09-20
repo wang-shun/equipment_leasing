@@ -3,7 +3,8 @@
 <mapper namespace="com.yankuang.equipment.equipment.mapper.ZjDepreciationCostReportMapper" >
     <resultMap id="BaseResultMap" type="com.yankuang.equipment.equipment.model.ZjDepreciationCostReport" >
         <result column="asset_comp" property="assetComp" jdbcType="VARCHAR" />
-        <result column="year_month_time" property="yearMonthTime" jdbcType="VARCHAR" />
+        <result column="year_time" property="yearTime" jdbcType="VARCHAR" />
+        <result column="month_time" property="monthTime" jdbcType="VARCHAR" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
         <result column="report_name" property="reportName" jdbcType="VARCHAR" />
         <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
@@ -11,27 +12,27 @@
 
     </resultMap>
     <sql id="Base_Column_List" >
-        asset_comp,year_month_time,remark,report_name,
+        asset_comp,year_time,month_time,remark,report_name,
         create_at,update_at
    </sql>
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="com.yankuang.equipment.equipment.model.ZjDepreciationCostReport" >
-      insert into report_zj_depreciation_cost(asset_comp,year_month_time,remark,report_name,create_at,update_at)
-      values (#{assetComp,jdbcType=VARCHAR},#{yearMonthTime,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR},
+      insert into report_zj_depreciation_cost(asset_comp,year_time,month_time,remark,report_name,create_at,update_at)
+      values (#{assetComp,jdbcType=VARCHAR},#{yearTime,jdbcType=VARCHAR},#{monthTime,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR},
       #{reportName,jdbcType=VARCHAR},#{createAt,jdbcType=TIMESTAMP},#{updateAt,jdbcType=TIMESTAMP})
   </insert>
 
     <select id="findCostRepairList" parameterType="String" resultType="INTEGER">
         select count(*) from report_zj_depreciation_cost
-        where 1=1 and year_month_time=#{yearMonthTime}
+        where 1=1 and year_time=#{yearTime}
     </select>
 
     <select id="list" parameterType="map" resultMap="BaseResultMap">
         SELECT zjdepcost.* FROM  report_zj_depreciation_cost zjdepcost
         <where>
             1 = 1
-            <if test="yearMonthTime != null">
-                and zjdepcost.year_month_time = #{yearMonthTime,jdbcType=VARCHAR}
+            <if test="yearTime != null">
+                and zjdepcost.year_time = #{yearTime,jdbcType=VARCHAR}
             </if>
         </where>
     </select>

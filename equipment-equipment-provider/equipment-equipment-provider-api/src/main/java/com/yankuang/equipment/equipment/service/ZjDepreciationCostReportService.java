@@ -1,8 +1,7 @@
 package com.yankuang.equipment.equipment.service;
 
 import com.yankuang.equipment.equipment.model.ZjDepreciationCostReport;
-import com.yankuang.equipment.equipment.model.ZjDepreciationCostReportItem;
-import com.yankuang.equipment.equipment.model.ZjSbUseItem;
+import com.yankuang.equipment.equipment.model.ZjxlReport;
 
 import java.util.List;
 import java.util.Map;
@@ -20,5 +19,7 @@ public interface ZjDepreciationCostReportService {
     Boolean create(ZjDepreciationCostReport zjDepreciationCostReport);
 
     ZjDepreciationCostReport list(Map zjCostRepairMap);
+
+    ZjDepreciationCostReport listzjxl(ZjxlReport zjxlReport);
 
 }

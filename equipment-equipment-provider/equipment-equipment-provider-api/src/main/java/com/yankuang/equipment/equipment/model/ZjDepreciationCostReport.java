@@ -22,7 +22,9 @@ public class ZjDepreciationCostReport implements Serializable {
 
     private String assetComp;//资产公司
 
-    private String yearMonthTime;//月份（时间年月）
+    private String yearTime;//年份
+
+    private String monthTime;//月份
 
     private String remark;//备注
 
