@@ -107,7 +107,7 @@
 
     <select id="findByUserCode" parameterType="String" resultMap="BaseResultMap">
         select
-        a.name,a.level,a.type,a.url,a.sorting,a.icon,a.code,a.pcode
+        a.name,a.level,a.type,a.url,a.sorting,a.icon,a.code,a.pcode,a.remark,a.create_at
         from el_authority a
         left join el_user_authority_mapping ua
         on a.code = ua.authority_code
