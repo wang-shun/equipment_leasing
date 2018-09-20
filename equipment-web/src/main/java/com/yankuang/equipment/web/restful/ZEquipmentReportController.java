@@ -81,14 +81,25 @@ public class ZEquipmentReportController {
         Date startDate = new SimpleDateFormat("yyyy-M-dd").parse(year + "-" + (month -1) + "-21");
         //循环获取
         for (DtkList dtkListLY:dtkListLYs){
+            Double isNew = sbElFeeService.CalDayElFeeA3Z_rate(dtkListLY.getUseId(),dtkListLY.getEquipmentId());
+            //判断是否是新设备
+            if (isNew > 1){
+                dtkListLY.setIsNew((byte)1);
+            }else {
+                dtkListLY.setIsNew((byte)2);
+            }
             if (dtkListLY.getSign() == null || "".equals(dtkListLY)){
                day = sbElFeeService.CalEquipmentElDays(dtkListLY.getUseId(),null,dtkListLY.getEquipmentId(),startDate,endDate);
+               //获取收费期限
+               dtkListLY.setFeeDay(new SimpleDateFormat("yyyy-MM-dd").format(dtkListLY.getUseAt())+"下");
             }else {
                 dtkListLY.setStartDate(startDate);
                 DtkList findSign = elUseItemService.findSign(dtkListLY);
                 if (findSign == null){
                     continue;
                 }
+                //获取收费期限
+                dtkListLY.setFeeDay(new SimpleDateFormat("yyyy-MM-dd").format(dtkListLY.getUseAt())+"-"+new SimpleDateFormat("yyyy-MM-dd").format(findSign.getUseAt()));
                day = sbElFeeService.CalEquipmentElDays(dtkListLY.getUseId(),findSign.getUseId(),dtkListLY.getEquipmentId(),startDate,endDate);
             }
             if (dtkListLY.getCostA1() == null){
@@ -139,6 +150,14 @@ public class ZEquipmentReportController {
             return CommonResponse.build(500, "编号不能为空！", null);
         }
 
+        if (zEquipmentDTO.getUseAtString() != null && "".equals(zEquipmentDTO.getUseAtString())){
+            DateConverterConfig dateConverterConfig = new DateConverterConfig();
+            Date useAt = dateConverterConfig.convert(zEquipmentDTO.getUseAtString());
+            if (useAt != null ){
+                zEquipmentDTO.setUseAt(useAt);
+            }
+        }
+
         List<ListZReportItem> ListZReportItems = zEquipmentDTO.getListZReportItems();
 
         //判断清单列表是否有数据
@@ -168,22 +187,6 @@ public class ZEquipmentReportController {
 
         //传入查询条件
         Map listZReportMap = new HashMap();
-//        listZReportMap.put("id",zEquipmentDTO.getId());
-//        listZReportMap.put("useDeptName",zEquipmentDTO.getUseDeptName());
-//        listZReportMap.put("number",zEquipmentDTO.getNumber());
-//        listZReportMap.put("createExcelName",zEquipmentDTO.getCreateExcelName());
-//        listZReportMap.put("statusName",zEquipmentDTO.getStatusName());
-//        listZReportMap.put("sureName",zEquipmentDTO.getSureName());
-//        listZReportMap.put("sum",zEquipmentDTO.getSum());
-//        listZReportMap.put("useDeptCode",zEquipmentDTO.getUseDeptCode());
-//        listZReportMap.put("createExcelCode",zEquipmentDTO.getCreateExcelCode());
-//        listZReportMap.put("statusCode",zEquipmentDTO.getStatusCode());
-//        listZReportMap.put("sureCode",zEquipmentDTO.getSureCode());
-//        listZReportMap.put("equipmentPosition",zEquipmentDTO.getEquipmentPosition());
-//        listZReportMap.put("useYear",zEquipmentDTO.getUseYear());
-//        listZReportMap.put("useMonth",zEquipmentDTO.getUseMonth());
-//        listZReportMap.put("type",zEquipmentDTO.getType());
-//        listZReportMap.put("listZReportItem",zEquipmentDTO.getListZReportItem());
         //将DTO转化成对应的map
         BeanUtils.copyProperties(zEquipmentDTO,listZReportMap);
 
