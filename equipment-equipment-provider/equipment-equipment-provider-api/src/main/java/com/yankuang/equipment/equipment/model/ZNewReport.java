@@ -11,6 +11,8 @@ import java.util.Date;
 @Data
 @Entity
 public class ZNewReport implements Serializable {
+    private Long id;
+
     private String name;//设备名称
 
     private String equipmentModel;//设备规格型号
@@ -43,7 +45,7 @@ public class ZNewReport implements Serializable {
 
     private Double feeSum;//合计金额
 
-    private Date use_at;//领用时间
+    private Date useAt;//领用时间
 
     private String equipmentPosition;//功能位置
 

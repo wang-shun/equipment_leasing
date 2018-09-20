@@ -2,13 +2,10 @@ package com.yankuang.equipment.equipment.service.impl;
 
 import com.yankuang.equipment.equipment.mapper.ZEquipmentListReportMapper;
 import com.yankuang.equipment.equipment.mapper.ZjxlReportMapper;
-import com.yankuang.equipment.equipment.model.DtkList;
 import com.yankuang.equipment.equipment.model.ListZReport;
-import com.yankuang.equipment.equipment.model.ListZReportItem;
 import com.yankuang.equipment.equipment.model.ZjxlReport;
 import com.yankuang.equipment.equipment.service.ZjxlReportService;
 import io.terminus.boot.rpc.common.annotation.RpcProvider;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
