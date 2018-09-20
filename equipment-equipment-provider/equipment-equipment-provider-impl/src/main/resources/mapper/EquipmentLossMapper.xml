@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yankuang.equipment.equipment.mapper.EquipmentLossMapper" >
+    <resultMap id="BaseResultMap" type="com.yankuang.equipment.equipment.model.EquipmentLoss" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="equipment_model" property="equipmentModel" jdbcType="VARCHAR" />
+        <result column="equipment_unit" property="equipmentUnit" jdbcType="VARCHAR" />
+        <result column="equipment_num" property="equipmentNum" jdbcType="INTEGER" />
+        <result column="sum" property="sum" javaType="DOUBLE" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="equipment_code" property="equipmentCode" jdbcType="VARCHAR" />
+        <result column="fee_day" property="feeDay" jdbcType="VARCHAR" />
+        <result column="use_dept_name" property="useDeptName" jdbcType="VARCHAR" />
+        <result column="number" property="number" jdbcType="VARCHAR" />
+        <result column="create_excel_name" property="createExcelName" jdbcType="VARCHAR" />
+        <result column="status_name" property="statusName" jdbcType="VARCHAR" />
+        <result column="sure_name" property="sureName" jdbcType="VARCHAR" />
+        <result column="fee_sum" property="feeSum" javaType="DOUBLE" />
+        <result column="use_at" property="useAt" jdbcType="TIMESTAMP" />
+        <result column="equipment_position" property="equipmentPosition" jdbcType="VARCHAR" />
+        <result column="use_year" property="useYear" jdbcType="VARCHAR" />
+        <result column="use_month" property="useMonth" jdbcType="VARCHAR" />
+        <result column="type" property="type" jdbcType="TINYINT" />
+        <result column="use_dept_code" property="useDeptCode" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+    id, name, equipment_model, equipment_unit, equipment_num, sum, remark,
+    equipment_code, fee_day, use_dept_name, number, create_excel_name, status_name, sure_name,
+    fee_sum, use_at, equipment_position, use_year, use_month, type, use_dept_code
+  </sql>
+    <insert id="create" parameterType="com.yankuang.equipment.equipment.model.EquipmentLoss" >
+    insert into el_equipment_loss (id, name, equipment_model,
+      equipment_unit, equipment_num, sum, remark, equipment_code,
+      fee_day, use_dept_name, number,
+      create_excel_name, status_name, sure_name,
+      fee_sum, use_at, equipment_position,
+      use_year, use_month, type,
+      use_dept_code)
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{equipmentModel,jdbcType=VARCHAR},
+      #{equipmentUnit,jdbcType=VARCHAR}, #{equipmentNum,jdbcType=INTEGER}, #{sum,javaType=DOUBLE}, #{remark,jdbcType=VARCHAR}, #{equipmentCode,jdbcType=VARCHAR},
+      #{feeDay,jdbcType=VARCHAR}, #{useDeptName,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR},
+      #{createExcelName,jdbcType=VARCHAR}, #{statusName,jdbcType=VARCHAR}, #{sureName,jdbcType=VARCHAR},
+      #{feeSum,javaType=DOUBLE}, #{useAt,jdbcType=TIMESTAMP}, #{equipmentPosition,jdbcType=VARCHAR},
+      #{useYear,jdbcType=VARCHAR}, #{useMonth,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT},
+      #{useDeptCode,jdbcType=VARCHAR})
+  </insert>
+    <select id="list" resultMap="BaseResultMap" parameterType= "com.yankuang.equipment.equipment.model.EquipmentLoss" >
+        SELECT <include refid="Base_Column_List"/>
+        FROM el_equipment_loss
+        WHERE
+        1=1
+        <if test="name != null" >
+            and name = #{name,jdbcType=VARCHAR}
+        </if>
+        <if test="equipmentModel != null" >
+            and equipment_model = #{equipmentModel,jdbcType=VARCHAR}
+        </if>
+        <if test="equipmentUnit != null" >
+            and equipment_unit = #{equipmentUnit,jdbcType=VARCHAR}
+        </if>
+        <if test="equipmentNum != null" >
+            and equipment_num = #{equipmentNum,jdbcType=INTEGER}
+        </if>
+        <if test="sum != null" >
+            and sum = #{sum,javaType=DOUBLE}
+        </if>
+        <if test="remark != null" >
+            and remark = #{remark,jdbcType=VARCHAR}
+        </if>
+        <if test="equipmentCode != null" >
+            and equipment_code = #{equipmentCode,jdbcType=VARCHAR}
+        </if>
+        <if test="feeDay != null" >
+            and fee_day = #{feeDay,jdbcType=VARCHAR}
+        </if>
+        <if test="useDeptName != null" >
+            and use_dept_name = #{useDeptName,jdbcType=VARCHAR}
+        </if>
+        <if test="number != null" >
+            and number = #{number,jdbcType=VARCHAR}
+        </if>
+        <if test="createExcelName != null" >
+            and create_excel_name = #{createExcelName,jdbcType=VARCHAR}
+        </if>
+        <if test="statusName != null" >
+            and status_name = #{statusName,jdbcType=VARCHAR}
+        </if>
+        <if test="sureName != null" >
+            and sure_name = #{sureName,jdbcType=VARCHAR}
+        </if>
+        <if test="feeSum != null" >
+            and fee_sum = #{feeSum,javaType=DOUBLE}
+        </if>
+        <if test="useAt != null" >
+            and use_at = #{useAt,jdbcType=TIMESTAMP}
+        </if>
+        <if test="equipmentPosition != null" >
+            and equipment_position = #{equipmentPosition,jdbcType=VARCHAR}
+        </if>
+        <if test="useYear != null" >
+            and use_year = #{useYear,jdbcType=VARCHAR}
+        </if>
+        <if test="useMonth != null" >
+            and use_month = #{useMonth,jdbcType=VARCHAR}
+        </if>
+        <if test="type != null" >
+            and type = #{type,jdbcType=TINYINT}
+        </if>
+        <if test="useDeptCode != null" >
+            and use_dept_code = #{useDeptCode,jdbcType=VARCHAR}
+        </if>
+    </select>
+</mapper>
