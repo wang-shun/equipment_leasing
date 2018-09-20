@@ -1,5 +1,7 @@
 package com.yankuang.equipment.equipment.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.yankuang.equipment.equipment.mapper.EquipmentLossMapper;
 import com.yankuang.equipment.equipment.model.EquipmentLoss;
 import com.yankuang.equipment.equipment.service.EquipmentLossService;
@@ -23,7 +25,10 @@ public class EquipmentLossServiceImpl implements EquipmentLossService {
 
         return false;
     }
-    public List<EquipmentLoss> list(EquipmentLoss equipmentLoss){
-        return equipmentLossMapper.list(equipmentLoss);
+    public PageInfo<EquipmentLoss> list(Integer page,Integer size,EquipmentLoss equipmentLoss){
+        PageHelper.startPage(page, size);
+        List<EquipmentLoss> maps = equipmentLossMapper.list(equipmentLoss);
+        PageInfo<EquipmentLoss> pageInfo = new PageInfo<EquipmentLoss>(maps);
+        return pageInfo;
     }
 }

@@ -1,7 +1,10 @@
 package com.yankuang.equipment.equipment.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.yankuang.equipment.equipment.mapper.ZEquipmentListReportMapper;
 import com.yankuang.equipment.equipment.mapper.ZNewReportMapper;
+import com.yankuang.equipment.equipment.model.EquipmentLoss;
 import com.yankuang.equipment.equipment.model.ListZReport;
 import com.yankuang.equipment.equipment.model.ZNewReport;
 import com.yankuang.equipment.equipment.service.ZNewReportService;
@@ -30,18 +33,22 @@ public class ZNewReportServiceImpl implements ZNewReportService {
         return false;
     }
 
-    public List<ListZReport> select(ZNewReport zNewReport){
+    public PageInfo<ListZReport> select(Integer page,Integer size,ZNewReport zNewReport){
 
         ListZReport listZReport = new ListZReport();
         //转换实体类
         BeanUtils.copyProperties(zNewReport,listZReport);
 
         List<ListZReport> listZReports = zEquipmentListReportMapper.list(listZReport);
-
-        return listZReports;
+        PageHelper.startPage(page, size);
+        PageInfo<ListZReport> pageInfo = new PageInfo<ListZReport>(listZReports);
+        return pageInfo;
     }
 
-    public List<ZNewReport> list(ZNewReport zNewReport){
-        return zNewReportMapper.list(zNewReport);
+    public PageInfo<ZNewReport> list(Integer page,Integer size,ZNewReport zNewReport){
+        PageHelper.startPage(page, size);
+        List<ZNewReport> maps = zNewReportMapper.list(zNewReport);
+        PageInfo<ZNewReport> pageInfo = new PageInfo<ZNewReport>(maps);
+        return pageInfo;
     }
 }

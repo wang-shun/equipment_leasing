@@ -97,10 +97,10 @@ public class ZNewEquipmentReportController {
             return CommonResponse.build(500,"传入单位不能为空",null);
         }
 
-        if (zNewReportService.list(zNewReport) != null && zNewReportService.list(zNewReport).size() > 0){
-            return CommonResponse.ok(zNewReportService.list(zNewReport));
+        if (zNewReportService.list(page,size,zNewReport) != null){
+            return CommonResponse.ok(zNewReportService.list(page,size,zNewReport));
         }
 
-        return CommonResponse.ok(zNewReportService.select(zNewReport));
+        return CommonResponse.ok(zNewReportService.select(page,size,zNewReport));
     }
 }

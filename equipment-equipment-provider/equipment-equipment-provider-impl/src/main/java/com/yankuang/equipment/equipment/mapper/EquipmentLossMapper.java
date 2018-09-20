@@ -1,5 +1,6 @@
 package com.yankuang.equipment.equipment.mapper;
 
+import com.github.pagehelper.PageInfo;
 import com.yankuang.equipment.equipment.model.EquipmentLoss;
 import org.springframework.stereotype.Repository;
 

@@ -1,5 +1,6 @@
 package com.yankuang.equipment.equipment.service;
 
+import com.github.pagehelper.PageInfo;
 import com.yankuang.equipment.equipment.model.ListZReport;
 import com.yankuang.equipment.equipment.model.ZNewReport;
 
@@ -18,12 +19,12 @@ public interface ZNewReportService {
      * @param zNewReport
      * @return
      */
-    List<ListZReport> select(ZNewReport zNewReport);
+    PageInfo<ListZReport> select(Integer page, Integer size, ZNewReport zNewReport);
 
     /**
      *
      * @param zNewReport
      * @return
      */
-    List<ZNewReport> list(ZNewReport zNewReport);
+    PageInfo<ZNewReport> list(Integer page,Integer size,ZNewReport zNewReport);
 }

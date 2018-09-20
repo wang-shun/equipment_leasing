@@ -8,6 +8,9 @@ import com.yankuang.equipment.equipment.service.EquipmentLossService;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("/v1/eloss")
@@ -93,7 +96,6 @@ public class EquipmentLossController {
         if (equipmentLoss.getUseDeptName() == null || "".equals(equipmentLoss.getUseDeptName())){
             return CommonResponse.build(500,"传入单位不能为空",null);
         }
-
-        return CommonResponse.ok(equipmentLossService.list(equipmentLoss));
+        return CommonResponse.ok(equipmentLossService.list(page,size,equipmentLoss));
     }
 }

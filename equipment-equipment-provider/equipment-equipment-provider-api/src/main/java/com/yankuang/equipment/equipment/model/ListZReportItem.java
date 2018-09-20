@@ -31,4 +31,8 @@ public class ListZReportItem implements Serializable {
     private Long reportId;
 
     private String equipmentCode;
+
+    private Byte isNew;
+
+    private String feeDay;
 }

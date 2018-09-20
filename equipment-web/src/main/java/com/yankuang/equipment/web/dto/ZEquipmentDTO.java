@@ -1,5 +1,6 @@
 package com.yankuang.equipment.web.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yankuang.equipment.equipment.model.ListZReportItem;
 import lombok.Data;
 
@@ -31,6 +32,7 @@ public class ZEquipmentDTO implements Serializable {
 
     private String sureCode;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date useAt;
 
     private String equipmentPosition;
