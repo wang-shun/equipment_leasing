@@ -30,6 +30,19 @@ public class ReportEquipmentZMonthImpl implements ReportEquipmentZMonthService {
 
     public ReportEquipmentZMonth findByYear(String year) {
         ReportEquipmentZMonth reportEquipmentZMonth = reportEquipmentZMonthMapper.findByYear(year);
+        if(reportEquipmentZMonth==null){
+            //每年开始第一个月默认添加一个报表的表头和备注信息
+            ReportEquipmentZMonth equipmentZMonth = new ReportEquipmentZMonth();
+            Calendar cale = Calendar.getInstance();
+            equipmentZMonth.setYear(String.valueOf(cale.get(Calendar.YEAR)));
+            equipmentZMonth.setReportName(String.valueOf(cale.get(Calendar.YEAR))+"年综机折旧修理费月报(汇总)");
+            equipmentZMonth.setRemark("注:1、石拉乌素、龙凤矿本月直接收取上半年全部租赁费、全部入1180账号。\n 2、安源矿本月直接收取上半年全部租赁费、全部入1730账号。");
+            equipmentZMonth.setCreateBy("admin");
+            equipmentZMonth.setUpdateBy("admin");
+            reportEquipmentZMonthMapper.insert(equipmentZMonth);
+
+            reportEquipmentZMonth = reportEquipmentZMonthMapper.findByYear(year);
+        }
         if(reportEquipmentZMonth != null){
             List<ReportEquipmentZMonthItem> list1 = reportEquipmentZMonthItemMapper.listByExportId(reportEquipmentZMonth.getId().longValue(),"1");
             List<ReportEquipmentZMonthItem> list1Sum = reportEquipmentZMonthItemMapper.sumByExportId(reportEquipmentZMonth.getId().longValue(),"1");
@@ -175,7 +188,7 @@ public class ReportEquipmentZMonthImpl implements ReportEquipmentZMonthService {
                 BigDecimal preMonthsPlanVal = new BigDecimal(reportEquipmentZMonthItem.getSumVal()-curMonthVal).setScale(4, RoundingMode.UP);
                 reportEquipmentZMonthSumItem2.setPreMonthsVal(preMonthsPlanVal.doubleValue());
 
-                list1_.add(reportEquipmentZMonthSumItem2);
+                list2_.add(reportEquipmentZMonthSumItem2);
             }
             if(list2Sum!=null){
                 reportEquipmentZMonthSumItem2 = new ReportEquipmentZMonthSumItem();
@@ -302,5 +315,13 @@ public class ReportEquipmentZMonthImpl implements ReportEquipmentZMonthService {
                 }
             }
         }
+    }
+
+    public int updateRemarkById(ReportEquipmentZMonth reportEquipmentZMonth) {
+        return reportEquipmentZMonthMapper.updateRemarkById(reportEquipmentZMonth);
+    }
+
+    public int updateYearPlanValById(ReportEquipmentZMonthItem reportEquipmentZMonthItem) {
+        return reportEquipmentZMonthItemMapper.updateYearPlanValById(reportEquipmentZMonthItem);
     }
 }
