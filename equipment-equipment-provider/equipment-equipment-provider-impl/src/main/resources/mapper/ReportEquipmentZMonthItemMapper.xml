@@ -79,6 +79,12 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
 
+  <update id="updateYearPlanValById" parameterType="com.yankuang.equipment.equipment.model.ReportEquipmentZMonthItem">
+    update report_equipment_z_month_item
+    set year_plan_val = #{yearPlanVal,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
   <select id="listByExportId" resultMap="BaseResultMap">
     SELECT
     @rowno:=@rowno + 1 AS rowno,t.dept_code,t.dept_name,t.year_plan_val,round((t.year_plan_val/12),0) month_plan_val,
