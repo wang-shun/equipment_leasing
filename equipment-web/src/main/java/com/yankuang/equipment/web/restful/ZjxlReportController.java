@@ -92,9 +92,6 @@ public class ZjxlReportController {
 
         List<ZjxlReport> zjxlReports = zjxlReportService.list(zjxlReport);
 
-        if (zjxlReports != null && zjxlReports.size() > 0){
-            return CommonResponse.ok(zjxlReports);
-        }
         //循环获取附件总张数与折旧修理费
         for (ZjxlReport zjxlReport1 : zjxlReports){
             if (zjxlReport1.getAppendixPage() != null){

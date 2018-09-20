@@ -20,11 +20,13 @@
         <result column="zjxl_year" property="zjxlYear" jdbcType="VARCHAR" />
         <result column="zjxl_month" property="zjxlMonth" jdbcType="VARCHAR" />
         <result column="zjxl_day" property="zjxlDay" jdbcType="VARCHAR" />
+        <result column="kb" property="kb" jdbcType="TINYINT"/>
+        <result column="zc" property="zc" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List" >
     id, use_position, use_position_num, appendix_page, zjxl_fee, remark, sum, appendix_page_sum,
     use_department, number, satrap, sh_person, center_manager, section_chief,
-    capital, zjxl_year, zjxl_month, zjxl_day
+    capital, zjxl_year, zjxl_month, zjxl_day, kb, zc
     </sql>
 
     <insert id="create" parameterType="com.yankuang.equipment.equipment.model.ZjxlReport" >
@@ -35,7 +37,7 @@
           #{sum,jdbcType=DOUBLE}, #{appendixPageSum,jdbcType=INTEGER}, #{useDepartment,jdbcType=VARCHAR},
           #{number,jdbcType=VARCHAR}, #{satrap,jdbcType=VARCHAR},
           #{shPerson,jdbcType=VARCHAR}, #{centerManager,jdbcType=VARCHAR}, #{sectionChief,jdbcType=VARCHAR},
-          #{capital,jdbcType=VARCHAR},#{zjxlYear,jdbcType=VARCHAR },#{zjxlMonth,jdbcType=VARCHAR },#{zjxlDay,jdbcType=VARCHAR})
+          #{capital,jdbcType=VARCHAR},#{zjxlYear,jdbcType=VARCHAR },#{zjxlMonth,jdbcType=VARCHAR },#{zjxlDay,jdbcType=VARCHAR},#{kb,jdbcType=TINYINT},,#{zc,jdbcType=VARCHAR})
       </insert>
     <select id="list" parameterType="ZjxlReport" resultMap="BaseResultMap">
         SELECT <include refid="Base_Column_List"/>
@@ -95,6 +97,12 @@
         </if>
         <if test="zjxlDay != null and zjxlDay != ''">
             AND zjxl_day = #{zjxlDay,jdbcType=VARCHAR}
+        </if>
+        <if test="kb != null">
+            AND kb = #{kb,jdbcType=TINYINT}
+        </if>
+        <if test="zc != null and zc != '' ">
+            AND zc = #{zc,jdbcType=VARCHAR}
         </if>
     </select>
 </mapper>
