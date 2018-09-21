@@ -102,6 +102,7 @@ public class ZEquipmentReportController {
                 dtkListLY.setFeeDay(new SimpleDateFormat("yyyy-MM-dd").format(dtkListLY.getUseAt())+"-"+new SimpleDateFormat("yyyy-MM-dd").format(findSign.getUseAt()));
                day = sbElFeeService.CalEquipmentElDays(dtkListLY.getUseId(),findSign.getUseId(),dtkListLY.getEquipmentId(),startDate,endDate);
             }
+
             if (dtkListLY.getCostA1() == null){
                 return CommonResponse.build(500,"没有日租赁费",null);
             }
@@ -193,8 +194,8 @@ public class ZEquipmentReportController {
         String useAtString = zEquipmentDTO.getUseAtString();
         if (useAtString != null && !"".equals(useAtString)){
             DateConverterConfig dateConverterConfig = new DateConverterConfig();
-            dateConverterConfig.convert(useAtString);
-            listZReportMap.put("useAt",useAtString);
+            Date date = dateConverterConfig.convert(useAtString);
+            listZReportMap.put("useAt",date);
         }else {
             listZReportMap.put("useAt",zEquipmentDTO.getUseAt());
         }

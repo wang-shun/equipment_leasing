@@ -83,6 +83,7 @@ public class ElFeeDetailTController {
                 }
             }
             List<ElFeeDetailT> elFeeDetailTS = new ArrayList<>();
+            Date now = new Date();
             for (ElUseItem uItem : elUseItemList) {
                 Long days = 0L;
                 if (uItem == null) {
@@ -124,12 +125,12 @@ public class ElFeeDetailTController {
                 detailT.setTotalFee(FeeUtils.scale(totalFees, 3));
                 detailT.setReportYear(reportYear);
                 detailT.setReportMonth(reportMonth);
-                detailT.setExportAt(endDate);
-                detailT.setExportAtStr(detailTs.getExportAtStr());
+                //detailT.setExportAt(endDate);
+                detailT.setExportAt(now);
                 detailT.setEquipmentId(planUse.getEquipmentId());
                 detailT.setPageNum(detailTs.getPageNum());
                 detailT.setPageSize(detailTs.getPageSize());
-                detailT.setStatus(1L);
+                detailT.setStatus((byte)1);
                 elFeeDetailTS.add(detailT);
             }
 

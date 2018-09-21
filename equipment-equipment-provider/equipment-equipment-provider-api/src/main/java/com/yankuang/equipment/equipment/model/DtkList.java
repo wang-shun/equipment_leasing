@@ -97,4 +97,8 @@ public class DtkList implements Serializable {
     private Byte isNew;
 
     private String feeDay;
+
+    private String assetComp;
+
+    private String zc;//资产
 }

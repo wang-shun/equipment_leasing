@@ -11,7 +11,8 @@ rpc:
   mode: true
   dubbo:
     module: equipment-syslog-provider
-    registryAddress: ${ZOOKEEPER_HOST:127.0.0.1}:${ZOOKEEPER_PORT:2181}
+    registryAddress: ${ZOOKEEPER_HOST:47.94.211.172}:${ZOOKEEPER_PORT:2181}
+    version: kcx_zl
 #    port: 20883
     port: 20880
 

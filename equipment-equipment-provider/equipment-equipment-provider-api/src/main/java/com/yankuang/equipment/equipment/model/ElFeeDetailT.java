@@ -1,6 +1,7 @@
 package com.yankuang.equipment.equipment.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -18,9 +19,10 @@ public class ElFeeDetailT implements Serializable {
 
     private String reportMonth; // 报表月度
 
+    @JsonIgnore
     private String exportAtStr; // 导出时间 年度-月度
 
-    private Long status; // 状态 1:正常  99:删除
+    private Byte status; // 状态 1:正常 2:历史  99:删除
 
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date exportAt; //导出时间
@@ -73,12 +75,16 @@ public class ElFeeDetailT implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createAt; // 创建时间
 
+    @JsonIgnore
     private String code;
 
+    @JsonIgnore
     private Long sorting;
 
+    @JsonIgnore
     private Integer pageNum;
 
+    @JsonIgnore
     private Integer pageSize;
 
 }

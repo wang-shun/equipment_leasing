@@ -18,23 +18,24 @@
     <result column="use_year" property="useYear" jdbcType="VARCHAR" />
     <result column="use_month" property="useMonth" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="TINYINT" />
+    <result column="zc" property="zc" jdbcType="VARCHAR"/>
   </resultMap>
   <sql id="Base_Column_List" >
     id, use_dept_name, number, create_excel_name, status_name, sure_name, sum, use_dept_code, create_excel_code, status_code, sure_code, use_at, equipment_position,
-    use_year, use_month, type
+    use_year, use_month, type, zc
   </sql>
 
   <!--创建清单表-->
   <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="com.yankuang.equipment.equipment.model.ListZReport" >
     insert into el_zEquipmentList_report (id, use_dept_name, number, create_excel_name, status_name,
     sure_name, sum, use_dept_code, create_excel_code, status_code, sure_code, use_at, equipment_position,
-    use_year, use_month, type)
+    use_year, use_month, type, zc)
     values (#{id,jdbcType=BIGINT}, #{useDeptName,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR},
       #{createExcelName,jdbcType=VARCHAR}, #{statusName,jdbcType=VARCHAR}, #{sureName,jdbcType=VARCHAR},
       #{sum,javaType=DOUBLE}, #{useDeptCode,jdbcType=VARCHAR}, #{createExcelCode,jdbcType=VARCHAR},
       #{statusCode,jdbcType=VARCHAR}, #{sureCode,jdbcType=VARCHAR}, #{useAt,jdbcType=TIMESTAMP},
        #{equipmentPosition,jdbcType=VARCHAR}, #{useYear,jdbcType=VARCHAR}, #{useMonth,jdbcType=VARCHAR},
-        #{type,jdbcType=TINYINT})
+        #{type,jdbcType=TINYINT},#{zc,jdbcType=VARCHAR})
   </insert>
 
   <select id="list" parameterType="map" resultMap="BaseResultMap">
@@ -90,6 +91,9 @@
     <if test="type != null">
       AND type =  #{type,jdbcType=TINYINT}
     </if>
+    <if test="zc != null and zc != ''">
+      AND zc = #{zc,jdbcType=VARCHAR}
+    </if>
   </select>
 
   <select id="find" parameterType="map" resultType="INTEGER">
@@ -144,6 +148,9 @@
     </if>
     <if test="type != null">
       AND type =  #{type,jdbcType=TINYINT}
+    </if>
+    <if test="zc != null and zc != ''">
+      AND zc = #{zc,jdbcType=VARCHAR}
     </if>
   </select>
 </mapper>

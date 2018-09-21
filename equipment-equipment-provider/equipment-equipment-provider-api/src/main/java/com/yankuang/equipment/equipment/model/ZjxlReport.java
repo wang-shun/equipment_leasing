@@ -46,4 +46,8 @@ public class ZjxlReport implements Serializable {
     private String zjxlMonth;//折旧修理月份
 
     private String zjxlDay;//折旧修理日期
+
+    private Byte kb;//矿别（1.本部2.外部）
+
+    private String zc;//资产
 }

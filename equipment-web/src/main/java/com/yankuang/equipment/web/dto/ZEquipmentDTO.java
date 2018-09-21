@@ -48,4 +48,6 @@ public class ZEquipmentDTO implements Serializable {
     private List<ListZReportItem> listZReportItems;
 
     private ListZReportItem listZReportItem;
+
+    private String zc;
 }
