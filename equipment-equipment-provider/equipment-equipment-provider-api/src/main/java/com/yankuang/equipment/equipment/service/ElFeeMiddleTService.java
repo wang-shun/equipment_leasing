@@ -8,4 +8,6 @@ public interface ElFeeMiddleTService {
     List<ElFeeMiddleT> findElFeeMiddleTs(ElFeeMiddleT elFeeMiddleT, Integer pageNum, Integer pageSize);
 
     boolean createBatch(List<ElFeeMiddleT> list);
+
+    ElFeeMiddleT findTotal(ElFeeMiddleT elFeeMiddleT);
 }

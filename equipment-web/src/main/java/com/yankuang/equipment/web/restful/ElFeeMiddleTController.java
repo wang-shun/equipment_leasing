@@ -79,11 +79,11 @@ public class ElFeeMiddleTController {
                     middleTTotal.setReportYear(reportYear);
                     middleTTotal.setReportMonth(reportMonth);
                     middleTTotal.setExportAt(endDate);
-                    middleTTotal.setExportAtStr(elFeeMiddleT.getExportAtStr());
                     middleTTotal.setPositionCode(elFeeMiddleT.getPositionCode());
                     middleTTotal.setPositionName(positionName);
                     middleTTotal.setStatus((byte)1);
                     middleTTotal.setMiddleName("合计");
+                    middleTTotal.setMiddleCode("0000");
                     middleTTotal.setEquipmentNum(eqNumTotal);
                     middleTTotal.setUseNum(useNumTotal);
                     middleTTotal.setCostA1(FeeUtils.scale(costA1Total, 3));
@@ -101,6 +101,7 @@ public class ElFeeMiddleTController {
             elFeeDetailT.setPositionCode(elFeeMiddleT.getPositionCode());
             List<ElFeeDetailT> detailTs = elFeeDetailTService.findElFeeDetailTs(elFeeDetailT, null, null);
             // 按照中类分组
+            Date now = new Date();
             Map<String, List<ElFeeDetailT>> detailTMap = new HashMap<>();
             for (ElFeeDetailT detailT : detailTs) {
                 if (detailT == null) {
@@ -111,8 +112,7 @@ public class ElFeeMiddleTController {
                     tempList = new ArrayList<>();
                     tempList.add(detailT);
                     detailTMap.put(detailT.getMiddleTypeName(), tempList);
-                }
-                else {
+                } else {
                     tempList.add(detailT);
                 }
             }
@@ -153,8 +153,8 @@ public class ElFeeMiddleTController {
                 ElFeeMiddleT middleT = new ElFeeMiddleT();
                 middleT.setReportYear(reportYear);
                 middleT.setReportMonth(reportMonth);
-                middleT.setExportAt(endDate);
-                middleT.setExportAtStr(elFeeMiddleT.getExportAtStr());
+                //middleT.setExportAt(endDate);
+                middleT.setExportAt(now);
                 middleT.setPositionCode(elFeeMiddleT.getPositionCode());
                 middleT.setPositionName(positionName);
                 middleT.setStatus((byte)1);
@@ -177,12 +177,13 @@ public class ElFeeMiddleTController {
             ElFeeMiddleT middleTTotal = new ElFeeMiddleT();
             middleTTotal.setReportYear(reportYear);
             middleTTotal.setReportMonth(reportMonth);
-            middleTTotal.setExportAt(endDate);
-            middleTTotal.setExportAtStr(elFeeMiddleT.getExportAtStr());
+            //middleTTotal.setExportAt(endDate);
+            middleTTotal.setExportAt(now);
             middleTTotal.setPositionCode(elFeeMiddleT.getPositionCode());
             middleTTotal.setPositionName(positionName);
             middleTTotal.setStatus((byte)1);
             middleTTotal.setMiddleName("合计");
+            middleTTotal.setMiddleCode("0000");
             middleTTotal.setEquipmentNum(eqNumTotals);
             middleTTotal.setUseNum(useNumTotals);
             middleTTotal.setCostA1(FeeUtils.scale(costA1Totals, 3));

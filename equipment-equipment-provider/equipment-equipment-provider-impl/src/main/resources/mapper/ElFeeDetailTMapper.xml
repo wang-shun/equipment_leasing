@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.yankuang.equipment.equipment.model.ElFeeDetailT" >
       <id column="id" property="id" jdbcType="BIGINT" />
       <result column="code" property="code" jdbcType="VARCHAR" />
-      <result column="status" property="status" jdbcType="BIGINT" />
+      <result column="status" property="status" jdbcType="TINYINT" />
       <result column="export_at" property="exportAt" jdbcType="TIMESTAMP" />
       <result column="equipment_id" property="equipmentId" jdbcType="BIGINT" />
       <result column="position_name" property="positionName" jdbcType="VARCHAR" />
@@ -51,7 +51,7 @@
   </update>
     <insert id="insertBatch" parameterType="java.util.List" >
         insert into el_fee_detail_t (code, status,
-        export_at, equipment_id, position_name,
+        equipment_id, position_name,
         position_code, middle_type_name, middle_type_code,
         small_type_name, small_type_code, equipment_code,
         tech_code, model_code, model_name,
@@ -63,7 +63,7 @@
         ) values
         <foreach collection="list" item="item" index="index" open="" close="" separator=",">
         (#{item.code,jdbcType=VARCHAR}, 1,
-        #{item.exportAt,jdbcType=TIMESTAMP}, #{item.equipmentId,jdbcType=BIGINT}, #{item.positionName,jdbcType=VARCHAR},
+        #{item.equipmentId,jdbcType=BIGINT}, #{item.positionName,jdbcType=VARCHAR},
         #{item.positionCode,jdbcType=VARCHAR}, #{item.middleTypeName,jdbcType=VARCHAR}, #{item.middleTypeCode,jdbcType=VARCHAR},
         #{item.smallTypeName,jdbcType=VARCHAR}, #{item.smallTypeCode,jdbcType=VARCHAR}, #{item.equipmentCode,jdbcType=VARCHAR},
         #{item.techCode,jdbcType=VARCHAR}, #{item.modelCode,jdbcType=VARCHAR}, #{item.modelName,jdbcType=VARCHAR},
@@ -83,7 +83,7 @@
               code = #{code,jdbcType=VARCHAR},
           </if>
           <if test="status != null" >
-              status = #{status,jdbcType=BIGINT},
+              status = #{status,jdbcType=TINYINT},
           </if>
           <if test="exportAt != null" >
               export_at = #{exportAt,jdbcType=TIMESTAMP},
@@ -172,7 +172,7 @@
 
     <select id="list" parameterType="com.yankuang.equipment.equipment.model.ElFeeDetailT" resultMap="BaseResultMap">
         select <include refid="Base_Column_List"/> from el_fee_detail_t
-        where 1 =1 and status != 99
+        where 1 =1 and status != 99 and status != 2
         <if test="reportYear != null">
             and report_year = #{reportYear}
         </if>
@@ -182,6 +182,20 @@
         <if test="positionCode != null">
             and position_code = #{positionCode}
         </if>
+        order by export_at desc
     </select>
+
+    <update id="history" parameterType="com.yankuang.equipment.equipment.model.ElFeeDetailT">
+        update el_fee_detail_t set status = 2 where status != 99
+        <if test="reportYear != null and reportYear != ''">
+            and report_year = #{reportYear}
+        </if>
+        <if test="reportMonth != null and reportMonth != ''">
+            and report_month = #{reportMonth}
+        </if>
+        <if test="positionCode != null and positionCode != ''">
+            and position_code = #{positionCode}
+        </if>
+    </update>
 
 </mapper>

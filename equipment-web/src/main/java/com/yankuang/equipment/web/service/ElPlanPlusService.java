@@ -270,6 +270,9 @@ public class ElPlanPlusService {
                     continue;
                 }
                 SbEquipmentT sbT = sbEquipmentTService.findById(sbTID);
+                if (sbT == null) {
+                    continue;
+                }
                 elPlanUseDTO.setTeachCode(sbT.getTechCode());
                 elPlanUseDTO.setEquipmentName(sbT.getName());
                 String itemId = use.getPlanItemId();
