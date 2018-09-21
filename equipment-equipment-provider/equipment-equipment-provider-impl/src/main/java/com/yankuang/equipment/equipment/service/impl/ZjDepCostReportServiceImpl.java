@@ -34,9 +34,9 @@ public class ZjDepCostReportServiceImpl implements ZjDepreciationCostReportServi
     ZEquipmentListReportMapper zEquipmentListReportMapper;
 
 
-    public int findCostRepairList(String yearMonthTime){
+    public int findCostRepairList(String yearMonthTime,String month,String assetComp){
 
-        Integer count = zjDepreciationCostReportMapper.findCostRepairList(yearMonthTime);
+        Integer count = zjDepreciationCostReportMapper.findCostRepairList(yearMonthTime,month,assetComp);
         return count;
     }
 
@@ -47,22 +47,29 @@ public class ZjDepCostReportServiceImpl implements ZjDepreciationCostReportServi
      */
     public Boolean create(ZjDepreciationCostReport zjDepreciationCostReport){
 
-        List<ZjDepreciationCostReportItem> zjDepreciationCostReportItems = zjDepreciationCostReport.getZjDepreciationCostReportItems();
+        List<ZjDepreciationCostReportItem> zjDepreciationCostReportItemHome = zjDepreciationCostReport.getZjDepreciationCostReportItemsHome();
+        List<ZjDepreciationCostReportItem> zjDepreciationCostReportItemExternal = zjDepreciationCostReport.getZjDepreciationCostReportItemsExternal();
 
         ZjDepreciationCostReport zjDepreciationCost = new ZjDepreciationCostReport();
         zjDepreciationCost.setAssetComp(zjDepreciationCostReport.getAssetComp());
         zjDepreciationCost.setReportName(zjDepreciationCostReport.getReportName());
         zjDepreciationCost.setRemark(zjDepreciationCostReport.getRemark());
         zjDepreciationCost.setYearTime(zjDepreciationCostReport.getYearTime());
+        zjDepreciationCost.setMonthTime(zjDepreciationCostReport.getMonthTime());
         zjDepreciationCost.setCreateAt(new Date());
-
+        zjDepreciationCost.setStatus((byte)1);
+        zjDepreciationCostReportMapper.history(zjDepreciationCostReport.getYearTime(),zjDepreciationCostReport.getMonthTime(),zjDepreciationCostReport.getAssetComp());
         zjDepreciationCostReportMapper.create(zjDepreciationCost);
-        if (zjDepreciationCostReportItems.size()==0 || zjDepreciationCostReportItems == null){
+        if (zjDepreciationCostReportItemHome.size()==0 || zjDepreciationCostReportItemHome == null){
             return false;
         }
-        for (ZjDepreciationCostReportItem zjDepCostItem:zjDepreciationCostReportItems){
+        for (ZjDepreciationCostReportItem zjDepCostItem:zjDepreciationCostReportItemHome){
             zjDepCostItem.setReportId(zjDepreciationCost.getId());//每个交接单里实体类的id是一样的
             zjDepCReportItemMapper.create(zjDepCostItem);
+        }
+        for (ZjDepreciationCostReportItem zjDepCostItemExternal:zjDepreciationCostReportItemExternal){
+            zjDepCostItemExternal.setReportId(zjDepreciationCost.getId());//每个交接单里实体类的id是一样的
+            zjDepCReportItemMapper.create(zjDepCostItemExternal);
         }
 
         return true;
@@ -73,7 +80,7 @@ public class ZjDepCostReportServiceImpl implements ZjDepreciationCostReportServi
        //前端传过来 年份，月份，煤业或东华或汇总，本部矿或者是外部矿
         //本部矿和外部矿不是前台传的需要自己区分
         ZjxlReport zjxlReport = new ZjxlReport();
-        zjxlReport.setZjxlYear(zjDepreciationCostReport.getYearTime());
+        zjxlReport.setZjxlYear(zjDepreciationCostReport.getYearTime());//还差条件kb
         List<ZjxlReport> zjxlReports = zjxlReportMapper.list(zjxlReport);
 
         String month = zjDepreciationCostReport.getMonthTime();

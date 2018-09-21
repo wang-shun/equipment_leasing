@@ -1,21 +1,16 @@
 package com.yankuang.equipment.equipment.service;
 
 import com.yankuang.equipment.equipment.model.ZjDepreciationCostReport;
-import com.yankuang.equipment.equipment.model.ZjxlReport;
+import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
 import java.util.Map;
 
 
 public interface ZjDepreciationCostReportService {
 
 
-    int findCostRepairList(String yearMonthTime);
-    /**
-     * @method 创建综机设备使用交接单
-     * @param zjDepreciationCostReport
-     * @return
-     */
+    int findCostRepairList(@Param("yearTime") String yearMonthTime, @Param("monthTime") String month,@Param("assetComp") String assetComp);
+
     Boolean create(ZjDepreciationCostReport zjDepreciationCostReport);
 
     ZjDepreciationCostReport list(Map zjCostRepairMap);

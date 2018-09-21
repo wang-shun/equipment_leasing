@@ -34,6 +34,8 @@ public class ZjDepreciationCostReport implements Serializable {
 
     private Date updateAt;
 
+    private Byte status;//1是新，2是旧，99是删除的
+
     List<ZjDepreciationCostReportItem> zjDepreciationCostReportItems;
 
     private List<ZjDepreciationCostReportItem> zjDepreciationCostReportItemsHome;//存放本部数据

@@ -11,6 +11,7 @@ import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,6 +40,7 @@ public class ReportZjDepreciationCostController {
         if (com.yankuang.equipment.common.util.StringUtils.isEmpty(jsonString)) {
             return CommonResponse.build(500, "传入参数不能为空", null);
         }
+        Map zjCostRepairMap = new HashMap();
         ZjDepreciationCostReport zjDepreciationCostReport = JsonUtils.jsonToPojo(jsonString, ZjDepreciationCostReport.class);
         if (StringUtils.isEmpty(zjDepreciationCostReport.getYearTime())) {
             return CommonResponse.errorMsg("年份不能为空");
@@ -46,21 +48,38 @@ public class ReportZjDepreciationCostController {
             return CommonResponse.errorMsg("所属资产公司不能为空");
         }
 
-        if (!StringUtils.isEmpty(zjDepreciationCostReport.getYearTime())) {
+        //查询全年
+        if (!StringUtils.isEmpty(zjDepreciationCostReport.getYearTime()) && StringUtils.isEmpty(zjDepreciationCostReport.getMonthTime())) {
             //需要有个方法去查询新的报表中是否有这个年份这个月份的数据，有的话走新的，没有的话通过查询小伯的数据获得
-//            if(){
-//
-//            }
-            return CommonResponse.ok(zjDepreciationCostReportService.listzjxl(zjDepreciationCostReport));
-        }
-        //需要进行判断，进入哪个方法，先判断综机折旧修理费中有这个年份没，有的话就直接从综机折旧修理费的表查询
-//        Integer count = zjDepreciationCostReportService.findCostRepairList(zjxlReport.getZjxlYear());
-//        if(count>0){
-//            zjCostRepairMap.put("assetComp",assetComp);
-//            zjCostRepairMap.put("yearTime",zjxlReport.getZjxlYear());
-//            return CommonResponse.ok(zjDepreciationCostReportService.list(zjCostRepairMap));
-//        }else{
+           // 查询当前月
+            Calendar cale = Calendar.getInstance();
+            int month = cale.get(Calendar.MONTH) + 1;
 
+            Integer count = zjDepreciationCostReportService.findCostRepairList(zjDepreciationCostReport.getYearTime(),String.valueOf(month),zjDepreciationCostReport.getAssetComp());
+            if(count>0){
+                zjCostRepairMap.put("yearTime",zjDepreciationCostReport.getYearTime());
+                zjCostRepairMap.put("monthTime",month);
+                zjCostRepairMap.put("assetComp",zjDepreciationCostReport.getAssetComp());
+                return CommonResponse.ok(zjDepreciationCostReportService.list(zjCostRepairMap));//从新表中查
+            }else{
+                return CommonResponse.ok(zjDepreciationCostReportService.listzjxl(zjDepreciationCostReport));//连表查询
+            }
+        }
+        //查询有月份的
+        if (!StringUtils.isEmpty(zjDepreciationCostReport.getYearTime()) && !StringUtils.isEmpty(zjDepreciationCostReport.getMonthTime())) {
+            //需要有个方法去查询新的报表中是否有这个年份这个月份的数据，有的话走新的，没有的话通过查询小伯的数据获得
+            Calendar cale = Calendar.getInstance();
+            int month = cale.get(Calendar.MONTH) + 1;
+            Integer count = zjDepreciationCostReportService.findCostRepairList(zjDepreciationCostReport.getYearTime(),zjDepreciationCostReport.getMonthTime(),zjDepreciationCostReport.getAssetComp());
+            if(count>0){
+                zjCostRepairMap.put("yearTime",zjDepreciationCostReport.getYearTime());
+                zjCostRepairMap.put("monthTime",month);
+                zjCostRepairMap.put("assetComp",zjDepreciationCostReport.getAssetComp());
+                return CommonResponse.ok(zjDepreciationCostReportService.list(zjCostRepairMap));//从新表中查
+            }else{
+                return CommonResponse.ok(zjDepreciationCostReportService.listzjxl(zjDepreciationCostReport));//连表查询
+            }
+        }
         return CommonResponse.ok();
 
     }
@@ -79,6 +98,7 @@ public class ReportZjDepreciationCostController {
                 return CommonResponse.errorTokenMsg("参数不能为空");
             }
             ZjDepreciationCostReport zjDepreciationCostReport = JsonUtils.jsonToPojo(jsonString, ZjDepreciationCostReport.class);
+
             zjDepreciationCostReportService.create(zjDepreciationCostReport);
             return CommonResponse.ok();
         }catch (Exception e){

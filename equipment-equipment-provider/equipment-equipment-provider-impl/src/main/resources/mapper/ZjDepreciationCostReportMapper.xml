@@ -9,22 +9,47 @@
         <result column="report_name" property="reportName" jdbcType="VARCHAR" />
         <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
         <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+        <result column="status" property="status" jdbcType="TINYINT" />
 
     </resultMap>
     <sql id="Base_Column_List" >
         asset_comp,year_time,month_time,remark,report_name,
-        create_at,update_at
+        create_at,update_at,status
    </sql>
 
+    <update id="history" parameterType="com.yankuang.equipment.equipment.model.ZjDepreciationCostReport" >
+        update report_zj_depreciation_cost
+          set status = 2 where 1 = 1
+            <if test="yearTime != null and yearTime != '' " >
+                and year_time = #{yearTime}
+            </if>
+            <if test="monthTime != null and monthTime != '' " >
+                and month_time = #{monthTime}
+            </if>
+            <if test="assetComp != null and assetComp != '' " >
+                and asset_comp = #{assetComp}
+            </if>
+    </update>
+
     <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="com.yankuang.equipment.equipment.model.ZjDepreciationCostReport" >
-      insert into report_zj_depreciation_cost(asset_comp,year_time,month_time,remark,report_name,create_at,update_at)
+      insert into report_zj_depreciation_cost(asset_comp,year_time,month_time,remark,report_name,create_at,update_at,status)
       values (#{assetComp,jdbcType=VARCHAR},#{yearTime,jdbcType=VARCHAR},#{monthTime,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR},
-      #{reportName,jdbcType=VARCHAR},#{createAt,jdbcType=TIMESTAMP},#{updateAt,jdbcType=TIMESTAMP})
+      #{reportName,jdbcType=VARCHAR},#{createAt,jdbcType=TIMESTAMP},#{updateAt,jdbcType=TIMESTAMP},#{status,jdbcType=TINYINT})
   </insert>
 
     <select id="findCostRepairList" parameterType="String" resultType="INTEGER">
         select count(*) from report_zj_depreciation_cost
-        where 1=1 and year_time=#{yearTime}
+        where 1=1 and status = 1
+        <if test="yearTime != null">
+            and year_time=#{yearTime}
+        </if>
+        <if test="monthTime != null">
+            and month_time=#{monthTime}
+        </if>
+        <if test="assetComp != null and assetComp != '' " >
+            and asset_comp = #{assetComp}
+        </if>
+
     </select>
 
     <select id="list" parameterType="map" resultMap="BaseResultMap">
@@ -34,6 +59,13 @@
             <if test="yearTime != null">
                 and zjdepcost.year_time = #{yearTime,jdbcType=VARCHAR}
             </if>
+            <if test="monthTime != null">
+                and zjdepcost.month_time = #{monthTime,jdbcType=VARCHAR}
+            </if>
+            <if test="assetComp != null">
+                and zjdepcost.asset_comp = #{assetComp,jdbcType=VARCHAR}
+            </if>
+            and zjdepcost.status=1
         </where>
     </select>
 
