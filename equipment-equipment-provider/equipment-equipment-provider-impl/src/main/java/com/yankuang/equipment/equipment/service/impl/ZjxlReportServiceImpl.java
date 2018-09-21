@@ -6,6 +6,7 @@ import com.yankuang.equipment.equipment.model.ListZReport;
 import com.yankuang.equipment.equipment.model.ZjxlReport;
 import com.yankuang.equipment.equipment.service.ZjxlReportService;
 import io.terminus.boot.rpc.common.annotation.RpcProvider;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +44,10 @@ public class ZjxlReportServiceImpl implements ZjxlReportService {
         for (ListZReport listZReport1:listZReports){
             zjxlReport.setUsePosition(listZReport1.getEquipmentPosition());
             zjxlReport.setZjxlFee(listZReport1.getSum());
+            zjxlReport.setKb(listZReport1.getType());
+            zjxlReport.setShPerson(listZReport.getStatusName());
+            zjxlReport.setUseDepartment(listZReport.getUseDeptName());
+            zjxlReport.setZc(listZReport1.getZc());
             zjxlReports.add(zjxlReport);
         }
 

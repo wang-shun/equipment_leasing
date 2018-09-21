@@ -18,4 +18,6 @@ public interface ElFeeMiddleTMapper {
     List<ElFeeMiddleT> list(ElFeeMiddleT elFeeMiddleT);
 
     int createBatch(List<ElFeeMiddleT> list);
+
+    int history(ElFeeMiddleT elFeeMiddleT);
 }
