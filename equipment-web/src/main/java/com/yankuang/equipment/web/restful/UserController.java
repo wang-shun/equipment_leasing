@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @CrossOrigin(maxAge = 3600)
 @RestController
@@ -61,7 +60,7 @@ public class UserController {
         Map map = new HashMap();
         map.put("tableName", "el_user");
         Long idMax = codeService.findIdMax(map);
-        idMax += 1 ;
+        idMax += 1;
         String code = CodeUtil.getFixedLengthCode(idMax.toString(), 4);
         return deptCode + code;
 
