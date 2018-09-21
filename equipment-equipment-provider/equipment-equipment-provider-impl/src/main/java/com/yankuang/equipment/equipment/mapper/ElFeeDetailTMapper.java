@@ -13,7 +13,9 @@ public interface ElFeeDetailTMapper {
 
     int update(ElFeeDetailT record);
 
-    boolean insertBatch(List<ElFeeDetailT> list);
+    int insertBatch(List<ElFeeDetailT> list);
 
     List<ElFeeDetailT> list(ElFeeDetailT elFeeDetailT);
+
+    int history(ElFeeDetailT elFeeDetailT);
 }

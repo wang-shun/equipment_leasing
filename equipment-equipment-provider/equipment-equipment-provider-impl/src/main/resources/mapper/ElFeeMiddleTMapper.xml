@@ -66,7 +66,7 @@
   </insert>
     <insert id="createBatch" parameterType="java.util.List" >
     insert into el_fee_middle_t (code, status,
-      position_name, position_code, export_at,
+      position_name, position_code,
       middle_code, middle_name, equipment_num,
       use_num, cost_a1, cost_a2,
       cost_a3, total_fee, remarks,
@@ -77,7 +77,7 @@
     values
     <foreach collection="list" item="item" index="index" open="" close="" separator=",">
         (#{item.code,jdbcType=VARCHAR}, 1,
-        #{item.positionName,jdbcType=VARCHAR}, #{item.positionCode,jdbcType=VARCHAR}, #{item.exportAt,jdbcType=TIMESTAMP},
+        #{item.positionName,jdbcType=VARCHAR}, #{item.positionCode,jdbcType=VARCHAR},
         #{item.middleCode,jdbcType=VARCHAR}, #{item.middleName,jdbcType=VARCHAR}, #{item.equipmentNum,jdbcType=BIGINT},
         #{item.useNum,jdbcType=BIGINT}, #{item.costA1,jdbcType=DOUBLE}, #{item.costA2,jdbcType=DOUBLE},
         #{item.costA3,jdbcType=DOUBLE}, #{item.totalFee,jdbcType=DOUBLE}, #{item.remarks,jdbcType=VARCHAR},
@@ -169,7 +169,7 @@
 
     <select id="list" parameterType="com.yankuang.equipment.equipment.model.ElFeeMiddleT" resultMap="BaseResultMap" >
         select <include refid="Base_Column_List"/> from el_fee_middle_t
-        where 1 =1 and status != 99
+        where 1 =1 and status != 99 and status != 2
         <if test="reportYear != null and reportYear != ''" >
             and report_year = #{reportYear}
         </if>
@@ -179,6 +179,23 @@
         <if test="positionCode != null and positionCode != ''" >
             and position_code = #{positionCode}
         </if>
+        <if test="middleCode != null and middleCode != ''">
+            and middle_code = #{middleCode}
+        </if>
+        order by export_at desc
     </select>
+
+    <update id="history" parameterType="com.yankuang.equipment.equipment.model.ElFeeMiddleT">
+        update el_fee_middle_t set status = 2 where status != 99
+        <if test="reportYear != null and reportYear != ''" >
+            and report_year = #{reportYear}
+        </if>
+        <if test="reportMonth != null and reportMonth != ''" >
+            and report_month = #{reportMonth}
+        </if>
+        <if test="positionCode != null and positionCode != ''" >
+            and position_code = #{positionCode}
+        </if>
+    </update>
 
 </mapper>
