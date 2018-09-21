@@ -14,29 +14,29 @@ public class ZjDepreciationCostReportItemAddUpSum implements Serializable {
 
     private Double moreDeptAddUpSum;//合计的累计
 
-    private Double addUpSum01;//累计
+    private Double addUpSum01;//1月累计
 
-    private Double addUpSum02;//累计
+    private Double addUpSum02;//2月累计
 
-    private Double addUpSum03;//累计
+    private Double addUpSum03;//3月累计
 
-    private Double addUpSum04;//累计
+    private Double addUpSum04;//4月累计
 
-    private Double addUpSum05;//累计
+    private Double addUpSum05;//5月累计
 
-    private Double addUpSum06;//累计
+    private Double addUpSum06;//6月累计
 
-    private Double addUpSum07;//累计
+    private Double addUpSum07;//7月累计
 
-    private Double addUpSum08;//累计
+    private Double addUpSum08;//8月累计
 
-    private Double addUpSum09;//累计
+    private Double addUpSum09;//9月累计
 
-    private Double addUpSum10;//累计
+    private Double addUpSum10;//10月累计
 
-    private Double addUpSum11;//累计
+    private Double addUpSum11;//11月累计
 
-    private Double addUpSum12;//累计
+    private Double addUpSum12;//12月累计
 
 
 

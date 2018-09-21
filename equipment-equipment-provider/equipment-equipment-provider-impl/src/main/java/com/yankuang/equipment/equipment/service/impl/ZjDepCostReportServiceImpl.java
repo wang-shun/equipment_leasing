@@ -80,7 +80,11 @@ public class ZjDepCostReportServiceImpl implements ZjDepreciationCostReportServi
        //前端传过来 年份，月份，煤业或东华或汇总，本部矿或者是外部矿
         //本部矿和外部矿不是前台传的需要自己区分
         ZjxlReport zjxlReport = new ZjxlReport();
-        zjxlReport.setZjxlYear(zjDepreciationCostReport.getYearTime());//还差条件kb
+        zjxlReport.setZjxlYear(zjDepreciationCostReport.getYearTime());
+        if(!zjDepreciationCostReport.getAssetComp().equals("1100")){
+            zjxlReport.setZc(zjDepreciationCostReport.getAssetComp());//东华还是煤业（1180,1730）
+        }
+
         List<ZjxlReport> zjxlReports = zjxlReportMapper.list(zjxlReport);
 
         String month = zjDepreciationCostReport.getMonthTime();
@@ -101,6 +105,7 @@ public class ZjDepCostReportServiceImpl implements ZjDepreciationCostReportServi
             ZjDepreciationCostReportItem zjDepreciationCostReportItemYang = new ZjDepreciationCostReportItem();
             for(ZjxlReport zjxl:zjxlReports) {
                 zjDepreciationCostReportItemNan.setDeptName("南屯矿");
+                zjDepreciationCostReportItemNan.setDeptType("1");
                 this.monthCost("南屯矿",zjxl,zjDepreciationCostReportItemNan,month);//查询一个矿所查月份的修理费
             }
             Double totalNan = totalheji(zjDepreciationCostReportItemNan);//南屯矿合计
@@ -111,6 +116,7 @@ public class ZjDepCostReportServiceImpl implements ZjDepreciationCostReportServi
 
             for(ZjxlReport zjxl:zjxlReports) {
                 zjDepreciationCostReportItemXing.setDeptName("兴隆矿");
+                zjDepreciationCostReportItemXing.setDeptType("1");
                 this.monthCost("兴隆矿",zjxl,zjDepreciationCostReportItemXing,month);
             }
             Double totalxing = totalheji(zjDepreciationCostReportItemXing);//兴隆矿合计
@@ -119,6 +125,7 @@ public class ZjDepCostReportServiceImpl implements ZjDepreciationCostReportServi
 
             for(ZjxlReport zjxl:zjxlReports) {
                 zjDepreciationCostReportItemBao.setDeptName("鲍店");
+                zjDepreciationCostReportItemBao.setDeptType("1");
                 this.monthCost("鲍店",zjxl,zjDepreciationCostReportItemBao,month);
             }
             Double totalBao = totalheji(zjDepreciationCostReportItemBao);//鲍店合计
@@ -129,6 +136,7 @@ public class ZjDepCostReportServiceImpl implements ZjDepreciationCostReportServi
 
             for(ZjxlReport zjxl:zjxlReports) {
                 zjDepreciationCostReportItemDong.setDeptName("东滩矿");
+                zjDepreciationCostReportItemDong.setDeptType("1");
                 this.monthCost("东滩矿",zjxl,zjDepreciationCostReportItemDong,month);
             }
             Double totalDong = totalheji(zjDepreciationCostReportItemDong);//东滩矿合计
@@ -139,9 +147,10 @@ public class ZjDepCostReportServiceImpl implements ZjDepreciationCostReportServi
 
             for(ZjxlReport zjxl:zjxlReports) {
                 zjDepreciationCostReportItemJier.setDeptName("济二");
+                zjDepreciationCostReportItemJier.setDeptType("1");
                 this.monthCost("济二",zjxl,zjDepreciationCostReportItemJier,month);
             }
-            Double totalJiEr = totalheji(zjDepreciationCostReportItemJier);//兴隆矿合计
+            Double totalJiEr = totalheji(zjDepreciationCostReportItemJier);//济二合计
             zjDepreciationCostReportItemJier.setDeptSum(totalJiEr);
             if(totalJiEr!=0.0){
                 zjDepreciationCostReportItemListHome.add(zjDepreciationCostReportItemJier);
@@ -150,9 +159,10 @@ public class ZjDepCostReportServiceImpl implements ZjDepreciationCostReportServi
 
             for(ZjxlReport zjxl:zjxlReports) {
                 zjDepreciationCostReportItemJiSan.setDeptName("济三");
+                zjDepreciationCostReportItemJiSan.setDeptType("1");
                 this.monthCost("济三",zjxl,zjDepreciationCostReportItemJiSan,month);
             }
-            Double totalJiSan = totalheji(zjDepreciationCostReportItemJiSan);//兴隆矿合计
+            Double totalJiSan = totalheji(zjDepreciationCostReportItemJiSan);//济三合计
             zjDepreciationCostReportItemJiSan.setDeptSum(totalJiSan);
             if(totalJiSan!=0.0){
                 zjDepreciationCostReportItemListHome.add(zjDepreciationCostReportItemJiSan);
@@ -160,9 +170,10 @@ public class ZjDepCostReportServiceImpl implements ZjDepreciationCostReportServi
 
             for(ZjxlReport zjxl:zjxlReports) {
                 zjDepreciationCostReportItemYang.setDeptName("杨村");
+                zjDepreciationCostReportItemYang.setDeptType("1");
                 this.monthCost("杨村",zjxl,zjDepreciationCostReportItemYang,month);
             }
-            Double totalYang = totalheji(zjDepreciationCostReportItemYang);//兴隆矿合计
+            Double totalYang = totalheji(zjDepreciationCostReportItemYang);//杨村合计
             zjDepreciationCostReportItemYang.setDeptSum(totalYang);
             if(totalYang!=0.0){
                 zjDepreciationCostReportItemListHome.add(zjDepreciationCostReportItemYang);
@@ -184,6 +195,7 @@ public class ZjDepCostReportServiceImpl implements ZjDepreciationCostReportServi
             ZjDepreciationCostReportItem zjDepreciationCostReportItemLong = new ZjDepreciationCostReportItem();
             for(ZjxlReport zjxl:zjxlReports) {
                 zjDepreciationCostReportItemZhao.setDeptName("赵楼");
+                zjDepreciationCostReportItemZhao.setDeptType("2");
                 this.monthCost("赵楼",zjxl,zjDepreciationCostReportItemZhao,month);
             }
             Double totalzhao = totalheji(zjDepreciationCostReportItemZhao);//赵楼合计
@@ -194,6 +206,7 @@ public class ZjDepCostReportServiceImpl implements ZjDepreciationCostReportServi
 
             for(ZjxlReport zjxl:zjxlReports) {
                 zjDepreciationCostReportItemTian.setDeptName("天池");
+                zjDepreciationCostReportItemTian.setDeptType("2");
                 this.monthCost("天池",zjxl,zjDepreciationCostReportItemTian,month);
             }
             Double totaltian = totalheji(zjDepreciationCostReportItemTian);//天池合计
@@ -204,6 +217,7 @@ public class ZjDepCostReportServiceImpl implements ZjDepreciationCostReportServi
 
             for(ZjxlReport zjxl:zjxlReports) {
                 zjDepreciationCostReportItemZhuan.setDeptName("转龙湾");
+                zjDepreciationCostReportItemZhuan.setDeptType("2");
                 this.monthCost("转龙湾",zjxl,zjDepreciationCostReportItemZhuan,month);
             }
             Double totalzhuan = totalheji(zjDepreciationCostReportItemZhuan);//转龙湾合计
@@ -215,9 +229,10 @@ public class ZjDepCostReportServiceImpl implements ZjDepreciationCostReportServi
 
             for(ZjxlReport zjxl:zjxlReports) {
                 zjDepreciationCostReportItemAn.setDeptName("安源");
+                zjDepreciationCostReportItemAn.setDeptType("2");
                 this.monthCost("安源",zjxl,zjDepreciationCostReportItemAn,month);
             }
-            Double totalAn = totalheji(zjDepreciationCostReportItemAn);//转龙湾合计
+            Double totalAn = totalheji(zjDepreciationCostReportItemAn);//安源合计
             zjDepreciationCostReportItemAn.setDeptSum(totalAn);
             if(totalAn!=0.0){
                 zjDepreciationCostReportItemListEnter.add(zjDepreciationCostReportItemAn);
@@ -225,9 +240,10 @@ public class ZjDepCostReportServiceImpl implements ZjDepreciationCostReportServi
 
             for(ZjxlReport zjxl:zjxlReports) {
                 zjDepreciationCostReportItemShi.setDeptName("石拉乌素");
+                zjDepreciationCostReportItemShi.setDeptType("2");
                 this.monthCost("石拉乌素",zjxl,zjDepreciationCostReportItemShi,month);
             }
-            Double totalShi= totalheji(zjDepreciationCostReportItemShi);//转龙湾合计
+            Double totalShi= totalheji(zjDepreciationCostReportItemShi);//石拉乌素合计
             zjDepreciationCostReportItemShi.setDeptSum(totalShi);
             if(totalShi!=0.0){
                 zjDepreciationCostReportItemListEnter.add(zjDepreciationCostReportItemShi);
@@ -235,9 +251,10 @@ public class ZjDepCostReportServiceImpl implements ZjDepreciationCostReportServi
 
             for(ZjxlReport zjxl:zjxlReports) {
                 zjDepreciationCostReportItemYing.setDeptName("营盘壕");
+                zjDepreciationCostReportItemYing.setDeptType("2");
                 this.monthCost("营盘壕",zjxl,zjDepreciationCostReportItemYing,month);
             }
-            Double totalYing= totalheji(zjDepreciationCostReportItemYing);//转龙湾合计
+            Double totalYing= totalheji(zjDepreciationCostReportItemYing);//营盘壕合计
             zjDepreciationCostReportItemYing.setDeptSum(totalYing);
             if(totalYing!=0.0){
                 zjDepreciationCostReportItemListEnter.add(zjDepreciationCostReportItemYing);
@@ -245,9 +262,10 @@ public class ZjDepCostReportServiceImpl implements ZjDepreciationCostReportServi
 
             for(ZjxlReport zjxl:zjxlReports) {
                 zjDepreciationCostReportItemLiu.setDeptName("硫磺沟");
+                zjDepreciationCostReportItemLiu.setDeptType("2");
                 this.monthCost("硫磺沟",zjxl,zjDepreciationCostReportItemLiu,month);
             }
-            Double totalLiu = totalheji(zjDepreciationCostReportItemLiu);//转龙湾合计
+            Double totalLiu = totalheji(zjDepreciationCostReportItemLiu);//硫磺沟合计
             zjDepreciationCostReportItemLiu.setDeptSum(totalLiu);
             if(totalLiu!=0.0){
                 zjDepreciationCostReportItemListEnter.add(zjDepreciationCostReportItemLiu);
@@ -255,9 +273,10 @@ public class ZjDepCostReportServiceImpl implements ZjDepreciationCostReportServi
 
             for(ZjxlReport zjxl:zjxlReports) {
                 zjDepreciationCostReportItemLong.setDeptName("龙凤矿");
+                zjDepreciationCostReportItemLong.setDeptType("2");
                 this.monthCost("龙凤矿",zjxl,zjDepreciationCostReportItemLong,month);
             }
-            Double totalLong = totalheji(zjDepreciationCostReportItemLong);//转龙湾合计
+            Double totalLong = totalheji(zjDepreciationCostReportItemLong);//龙凤矿合计
             zjDepreciationCostReportItemLong.setDeptSum(totalLong);
             if(totalLong!=0.0){
                 zjDepreciationCostReportItemListEnter.add(zjDepreciationCostReportItemLong);

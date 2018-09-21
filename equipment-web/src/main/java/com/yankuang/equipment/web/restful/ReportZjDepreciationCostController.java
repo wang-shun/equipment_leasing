@@ -3,10 +3,7 @@ package com.yankuang.equipment.web.restful;
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.equipment.model.ZjDepreciationCostReport;
-import com.yankuang.equipment.equipment.model.ZjxlReport;
-import com.yankuang.equipment.equipment.service.ZjDepreciationCostReportItemService;
 import com.yankuang.equipment.equipment.service.ZjDepreciationCostReportService;
-import com.yankuang.equipment.equipment.service.ZjxlReportService;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -28,12 +25,9 @@ public class ReportZjDepreciationCostController {
     @RpcConsumer
     ZjDepreciationCostReportService zjDepreciationCostReportService;
 
-    @RpcConsumer
-    ZjxlReportService zjxlReportService;
-
 
     //这边需要从前台传（1180,1730(资产公司)，月份） 年月，煤业或东华或是汇总
-    //折旧修理费分年汇总煤业，东华，和汇总（煤业东华之和）  assetComp,（1180(煤业),1730(东华)，1110（汇总）)
+    //折旧修理费分年汇总煤业，东华，和汇总（煤业东华之和）  assetComp,（1180(煤业),1730(东华)，1100（汇总）)
     @GetMapping("/findCostRepairList")
     public CommonResponse findCostRepairList(@RequestParam String jsonString) {
 
@@ -62,6 +56,7 @@ public class ReportZjDepreciationCostController {
                 zjCostRepairMap.put("assetComp",zjDepreciationCostReport.getAssetComp());
                 return CommonResponse.ok(zjDepreciationCostReportService.list(zjCostRepairMap));//从新表中查
             }else{
+                zjDepreciationCostReport.setMonthTime(String.valueOf(month));
                 return CommonResponse.ok(zjDepreciationCostReportService.listzjxl(zjDepreciationCostReport));//连表查询
             }
         }

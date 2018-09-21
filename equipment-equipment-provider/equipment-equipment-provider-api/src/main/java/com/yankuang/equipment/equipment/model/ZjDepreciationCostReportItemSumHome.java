@@ -14,20 +14,19 @@ import java.io.Serializable;
 @Data
 public class ZjDepreciationCostReportItemSumHome implements Serializable {
 
-    private Double moreDeptSum;//小计
-
-    private Double month01xiaoji;
-    private Double month02xiaoji;
-    private Double month03xiaoji;
-    private Double month04xiaoji;
-    private Double month05xiaoji;
-    private Double month06xiaoji;
-    private Double month07xiaoji;
-    private Double month08xiaoji;
-    private Double month09xiaoji;
-    private Double month10xiaoji;
-    private Double month11xiaoji;
-    private Double month12xiaoji;
+    private Double moreDeptSum;//本部矿合计的小计
+    private Double month01xiaoji;//1月小计
+    private Double month02xiaoji;//2月小计
+    private Double month03xiaoji;//3月小计
+    private Double month04xiaoji;//4月小计
+    private Double month05xiaoji;//5月小计
+    private Double month06xiaoji;//6月小计
+    private Double month07xiaoji;//7月小计
+    private Double month08xiaoji;//8月小计
+    private Double month09xiaoji;//9月小计
+    private Double month10xiaoji;//10月小计
+    private Double month11xiaoji;//11月小计
+    private Double month12xiaoji;//12月小计
 
 
 }
