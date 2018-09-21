@@ -96,7 +96,7 @@ public class ReportEquipmentZMonthImpl implements ReportEquipmentZMonthService {
                 BigDecimal curMonthsPlanVal = new BigDecimal(reportEquipmentZMonthItem.getYearPlanVal()*month/12).setScale(4, RoundingMode.UP);
                 reportEquipmentZMonthSumItem1.setCurMonthsPlanVal(curMonthsPlanVal.doubleValue());
 
-                reportEquipmentZMonthSumItem1.setCurMonthsVal(reportEquipmentZMonthItem.getSumVal());
+                reportEquipmentZMonthSumItem1.setCurMonthsVal(new BigDecimal(reportEquipmentZMonthItem.getSumVal()).setScale(4, RoundingMode.UP).doubleValue());
 
                 double curMonthVal = 0;
                 if(month == 1){curMonthVal = reportEquipmentZMonthItem.getMonth01();}
@@ -111,7 +111,7 @@ public class ReportEquipmentZMonthImpl implements ReportEquipmentZMonthService {
                 if(month == 10){curMonthVal = reportEquipmentZMonthItem.getMonth10();}
                 if(month == 11){curMonthVal = reportEquipmentZMonthItem.getMonth11();}
                 if(month == 12){curMonthVal = reportEquipmentZMonthItem.getMonth12();}
-                reportEquipmentZMonthSumItem1.setCurMonthVal(curMonthVal);
+                reportEquipmentZMonthSumItem1.setCurMonthVal(new BigDecimal(curMonthVal).setScale(4, RoundingMode.UP).doubleValue());
 
                 BigDecimal preMonthsPlanVal = new BigDecimal(reportEquipmentZMonthItem.getSumVal()-curMonthVal).setScale(4, RoundingMode.UP);
                 reportEquipmentZMonthSumItem1.setPreMonthsVal(preMonthsPlanVal.doubleValue());
@@ -128,7 +128,7 @@ public class ReportEquipmentZMonthImpl implements ReportEquipmentZMonthService {
                 BigDecimal curMonthsPlanVal = new BigDecimal(reportEquipmentZMonthItem.getYearPlanVal()*month/12).setScale(4, RoundingMode.UP);
                 reportEquipmentZMonthSumItem1.setCurMonthsPlanVal(curMonthsPlanVal.doubleValue());
 
-                reportEquipmentZMonthSumItem1.setCurMonthsVal(reportEquipmentZMonthItem.getSumVal());
+                reportEquipmentZMonthSumItem1.setCurMonthsVal(new BigDecimal(reportEquipmentZMonthItem.getSumVal()).setScale(4, RoundingMode.UP).doubleValue());
 
                 double curMonthVal = 0;
                 if(month == 1){curMonthVal = reportEquipmentZMonthItem.getMonth01();}
@@ -143,7 +143,7 @@ public class ReportEquipmentZMonthImpl implements ReportEquipmentZMonthService {
                 if(month == 10){curMonthVal = reportEquipmentZMonthItem.getMonth10();}
                 if(month == 11){curMonthVal = reportEquipmentZMonthItem.getMonth11();}
                 if(month == 12){curMonthVal = reportEquipmentZMonthItem.getMonth12();}
-                reportEquipmentZMonthSumItem1.setCurMonthVal(curMonthVal);
+                reportEquipmentZMonthSumItem1.setCurMonthVal(new BigDecimal(curMonthVal).setScale(4, RoundingMode.UP).doubleValue());
 
                 BigDecimal preMonthsPlanVal = new BigDecimal(reportEquipmentZMonthItem.getSumVal()-curMonthVal).setScale(4, RoundingMode.UP);
                 reportEquipmentZMonthSumItem1.setPreMonthsVal(preMonthsPlanVal.doubleValue());
@@ -168,7 +168,7 @@ public class ReportEquipmentZMonthImpl implements ReportEquipmentZMonthService {
                 BigDecimal curMonthsPlanVal = new BigDecimal(reportEquipmentZMonthItem.getYearPlanVal()*month/12).setScale(4, RoundingMode.UP);
                 reportEquipmentZMonthSumItem2.setCurMonthsPlanVal(curMonthsPlanVal.doubleValue());
 
-                reportEquipmentZMonthSumItem2.setCurMonthsVal(reportEquipmentZMonthItem.getSumVal());
+                reportEquipmentZMonthSumItem2.setCurMonthsVal(new BigDecimal(reportEquipmentZMonthItem.getSumVal()).setScale(4, RoundingMode.UP).doubleValue());
 
                 double curMonthVal = 0;
                 if(month == 1){curMonthVal = reportEquipmentZMonthItem.getMonth01();}
@@ -183,7 +183,7 @@ public class ReportEquipmentZMonthImpl implements ReportEquipmentZMonthService {
                 if(month == 10){curMonthVal = reportEquipmentZMonthItem.getMonth10();}
                 if(month == 11){curMonthVal = reportEquipmentZMonthItem.getMonth11();}
                 if(month == 12){curMonthVal = reportEquipmentZMonthItem.getMonth12();}
-                reportEquipmentZMonthSumItem2.setCurMonthVal(curMonthVal);
+                reportEquipmentZMonthSumItem2.setCurMonthVal(new BigDecimal(curMonthVal).setScale(4, RoundingMode.UP).doubleValue());
 
                 BigDecimal preMonthsPlanVal = new BigDecimal(reportEquipmentZMonthItem.getSumVal()-curMonthVal).setScale(4, RoundingMode.UP);
                 reportEquipmentZMonthSumItem2.setPreMonthsVal(preMonthsPlanVal.doubleValue());
@@ -200,7 +200,7 @@ public class ReportEquipmentZMonthImpl implements ReportEquipmentZMonthService {
                 BigDecimal curMonthsPlanVal = new BigDecimal(reportEquipmentZMonthItem.getYearPlanVal()*month/12).setScale(4, RoundingMode.UP);
                 reportEquipmentZMonthSumItem2.setCurMonthsPlanVal(curMonthsPlanVal.doubleValue());
 
-                reportEquipmentZMonthSumItem2.setCurMonthsVal(reportEquipmentZMonthItem.getSumVal());
+                reportEquipmentZMonthSumItem2.setCurMonthsVal(new BigDecimal(reportEquipmentZMonthItem.getSumVal()).setScale(4, RoundingMode.UP).doubleValue());
 
                 double curMonthVal = 0;
                 if(month == 1){curMonthVal = reportEquipmentZMonthItem.getMonth01();}
@@ -215,7 +215,7 @@ public class ReportEquipmentZMonthImpl implements ReportEquipmentZMonthService {
                 if(month == 10){curMonthVal = reportEquipmentZMonthItem.getMonth10();}
                 if(month == 11){curMonthVal = reportEquipmentZMonthItem.getMonth11();}
                 if(month == 12){curMonthVal = reportEquipmentZMonthItem.getMonth12();}
-                reportEquipmentZMonthSumItem2.setCurMonthVal(curMonthVal);
+                reportEquipmentZMonthSumItem2.setCurMonthVal(new BigDecimal(curMonthVal).setScale(4, RoundingMode.UP).doubleValue());
 
                 BigDecimal preMonthsPlanVal = new BigDecimal(reportEquipmentZMonthItem.getSumVal()-curMonthVal).setScale(4, RoundingMode.UP);
                 reportEquipmentZMonthSumItem2.setPreMonthsVal(preMonthsPlanVal.doubleValue());
@@ -239,7 +239,7 @@ public class ReportEquipmentZMonthImpl implements ReportEquipmentZMonthService {
                 BigDecimal curMonthsPlanVal = new BigDecimal(reportEquipmentZMonthItem.getYearPlanVal()*month/12).setScale(4, RoundingMode.UP);
                 reportEquipmentZMonthSumItem3.setCurMonthsPlanVal(curMonthsPlanVal.doubleValue());
 
-                reportEquipmentZMonthSumItem3.setCurMonthsVal(reportEquipmentZMonthItem.getSumVal());
+                reportEquipmentZMonthSumItem3.setCurMonthsVal(new BigDecimal(reportEquipmentZMonthItem.getSumVal()).setScale(4, RoundingMode.UP).doubleValue());
 
                 double curMonthVal = 0;
                 if(month == 1){curMonthVal = reportEquipmentZMonthItem.getMonth01();}
@@ -254,7 +254,7 @@ public class ReportEquipmentZMonthImpl implements ReportEquipmentZMonthService {
                 if(month == 10){curMonthVal = reportEquipmentZMonthItem.getMonth10();}
                 if(month == 11){curMonthVal = reportEquipmentZMonthItem.getMonth11();}
                 if(month == 12){curMonthVal = reportEquipmentZMonthItem.getMonth12();}
-                reportEquipmentZMonthSumItem3.setCurMonthVal(curMonthVal);
+                reportEquipmentZMonthSumItem3.setCurMonthVal(new BigDecimal(curMonthVal).setScale(4, RoundingMode.UP).doubleValue());
 
                 BigDecimal preMonthsPlanVal = new BigDecimal(reportEquipmentZMonthItem.getSumVal()-curMonthVal).setScale(4, RoundingMode.UP);
                 reportEquipmentZMonthSumItem3.setPreMonthsVal(preMonthsPlanVal.doubleValue());
