@@ -137,7 +137,7 @@ public class UserController {
         userDTO.setCode(loginUser.getCode());
         userDTO.setName(loginUser.getName());
         userDTO.setDeptCode(loginUser.getDeptCode());
-        userDTO.setDeptId(loginUser.getId());
+        userDTO.setDeptId(loginUser.getDeptId());
         userDTO.setDeptName(loginUser.getDeptName());
         userDTO.setProjectCode(loginUser.getProjectCode());
         // redis中存放的key
