@@ -11,6 +11,8 @@ import org.apache.log4j.Logger;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Calendar;
+
 @CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("/v1/reportEquipmentZMonth")
@@ -68,6 +70,25 @@ public class ReportEquipmentZMonthController {
             return CommonResponse.ok(reportEquipmentZMonthService.updateYearPlanValById(reportEquipmentZMonthItem));
         }catch (Exception e){
             return CommonResponse.errorException("更新综机折旧修理费月报的年度计划值失败!");
+        }
+    }
+
+    @RequestMapping(value = "/ReCalReportEquipmentZMonth",method = RequestMethod.PUT)
+    public CommonResponse ReCalReportEquipmentZMonth(){
+        try{
+            logger.info("......................重新汇总各矿上月的综机租赁费开始......................");
+
+            //获取当前的日期,只有在每月21号~31号之间才可以重新计算
+            Calendar cale = Calendar.getInstance();
+            int day = cale.get(Calendar.DATE);
+            if(day >= 21 && day <= 31){
+                return CommonResponse.ok(reportEquipmentZMonthService.CalReportEquipmentZMonth());
+            }else{
+                return CommonResponse.errorMsg("每月21号~31号之间才可以重新计算");
+            }
+        }catch (Exception e){
+            logger.info("......................重新汇总各矿上月的综机租赁费异常......................");
+            return CommonResponse.errorException("重新汇总各矿上月的综机租赁费异常!");
         }
     }
 }
