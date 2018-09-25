@@ -5,8 +5,9 @@
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="code" property="code" jdbcType="VARCHAR" />
     <result column="sorting" property="sorting" jdbcType="BIGINT" />
-    <result column="status" property="status" jdbcType="BIGINT" />
-    <result column="version" property="version" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="postatus" property="poStatus" jdbcType="TINYINT" />
+    <result column="version" property="version" jdbcType="BIGINT" />
     <result column="remarks" property="remarks" jdbcType="VARCHAR" />
     <result column="create_by" property="createBy" jdbcType="BIGINT" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
@@ -21,7 +22,7 @@
     <result column="report_month" property="reportMonth" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, code, sorting, status, version, remarks, create_by, create_at, update_by, update_at, 
+    id, code, sorting, status, postatus, version, remarks, create_by, create_at, update_by, update_at,
     export_at, middle_name, middle_code, position_map, total_fee, report_year, report_month
   </sql>
   <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
@@ -36,15 +37,15 @@
   </update>
   <insert id="insert" parameterType="com.yankuang.equipment.equipment.model.ElFeePositionT" >
     insert into el_fee_position_t (code, sorting,
-      status, version, remarks, 
+      status, postatus, version, remarks,
       create_by, create_at, update_by, 
-      update_at, export_at, middle_name, 
+      update_at, middle_name,
       middle_code, position_map, total_fee, 
       report_year, report_month)
     values (#{code,jdbcType=VARCHAR}, #{sorting,jdbcType=BIGINT},
-      #{status,jdbcType=BIGINT}, #{version,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, 
+      1,#{poStatus,jdbcType=TINYINT}, #{version,jdbcType=BIGINT}, #{remarks,jdbcType=VARCHAR},
       #{createBy,jdbcType=BIGINT}, #{createAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=BIGINT}, 
-      #{updateAt,jdbcType=TIMESTAMP}, #{exportAt,jdbcType=TIMESTAMP}, #{middleName,jdbcType=VARCHAR}, 
+      #{updateAt,jdbcType=TIMESTAMP}, #{middleName,jdbcType=VARCHAR},
       #{middleCode,jdbcType=VARCHAR}, #{positionMap,jdbcType=VARCHAR}, #{totalFee,jdbcType=DOUBLE}, 
       #{reportYear,jdbcType=VARCHAR}, #{reportMonth,jdbcType=VARCHAR})
   </insert>
@@ -59,10 +60,10 @@
         sorting = #{sorting,jdbcType=BIGINT},
       </if>
       <if test="status != null" >
-        status = #{status,jdbcType=BIGINT},
+        status = #{status,jdbcType=TINYINT},
       </if>
       <if test="version != null" >
-        version = #{version,jdbcType=VARCHAR},
+        version = #{version,jdbcType=BIGINT},
       </if>
       <if test="remarks != null" >
         remarks = #{remarks,jdbcType=VARCHAR},
@@ -103,4 +104,46 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+    <update id="history" parameterType="com.yankuang.equipment.equipment.model.ElFeePositionT">
+        update el_fee_position_t set status = 2 where status != 99
+        <if test="reportYear != null and reportYear != ''" >
+            and report_year = #{reportYear}
+        </if>
+        <if test="reportMonth != null and reportMonth != ''" >
+            and report_month = #{reportMonth}
+        </if>
+    </update>
+
+    <select id="list" parameterType="com.yankuang.equipment.equipment.model.ElFeePositionT" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from el_fee_position_t
+        where 1 = 1 and status != 99 and status != 2
+        <if test="reportYear != null and reportYear != ''" >
+            and report_year = #{reportYear}
+        </if>
+        <if test="reportMonth != null and reportMonth != ''" >
+            and report_month = #{reportMonth}
+        </if>
+        <if test="poStatus != null and poStatus != ''" >
+            and postatus = #{poStatus}
+        </if>
+    </select>
+
+    <insert id="createBatch" parameterType="java.util.List" >
+    insert into el_fee_position_t (code, sorting,
+      status, postatus, version, remarks,
+      create_by, update_by,
+      middle_name,
+      middle_code, position_map, total_fee,
+      report_year, report_month)
+    values
+        <foreach collection="list" item="item" index="index" open="" close="" separator=",">
+            (#{item.code,jdbcType=VARCHAR}, #{item.sorting,jdbcType=BIGINT},
+            1, #{item.poStatus,jdbcType=TINYINT}, #{item.version,jdbcType=BIGINT}, #{item.remarks,jdbcType=VARCHAR},
+            #{item.createBy,jdbcType=BIGINT}, #{item.updateBy,jdbcType=BIGINT},
+            #{item.middleName,jdbcType=VARCHAR},
+            #{item.middleCode,jdbcType=VARCHAR}, #{item.positionMap,jdbcType=VARCHAR}, #{item.totalFee,jdbcType=DOUBLE},
+            #{item.reportYear,jdbcType=VARCHAR}, #{item.reportMonth,jdbcType=VARCHAR})
+        </foreach>
+  </insert>
 </mapper>

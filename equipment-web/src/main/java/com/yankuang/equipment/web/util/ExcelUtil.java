@@ -1244,7 +1244,7 @@ public class ExcelUtil {
             cel14.setCellStyle(style2);
 
             BigDecimal b13 = new BigDecimal(Double.toString(totalT));
-            total  = total.add(b13);
+            total  = total.add(b13);//合计下的小计
             totalxiaoji = total.doubleValue();//合计（所有小计合计的数）
 
         }

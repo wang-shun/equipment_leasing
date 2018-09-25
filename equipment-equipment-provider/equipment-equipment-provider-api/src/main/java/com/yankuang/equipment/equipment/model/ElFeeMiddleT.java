@@ -1,6 +1,7 @@
 package com.yankuang.equipment.equipment.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -14,9 +15,10 @@ import java.util.Date;
 public class ElFeeMiddleT implements Serializable {
     private Long id;
 
+    @JsonIgnore
     private String code;
 
-    private Byte status; // 状态 1：正常 2：删除
+    private Byte status; // 状态 1：正常  2：历史  99：删除
 
     private String positionName; // 矿处单位名称
 
@@ -47,6 +49,7 @@ public class ElFeeMiddleT implements Serializable {
 
     private String remarks; // 备注
 
+    @JsonIgnore
     private String exportAtStr; // 导出月度 年度-月度
 
     private Long approveBy; // 审核人ID
@@ -63,12 +66,15 @@ public class ElFeeMiddleT implements Serializable {
 
     private Long createBy; // 创建人ID
 
+    @JsonIgnore
     private Long sorting; // 排序
 
     private Long version; // 版本
 
+    @JsonIgnore
     private Integer pageNum; // 页码
 
+    @JsonIgnore
     private Integer pageSize; // 每页记录数
 
 }

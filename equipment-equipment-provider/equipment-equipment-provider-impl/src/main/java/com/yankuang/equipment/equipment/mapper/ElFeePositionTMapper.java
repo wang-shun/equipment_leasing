@@ -3,6 +3,8 @@ package com.yankuang.equipment.equipment.mapper;
 import com.yankuang.equipment.equipment.model.ElFeePositionT;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ElFeePositionTMapper {
     int delete(Long id);
@@ -13,4 +15,9 @@ public interface ElFeePositionTMapper {
 
     int update(ElFeePositionT record);
 
+    int history(ElFeePositionT elFeePositionT);
+
+    List<ElFeePositionT> list(ElFeePositionT elFeePositionT);
+
+    boolean createBatch(List<ElFeePositionT> list);
 }

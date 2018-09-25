@@ -12,7 +12,8 @@ rpc:
   mode: true
   dubbo:
     module: equipment-web
-    registryAddress: ${ZOOKEEPER_HOST:127.0.0.1}:${ZOOKEEPER_PORT:2181}
+    registryAddress: ${ZOOKEEPER_HOST:47.94.211.172}:${ZOOKEEPER_PORT:2181}
+    version: kcx_zl
     port: 20880
 
 management.security.enabled: false

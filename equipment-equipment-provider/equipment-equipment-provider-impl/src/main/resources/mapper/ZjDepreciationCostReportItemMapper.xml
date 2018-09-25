@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yankuang.equipment.equipment.mapper.ZjDepreciationCostReportItemMapper" >
+    <resultMap id="BaseResultMap" type="com.yankuang.equipment.equipment.model.ZjDepreciationCostReportItem" >
+        <result column="dept_name" property="deptName" jdbcType="VARCHAR" />
+        <result column="dept_code" property="deptCode" jdbcType="VARCHAR" />
+        <result column="dept_type" property="deptType" jdbcType="TINYINT" />
+        <result column="january_repairs_cost" property="januaryRepairsCost" jdbcType="DOUBLE" />
+        <result column="february_repairs_cost" property="februaryRepairsCost" jdbcType="DOUBLE" />
+        <result column="march_repairs_cost" property="marchRepairsCost" jdbcType="DOUBLE" />
+        <result column="april_repairs_cost" property="aprilRepairsCost" jdbcType="DOUBLE" />
+        <result column="may_repairs_cost" property="mayRepairsCost" jdbcType="DOUBLE" />
+        <result column="june_repairs_cost" property="juneRepairsCost" jdbcType="DOUBLE" />
+        <result column="july_repairs_cost" property="julyRepairsCost" jdbcType="DOUBLE" />
+        <result column="august_repairs_cost" property="augustRepairsCost" jdbcType="DOUBLE" />
+        <result column="sep_repairs_cost" property="sepRepairsCost" jdbcType="DOUBLE" />
+        <result column="oct_repairs_cost" property="octRepairsCost" jdbcType="DOUBLE" />
+        <result column="nov_repairs_cost" property="novRepairsCost" jdbcType="DOUBLE" />
+        <result column="dec_repairs_cost" property="decRepairsCost" jdbcType="DOUBLE" />
+        <result column="report_id" property="reportId" jdbcType="BIGINT" />
+
+    </resultMap>
+    <sql id="Base_Column_List" >
+        dept_name,dept_code,dept_type,january_repairs_cost,
+        february_repairs_cost,march_repairs_cost,april_repairs_cost,may_repairs_cost,
+        june_repairs_cost,july_repairs_cost,august_repairs_cost,sep_repairs_cost,
+        oct_repairs_cost,nov_repairs_cost,dec_repairs_cost,report_id
+   </sql>
+
+    <insert id="create" parameterType="com.yankuang.equipment.equipment.model.ZjDepreciationCostReportItem" >
+      insert into report_zj_depreciation_cost_item (dept_name,dept_code,dept_type,january_repairs_cost,february_repairs_cost,
+      march_repairs_cost, april_repairs_cost, may_repairs_cost,june_repairs_cost,july_repairs_cost,august_repairs_cost,
+      sep_repairs_cost, oct_repairs_cost, nov_repairs_cost,dec_repairs_cost,report_id)
+      values (#{deptName,jdbcType=VARCHAR},#{deptCode,jdbcType=VARCHAR},#{deptType,jdbcType=VARCHAR},
+      #{januaryRepairsCost,jdbcType=DOUBLE},#{februaryRepairsCost,jdbcType=DOUBLE},#{marchRepairsCost,jdbcType=DOUBLE},
+      #{aprilRepairsCost,jdbcType=DOUBLE},#{mayRepairsCost,jdbcType=DOUBLE},#{juneRepairsCost,jdbcType=DOUBLE},
+      #{julyRepairsCost,jdbcType=DOUBLE},#{augustRepairsCost,jdbcType=DOUBLE},#{sepRepairsCost,jdbcType=DOUBLE},
+      #{octRepairsCost,jdbcType=DOUBLE},#{novRepairsCost,jdbcType=DOUBLE},#{decRepairsCost,jdbcType=DOUBLE},
+      #{reportId,jdbcType=BIGINT})
+    </insert>
+
+    <select id="listHomeOffice" resultMap="BaseResultMap">
+        SELECT
+        t.*
+        FROM report_zj_depreciation_cost_item t
+        WHERE 1=1
+        <if test="reportId != null and reportId != ''" >
+            AND t.report_id = #{reportId}
+        </if>
+        <if test="deptType != null and deptType != ''" >
+            AND t.dept_type = #{deptType}
+        </if>
+    </select>
+
+
+
+</mapper>

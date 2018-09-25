@@ -1,182 +1,72 @@
 package com.yankuang.equipment.equipment.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
 @Data
 @Entity
 @Table(name = "el_fee_position_t")
 public class ElFeePositionT implements Serializable {
     private Long id;
 
+    private Byte status; // 状态
+
+    private String reportYear; // 报表年度
+
+    private String reportMonth; // 报表月度
+
+    private String middleName; // 类型名称
+
+    private String middleCode; // 类型code
+
+    private String positionMap; // 各矿数据String
+
+    private Double totalFee; // 小计
+
+    private Long version; // 版本
+
+    private String remarks; // 备注
+
+    //@JsonIgnore
+    private Map<String, Double> depositMap; // 各矿数据
+
+    private List depositList; // 各矿数据List
+
+    private Long createBy; // 创建人ID
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date createAt; // 创建时间
+
+    private Long updateBy; // 更新人ID
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date updateAt; // 更新时间
+
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date exportAt; // 导出时间
+
+    private Byte poStatus; // 矿状态 1:本部矿  2:外部矿
+
+    @JsonIgnore
     private String code;
 
+    @JsonIgnore
     private Long sorting;
 
-    private Long status;
+    @JsonIgnore
+    private String exportAtStr;
 
-    private String version;
+    @JsonIgnore
+    private Integer pageNum; // 页码
 
-    private String remarks;
-
-    private Long createBy;
-
-    private Date createAt;
-
-    private Long updateBy;
-
-    private Date updateAt;
-
-    private Date exportAt;
-
-    private String middleName;
-
-    private String middleCode;
-
-    private String positionMap;
-
-    private Double totalFee;
-
-    private String reportYear;
-
-    private String reportMonth;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code == null ? null : code.trim();
-    }
-
-    public Long getSorting() {
-        return sorting;
-    }
-
-    public void setSorting(Long sorting) {
-        this.sorting = sorting;
-    }
-
-    public Long getStatus() {
-        return status;
-    }
-
-    public void setStatus(Long status) {
-        this.status = status;
-    }
-
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version == null ? null : version.trim();
-    }
-
-    public String getRemarks() {
-        return remarks;
-    }
-
-    public void setRemarks(String remarks) {
-        this.remarks = remarks == null ? null : remarks.trim();
-    }
-
-    public Long getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(Long createBy) {
-        this.createBy = createBy;
-    }
-
-    public Date getCreateAt() {
-        return createAt;
-    }
-
-    public void setCreateAt(Date createAt) {
-        this.createAt = createAt;
-    }
-
-    public Long getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(Long updateBy) {
-        this.updateBy = updateBy;
-    }
-
-    public Date getUpdateAt() {
-        return updateAt;
-    }
-
-    public void setUpdateAt(Date updateAt) {
-        this.updateAt = updateAt;
-    }
-
-    public Date getExportAt() {
-        return exportAt;
-    }
-
-    public void setExportAt(Date exportAt) {
-        this.exportAt = exportAt;
-    }
-
-    public String getMiddleName() {
-        return middleName;
-    }
-
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName == null ? null : middleName.trim();
-    }
-
-    public String getMiddleCode() {
-        return middleCode;
-    }
-
-    public void setMiddleCode(String middleCode) {
-        this.middleCode = middleCode == null ? null : middleCode.trim();
-    }
-
-    public String getPositionMap() {
-        return positionMap;
-    }
-
-    public void setPositionMap(String positionMap) {
-        this.positionMap = positionMap == null ? null : positionMap.trim();
-    }
-
-    public Double getTotalFee() {
-        return totalFee;
-    }
-
-    public void setTotalFee(Double totalFee) {
-        this.totalFee = totalFee;
-    }
-
-    public String getReportYear() {
-        return reportYear;
-    }
-
-    public void setReportYear(String reportYear) {
-        this.reportYear = reportYear == null ? null : reportYear.trim();
-    }
-
-    public String getReportMonth() {
-        return reportMonth;
-    }
-
-    public void setReportMonth(String reportMonth) {
-        this.reportMonth = reportMonth == null ? null : reportMonth.trim();
-    }
+    @JsonIgnore
+    private Integer pageSize; // 每页记录数
 }

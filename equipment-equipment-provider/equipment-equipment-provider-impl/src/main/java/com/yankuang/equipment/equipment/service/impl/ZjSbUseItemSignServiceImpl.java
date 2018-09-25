@@ -25,7 +25,7 @@ public class ZjSbUseItemSignServiceImpl implements ZjSbUseItemSignService {
 
 
     /**
-     * @method 更新综机设备使用交接单
+     * @method 创建综机设备使用交接单
      * @param zjSbUseItemSignReport
      * @return
      */

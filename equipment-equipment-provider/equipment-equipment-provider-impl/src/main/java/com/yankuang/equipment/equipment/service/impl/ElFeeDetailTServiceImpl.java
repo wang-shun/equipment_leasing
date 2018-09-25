@@ -8,6 +8,7 @@ import com.yankuang.equipment.equipment.service.ElFeeDetailTService;
 import io.terminus.boot.rpc.common.annotation.RpcProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -32,6 +33,20 @@ public class ElFeeDetailTServiceImpl implements ElFeeDetailTService {
     }
 
     public boolean createBatch(List<ElFeeDetailT> list) {
-        return elFeeDetailTMapper.insertBatch(list);
+
+        ElFeeDetailT elFeeDetailT = new ElFeeDetailT();
+
+        for (ElFeeDetailT detailT: list) {
+            if (detailT != null
+                    && !StringUtils.isEmpty(detailT.getPositionCode())
+                    && !StringUtils.isEmpty(detailT.getReportYear())
+                    && !StringUtils.isEmpty(detailT.getReportMonth())) {
+                elFeeDetailT = detailT;
+                break;
+            }
+        }
+
+        boolean flag = elFeeDetailTMapper.history(elFeeDetailT) >= 0;
+        return flag && elFeeDetailTMapper.insertBatch(list) > 0;
     }
 }

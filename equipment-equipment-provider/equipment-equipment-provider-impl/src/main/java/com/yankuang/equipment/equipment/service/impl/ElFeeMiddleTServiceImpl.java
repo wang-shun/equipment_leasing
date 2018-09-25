@@ -9,6 +9,7 @@ import io.terminus.boot.rpc.common.annotation.RpcProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -33,6 +34,29 @@ public class ElFeeMiddleTServiceImpl implements ElFeeMiddleTService {
     }
 
     public boolean createBatch(List<ElFeeMiddleT> list) {
-        return elFeeMiddleTMapper.createBatch(list) > 0;
+
+        ElFeeMiddleT elFeeMiddleT = new ElFeeMiddleT();
+        for (ElFeeMiddleT middleT : list) {
+            if (middleT != null
+                    && !StringUtils.isEmpty(middleT.getPositionCode())
+                    && !StringUtils.isEmpty(middleT.getReportMonth())
+                    && !StringUtils.isEmpty(middleT.getReportYear())) {
+                elFeeMiddleT = middleT;
+                break;
+            }
+        }
+        boolean flag = elFeeMiddleTMapper.history(elFeeMiddleT) >= 0;
+        return flag && elFeeMiddleTMapper.createBatch(list) > 0;
+    }
+
+    public ElFeeMiddleT findTotal(ElFeeMiddleT elFeeMiddleT) {
+
+        List<ElFeeMiddleT> list = elFeeMiddleTMapper.list(elFeeMiddleT);
+        if (list != null && list.size() > 0) {
+            return list.get(0);
+        } else {
+            return null;
+        }
+
     }
 }
