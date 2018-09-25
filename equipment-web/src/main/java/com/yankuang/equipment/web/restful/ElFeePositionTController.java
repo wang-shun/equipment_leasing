@@ -1,14 +1,12 @@
 package com.yankuang.equipment.web.restful;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.yankuang.equipment.authority.model.Dept;
 import com.yankuang.equipment.authority.service.DeptService;
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.equipment.model.ElFeeMiddleT;
 import com.yankuang.equipment.equipment.model.ElFeePositionT;
-import com.yankuang.equipment.equipment.model.ElFeeQuarterT;
 import com.yankuang.equipment.equipment.service.ElFeeMiddleTService;
 import com.yankuang.equipment.equipment.service.ElFeePositionTService;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
