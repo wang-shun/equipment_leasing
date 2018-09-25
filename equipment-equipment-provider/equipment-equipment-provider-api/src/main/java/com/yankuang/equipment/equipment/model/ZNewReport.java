@@ -8,9 +8,9 @@ import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
 
-@Table()
 @Data
 @Entity
+@Table(name = "el_zNewEquipmentList_report")
 public class ZNewReport implements Serializable {
     private Long id;
 

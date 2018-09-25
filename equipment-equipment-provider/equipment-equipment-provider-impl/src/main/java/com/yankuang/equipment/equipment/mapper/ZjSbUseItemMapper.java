@@ -1,6 +1,7 @@
 package com.yankuang.equipment.equipment.mapper;
 
 import com.yankuang.equipment.equipment.model.ZjSbUseItem;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,5 +15,7 @@ public interface ZjSbUseItemMapper {
     List<ZjSbUseItem> list(Map zjSbUseItem);
 
     Integer create(ZjSbUseItem zjSbUseItem);
+
+    Integer historyItems(@Param("useAt")String useAt,@Param("receiptId") Long receiptId);
 
 }

@@ -21,7 +21,7 @@ import java.util.Map;
 @CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("/v1/zjSbUse")
-public class ZjSbUseItemController {
+public class ReportZjSbUseItemController {
 
     @RpcConsumer
     ZjSbUseItemService zjSbUseItemService;

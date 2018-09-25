@@ -4,16 +4,15 @@ import com.alibaba.fastjson.JSON;
 import com.yankuang.equipment.authority.model.Dept;
 import com.yankuang.equipment.authority.service.DeptService;
 import com.yankuang.equipment.common.util.CommonResponse;
+import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.equipment.model.ElFeeMiddleT;
 import com.yankuang.equipment.equipment.model.ElFeePositionT;
 import com.yankuang.equipment.equipment.service.ElFeeMiddleTService;
 import com.yankuang.equipment.equipment.service.ElFeePositionTService;
+import com.yankuang.equipment.web.dto.GenericDTO;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
@@ -45,9 +44,27 @@ public class ElFeePositionTController {
             if (StringUtils.isEmpty(reportMonth)) {
                 return CommonResponse.errorMsg("月度不得为空");
             }
+            if (StringUtils.isEmpty(elFeePositionT.getPoStatus())) {
+                return CommonResponse.errorMsg("矿状态不得为空");
+            }
             elFeePositionT.setReportYear(reportYear);
             elFeePositionT.setReportMonth(reportMonth);
             List<ElFeePositionT> historyList = elFeePositionTService.list(elFeePositionT);
+            for (ElFeePositionT elPositionT : historyList) {
+                if (elPositionT != null && !StringUtils.isEmpty(elPositionT.getPositionMap())) {
+                    Map<String, Double> positionMap = JsonUtils.jsonToPojo(elPositionT.getPositionMap(), Map.class);
+                    if (positionMap == null) {
+                        continue;
+                    }
+                    elPositionT.setDepositMap(positionMap);
+                    List<GenericDTO> genericDTOList = new ArrayList<>();
+                    for (String positionName : positionMap.keySet()) {
+                        GenericDTO genericDTO = new GenericDTO(positionName, positionMap.get(positionName));
+                        genericDTOList.add(genericDTO);
+                    }
+                    elPositionT.setDepositList(genericDTOList);
+                }
+            }
             if (historyList != null && historyList.size() > 0) {
                 return CommonResponse.ok(historyList);
             }
@@ -58,7 +75,6 @@ public class ElFeePositionTController {
             elFeeMiddleT.setReportMonth(reportMonth);
             List<ElFeeMiddleT> elFeeMiddleTs = elFeeMiddleTService.findElFeeMiddleTs(elFeeMiddleT, null, null);
             Map<String, List<ElFeeMiddleT>> middleTMap = new HashMap<>();
-//        List<String> positionList = new ArrayList<>(e);
             Map<String, String> positionMap = new HashMap<>();
             for (ElFeeMiddleT middleT : elFeeMiddleTs) {
                 if (middleT == null) {
@@ -75,17 +91,8 @@ public class ElFeePositionTController {
                 }
                 if (positionName == null) {
                     positionMap.put(middleT.getPositionCode(), middleT.getPositionName());
-    //                positionList.add(middleT.getPositionCode());
                 }
             }
-//        for (String poCode: positionList) {
-//            Dept dept = deptService.findByCode(poCode);
-//            if (dept == null) {
-//                positionList.remove(poCode);
-//            } else if(dept.getAddress() == null || !dept.getAddress().contains("济宁")) {
-//                positionList.remove(poCode);
-//            }
-//        }
 
             for (String poCode : positionMap.keySet()) {
                 if (poCode == null) {
@@ -125,6 +132,7 @@ public class ElFeePositionTController {
                     }
                 }
                 Map<String, Double> positionMapi = new HashMap<>();
+                List<GenericDTO> genericDTOs = new ArrayList<>();
                 double totalFeei = 0D;
                 for (String poCodei : positionMap.keySet()) {
                     if (poCodei == null) {
@@ -134,16 +142,21 @@ public class ElFeePositionTController {
                     for (ElFeeMiddleT middleTi: middleTs) {
                         if (poCodei != null && middleTi != null && poCodei.equals(middleTi.getPositionCode())) {
                             positionMapi.put(positionMap.get(poCodei), middleTi.getTotalFee());
+                            GenericDTO genericDTO = new GenericDTO(positionMap.get(poCodei), middleTi.getTotalFee());
+                            genericDTOs.add(genericDTO);
                             res = true;
                         }
                     }
                     if (!res) {
                         positionMapi.put(positionMap.get(poCodei), 0D);
+                        GenericDTO genericDTO = new GenericDTO(positionMap.get(poCodei), 0D);
+                        genericDTOs.add(genericDTO);
                     }
                     totalFeei += positionMapi.get(positionMap.get(poCodei));
                 }
                 positionT.setDepositMap(positionMapi);
-                positionT.setPositionMap(positionMapi.toString());
+                positionT.setPositionMap(JsonUtils.objectToJson(positionMapi));
+                positionT.setDepositList(genericDTOs);
                 positionT.setTotalFee(totalFeei);
                 positionT.setReportYear(reportYear);
                 positionT.setReportMonth(reportMonth);
@@ -151,6 +164,7 @@ public class ElFeePositionTController {
                 positionT.setVersion(0L);
                 positionT.setStatus((byte)1);
                 positionT.setRemarks("");
+                positionT.setPoStatus(elFeePositionT.getPoStatus());
                 positionTs.add(positionT);
             }
 
@@ -159,6 +173,30 @@ public class ElFeePositionTController {
             }
 
             return CommonResponse.ok(positionTs);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return CommonResponse.errorException("服务异常："+JSON.toJSONString(e));
+        }
+
+    }
+
+    @PostMapping
+    public CommonResponse createBatch(@RequestBody String jsonString) {
+
+        try {
+            if (org.springframework.util.StringUtils.isEmpty(jsonString)) {
+                return CommonResponse.errorMsg("参数不得为空");
+            }
+            List<ElFeePositionT> list = JsonUtils.jsonToList(jsonString, ElFeePositionT.class);
+            if (list == null || list.size() <= 0) {
+                return CommonResponse.errorMsg("参数不得为空");
+            }
+
+            boolean res = elFeePositionTService.createBatch(list);
+            if (!res) {
+                return CommonResponse.errorMsg("创建失败");
+            }
+            return CommonResponse.ok();
         } catch (Exception e) {
             e.printStackTrace();
             return CommonResponse.errorException("服务异常："+JSON.toJSONString(e));

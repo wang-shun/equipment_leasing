@@ -220,9 +220,10 @@
     order by t.create_at desc
   </select>
 
-  <update id="updateStateCodeByMonth">
+  <update id="updateStateCodeByMonth" parameterType="java.util.List">
     update sb_equipment_t
     set state_code = '0001'
     where state_code = '0002' and status = 1 and is_lease = 1
+    and id not in (select equipment_id from el_plan_use where status = 2 and equipment_type = 1)
   </update>
 </mapper>

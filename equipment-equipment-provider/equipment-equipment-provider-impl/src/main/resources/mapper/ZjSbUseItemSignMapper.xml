@@ -8,27 +8,36 @@
         <result column="handover" property="handover" jdbcType="VARCHAR" />
         <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
         <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+        <result column="status" property="status" jdbcType="TINYINT" />
     </resultMap>
     <sql id="Base_Column_List" >
-        id,equipment_management,building_user,handover,create_at,update_at
+        id,equipment_management,building_user,handover,create_at,update_at,status
     </sql>
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="com.yankuang.equipment.equipment.model.ZjSbUseItemSign">
         INSERT INTO el_zjsb_use_item_sign(
-        id,equipment_management,building_user,handover,create_at,update_at
+        id,equipment_management,building_user,handover,create_at,update_at,status
         )
         VALUES
         (#{id,jdbcType=BIGINT},#{equipmentManagement,jdbcType=VARCHAR},
         #{buildingUser,jdbcType=VARCHAR},#{handover,jdbcType=VARCHAR},
         #{createAt,jdbcType=TIMESTAMP},
-        #{updateAt,jdbcType=TIMESTAMP})
+        #{updateAt,jdbcType=TIMESTAMP},
+        #{status,jdbcType=TINYINT})
     </insert>
 
     <select id="findByHandoverTime" parameterType="String" resultType="INTEGER">
         select count(*) from el_zjsb_use_item_sign
-        where 1=1 and handover=#{handover}
+        where 1=1 and handover=#{handover} and status=1
     </select>
 
+    <update id="historySign" parameterType="com.yankuang.equipment.equipment.model.ZjSbUseItemSign" >
+        update el_zjsb_use_item_sign
+        set status = 2 where 1 = 1
+        <if test="handover != null and handover != '' " >
+            and handover = #{handover}
+        </if>
+    </update>
 
 
 

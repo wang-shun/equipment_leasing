@@ -15,7 +15,9 @@ public interface ElFeePositionTMapper {
 
     int update(ElFeePositionT record);
 
-    int history();
+    int history(ElFeePositionT elFeePositionT);
 
     List<ElFeePositionT> list(ElFeePositionT elFeePositionT);
+
+    boolean createBatch(List<ElFeePositionT> list);
 }

@@ -25,7 +25,7 @@ public class ZjSbUseItemSignServiceImpl implements ZjSbUseItemSignService {
 
 
     /**
-     * @method 更新综机设备使用交接单
+     * @method 创建综机设备使用交接单
      * @param zjSbUseItemSignReport
      * @return
      */
@@ -38,13 +38,17 @@ public class ZjSbUseItemSignServiceImpl implements ZjSbUseItemSignService {
         zjSbUseItemSign.setEquipmentManagement(zjSbUseItemSignReport.getEquipmentManagement());
         zjSbUseItemSign.setHandover(zjSbUseItemSignReport.getHandover());
         zjSbUseItemSign.setCreateAt(new Date());
+        zjSbUseItemSign.setStatus((byte)1);
 
+        zjSbUseItemSignMapper.historySign(zjSbUseItemSignReport.getHandover());
         zjSbUseItemSignMapper.create(zjSbUseItemSign);
 
         for (ZjSbUseItem zjSbUseItem:zjSbUseItemList){
             zjSbUseItem.setReceiptId(zjSbUseItemSign.getId());//每个交接单里实体类的id是一样的
             zjSbUseItem.setCreateAt(zjSbUseItemSign.getCreateAt());
             zjSbUseItem.setUseAt(zjSbUseItemSignReport.getHandover());
+            zjSbUseItem.setStatus((byte)1);
+            zjSbUseItemMapper.historyItems(zjSbUseItemSignReport.getHandover(),zjSbUseItemSign.getId());
             zjSbUseItemMapper.create(zjSbUseItem);
         }
 
