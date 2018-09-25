@@ -5,11 +5,11 @@ import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.common.util.StringUtils;
 import com.yankuang.equipment.equipment.model.EquipmentLoss;
 import com.yankuang.equipment.equipment.service.EquipmentLossService;
+import com.yankuang.equipment.web.dto.EquipmentLossDTO;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 @CrossOrigin(maxAge = 3600)
 @RestController
@@ -31,33 +31,45 @@ public class EquipmentLossController {
             return CommonResponse.build(500,"传入参数不能为空",null);
         }
 
-        EquipmentLoss equipmentLoss = JsonUtils.jsonToPojo(jsonString,EquipmentLoss.class);
+        EquipmentLossDTO equipmentLossDTO = JsonUtils.jsonToPojo(jsonString,EquipmentLossDTO.class);
 
-        if (equipmentLoss == null){
-            return CommonResponse.build(500,"传入对象为空",null);
+        if (equipmentLossDTO == null){
+            return CommonResponse.build(500,"传入参数不能为空",null);
         }
 
-        if (equipmentLoss.getUseDeptCode() == null || "".equals(equipmentLoss.getUseDeptCode())){
-            return CommonResponse.build(500,"使用单位Code不能为空",null);
+        List<EquipmentLoss> equipmentLosses = equipmentLossDTO.getEquipmentLosses();
+
+        if (equipmentLosses == null || equipmentLosses.size() <= 0){
+            return CommonResponse.build(500,"参数不能为空",null);
         }
 
-        if (equipmentLoss.getUseMonth() == null || "".equals(equipmentLoss.getUseDeptName())){
-            return CommonResponse.build(500,"领用月份不能为空",null);
+        for (EquipmentLoss equipmentLoss:equipmentLosses) {
+            if (equipmentLoss == null) {
+                return CommonResponse.build(500, "传入对象为空", null);
+            }
+
+            if (equipmentLoss.getUseDeptCode() == null || "".equals(equipmentLoss.getUseDeptCode())) {
+                return CommonResponse.build(500, "使用单位Code不能为空", null);
+            }
+
+            if (equipmentLoss.getUseMonth() == null || "".equals(equipmentLoss.getUseDeptName())) {
+                return CommonResponse.build(500, "领用月份不能为空", null);
+            }
+
+            if (equipmentLoss.getUseYear() == null || "".equals(equipmentLoss.getUseYear())) {
+                return CommonResponse.build(500, "领用年份不能为空", null);
+            }
+
+            if (equipmentLoss.getUseDeptName() == null || "".equals(equipmentLoss.getUseDeptName())) {
+                return CommonResponse.build(500, "传入单位不能为空", null);
+            }
+
+            if (!equipmentLossService.create(equipmentLoss)) {
+                return  CommonResponse.build(500,"创建失败",null);
+            }
         }
 
-        if (equipmentLoss.getUseYear() == null || "".equals(equipmentLoss.getUseYear())){
-            return CommonResponse.build(500,"领用年份不能为空",null);
-        }
-
-        if (equipmentLoss.getUseDeptName() == null || "".equals(equipmentLoss.getUseDeptName())){
-            return CommonResponse.build(500,"传入单位不能为空",null);
-        }
-
-        if (equipmentLossService.create(equipmentLoss)){
-            return CommonResponse.ok();
-        }
-
-        return CommonResponse.build(500,"创建失败",null);
+        return CommonResponse.ok();
     }
 
     /**

@@ -5,8 +5,11 @@ import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.common.util.StringUtils;
 import com.yankuang.equipment.equipment.model.ZNewReport;
 import com.yankuang.equipment.equipment.service.ZNewReportService;
+import com.yankuang.equipment.web.dto.ZNewReportDTO;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author boms
@@ -31,33 +34,39 @@ public class ZNewEquipmentReportController {
             return CommonResponse.build(500,"传入参数不能为空",null);
         }
 
-        ZNewReport zNewReport = JsonUtils.jsonToPojo(jsonString,ZNewReport.class);
+        ZNewReportDTO zNewReportDTO = JsonUtils.jsonToPojo(jsonString,ZNewReportDTO.class);
+        if (zNewReportDTO == null){
+            return CommonResponse.build(500,"获取参数为空",null);
+        }
+        List<ZNewReport> zNewReports = zNewReportDTO.getzNewReports();
 
-        if (zNewReport == null){
-            return CommonResponse.build(500,"传入对象为空",null);
+        for (ZNewReport zNewReport:zNewReports) {
+            if (zNewReport == null) {
+                return CommonResponse.build(500, "传入对象为空", null);
+            }
+
+            if (zNewReport.getUseDeptCode() == null || "".equals(zNewReport.getUseDeptCode())) {
+                return CommonResponse.build(500, "使用单位Code不能为空", null);
+            }
+
+            if (zNewReport.getUseMonth() == null || "".equals(zNewReport.getUseDeptName())) {
+                return CommonResponse.build(500, "领用月份不能为空", null);
+            }
+
+            if (zNewReport.getUseYear() == null || "".equals(zNewReport.getUseYear())) {
+                return CommonResponse.build(500, "领用年份不能为空", null);
+            }
+
+            if (zNewReport.getUseDeptName() == null || "".equals(zNewReport.getUseDeptName())) {
+                return CommonResponse.build(500, "传入单位不能为空", null);
+            }
+
+            if (!zNewReportService.create(zNewReport)){
+                return CommonResponse.build(500,"创建失败",null);
+            }
         }
 
-        if (zNewReport.getUseDeptCode() == null || "".equals(zNewReport.getUseDeptCode())){
-            return CommonResponse.build(500,"使用单位Code不能为空",null);
-        }
-
-        if (zNewReport.getUseMonth() == null || "".equals(zNewReport.getUseDeptName())){
-            return CommonResponse.build(500,"领用月份不能为空",null);
-        }
-
-        if (zNewReport.getUseYear() == null || "".equals(zNewReport.getUseYear())){
-            return CommonResponse.build(500,"领用年份不能为空",null);
-        }
-
-        if (zNewReport.getUseDeptName() == null || "".equals(zNewReport.getUseDeptName())){
-            return CommonResponse.build(500,"传入单位不能为空",null);
-        }
-
-        if (zNewReportService.create(zNewReport)){
-            return CommonResponse.ok();
-        }
-
-        return CommonResponse.build(500,"创建失败",null);
+        return CommonResponse.ok();
     }
 
     /**

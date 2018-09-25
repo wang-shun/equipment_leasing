@@ -56,5 +56,7 @@ public class ZjSbUseItem implements Serializable {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createAt;//创建时间
 
+    private Byte status;
+
 
 }
