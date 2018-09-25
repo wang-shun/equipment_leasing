@@ -39,13 +39,14 @@ public class ElFeeQuarterTController {
             if (elFeeQuarterT == null || StringUtils.isEmpty(elFeeQuarterT.getPositionCode())) {
                 return CommonResponse.errorMsg("矿处单位不得为空");
             }
-            if (elFeeQuarterT == null || StringUtils.isEmpty(elFeeQuarterT.getExportAtStr())) {
-                return CommonResponse.errorMsg("导出时间不得为空");
+            if (elFeeQuarterT == null || StringUtils.isEmpty(elFeeQuarterT.getReportYear())) {
+                return CommonResponse.errorMsg("报表年度不得为空");
             }
-            String reportYear = elFeeQuarterT.getExportAtStr().split("-")[0];
-            String reportQuarter = elFeeQuarterT.getExportAtStr().split("-")[1];
-            elFeeQuarterT.setReportYear(reportYear);
-            elFeeQuarterT.setReportQuarter(reportQuarter);
+            if (elFeeQuarterT == null || StringUtils.isEmpty(elFeeQuarterT.getReportQuarter())) {
+                return CommonResponse.errorMsg("报表季度不得为空");
+            }
+            String reportYear = elFeeQuarterT.getReportYear();
+            String reportQuarter = elFeeQuarterT.getReportMonth();
             List<ElFeeQuarterT> historyList = elFeeQuarterTService.findList(elFeeQuarterT);
             if (historyList != null && historyList.size() > 0) {
                 return CommonResponse.ok(historyList);
