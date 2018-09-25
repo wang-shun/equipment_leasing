@@ -23,7 +23,7 @@ public interface ReportEquipmentZMonthService {
     /**
      * 汇总各矿上月的综机租赁费
      */
-    public void CalReportEquipmentZMonth();
+    public int CalReportEquipmentZMonth();
 
     /**
      * 根据ID更新报表备注信息

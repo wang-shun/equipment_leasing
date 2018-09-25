@@ -267,7 +267,8 @@ public class ReportEquipmentZMonthImpl implements ReportEquipmentZMonthService {
         return reportEquipmentZMonthSum;
     }
 
-    public void CalReportEquipmentZMonth() {
+    public int CalReportEquipmentZMonth() {
+        int res = 1;
         //获取当前的年月
         Calendar cale = Calendar.getInstance();
         int month = cale.get(Calendar.MONTH) + 1;
@@ -278,7 +279,6 @@ public class ReportEquipmentZMonthImpl implements ReportEquipmentZMonthService {
         listZReport.setUseYear(String.valueOf(year));
         listZReport.setUseMonth(String.valueOf(month));
         List<ListZReport> list = zEquipmentListReportMapper.list(listZReport);
-
         if(list != null && list.size() > 0){
             ReportEquipmentZMonth reportEquipmentZMonth = reportEquipmentZMonthMapper.findByYear(String.valueOf(year));
             if(reportEquipmentZMonth != null){
@@ -303,18 +303,31 @@ public class ReportEquipmentZMonthImpl implements ReportEquipmentZMonthService {
                         if(month == 10){reportEquipmentZMonthItem.setMonth10(zReport.getSum());}
                         if(month == 11){reportEquipmentZMonthItem.setMonth11(zReport.getSum());}
                         if(month == 12){reportEquipmentZMonthItem.setMonth12(zReport.getSum());}
-                        reportEquipmentZMonthItemMapper.update(reportEquipmentZMonthItem);
+                        res = reportEquipmentZMonthItemMapper.update(reportEquipmentZMonthItem);
                     }else{
                         ReportEquipmentZMonthItem reportEquipmentZMonthItem = new ReportEquipmentZMonthItem();
                         reportEquipmentZMonthItem.setDeptCode(zReport.getUseDeptCode());
                         reportEquipmentZMonthItem.setDeptName(zReport.getUseDeptName());
                         reportEquipmentZMonthItem.setDeptType(String.valueOf(zReport.getType()));
                         reportEquipmentZMonthItem.setReportId(reportEquipmentZMonth.getId());
-                        reportEquipmentZMonthItemMapper.insert(reportEquipmentZMonthItem);
+                        if(month == 1){reportEquipmentZMonthItem.setMonth01(zReport.getSum());}
+                        if(month == 2){reportEquipmentZMonthItem.setMonth02(zReport.getSum());}
+                        if(month == 3){reportEquipmentZMonthItem.setMonth03(zReport.getSum());}
+                        if(month == 4){reportEquipmentZMonthItem.setMonth04(zReport.getSum());}
+                        if(month == 5){reportEquipmentZMonthItem.setMonth05(zReport.getSum());}
+                        if(month == 6){reportEquipmentZMonthItem.setMonth06(zReport.getSum());}
+                        if(month == 7){reportEquipmentZMonthItem.setMonth07(zReport.getSum());}
+                        if(month == 8){reportEquipmentZMonthItem.setMonth08(zReport.getSum());}
+                        if(month == 9){reportEquipmentZMonthItem.setMonth09(zReport.getSum());}
+                        if(month == 10){reportEquipmentZMonthItem.setMonth10(zReport.getSum());}
+                        if(month == 11){reportEquipmentZMonthItem.setMonth11(zReport.getSum());}
+                        if(month == 12){reportEquipmentZMonthItem.setMonth12(zReport.getSum());}
+                        res = reportEquipmentZMonthItemMapper.insert(reportEquipmentZMonthItem);
                     }
                 }
             }
         }
+        return res;
     }
 
     public int updateRemarkById(ReportEquipmentZMonth reportEquipmentZMonth) {
