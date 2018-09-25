@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ElFeePositionTService {
     List<ElFeePositionT> list(ElFeePositionT elFeePositionT);
+
+    boolean createBatch(List<ElFeePositionT> list);
 }

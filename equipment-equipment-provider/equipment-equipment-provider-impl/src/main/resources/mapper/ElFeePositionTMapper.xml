@@ -104,8 +104,14 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
 
-    <update id="history">
+    <update id="history" parameterType="com.yankuang.equipment.equipment.model.ElFeePositionT">
         update el_fee_position_t set status = 2 where status != 99
+        <if test="reportYear != null and reportYear != ''" >
+            and report_year = #{reportYear}
+        </if>
+        <if test="reportMonth != null and reportMonth != ''" >
+            and report_month = #{reportMonth}
+        </if>
     </update>
 
     <select id="list" parameterType="com.yankuang.equipment.equipment.model.ElFeePositionT" resultMap="BaseResultMap">
@@ -118,4 +124,22 @@
             and report_month = #{reportMonth}
         </if>
     </select>
+
+    <insert id="createBatch" parameterType="java.util.List" >
+    insert into el_fee_position_t (code, sorting,
+      status, version, remarks,
+      create_by, update_by,
+      middle_name,
+      middle_code, position_map, total_fee,
+      report_year, report_month)
+    values
+        <foreach collection="list" item="item" index="index" open="" close="" separator=",">
+            (#{item.code,jdbcType=VARCHAR}, #{item.sorting,jdbcType=BIGINT},
+            1, #{item.version,jdbcType=BIGINT}, #{item.remarks,jdbcType=VARCHAR},
+            #{item.createBy,jdbcType=BIGINT}, #{item.updateBy,jdbcType=BIGINT},
+            #{item.middleName,jdbcType=VARCHAR},
+            #{item.middleCode,jdbcType=VARCHAR}, #{item.positionMap,jdbcType=VARCHAR}, #{item.totalFee,jdbcType=DOUBLE},
+            #{item.reportYear,jdbcType=VARCHAR}, #{item.reportMonth,jdbcType=VARCHAR})
+        </foreach>
+  </insert>
 </mapper>
