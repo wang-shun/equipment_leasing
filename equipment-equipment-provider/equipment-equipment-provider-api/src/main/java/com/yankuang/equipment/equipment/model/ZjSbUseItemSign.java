@@ -32,6 +32,8 @@ public class ZjSbUseItemSign implements Serializable {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createAt;//创建时间
 
+    private Byte status;//1是新，2是旧，99是删除的
+
     private List<ZjSbUseItem> zjSbUseItems;
 
 }

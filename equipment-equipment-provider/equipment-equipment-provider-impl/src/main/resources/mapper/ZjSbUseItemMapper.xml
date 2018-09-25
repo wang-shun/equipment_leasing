@@ -19,10 +19,11 @@
         <result column="use_at" property="useAt" jdbcType="VARCHAR" />
         <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
         <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+        <result column="status" property="status" jdbcType="TINYINT" />
     </resultMap>
     <sql id="Base_Column_List" >
         use_id,equipment_id,receipt_id,equipment_num,remarks,equipment_effect,department_name,equipment_model, equ_Name,tech_code,
-        comp,is_new,stub_unit,is_use,use_at,create_at,update_at
+        comp,is_new,stub_unit,is_use,use_at,create_at,update_at,status
    </sql>
 
     <select id="listEquipmentReceipt" parameterType="map" resultMap="BaseResultMap">
@@ -59,13 +60,13 @@
       insert into el_zjsb_use_item (use_id,equipment_id,receipt_id, equipment_num, remark,
       equipment_effect, department_name, equipment_model,
       equ_Name, tech_code, comp,
-      is_new,is_use,stub_unit, use_at, create_at, update_at)
+      is_new,is_use,stub_unit, use_at, create_at, update_at,status)
       values (#{useId,jdbcType=BIGINT},#{equipmentId,jdbcType=BIGINT},#{receiptId,jdbcType=BIGINT},
       #{equipmentNum,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR},
       #{equipmentEffect,jdbcType=VARCHAR}, #{departmentName,jdbcType=VARCHAR}, #{equipmentModel,jdbcType=VARCHAR},
       #{equName,jdbcType=VARCHAR}, #{techCode,jdbcType=VARCHAR}, #{comp,jdbcType=BIGINT},
       #{isNew,jdbcType=TINYINT}, #{isUse,jdbcType=TINYINT}, #{stubUnit,jdbcType=VARCHAR}, #{useAt,jdbcType=VARCHAR},
-      #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP})
+      #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP},#{status,jdbcType=TINYINT})
   </insert>
 
     <select id="list" parameterType="map" resultMap="BaseResultMap">
@@ -77,6 +78,20 @@
             <if test="handover != null">
                 and zjsbsign.handover = #{handover,jdbcType=VARCHAR}
             </if>
+            and zjsb.status = 1
         </where>
     </select>
+
+    <update id="historyItems" parameterType="com.yankuang.equipment.equipment.model.ZjSbUseItem" >
+        update el_zjsb_use_item
+        set status = 2 where 1 = 1
+        <if test="useAt != null and useAt != '' " >
+            and use_at = #{useAt}
+        </if>
+        <if test="receiptId != null and receiptId != '' " >
+            and receipt_id != #{receiptId}
+        </if>
+    </update>
+
+
 </mapper>
