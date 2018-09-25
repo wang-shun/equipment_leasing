@@ -46,7 +46,7 @@ public class ElFeeQuarterTController {
                 return CommonResponse.errorMsg("报表季度不得为空");
             }
             String reportYear = elFeeQuarterT.getReportYear();
-            String reportQuarter = elFeeQuarterT.getReportMonth();
+            String reportQuarter = elFeeQuarterT.getReportQuarter();
             List<ElFeeQuarterT> historyList = elFeeQuarterTService.findList(elFeeQuarterT);
             if (historyList != null && historyList.size() > 0) {
                 return CommonResponse.ok(historyList);
