@@ -14,6 +14,7 @@ import com.yankuang.equipment.web.dto.ZEquipmentDTO;
 import com.yankuang.equipment.web.util.DateConverterConfig;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.beans.BeanUtils;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
@@ -143,6 +144,9 @@ public class ZEquipmentReportController {
         }
 
         ZEquipmentDTO zEquipmentDTO = JsonUtils.jsonToPojo(jsonString,ZEquipmentDTO.class);
+        if (zEquipmentDTO == null){
+            return CommonResponse.build(500,"参数不能为空",null);
+        }
         if (zEquipmentDTO.getUseDeptName() == null || "".equals(zEquipmentDTO.getUseDeptName())) {
             return CommonResponse.build(500, "部门名称不能为空！", null);
         }
