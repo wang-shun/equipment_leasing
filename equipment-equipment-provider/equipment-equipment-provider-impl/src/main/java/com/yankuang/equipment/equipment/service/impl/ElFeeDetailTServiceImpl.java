@@ -10,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RpcProvider
@@ -35,18 +38,38 @@ public class ElFeeDetailTServiceImpl implements ElFeeDetailTService {
     public boolean createBatch(List<ElFeeDetailT> list) {
 
         ElFeeDetailT elFeeDetailT = new ElFeeDetailT();
-
         for (ElFeeDetailT detailT: list) {
             if (detailT != null
                     && !StringUtils.isEmpty(detailT.getPositionCode())
                     && !StringUtils.isEmpty(detailT.getReportYear())
                     && !StringUtils.isEmpty(detailT.getReportMonth())) {
-                elFeeDetailT = detailT;
+                elFeeDetailT.setPositionCode(detailT.getPositionCode());
+                elFeeDetailT.setReportMonth(detailT.getReportMonth());
+                elFeeDetailT.setReportYear(detailT.getReportYear());
                 break;
             }
         }
+        Map<String, List<ElFeeDetailT>> detailTMap = new HashMap<String, List<ElFeeDetailT>>();
+        for (ElFeeDetailT detailT : list) {
+            if (detailT == null) {
+                continue;
+            }
+            List<ElFeeDetailT> tempList = detailTMap.get(detailT.getPositionCode());
+            if (tempList == null) {
+                tempList = new ArrayList<ElFeeDetailT>();
+                tempList.add(detailT);
+                detailTMap.put(detailT.getPositionCode(), tempList);
+            } else {
+                tempList.add(detailT);
+            }
+        }
+        boolean flag = false;
+        for (String positionCode : detailTMap.keySet()) {
+            elFeeDetailT.setPositionCode(positionCode);
+            flag = elFeeDetailTMapper.history(elFeeDetailT) >= 0;
+            if (!flag) break;
+        }
 
-        boolean flag = elFeeDetailTMapper.history(elFeeDetailT) >= 0;
         return flag && elFeeDetailTMapper.insertBatch(list) > 0;
     }
 }

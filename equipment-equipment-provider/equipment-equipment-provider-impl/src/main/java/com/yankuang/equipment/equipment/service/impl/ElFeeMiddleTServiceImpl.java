@@ -3,6 +3,7 @@ package com.yankuang.equipment.equipment.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yankuang.equipment.equipment.mapper.ElFeeMiddleTMapper;
+import com.yankuang.equipment.equipment.model.ElFeeDetailT;
 import com.yankuang.equipment.equipment.model.ElFeeMiddleT;
 import com.yankuang.equipment.equipment.service.ElFeeMiddleTService;
 import io.terminus.boot.rpc.common.annotation.RpcProvider;
@@ -11,7 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RpcProvider
@@ -41,11 +45,32 @@ public class ElFeeMiddleTServiceImpl implements ElFeeMiddleTService {
                     && !StringUtils.isEmpty(middleT.getPositionCode())
                     && !StringUtils.isEmpty(middleT.getReportMonth())
                     && !StringUtils.isEmpty(middleT.getReportYear())) {
-                elFeeMiddleT = middleT;
+                elFeeMiddleT.setPositionCode(middleT.getPositionCode());
+                elFeeMiddleT.setReportMonth(middleT.getReportMonth());
+                elFeeMiddleT.setReportYear(middleT.getReportYear());
                 break;
             }
         }
-        boolean flag = elFeeMiddleTMapper.history(elFeeMiddleT) >= 0;
+        Map<String, List<ElFeeMiddleT>> middleTMap = new HashMap<String, List<ElFeeMiddleT>>();
+        for (ElFeeMiddleT middleT : list) {
+            if (middleT == null) {
+                continue;
+            }
+            List<ElFeeMiddleT> tempList = middleTMap.get(middleT.getPositionCode());
+            if (tempList == null) {
+                tempList = new ArrayList<ElFeeMiddleT>();
+                tempList.add(middleT);
+                middleTMap.put(middleT.getPositionCode(), tempList);
+            } else {
+                tempList.add(middleT);
+            }
+        }
+        boolean flag = false;
+        for (String positionCode : middleTMap.keySet()) {
+            elFeeMiddleT.setPositionCode(positionCode);
+            flag = elFeeMiddleTMapper.history(elFeeMiddleT) >= 0;
+            if (!flag) break;
+        }
         return flag && elFeeMiddleTMapper.createBatch(list) > 0;
     }
 
