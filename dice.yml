@@ -85,7 +85,7 @@ addons:
     options:
       version: 5.7.23
 #      create_dbs: db_test
-  yankuang-zk:
+  yk-equipment-zk:
     plan: zookeeper:small
   redis:
     plan: redis:small
