@@ -93,7 +93,7 @@ addons:
 
 global_env:
   MYSQL_PORT: 3306
-  MYSQL_DATABASE: yankuang_equipment
+  MYSQL_DATABASE: yankuang_equipment_test
   MYSQL_USERNAME: root
   MYSQL_PASSWORD: uAiqwVwjJ8-i
   MYSQL_HOST: 47.94.211.172
