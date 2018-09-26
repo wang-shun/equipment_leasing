@@ -28,10 +28,10 @@
     <insert id="create" parameterType="com.yankuang.equipment.authority.model.Dept">
         INSERT INTO el_department
         <trim prefix="(" suffix=")" suffixOverrides="," >
-            type, name, code, pcode, sorting, create_by, update_by,project_code,level,remark
+            type, name, code, pcode, sorting, create_by, update_by,project_code,level,remark,address
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
-            #{type}, #{name},#{code},#{pcode},#{sorting},#{createBy},#{updateBy},#{projectCode},#{level},#{remark}
+            #{type}, #{name},#{code},#{pcode},#{sorting},#{createBy},#{updateBy},#{projectCode},#{level},#{remark},#{address}
         </trim>
     </insert>
 
@@ -74,6 +74,9 @@
             <if test="type != null and type != '' " >
                 type = #{type},
             </if>
+            <if test="address != null and address != '' " >
+                type = #{address},
+            </if>
             update_at = CURRENT_TIMESTAMP
         </set>
         where code = #{code}
@@ -81,7 +84,7 @@
 
     <select id="findByCode" parameterType="String" resultMap="BaseResultMap" >
         SELECT
-         d1.id, d1.name,d2.name as pname, d1.code, d1.pcode, d1.level, d1.sorting, d1.remark, d1.create_by, d1.update_by, d1.version, d1.status, d1.project_code,d1.type
+         d1.id, d1.name,d2.name as pname, d1.code, d1.pcode, d1.level, d1.sorting, d1.remark, d1.create_by, d1.update_by, d1.version, d1.status, d1.project_code,d1.type,d1.address
         FROM el_department d1
         left join el_department d2
         on d1.pcode = d2.code
@@ -114,6 +117,9 @@
         </if>
         <if test="level != null and level != '' " >
             AND level = #{level}
+        </if>
+        <if test="address != null and address != '' " >
+            AND address = #{address}
         </if>
             AND status != 99
         </where>
