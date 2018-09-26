@@ -46,24 +46,96 @@
 
   <insert id="insert" parameterType="com.yankuang.equipment.equipment.model.ReportEquipmentZMonthItem">
     insert into report_equipment_z_month_item (id, dept_code, dept_name, 
-      dept_type, year_plan_val, month01, 
-      month02, month03, month04, 
-      month05, month06, month07, 
-      month08, month09, month10, 
-      month11, month12, report_id
+    dept_type,
+    <if test="yearPlanVal != null" >
+      year_plan_val,
+    </if>
+    <if test="month01 != null" >
+      month01,
+    </if>
+    <if test="month02 != null" >
+      month02,
+    </if>
+    <if test="month03 != null" >
+      month03,
+    </if>
+    <if test="month04 != null" >
+      month04,
+    </if>
+    <if test="month05 != null" >
+      month05,
+    </if>
+    <if test="month06 != null" >
+      month06,
+    </if>
+    <if test="month07 != null" >
+      month07,
+    </if>
+    <if test="month08 != null" >
+      month08,
+    </if>
+    <if test="month09 != null" >
+      month09,
+    </if>
+    <if test="month10 != null" >
+      month10,
+    </if>
+    <if test="month11 != null" >
+      month11,
+    </if>
+    <if test="month12 != null" >
+      month12,
+    </if>
+    report_id
       )
     values (#{id,jdbcType=TINYINT}, #{deptCode,jdbcType=VARCHAR}, #{deptName,jdbcType=VARCHAR}, 
-      #{deptType,jdbcType=VARCHAR}, #{yearPlanVal,jdbcType=DOUBLE}, #{month01,jdbcType=DOUBLE}, 
-      #{month02,jdbcType=DOUBLE}, #{month03,jdbcType=DOUBLE}, #{month04,jdbcType=DOUBLE}, 
-      #{month05,jdbcType=DOUBLE}, #{month06,jdbcType=DOUBLE}, #{month07,jdbcType=DOUBLE}, 
-      #{month08,jdbcType=DOUBLE}, #{month09,jdbcType=DOUBLE}, #{month10,jdbcType=DOUBLE}, 
-      #{month11,jdbcType=DOUBLE}, #{month12,jdbcType=DOUBLE}, #{reportId,jdbcType=TINYINT}
+      #{deptType,jdbcType=VARCHAR},
+    <if test="yearPlanVal != null" >
+      #{yearPlanVal,jdbcType=DOUBLE},
+    </if>
+    <if test="month01 != null" >
+      #{month01,jdbcType=DOUBLE},
+    </if>
+    <if test="month02 != null" >
+      #{month02,jdbcType=DOUBLE},
+    </if>
+    <if test="month03 != null" >
+      #{month03,jdbcType=DOUBLE},
+    </if>
+    <if test="month04 != null" >
+      #{month04,jdbcType=DOUBLE},
+    </if>
+    <if test="month05 != null" >
+      #{month05,jdbcType=DOUBLE},
+    </if>
+    <if test="month06 != null" >
+      #{month06,jdbcType=DOUBLE},
+    </if>
+    <if test="month07 != null" >
+      #{month07,jdbcType=DOUBLE},
+    </if>
+    <if test="month08 != null" >
+      #{month08,jdbcType=DOUBLE},
+    </if>
+    <if test="month09 != null" >
+      #{month09,jdbcType=DOUBLE},
+    </if>
+    <if test="month10 != null" >
+      #{month10,jdbcType=DOUBLE},
+    </if>
+    <if test="month11 != null" >
+      #{month11,jdbcType=DOUBLE},
+    </if>
+    <if test="month12 != null" >
+      #{month12,jdbcType=DOUBLE},
+    </if>
+    #{reportId,jdbcType=TINYINT}
       )
   </insert>
 
   <update id="update" parameterType="com.yankuang.equipment.equipment.model.ReportEquipmentZMonthItem" >
     update report_equipment_z_month_item
-    set yearPlanVal = #{yearPlanVal,jdbcType=DOUBLE},
+    set year_plan_val = #{yearPlanVal,jdbcType=DOUBLE},
       month01 = #{month01,jdbcType=DOUBLE},
       month02 = #{month02,jdbcType=DOUBLE},
       month03 = #{month03,jdbcType=DOUBLE},
@@ -75,7 +147,7 @@
       month09 = #{month09,jdbcType=DOUBLE},
       month10 = #{month10,jdbcType=DOUBLE},
       month11 = #{month11,jdbcType=DOUBLE},
-      month12 = #{month12,jdbcType=DOUBLE},
+      month12 = #{month12,jdbcType=DOUBLE}
     where id = #{id,jdbcType=BIGINT}
   </update>
 
@@ -87,7 +159,7 @@
 
   <select id="listByExportId" resultMap="BaseResultMap">
     SELECT
-    @rowno:=@rowno + 1 AS rowno,t.dept_code,t.dept_name,t.year_plan_val,round((t.year_plan_val/12),0) month_plan_val,
+    @rowno:=@rowno + 1 AS rowno,t.id,t.dept_code,t.dept_name,t.year_plan_val,round((t.year_plan_val/12),0) month_plan_val,
     round(t.year_plan_val,0) plan_val,t.month01,t.month02,t.month03,t.month04,t.month05,
     t.month06,t.month07,t.month08,t.month09,t.month10,t.month11,t.month12,
     round(t.month01+t.month02+t.month03+t.month04+t.month05+t.month06+t.month07+t.month08+t.month09+t.month10+t.month11+t.month12,4) sum_val,
