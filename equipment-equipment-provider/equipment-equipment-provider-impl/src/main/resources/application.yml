@@ -3,7 +3,7 @@ spring:
     name: equipment-equipment-provider
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-#    url: jdbc:mysql://${MYSQL_HOST:47.94.211.172}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:yankuang_equipment}?useUnicode=true&characterEncoding=UTF8
+
     url: jdbc:mysql://${MYSQL_HOST:47.94.211.172}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:yankuang_equipment_test}?useUnicode=true&characterEncoding=UTF8
     username: ${MYSQL_USERNAME:root}
     password: ${MYSQL_PASSWORD:uAiqwVwjJ8-i}
