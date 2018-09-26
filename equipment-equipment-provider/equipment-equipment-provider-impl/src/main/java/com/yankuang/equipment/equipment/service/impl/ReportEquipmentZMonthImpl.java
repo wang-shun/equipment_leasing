@@ -89,7 +89,7 @@ public class ReportEquipmentZMonthImpl implements ReportEquipmentZMonthService {
             for(int i=0;i<list1.size();i++){
                 reportEquipmentZMonthSumItem1 = new ReportEquipmentZMonthSumItem();
                 ReportEquipmentZMonthItem reportEquipmentZMonthItem = list1.get(i);
-                //reportEquipmentZMonthSumItem1.setDeptCode(reportEquipmentZMonthItem.getDeptCode());
+                reportEquipmentZMonthSumItem1.setId(reportEquipmentZMonthItem.getId());
                 reportEquipmentZMonthSumItem1.setDeptName(reportEquipmentZMonthItem.getDeptName());
                 reportEquipmentZMonthSumItem1.setYearPlanVal(reportEquipmentZMonthItem.getYearPlanVal());
 
@@ -161,7 +161,7 @@ public class ReportEquipmentZMonthImpl implements ReportEquipmentZMonthService {
             for(int i=0;i<list2.size();i++){
                 reportEquipmentZMonthSumItem2 = new ReportEquipmentZMonthSumItem();
                 ReportEquipmentZMonthItem reportEquipmentZMonthItem = list2.get(i);
-                //reportEquipmentZMonthSumItem2.setDeptCode(reportEquipmentZMonthItem.getDeptCode());
+                reportEquipmentZMonthSumItem2.setId(reportEquipmentZMonthItem.getId());
                 reportEquipmentZMonthSumItem2.setDeptName(reportEquipmentZMonthItem.getDeptName());
                 reportEquipmentZMonthSumItem2.setYearPlanVal(reportEquipmentZMonthItem.getYearPlanVal());
 

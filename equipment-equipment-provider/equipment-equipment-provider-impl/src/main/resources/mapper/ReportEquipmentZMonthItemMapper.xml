@@ -159,7 +159,7 @@
 
   <select id="listByExportId" resultMap="BaseResultMap">
     SELECT
-    @rowno:=@rowno + 1 AS rowno,t.dept_code,t.dept_name,t.year_plan_val,round((t.year_plan_val/12),0) month_plan_val,
+    @rowno:=@rowno + 1 AS rowno,t.id,t.dept_code,t.dept_name,t.year_plan_val,round((t.year_plan_val/12),0) month_plan_val,
     round(t.year_plan_val,0) plan_val,t.month01,t.month02,t.month03,t.month04,t.month05,
     t.month06,t.month07,t.month08,t.month09,t.month10,t.month11,t.month12,
     round(t.month01+t.month02+t.month03+t.month04+t.month05+t.month06+t.month07+t.month08+t.month09+t.month10+t.month11+t.month12,4) sum_val,
