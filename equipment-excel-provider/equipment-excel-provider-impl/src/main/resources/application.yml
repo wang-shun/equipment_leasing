@@ -12,6 +12,7 @@ rpc:
   dubbo:
     module: equipment-excel-provider
     registryAddress: ${ZOOKEEPER_HOST:127.0.0.1}:${ZOOKEEPER_PORT:2181}
+#    version: test
 #    port: 20884
 #    port: 20880
 
