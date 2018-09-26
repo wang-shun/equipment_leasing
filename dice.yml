@@ -83,9 +83,8 @@ addons:
   mysql:
     plan: mysql:small
     options:
-      version: 5.7
-#      create_db: db_test
-    image: dnhsoft/mysql-utf8
+      version: 5.7.23
+#      create_dbs: db_test
   yankuang-zk:
     plan: zookeeper:small
   redis:
