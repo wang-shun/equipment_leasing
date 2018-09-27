@@ -56,4 +56,6 @@ public class EquipmentLoss implements Serializable {
     private Byte type;//矿别
 
     private String useDeptCode;//使用单位Code
+
+    private Byte status;//数据状态值0.表示旧数据1.表示新数据
 }

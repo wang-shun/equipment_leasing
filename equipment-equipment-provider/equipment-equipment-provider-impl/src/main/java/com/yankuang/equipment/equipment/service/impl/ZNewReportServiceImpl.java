@@ -12,6 +12,7 @@ import io.terminus.boot.rpc.common.annotation.RpcProvider;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,8 +25,10 @@ public class ZNewReportServiceImpl implements ZNewReportService {
     @Autowired
     ZEquipmentListReportMapper zEquipmentListReportMapper;
 
+    @Transactional
     public boolean create(ZNewReport zNewReport){
-
+        //添加对之前数据更改
+        zNewReportMapper.update(zNewReport);
         if (zNewReportMapper.create(zNewReport) > 0){
             return true;
         }

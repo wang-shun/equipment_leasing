@@ -25,11 +25,12 @@
         <result column="use_month" property="useMonth" jdbcType="VARCHAR" />
         <result column="type" property="type" jdbcType="TINYINT" />
         <result column="use_dept_code" property="useDeptCode" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="TINYINT"/>
     </resultMap>
     <sql id="Base_Column_List" >
     id, name, equipment_model, equipment_unit, equipment_num, cost_a1, day, sum, remark,
     equipment_code, fee_day, use_dept_name, number, create_excel_name, status_name, sure_name,
-    fee_sum, use_at, equipment_position, use_year, use_month, type, use_dept_code
+    fee_sum, use_at, equipment_position, use_year, use_month, type, use_dept_code, status
   </sql>
     <insert id="create" parameterType="com.yankuang.equipment.equipment.model.ZNewReport" >
     insert into el_zNewEquipmentList_report (id, name, equipment_model,
@@ -39,7 +40,7 @@
       create_excel_name, status_name, sure_name,
       fee_sum, use_at, equipment_position,
       use_year, use_month, type,
-      use_dept_code)
+      use_dept_code, status)
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{equipmentModel,jdbcType=VARCHAR},
       #{equipmentUnit,jdbcType=VARCHAR}, #{equipmentNum,jdbcType=INTEGER}, #{costA1,javaType=DOUBLE},
       #{day,jdbcType=BIGINT}, #{sum,javaType=DOUBLE}, #{remark,jdbcType=VARCHAR}, #{equipmentCode,jdbcType=VARCHAR},
@@ -47,7 +48,7 @@
       #{createExcelName,jdbcType=VARCHAR}, #{statusName,jdbcType=VARCHAR}, #{sureName,jdbcType=VARCHAR},
       #{feeSum,javaType=DOUBLE}, #{useAt,jdbcType=TIMESTAMP}, #{equipmentPosition,jdbcType=VARCHAR},
       #{useYear,jdbcType=VARCHAR}, #{useMonth,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT},
-      #{useDeptCode,jdbcType=VARCHAR})
+      #{useDeptCode,jdbcType=VARCHAR},1)
   </insert>
     <select id="list" resultMap="BaseResultMap" parameterType= "com.yankuang.equipment.equipment.model.ZNewReport" >
         SELECT <include refid="Base_Column_List"/>
@@ -120,5 +121,27 @@
         <if test="useDeptCode != null" >
             and use_dept_code = #{useDeptCode,jdbcType=VARCHAR}
         </if>
+        and status != 0
     </select>
+    <update id="update" parameterType="com.yankuang.equipment.equipment.model.ZNewReport">
+        UPDATE el_zNewEquipmentList_report
+        SET status = 0
+        WHERE
+        1=1
+        <if test="useDeptName != null" >
+            and use_dept_name = #{useDeptName,jdbcType=VARCHAR}
+        </if>
+        <if test="number != null" >
+            and number = #{number,jdbcType=VARCHAR}
+        </if>
+        <if test="equipmentPosition != null" >
+            and equipment_position = #{equipmentPosition,jdbcType=VARCHAR}
+        </if>
+        and use_year = #{useYear,jdbcType=VARCHAR}
+        and use_month = #{useMonth,jdbcType=VARCHAR}
+        <if test="useDeptCode != null" >
+            and use_dept_code = #{useDeptCode,jdbcType=VARCHAR}
+        </if>
+        and status != 0
+    </update>
 </mapper>

@@ -24,7 +24,7 @@ public interface ZEquipmentReportService {
      * @param listZReportMap
      * @return
      */
-    PageInfo<ListZReportItem> findByPage(Integer page, Integer size, Map listZReportMap);
+    Map findByPage(Integer page, Integer size, Map listZReportMap);
 
     /**
      * 查询是否是历史报表记录

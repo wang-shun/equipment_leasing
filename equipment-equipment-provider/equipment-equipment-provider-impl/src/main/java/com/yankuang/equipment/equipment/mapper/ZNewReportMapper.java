@@ -22,4 +22,6 @@ public interface ZNewReportMapper{
      */
     List<ZNewReport> list(ZNewReport zNewReport);
 
+    int update(ZNewReport zNewReport);
+
 }

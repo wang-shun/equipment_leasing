@@ -14,4 +14,6 @@ public interface ZEquipmentListReportMapper {
     List<ListZReport> list(ListZReport listZReport);
 
     int find(DtkList dtkList);
+
+    int update(ListZReport listZReport);
 }

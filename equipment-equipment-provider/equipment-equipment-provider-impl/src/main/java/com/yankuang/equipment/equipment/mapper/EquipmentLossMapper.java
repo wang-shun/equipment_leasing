@@ -21,4 +21,11 @@ public interface EquipmentLossMapper {
      * @return
      */
     List<EquipmentLoss> list(EquipmentLoss equipmentLoss);
+
+    /**
+     * 更新数据状态
+     * @param equipmentLoss
+     * @return
+     */
+    int update(EquipmentLoss equipmentLoss);
 }

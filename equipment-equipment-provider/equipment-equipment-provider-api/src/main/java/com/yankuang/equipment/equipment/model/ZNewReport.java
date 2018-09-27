@@ -58,4 +58,6 @@ public class ZNewReport implements Serializable {
     private Byte type;//矿别
 
     private String useDeptCode;//使用单位Code
+
+    private Byte status;//数据状态0.表示旧数据1.表示新数据
 }

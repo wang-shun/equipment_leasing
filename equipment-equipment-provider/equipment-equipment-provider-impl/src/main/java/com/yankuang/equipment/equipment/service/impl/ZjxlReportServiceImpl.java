@@ -9,6 +9,7 @@ import io.terminus.boot.rpc.common.annotation.RpcProvider;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,11 +23,14 @@ public class ZjxlReportServiceImpl implements ZjxlReportService {
     @Autowired
     ZEquipmentListReportMapper zEquipmentListReportMapper;
 
+    @Transactional
     public Boolean create(ZjxlReport zjxlReport){
+        //将能之前数据状态设成0
+        zjxlReportMapper.update(zjxlReport);
+
         if (zjxlReportMapper.create(zjxlReport) <=0 ){
             return false;
         }
-
         return true;
     }
 

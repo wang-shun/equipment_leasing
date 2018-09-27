@@ -18,7 +18,7 @@ public class EquipmentLossServiceImpl implements EquipmentLossService {
     EquipmentLossMapper equipmentLossMapper;
 
     public boolean create(EquipmentLoss equipmentLoss){
-
+        equipmentLossMapper.update(equipmentLoss);
         if (equipmentLossMapper.create(equipmentLoss) > 0){
             return true;
         }

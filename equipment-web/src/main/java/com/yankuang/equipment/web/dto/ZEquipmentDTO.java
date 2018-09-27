@@ -50,4 +50,6 @@ public class ZEquipmentDTO implements Serializable {
     private ListZReportItem listZReportItem;
 
     private String zc;
+
+    private Byte status;
 }
