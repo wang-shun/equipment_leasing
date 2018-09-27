@@ -116,57 +116,15 @@
         <if test="usePosition != null and usePosition != ''">
             AND use_position = #{usePosition,jdbcType=VARCHAR}
         </if>
-        <if test="usePositionNum != null and usePositionNum != ''">
-            AND use_position_num = #{usePositionNum,jdbcType=VARCHAR}
-        </if>
-        <if test="appendixPage != null and appendixPage != ''">
-            AND appendix_page = #{appendixPage,jdbcType=VARCHAR}
-        </if>
-        <if test="appendixPage != null">
-            AND appendix_page = #{appendixPage,jdbcType=INTEGER}
-        </if>
-        <if test="zjxlFee != null">
-            AND zjxl_fee = #{zjxlFee,javaType=DOUBLE}
-        </if>
-        <if test="remark != null and remark != ''">
-            AND remark = #{remark,jdbcType=VARCHAR}
-        </if>
-        <if test="sum != null ">
-            AND sum = #{sum,javaType=DOUBLE}
-        </if>
-        <if test="appendixPageSum != null">
-            AND appendix_page_sum = #{appendixPageSum,jdbcType=INTEGER}
-        </if>
         <if test="useDepartment != null and useDepartment != ''">
             AND use_department = #{useDepartment,jdbcType=VARCHAR}
         </if>
         <if test="number != null and number != ''">
             AND number = #{number,jdbcType=VARCHAR}
         </if>
-        <if test="satrap != null and satrap != ''">
-            AND satrap = #{satrap,jdbcType=VARCHAR}
-        </if>
-        <if test="shPerson != null and shPerson != ''">
-            AND sh_person = #{shPerson,jdbcType=VARCHAR}
-        </if>
-        <if test="centerManager != null and centerManager != ''">
-            AND center_manager = #{centerManager,jdbcType=VARCHAR}
-        </if>
-        <if test="sectionChief != null and sectionChief != ''">
-            AND section_chief = #{sectionChief,jdbcType=VARCHAR}
-        </if>
-        <if test="capital != null and capital != ''">
-            AND capital = #{capital,jdbcType=VARCHAR}
-        </if>
-        <if test="zjxlYear != null and zjxlYear != ''">
-            AND zjxl_year = #{zjxlYear,jdbcType=VARCHAR}
-        </if>
-        <if test="zjxlMonth != null and zjxlMonth != ''">
-            AND zjxl_month = #{zjxlMonth,jdbcType=VARCHAR}
-        </if>
-        <if test="zjxlDay != null and zjxlDay != ''">
-            AND zjxl_day = #{zjxlDay,jdbcType=VARCHAR}
-        </if>
+        AND zjxl_year = #{zjxlYear,jdbcType=VARCHAR}
+        AND zjxl_month = #{zjxlMonth,jdbcType=VARCHAR}
+        AND zjxl_day = #{zjxlDay,jdbcType=VARCHAR}
         <if test="kb != null">
             AND kb = #{kb,jdbcType=TINYINT}
         </if>
