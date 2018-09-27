@@ -22,11 +22,12 @@
         <result column="zjxl_day" property="zjxlDay" jdbcType="VARCHAR" />
         <result column="kb" property="kb" jdbcType="TINYINT"/>
         <result column="zc" property="zc" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="TINYINT"/>
     </resultMap>
     <sql id="Base_Column_List" >
     id, use_position, use_position_num, appendix_page, zjxl_fee, remark, sum, appendix_page_sum,
     use_department, number, satrap, sh_person, center_manager, section_chief,
-    capital, zjxl_year, zjxl_month, zjxl_day, kb, zc
+    capital, zjxl_year, zjxl_month, zjxl_day, kb, zc, status
     </sql>
 
     <insert id="create" parameterType="com.yankuang.equipment.equipment.model.ZjxlReport" >
@@ -37,7 +38,7 @@
           #{sum,jdbcType=DOUBLE}, #{appendixPageSum,jdbcType=INTEGER}, #{useDepartment,jdbcType=VARCHAR},
           #{number,jdbcType=VARCHAR}, #{satrap,jdbcType=VARCHAR},
           #{shPerson,jdbcType=VARCHAR}, #{centerManager,jdbcType=VARCHAR}, #{sectionChief,jdbcType=VARCHAR},
-          #{capital,jdbcType=VARCHAR},#{zjxlYear,jdbcType=VARCHAR },#{zjxlMonth,jdbcType=VARCHAR },#{zjxlDay,jdbcType=VARCHAR},#{kb,jdbcType=TINYINT},#{zc,jdbcType=VARCHAR})
+          #{capital,jdbcType=VARCHAR},#{zjxlYear,jdbcType=VARCHAR },#{zjxlMonth,jdbcType=VARCHAR },#{zjxlDay,jdbcType=VARCHAR},#{kb,jdbcType=TINYINT},#{zc,jdbcType=VARCHAR},1)
       </insert>
     <select id="list" parameterType="ZjxlReport" resultMap="BaseResultMap">
         SELECT <include refid="Base_Column_List"/>
@@ -104,5 +105,74 @@
         <if test="zc != null and zc != '' ">
             AND zc = #{zc,jdbcType=VARCHAR}
         </if>
+        AND status != 0
     </select>
+
+    <update id="update" parameterType="ZjxlReport">
+        UPDATE el_zjxl_zReport
+        SET status = 0
+        WHERE
+        1=1
+        <if test="usePosition != null and usePosition != ''">
+            AND use_position = #{usePosition,jdbcType=VARCHAR}
+        </if>
+        <if test="usePositionNum != null and usePositionNum != ''">
+            AND use_position_num = #{usePositionNum,jdbcType=VARCHAR}
+        </if>
+        <if test="appendixPage != null and appendixPage != ''">
+            AND appendix_page = #{appendixPage,jdbcType=VARCHAR}
+        </if>
+        <if test="appendixPage != null">
+            AND appendix_page = #{appendixPage,jdbcType=INTEGER}
+        </if>
+        <if test="zjxlFee != null">
+            AND zjxl_fee = #{zjxlFee,javaType=DOUBLE}
+        </if>
+        <if test="remark != null and remark != ''">
+            AND remark = #{remark,jdbcType=VARCHAR}
+        </if>
+        <if test="sum != null ">
+            AND sum = #{sum,javaType=DOUBLE}
+        </if>
+        <if test="appendixPageSum != null">
+            AND appendix_page_sum = #{appendixPageSum,jdbcType=INTEGER}
+        </if>
+        <if test="useDepartment != null and useDepartment != ''">
+            AND use_department = #{useDepartment,jdbcType=VARCHAR}
+        </if>
+        <if test="number != null and number != ''">
+            AND number = #{number,jdbcType=VARCHAR}
+        </if>
+        <if test="satrap != null and satrap != ''">
+            AND satrap = #{satrap,jdbcType=VARCHAR}
+        </if>
+        <if test="shPerson != null and shPerson != ''">
+            AND sh_person = #{shPerson,jdbcType=VARCHAR}
+        </if>
+        <if test="centerManager != null and centerManager != ''">
+            AND center_manager = #{centerManager,jdbcType=VARCHAR}
+        </if>
+        <if test="sectionChief != null and sectionChief != ''">
+            AND section_chief = #{sectionChief,jdbcType=VARCHAR}
+        </if>
+        <if test="capital != null and capital != ''">
+            AND capital = #{capital,jdbcType=VARCHAR}
+        </if>
+        <if test="zjxlYear != null and zjxlYear != ''">
+            AND zjxl_year = #{zjxlYear,jdbcType=VARCHAR}
+        </if>
+        <if test="zjxlMonth != null and zjxlMonth != ''">
+            AND zjxl_month = #{zjxlMonth,jdbcType=VARCHAR}
+        </if>
+        <if test="zjxlDay != null and zjxlDay != ''">
+            AND zjxl_day = #{zjxlDay,jdbcType=VARCHAR}
+        </if>
+        <if test="kb != null">
+            AND kb = #{kb,jdbcType=TINYINT}
+        </if>
+        <if test="zc != null and zc != '' ">
+            AND zc = #{zc,jdbcType=VARCHAR}
+        </if>
+        AND status != 0
+    </update>
 </mapper>

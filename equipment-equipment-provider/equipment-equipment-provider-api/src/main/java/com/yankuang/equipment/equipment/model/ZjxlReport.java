@@ -50,4 +50,6 @@ public class ZjxlReport implements Serializable {
     private Byte kb;//矿别（1.本部2.外部）
 
     private String zc;//资产
+
+    private Byte status;//数据状态0.表示旧数据1.表示新数据
 }
