@@ -288,7 +288,7 @@ public class WebLogAspect {
      * @param joinPoint
      * @throws Throwable
      */
-    @Around("login()")  // CommonResponse
+//    @Around("login()")  // CommonResponse
     public Object loginVerify(ProceedingJoinPoint joinPoint) throws Throwable {
         HttpServletRequest request =
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
