@@ -101,4 +101,6 @@ public class DtkList implements Serializable {
     private String assetComp;
 
     private String zc;//资产
+
+    private Byte status;//状态值0.表示旧数据1.表示新数据
 }

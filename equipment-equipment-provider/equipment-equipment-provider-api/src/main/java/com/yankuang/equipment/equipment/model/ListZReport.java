@@ -47,4 +47,6 @@ public class ListZReport implements Serializable {
     private Byte type;
 
     private String zc;
+
+    private Byte status;//状态值0.表示该数据是旧数据1.表示该数据是新数据
 }

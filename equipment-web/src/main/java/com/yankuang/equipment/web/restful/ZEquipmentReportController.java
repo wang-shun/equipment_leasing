@@ -14,7 +14,6 @@ import com.yankuang.equipment.web.dto.ZEquipmentDTO;
 import com.yankuang.equipment.web.util.DateConverterConfig;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.beans.BeanUtils;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
@@ -66,7 +65,12 @@ public class ZEquipmentReportController {
         dtkList.setCenterMonth(Integer.parseInt(dtkList.getUseMonth()));
         //判断是否是查询历史记录报表
         if (zEquipmentReportService.find(dtkList)){
-            return CommonResponse.ok(findByPage(page,size,jsonString));
+            ZEquipmentDTO zEquipmentDTO = new ZEquipmentDTO();
+            zEquipmentDTO.setUseYear(dtkList.getUseYear());
+            zEquipmentDTO.setUseMonth(dtkList.getUseMonth());
+            zEquipmentDTO.setEquipmentPosition(dtkList.getEquipmentEffect());
+            zEquipmentDTO.setUseDeptCode(dtkList.getDeptCode());
+            return CommonResponse.ok(findByPage(page,size,zEquipmentDTO));
         }
 
         //获取满足条件的领用记录
@@ -182,13 +186,12 @@ public class ZEquipmentReportController {
      * 分页查询报表历史
      * @param page
      * @param size
-     * @param jsonString
+     * @param zEquipmentDTO
      * @return
      */
-    public PageInfo<ListZReportItem> findByPage(Integer page,
+    public Map findByPage(Integer page,
                                         Integer size,
-                                        String jsonString) {
-        ZEquipmentDTO zEquipmentDTO = JsonUtils.jsonToPojo(jsonString,ZEquipmentDTO.class);
+                                        ZEquipmentDTO zEquipmentDTO) {
 
         //传入查询条件
         Map listZReportMap = new HashMap();

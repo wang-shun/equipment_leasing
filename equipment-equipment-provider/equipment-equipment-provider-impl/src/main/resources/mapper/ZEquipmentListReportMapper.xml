@@ -19,23 +19,24 @@
     <result column="use_month" property="useMonth" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="TINYINT" />
     <result column="zc" property="zc" jdbcType="VARCHAR"/>
+    <result column="status" property="status" jdbcType="TINYINT" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, use_dept_name, number, create_excel_name, status_name, sure_name, sum, use_dept_code, create_excel_code, status_code, sure_code, use_at, equipment_position,
-    use_year, use_month, type, zc
+    use_year, use_month, type, zc, status
   </sql>
 
   <!--创建清单表-->
   <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="com.yankuang.equipment.equipment.model.ListZReport" >
     insert into el_zEquipmentList_report (id, use_dept_name, number, create_excel_name, status_name,
     sure_name, sum, use_dept_code, create_excel_code, status_code, sure_code, use_at, equipment_position,
-    use_year, use_month, type, zc)
+    use_year, use_month, type, zc, status)
     values (#{id,jdbcType=BIGINT}, #{useDeptName,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR},
       #{createExcelName,jdbcType=VARCHAR}, #{statusName,jdbcType=VARCHAR}, #{sureName,jdbcType=VARCHAR},
       #{sum,javaType=DOUBLE}, #{useDeptCode,jdbcType=VARCHAR}, #{createExcelCode,jdbcType=VARCHAR},
       #{statusCode,jdbcType=VARCHAR}, #{sureCode,jdbcType=VARCHAR}, #{useAt,jdbcType=TIMESTAMP},
        #{equipmentPosition,jdbcType=VARCHAR}, #{useYear,jdbcType=VARCHAR}, #{useMonth,jdbcType=VARCHAR},
-        #{type,jdbcType=TINYINT},#{zc,jdbcType=VARCHAR})
+        #{type,jdbcType=TINYINT},#{zc,jdbcType=VARCHAR}, 1)
   </insert>
 
   <select id="list" parameterType="map" resultMap="BaseResultMap">
@@ -94,6 +95,7 @@
     <if test="zc != null and zc != ''">
       AND zc = #{zc,jdbcType=VARCHAR}
     </if>
+    and status != 0
   </select>
 
   <select id="find" parameterType="map" resultType="INTEGER">
@@ -152,5 +154,65 @@
     <if test="zc != null and zc != ''">
       AND zc = #{zc,jdbcType=VARCHAR}
     </if>
+    and status != 0
   </select>
+
+  <update id="update" parameterType="map">
+    update el_zEquipmentList_report
+    set status = 0
+    where
+    1=1
+    <if test="id != null">
+      AND id = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="useDeptName != null and useDeptName != '' ">
+      AND use_dept_name = #{useDeptName,jdbcType=VARCHAR}
+    </if>
+    <if test="number != null and number != '' ">
+      AND number =  #{number,jdbcType=VARCHAR}
+    </if>
+    <if test="createExcelName != null and createExcelName != '' ">
+      AND create_excel_name =  #{createExcelName,jdbcType=VARCHAR}
+    </if>
+    <if test="statusName != null and statusName != '' ">
+      AND status_name =  #{statusName,jdbcType=VARCHAR}
+    </if>
+    <if test="sureName != null and sureName != '' ">
+      AND sure_name =  #{sureName,jdbcType=VARCHAR}
+    </if>
+    <if test="sum != null">
+      AND sum =  #{sum,javaType=DOUBLE}
+    </if>
+    <if test="useDeptCode != null and useDeptCode != '' ">
+      AND use_dept_code =  #{useDeptCode,jdbcType=VARCHAR}
+    </if>
+    <if test="createExcelCode != null and createExcelCode != '' ">
+      AND create_excel_code =  #{createExcelCode,jdbcType=VARCHAR}
+    </if>
+    <if test="statusCode != null and statusCode != '' ">
+      AND status_code =  #{statusCode,jdbcType=VARCHAR}
+    </if>
+    <if test="sureCode != null and sureCode != '' ">
+      AND sure_code =  #{sureCode,jdbcType=VARCHAR}
+    </if>
+    <if test="useAt != null ">
+      AND use_at =  #{sureCode,jdbcType=TIMESTAMP}
+    </if>
+    <if test="equipmentPosition != null and equipmentPosition != '' ">
+      AND equipment_position =  #{equipmentPosition,jdbcType=VARCHAR}
+    </if>
+    <if test="useYear != null and useYear != '' ">
+      AND use_year =  #{useYear,jdbcType=VARCHAR}
+    </if>
+    <if test="useMonth != null and useMonth != '' ">
+      AND use_month =  #{useMonth,jdbcType=VARCHAR}
+    </if>
+    <if test="type != null">
+      AND type =  #{type,jdbcType=TINYINT}
+    </if>
+    <if test="zc != null and zc != ''">
+      AND zc = #{zc,jdbcType=VARCHAR}
+    </if>
+    and status != 0
+  </update>
 </mapper>

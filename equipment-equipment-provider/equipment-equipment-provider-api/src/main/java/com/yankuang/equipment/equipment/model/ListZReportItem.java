@@ -12,6 +12,12 @@ import java.io.Serializable;
 public class ListZReportItem implements Serializable {
     private Long id;
 
+    private String sbName;//设备名字
+
+    private String assetUnit;//计量单位
+
+    private String sbCode;//设备code
+
     private String name;
 
     private String equipmentModel;
