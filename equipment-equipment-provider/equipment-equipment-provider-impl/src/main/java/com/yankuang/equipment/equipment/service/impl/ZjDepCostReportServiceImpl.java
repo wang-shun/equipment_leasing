@@ -104,9 +104,9 @@ public class ZjDepCostReportServiceImpl implements ZjDepreciationCostReportServi
             ZjDepreciationCostReportItem zjDepreciationCostReportItemJiSan = new ZjDepreciationCostReportItem();
             ZjDepreciationCostReportItem zjDepreciationCostReportItemYang = new ZjDepreciationCostReportItem();
             for(ZjxlReport zjxl:zjxlReports) {
-                zjDepreciationCostReportItemNan.setDeptName("南屯矿");
+                zjDepreciationCostReportItemNan.setDeptName("南屯");
                 zjDepreciationCostReportItemNan.setDeptType("1");
-                this.monthCost("南屯矿",zjxl,zjDepreciationCostReportItemNan,month);//查询一个矿所查月份的修理费
+                this.monthCost("南屯",zjxl,zjDepreciationCostReportItemNan,month);//查询一个矿所查月份的修理费
             }
             Double totalNan = totalheji(zjDepreciationCostReportItemNan);//南屯矿合计
             zjDepreciationCostReportItemNan.setDeptSum(totalNan);
@@ -115,9 +115,9 @@ public class ZjDepCostReportServiceImpl implements ZjDepreciationCostReportServi
             }
 
             for(ZjxlReport zjxl:zjxlReports) {
-                zjDepreciationCostReportItemXing.setDeptName("兴隆矿");
+                zjDepreciationCostReportItemXing.setDeptName("兴隆");
                 zjDepreciationCostReportItemXing.setDeptType("1");
-                this.monthCost("兴隆矿",zjxl,zjDepreciationCostReportItemXing,month);
+                this.monthCost("兴隆",zjxl,zjDepreciationCostReportItemXing,month);
             }
             Double totalxing = totalheji(zjDepreciationCostReportItemXing);//兴隆矿合计
             zjDepreciationCostReportItemXing.setDeptSum(totalxing);
@@ -135,9 +135,9 @@ public class ZjDepCostReportServiceImpl implements ZjDepreciationCostReportServi
             }
 
             for(ZjxlReport zjxl:zjxlReports) {
-                zjDepreciationCostReportItemDong.setDeptName("东滩矿");
+                zjDepreciationCostReportItemDong.setDeptName("东滩");
                 zjDepreciationCostReportItemDong.setDeptType("1");
-                this.monthCost("东滩矿",zjxl,zjDepreciationCostReportItemDong,month);
+                this.monthCost("东滩",zjxl,zjDepreciationCostReportItemDong,month);
             }
             Double totalDong = totalheji(zjDepreciationCostReportItemDong);//东滩矿合计
             zjDepreciationCostReportItemDong.setDeptSum(totalDong);
@@ -272,9 +272,9 @@ public class ZjDepCostReportServiceImpl implements ZjDepreciationCostReportServi
             }
 
             for(ZjxlReport zjxl:zjxlReports) {
-                zjDepreciationCostReportItemLong.setDeptName("龙凤矿");
+                zjDepreciationCostReportItemLong.setDeptName("龙凤");
                 zjDepreciationCostReportItemLong.setDeptType("2");
-                this.monthCost("龙凤矿",zjxl,zjDepreciationCostReportItemLong,month);
+                this.monthCost("龙凤",zjxl,zjDepreciationCostReportItemLong,month);
             }
             Double totalLong = totalheji(zjDepreciationCostReportItemLong);//龙凤矿合计
             zjDepreciationCostReportItemLong.setDeptSum(totalLong);
@@ -712,7 +712,7 @@ public class ZjDepCostReportServiceImpl implements ZjDepreciationCostReportServi
     private ZjDepreciationCostReportItem monthCost(String deptName,ZjxlReport zjxl,
                                                    ZjDepreciationCostReportItem zjDepreciationCostReportItem,
                                                    String month){
-        if(zjxl.getUseDepartment().equals(deptName)) {
+        if(zjxl.getUseDepartment().contains(deptName)) {
 
             Integer zjxlMonth = Integer.parseInt(zjxl.getZjxlMonth());//从原始库中查出月份数据
             if(StringUtils.isEmpty(month)){
