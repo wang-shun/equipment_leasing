@@ -16,4 +16,5 @@ public interface ZjDepreciationCostReportItemMapper {
 
     List<ZjDepreciationCostReportItem> listHomeOffice(@Param("reportId") Long reportId,@Param("deptType") String deptType);
 
+//    Integer historyItems(@Param("reportId") Long reportId);
 }

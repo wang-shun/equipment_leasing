@@ -52,4 +52,6 @@ public class ZjDepreciationCostReportItem implements Serializable {
 
     private Double deptSum;//合计
 
+//    private Byte status;//1是新的，2是旧的
+
 }

@@ -18,7 +18,6 @@
         <result column="nov_repairs_cost" property="novRepairsCost" jdbcType="DOUBLE" />
         <result column="dec_repairs_cost" property="decRepairsCost" jdbcType="DOUBLE" />
         <result column="report_id" property="reportId" jdbcType="BIGINT" />
-
     </resultMap>
     <sql id="Base_Column_List" >
         dept_name,dept_code,dept_type,january_repairs_cost,
@@ -51,6 +50,7 @@
             AND t.dept_type = #{deptType}
         </if>
     </select>
+
 
 
 

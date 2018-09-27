@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RpcProvider
@@ -65,10 +62,13 @@ public class ZjDepCostReportServiceImpl implements ZjDepreciationCostReportServi
         }
         for (ZjDepreciationCostReportItem zjDepCostItem:zjDepreciationCostReportItemHome){
             zjDepCostItem.setReportId(zjDepreciationCost.getId());//每个交接单里实体类的id是一样的
+//            zjDepCostItem.setStatus((byte)1);
+//            zjDepCReportItemMapper.historyItems(zjDepreciationCost.getId());
             zjDepCReportItemMapper.create(zjDepCostItem);
         }
         for (ZjDepreciationCostReportItem zjDepCostItemExternal:zjDepreciationCostReportItemExternal){
             zjDepCostItemExternal.setReportId(zjDepreciationCost.getId());//每个交接单里实体类的id是一样的
+//            zjDepCostItemExternal.setStatus((byte)1);
             zjDepCReportItemMapper.create(zjDepCostItemExternal);
         }
 
@@ -1088,6 +1088,77 @@ public class ZjDepCostReportServiceImpl implements ZjDepreciationCostReportServi
 
         return zjCostRepairReport;
     }
+
+    public int creatDepCostReport() {
+        int res = 1;
+        //获取当前的年月
+        Calendar cale = Calendar.getInstance();
+        int month = cale.get(Calendar.MONTH) + 1;
+        int year = cale.get(Calendar.YEAR);
+
+        //查询当前年月的各矿的综机租赁费合计
+        ZjxlReport zjxlReport = new ZjxlReport();
+        zjxlReport.setZjxlYear(String.valueOf(year));
+        zjxlReport.setZjxlMonth("2");
+        List<ZjxlReport> list = zjxlReportMapper.list(zjxlReport);
+        Map zjCostRepairMap = new HashMap();
+        zjCostRepairMap.put("yearTime",String.valueOf(year));
+        zjCostRepairMap.put("monthTime","2");
+        if(list != null && list.size() > 0){
+            ZjDepreciationCostReport zjCostRepairReport = zjDepreciationCostReportMapper.list(zjCostRepairMap);
+            if(zjCostRepairReport != null){
+                for(int i=0;i<list.size();i++) {
+                    ZjxlReport zReport = list.get(i);
+                    ZjDepreciationCostReportItem record = new ZjDepreciationCostReportItem();
+//                    record.setReportId(zjCostRepairReport.getId());
+//                    record.setDeptCode("1001");//需要传过来
+                    Map zjCostRepairItemMap = new HashMap();
+                    zjCostRepairItemMap.put("reportId",zjCostRepairReport.getId());
+                    zjCostRepairItemMap.put("reportId","1100");
+
+                    List<ZjDepreciationCostReportItem> items = zjDepCReportItemMapper.list(zjCostRepairItemMap);
+                    //判断汇总的明细是否存在,存在则更新,不存在则添加
+                    if(items != null && items.size() > 0){
+                        ZjDepreciationCostReportItem zjDepreciationCostReportItem = items.get(0);
+                        if(month == 1){zjDepreciationCostReportItem.setJanuaryRepairsCost(zReport.getSum());}
+                        if(month == 2){zjDepreciationCostReportItem.setFebruaryRepairsCost(zReport.getSum());}
+                        if(month == 3){zjDepreciationCostReportItem.setMarchRepairsCost(zReport.getSum());}
+                        if(month == 4){zjDepreciationCostReportItem.setAprilRepairsCost(zReport.getSum());}
+                        if(month == 5){zjDepreciationCostReportItem.setMayRepairsCost(zReport.getSum());}
+                        if(month == 6){zjDepreciationCostReportItem.setJuneRepairsCost(zReport.getSum());}
+                        if(month == 7){zjDepreciationCostReportItem.setJulyRepairsCost(zReport.getSum());}
+                        if(month == 8){zjDepreciationCostReportItem.setAugustRepairsCost(zReport.getSum());}
+                        if(month == 9){zjDepreciationCostReportItem.setSepRepairsCost(zReport.getSum());}
+                        if(month == 10){zjDepreciationCostReportItem.setOctRepairsCost(zReport.getSum());}
+                        if(month == 11){zjDepreciationCostReportItem.setNovRepairsCost(zReport.getSum());}
+                        if(month == 12){zjDepreciationCostReportItem.setDecRepairsCost(zReport.getSum());}
+//                        res = zjDepreciationCostReportItem.update(zjDepreciationCostReportItem);
+                    }else{
+                        ZjDepreciationCostReportItem zjDepreciationCostReportItem = new ZjDepreciationCostReportItem();
+                        zjDepreciationCostReportItem.setDeptCode("1111");
+                        zjDepreciationCostReportItem.setDeptName(zReport.getUseDepartment());
+                        zjDepreciationCostReportItem.setDeptType(String.valueOf(zReport.getKb()));
+                        zjDepreciationCostReportItem.setReportId(zjCostRepairReport.getId());
+                        if(month == 1){zjDepreciationCostReportItem.setJanuaryRepairsCost(zReport.getSum());}
+                        if(month == 2){zjDepreciationCostReportItem.setFebruaryRepairsCost(zReport.getSum());}
+                        if(month == 3){zjDepreciationCostReportItem.setMarchRepairsCost(zReport.getSum());}
+                        if(month == 4){zjDepreciationCostReportItem.setAprilRepairsCost(zReport.getSum());}
+                        if(month == 5){zjDepreciationCostReportItem.setMayRepairsCost(zReport.getSum());}
+                        if(month == 6){zjDepreciationCostReportItem.setJuneRepairsCost(zReport.getSum());}
+                        if(month == 7){zjDepreciationCostReportItem.setJulyRepairsCost(zReport.getSum());}
+                        if(month == 8){zjDepreciationCostReportItem.setAugustRepairsCost(zReport.getSum());}
+                        if(month == 9){zjDepreciationCostReportItem.setSepRepairsCost(zReport.getSum());}
+                        if(month == 10){zjDepreciationCostReportItem.setOctRepairsCost(zReport.getSum());}
+                        if(month == 11){zjDepreciationCostReportItem.setNovRepairsCost(zReport.getSum());}
+                        if(month == 12){zjDepreciationCostReportItem.setDecRepairsCost(zReport.getSum());}
+//                        res = reportEquipmentZMonthItemMapper.insert(reportEquipmentZMonthItem);
+                    }
+                }
+            }
+        }
+        return res;
+    }
+
 
 
 

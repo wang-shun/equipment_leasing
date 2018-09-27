@@ -16,5 +16,10 @@ public interface ZjDepreciationCostReportService {
     ZjDepreciationCostReport list(Map zjCostRepairMap);
 
     ZjDepreciationCostReport listzjxl(ZjDepreciationCostReport zjxlReport);
+    /**
+     * 汇总各矿上月的综机租赁费
+     */
+    public int creatDepCostReport();
+
 
 }
