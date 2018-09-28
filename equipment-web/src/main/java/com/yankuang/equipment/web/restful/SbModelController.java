@@ -10,6 +10,7 @@ import com.yankuang.equipment.web.util.UserFromRedis;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,9 @@ public class SbModelController {
     @RpcConsumer
     SbModelService sbModelService;
 
+    @Autowired
+    UserFromRedis userFromRedis;
+
     @RequestMapping(value = "/create",method = RequestMethod.POST)
     public ResponseMeta create(@Valid @RequestBody SbModel sbModel, BindingResult bindingResult){
         ResponseMeta responseMeta = new ResponseMeta();
@@ -34,7 +38,7 @@ public class SbModelController {
             if (bindingResult.hasErrors()){
                 return responseMeta.setMeta(Constants.RESPONSE_ERROR,bindingResult.getAllErrors().get(0).getDefaultMessage());
             }
-            sbModel.setCreateBy(new UserFromRedis().findByToken().getCode());
+            sbModel.setCreateBy(userFromRedis.findByToken().getCode());
             sbModelService.create(sbModel);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"创建设备规格型号成功");
         }catch (Exception e){
@@ -52,7 +56,7 @@ public class SbModelController {
             if (bindingResult.hasErrors()){
                 return responseMeta.setMeta(Constants.RESPONSE_ERROR,bindingResult.getAllErrors().get(0).getDefaultMessage());
             }
-            sbModel.setUpdateBy(new UserFromRedis().findByToken().getCode());
+            sbModel.setUpdateBy(userFromRedis.findByToken().getCode());
             sbModelService.update(sbModel);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"更新设备规格型号成功");
         }catch (Exception e){

@@ -11,6 +11,7 @@ import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +27,9 @@ public class SbTypeController {
 
     @RpcConsumer
     SbTypeService sbTypeService;
+
+    @Autowired
+    UserFromRedis userFromRedis;
 
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     public ResponseMeta list(){
@@ -59,8 +63,8 @@ public class SbTypeController {
             BeanUtils.copyProperties(sbType,sbTypeDTO);
             SbTypeInfo sbTypeInfo = new SbTypeInfo();
             BeanUtils.copyProperties(sbTypeInfo,sbTypeDTO);
-            sbType.setCreateBy(new UserFromRedis().findByToken().getCode());
-            sbTypeInfo.setCreateBy(new UserFromRedis().findByToken().getCode());
+            sbType.setCreateBy(userFromRedis.findByToken().getCode());
+            sbTypeInfo.setCreateBy(userFromRedis.findByToken().getCode());
             sbTypeService.create(sbType,sbTypeInfo);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"创建设备类型及信息成功");
         }catch (Exception e){

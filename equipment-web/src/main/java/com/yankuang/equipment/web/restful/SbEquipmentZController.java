@@ -10,6 +10,7 @@ import com.yankuang.equipment.web.util.UserFromRedis;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,9 @@ public class SbEquipmentZController {
     @RpcConsumer
     SbEquipmentZService sbEquipmentZService;
 
+    @Autowired
+    UserFromRedis userFromRedis;
+
     @RequestMapping(value = "/create",method = RequestMethod.POST)
     public ResponseMeta create(@Valid @RequestBody SbEquipmentZ sbEquipmentZ, BindingResult bindingResult){
         ResponseMeta responseMeta = new ResponseMeta();
@@ -38,7 +42,7 @@ public class SbEquipmentZController {
             if(equipmentZ!=null){
                 return responseMeta.setMeta(Constants.RESPONSE_ERROR,"设备识别码已存在!");
             }
-            sbEquipmentZ.setCreateBy(new UserFromRedis().findByToken().getCode());
+            sbEquipmentZ.setCreateBy(userFromRedis.findByToken().getCode());
             sbEquipmentZService.create(sbEquipmentZ);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"创建综机设备成功");
         }catch (Exception e){
@@ -56,7 +60,7 @@ public class SbEquipmentZController {
             if (bindingResult.hasErrors()){
                 return responseMeta.setMeta(Constants.RESPONSE_ERROR,bindingResult.getAllErrors().get(0).getDefaultMessage());
             }
-            sbEquipmentZ.setUpdateBy(new UserFromRedis().findByToken().getCode());
+            sbEquipmentZ.setUpdateBy(userFromRedis.findByToken().getCode());
             sbEquipmentZService.update(sbEquipmentZ);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"更新综机设备成功");
         }catch (Exception e){
