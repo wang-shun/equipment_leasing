@@ -1,15 +1,13 @@
 package com.yankuang.equipment.web.restful;
 
 import com.alibaba.fastjson.JSON;
-import com.yankuang.equipment.authority.service.DeptService;
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.equipment.model.ElFeeDetailT;
 import com.yankuang.equipment.equipment.service.ElFeeDetailTService;
-import com.yankuang.equipment.equipment.service.ElPlanUseService;
-import com.yankuang.equipment.equipment.service.ElUseItemService;
-import com.yankuang.equipment.equipment.service.SbElFeeService;
+import com.yankuang.equipment.web.dto.UserDTO;
 import com.yankuang.equipment.web.service.ReportTPlusService;
+import com.yankuang.equipment.web.util.UserFromRedis;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -27,6 +25,8 @@ public class ElFeeDetailTController {
     ElFeeDetailTService elFeeDetailTService;
     @Autowired
     ReportTPlusService reportTPlusService;
+    @Autowired
+    UserFromRedis userFromRedis;
 
     /**
      * 查询导出数据
@@ -80,6 +80,12 @@ public class ElFeeDetailTController {
             List<ElFeeDetailT> list = JsonUtils.jsonToList(jsonString, ElFeeDetailT.class);
             if (list == null && list.size() == 0) {
                 return CommonResponse.errorMsg("参数不得为空");
+            }
+            UserDTO userDTO = userFromRedis.findByToken();
+            if (userDTO != null) {
+                for (ElFeeDetailT feeDetail : list) {
+                    feeDetail.setCreateBy(userDTO.getId());
+                }
             }
 
             boolean res = elFeeDetailTService.createBatch(list);

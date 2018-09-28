@@ -1,25 +1,19 @@
 package com.yankuang.equipment.web.restful;
 
 import com.alibaba.fastjson.JSON;
-import com.yankuang.equipment.authority.service.DeptService;
 import com.yankuang.equipment.common.util.CommonResponse;
-import com.yankuang.equipment.common.util.FeeUtils;
 import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.common.util.StringUtils;
-import com.yankuang.equipment.equipment.model.ElFeeMiddleT;
 import com.yankuang.equipment.equipment.model.ElFeeQuarterT;
-import com.yankuang.equipment.equipment.service.ElFeeMiddleTService;
 import com.yankuang.equipment.equipment.service.ElFeeQuarterTService;
+import com.yankuang.equipment.web.dto.UserDTO;
 import com.yankuang.equipment.web.service.ReportTPlusService;
+import com.yankuang.equipment.web.util.UserFromRedis;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 @CrossOrigin(maxAge = 3600)
@@ -31,10 +25,8 @@ public class ElFeeQuarterTController {
     ElFeeQuarterTService elFeeQuarterTService;
     @Autowired
     ReportTPlusService reportTPlusService;
-    @RpcConsumer
-    ElFeeMiddleTService elFeeMiddleTService;
-    @RpcConsumer
-    DeptService deptService;
+    @Autowired
+    UserFromRedis userFromRedis;
 
     @GetMapping
     public CommonResponse findList(ElFeeQuarterT elFeeQuarterT){
@@ -105,6 +97,12 @@ public class ElFeeQuarterTController {
             List<ElFeeQuarterT> list = JsonUtils.jsonToList(jsonString, ElFeeQuarterT.class);
             if (list == null || list.size() <= 0) {
                 return CommonResponse.errorMsg("参数不得为空");
+            }
+            UserDTO userDTO = userFromRedis.findByToken();
+            if (userDTO != null) {
+                for (ElFeeQuarterT feeQuarterT : list) {
+                    feeQuarterT.setCreateBy(userDTO.getId());
+                }
             }
 
             boolean res = elFeeQuarterTService.createBatch(list);

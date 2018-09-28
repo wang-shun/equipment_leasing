@@ -58,6 +58,7 @@ public class ElPlanPlusService {
                     && !(Constants.PLANEQUIPMENTTYPE_GENERIC.equals(elPlan.getPlanEquipmentType())
                     && Constants.PLANTYPE_YEAR.equals(elPlan.getPlanType()))) {
                 ElPlan plan = elPlanService.findElPlanById(elPlan.getPlanId());
+                String deptId = StringUtils.isEmpty(plan.getPlanPosition()) ? "" : deptService.findByCode(plan.getPlanPosition()).getId()+"";
                 List<ElPlanItem> itemList = plan.getElPlanItemList();
                 if (itemList == null || itemList.size() == 0) {
                     return CommonResponse.errorException("备货异常");
@@ -75,6 +76,8 @@ public class ElPlanPlusService {
                     }
                     // 获取设备小类
                     String smallType = item.getSmallTypeCode();
+                    String middleType = item.getMiddleTypeCode();
+                    String bigType = item.getBigTypeCode();
                     // 获取设备规格号
                     String sbModelStr = item.getSpecificationCode();
                     // 设备主要参数值
@@ -89,7 +92,8 @@ public class ElPlanPlusService {
                     }
                     if (Constants.PLANEQUIPMENTTYPE_GENERIC.equals(plan.getPlanEquipmentType())) {
                         SbPosition position = new SbPosition();
-                        position.setPosition(positionId.toString());
+                        position.setPosition(deptId);
+                        position.setType("02");
                         List<SbPosition> sbPositions = sbPositionService.list(position, 1, 1000).getList();
                         for (SbPosition sbPosition : sbPositions) {
                             SbEquipmentT sbEquipmentT = new SbEquipmentT();
@@ -98,6 +102,12 @@ public class ElPlanPlusService {
                             }
                             if (!StringUtils.isEmpty(smallType)) {
                                 sbEquipmentT.setSbtypeThree(smallType);
+                            }
+                            if (!StringUtils.isEmpty(middleType)) {
+                                sbEquipmentT.setSbtypeTwo(middleType);
+                            }
+                            if (!StringUtils.isEmpty(bigType)) {
+                                sbEquipmentT.setSbtypeOne(bigType);
                             }
                             if (!StringUtils.isEmpty(sbModelStr)) {
                                 sbEquipmentT.setSbmodelCode(sbModelStr);
@@ -155,6 +165,7 @@ public class ElPlanPlusService {
                         // TODO 设备管理中心编码暂定
                         SbPosition position = new SbPosition();
                         position.setPosition("28");
+                        position.setType("02");
                         List<SbPosition> sbPositions = sbPositionService.list(position, 1, 1000).getList();
                         for (SbPosition sbPosition : sbPositions) {
                             SbEquipmentZ sbEquipmentZ = new SbEquipmentZ();
@@ -163,6 +174,12 @@ public class ElPlanPlusService {
                             }
                             if (!StringUtils.isEmpty(smallType)) {
                                 sbEquipmentZ.setSbtypeThree(smallType);
+                            }
+                            if (!StringUtils.isEmpty(middleType)) {
+                                sbEquipmentZ.setSbtypeTwo(middleType);
+                            }
+                            if (!StringUtils.isEmpty(bigType)) {
+                                sbEquipmentZ.setSbtypeOne(bigType);
                             }
                             if (!StringUtils.isEmpty(sbModelStr)) {
                                 sbEquipmentZ.setSbmodelCode(sbModelStr);

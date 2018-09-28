@@ -2,18 +2,18 @@ package com.yankuang.equipment.web.restful;
 
 import com.alibaba.fastjson.JSON;
 import com.yankuang.equipment.common.util.CommonResponse;
-import com.yankuang.equipment.common.util.FeeUtils;
 import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.equipment.model.ElFeeMiddleT;
 import com.yankuang.equipment.equipment.service.ElFeeMiddleTService;
+import com.yankuang.equipment.web.dto.UserDTO;
 import com.yankuang.equipment.web.service.ReportTPlusService;
+import com.yankuang.equipment.web.util.UserFromRedis;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @CrossOrigin(maxAge = 3600)
@@ -25,6 +25,8 @@ public class ElFeeMiddleTController {
     ElFeeMiddleTService elFeeMiddleTService;
     @Autowired
     ReportTPlusService reportTPlusService;
+    @Autowired
+    UserFromRedis userFromRedis;
 
     @GetMapping
     public CommonResponse findElFeeMiddleTs(ElFeeMiddleT elFeeMiddleT) {
@@ -90,6 +92,12 @@ public class ElFeeMiddleTController {
             List<ElFeeMiddleT> list = JsonUtils.jsonToList(jsonString, ElFeeMiddleT.class);
             if (list == null || list.size() <= 0) {
                 return CommonResponse.errorMsg("参数不得为空");
+            }
+            UserDTO userDTO = userFromRedis.findByToken();
+            if (userDTO != null) {
+                for (ElFeeMiddleT feeMiddleT : list) {
+                    feeMiddleT.setCreateBy(userDTO.getId());
+                }
             }
 
             boolean res = elFeeMiddleTService.createBatch(list);

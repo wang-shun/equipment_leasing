@@ -50,10 +50,8 @@ public class ElUseServiceImpl implements ElUseService{
         elUse.setUpdateAt(new Date());
         String useEquipmentType = (elUse.getUseEquipmentType() == null || " ".equals(elUse.getUseEquipmentType()))?"1":elUse.getUseEquipmentType();
         elUse.setUseEquipmentType(useEquipmentType);
-        elUse.setCreateBy("001001");//TODO 这个从redis中获取，暂未完成先写死
         String version = (elUse.getVersion() == null || " ".equals(elUse.getVersion()))?"1":elUse.getVersion();
         elUse.setVersion(version);
-        elUse.setUpdateBy("001001");
         elUse.setIsUse((byte)1);
         int num = Integer.parseInt(elUseMapper.create(elUse)+"");
         List<ElUseItem> elUseItems = elUse.getElUseItems();
@@ -140,10 +138,8 @@ public class ElUseServiceImpl implements ElUseService{
         elUse.setUpdateAt(new Date());
         String useEquipmentType = (elUse.getUseEquipmentType() == null || " ".equals(elUse.getUseEquipmentType()))?"1":elUse.getUseEquipmentType();
         elUse.setUseEquipmentType(useEquipmentType);
-        elUse.setCreateBy("001001");//TODO 这个从redis中获取，暂未完成先写死
         String version = (elUse.getVersion() == null || " ".equals(elUse.getVersion()))?"1":elUse.getVersion();
         elUse.setVersion(version);
-        elUse.setUpdateBy("001001");
         elUse.setIsUse((byte)2);
         int num = Integer.parseInt(elUseMapper.create(elUse)+"");
         List<ElUseItem> elUseItems = elUse.getElUseItems();

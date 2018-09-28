@@ -406,10 +406,9 @@ public class ReportTPlusService {
             Dept dept = deptService.findByCode(poCode);
             if (dept == null) {
                 positionMap.remove(poCode);
+            } else if(dept.getAddress() == null || !dept.getAddress().contains("济宁")) {
+                    positionMap.remove(poCode);
             }
-//                else if(dept.getAddress() == null || !dept.getAddress().contains("济宁")) {
-//                    positionMap.remove(poCode);
-//                }
         }
         if (positionMap.size() <= 0) return null;
 
