@@ -104,6 +104,10 @@ public class UserController {
         if (StringUtils.isEmpty(loginUser)) {
             return CommonResponse.errorTokenMsg("账号不存在");
         }
+        Byte status = loginUser.getStatus();
+        if (status.equals(2) || 2 == status) {
+            return CommonResponse.errorTokenMsg("账号已经被停用");
+        }
         if (!password.equals(loginUser.getPassword())) {
             System.out.println(loginUser.getPassword());
             return CommonResponse.errorTokenMsg("密码错误");
@@ -392,6 +396,12 @@ public class UserController {
      */
     @PatchMapping("/stop/{code}")
     public CommonResponse stop(@PathVariable String code) {
+        User user = userService.findByCode(code);
+        String token = user.getToken();
+        // 从redis中删除相应用户最后一次登录信息
+        if (!StringUtils.isEmpty(token)) {
+            redis.del(token);
+        }
         Boolean b = userService.stop(code);
         if (!b) {
             return CommonResponse.errorMsg("禁用失败");
