@@ -1,0 +1,140 @@
+version: '1.0'
+
+stages:
+- name: repo
+  tasks:
+  - get: repo
+    params:
+      depth: 1
+
+- name: compile-stage
+  tasks:
+  - aggregate:
+    - put: web-compile
+    - put: authority-compile
+    - put: equipment-compile
+    - put: syslog-compile
+
+- name: image-stage
+  tasks:
+  - aggregate:
+    - put: web-image
+      params:
+        compile_name: web-compile
+    - put: authority-image
+      params:
+        compile_name: authority-compile
+    - put: equipment-image
+      params:
+        compile_name: equipment-compile
+    - put: syslog-image
+      params:
+        compile_name: syslog-compile
+
+- name: deploy
+  tasks:
+  - put: deploy
+    params:
+      dice_yml: repo/dice.yml
+      time_out: 300
+      replacement_images:
+      - web-image/pack-result
+      - authority-image/pack-result
+      - equipment-image/pack-result
+      - syslog-image/pack-result
+
+resources:
+- name: repo
+  type: git
+  source:
+    uri: ((gittar.repo))
+    branch: ((gittar.branch))
+    username: ((gittar.username))
+    password: ((gittar.password))
+
+- name: web-compile
+  type: bp-compile
+  source:
+    context: repo
+    bp_repo: http://git.terminus.io/buildpacks/dice-bpack-termjava.git
+    bp_ver: master
+    bp_args:
+      USE_AGENT: 'true'
+    modules:
+    - name: equipment-web
+
+- name: web-image
+  type: bp-image
+  source:
+    context: repo
+    modules:
+    - name: equipment-web
+
+- name: authority-compile
+  type: bp-compile
+  source:
+    context: repo
+    bp_repo: http://git.terminus.io/buildpacks/dice-bpack-termjava.git
+    bp_ver: master
+    bp_args:
+      USE_AGENT: 'true'
+    modules:
+    - name: equipment-authority-provider
+      path: equipment-authority-provider/equipment-authority-provider-impl
+
+- name: authority-image
+  type: bp-image
+  source:
+    context: repo
+    modules:
+    - name: equipment-authority-provider
+      path: equipment-authority-provider/equipment-authority-provider-impl
+
+- name: equipment-compile
+  type: bp-compile
+  source:
+    context: repo
+    bp_repo: http://git.terminus.io/buildpacks/dice-bpack-termjava.git
+    bp_ver: master
+    bp_args:
+      USE_AGENT: 'true'
+    modules:
+    - name: equipment-equipment-provider
+      path: equipment-equipment-provider/equipment-equipment-provider-impl
+
+- name: equipment-image
+  type: bp-image
+  source:
+    context: repo
+    modules:
+    - name: equipment-equipment-provider
+      path: equipment-equipment-provider/equipment-equipment-provider-impl
+
+- name: syslog-compile
+  type: bp-compile
+  source:
+    context: repo
+    bp_repo: http://git.terminus.io/buildpacks/dice-bpack-termjava.git
+    bp_ver: master
+    bp_args:
+      USE_AGENT: 'true'
+    modules:
+    - name: equipment-syslog-provider
+      path: equipment-syslog-provider/equipment-syslog-provider-impl
+
+- name: syslog-image
+  type: bp-image
+  source:
+    context: repo
+    modules:
+    - name: equipment-syslog-provider
+      path: equipment-syslog-provider/equipment-syslog-provider-impl
+
+- name: deploy
+  type: dice
+  source:
+    app_id: ((dice.id))
+    uri: ((dice.url))
+    operator_id: ((dice.operator.id))
+    workspace: ((dice.env))
+    branch: ((gittar.branch))

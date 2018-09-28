@@ -1,103 +1,78 @@
-name: yankuang-equipment
-description: yankuang-equipment
-repository: http://gittar.app.terminus.io/dcos-terminus/yankuang-equipment
-
-endpoints:
-#  dubbo-api:
-#    module_path: dubbo-api
-#    context: .
-#    ports:
-#      - 20880
-#    resources:
-#      cpu: 0.1
-#      mem: 512
-#    buildpack:
-#      bp_repo: http://git.terminus.io/buildpacks/dice-bpack-termjava.git
-#      bp_ver: master
-#      bp_args:
-#        - USE_AGENT=true
-
-  equipment-web:
-    module_path: equipment-web
-    context: .
-    ports:
-      - 12300
-    resources:
-      cpu: 0.1
-      mem: 512
-    buildpack:
-      bp_repo: http://git.terminus.io/buildpacks/dice-bpack-termjava.git
-      bp_ver: master
-      bp_args:
-        - USE_AGENT=true
-    depends:
-      - equipment-authority-provider
-      - equipment-equipment-provider
-      - equipment-syslog-provider
-
+version: "2.0"
+envs:
+  MYSQL_DATABASE: yankuang_equipment_test
+  MYSQL_HOST: 47.94.211.172
+  MYSQL_PASSWORD: uAiqwVwjJ8-i
+  MYSQL_PORT: "3306"
+  MYSQL_USERNAME: root
+  REDIS_HOST: 47.94.211.172
+  REDIS_PASSWORD: "738788"
+  REDIS_PORT: "6379"
 
 services:
   equipment-authority-provider:
-    module_path: equipment-authority-provider/equipment-authority-provider-impl
-    context: .
     ports:
-      - 20880
+    - 20880
     resources:
       cpu: 0.1
+      max_cpu: 0.1
       mem: 512
-    buildpack:
-      bp_repo: http://git.terminus.io/buildpacks/dice-bpack-termjava.git
-      bp_ver: master
-      bp_args:
-        - USE_AGENT=true
+    deployments:
+      replicas: 1
+    health_check:
+      exec:
+        cmd: echo 1
+        duration: 120
 
   equipment-equipment-provider:
-    module_path: equipment-equipment-provider/equipment-equipment-provider-impl
-    context: .
     ports:
-      - 20880
+    - 20880
     resources:
       cpu: 0.1
+      max_cpu: 0.1
       mem: 512
-    buildpack:
-      bp_repo: http://git.terminus.io/buildpacks/dice-bpack-termjava.git
-      bp_ver: master
-      bp_args:
-        - USE_AGENT=true
+    deployments:
+      replicas: 1
+    health_check:
+      exec:
+        cmd: echo 1
+        duration: 120
 
   equipment-syslog-provider:
-    module_path: equipment-syslog-provider/equipment-syslog-provider-impl
-    context: .
     ports:
-      - 20880
+    - 20880
     resources:
       cpu: 0.1
+      max_cpu: 0.1
       mem: 512
-    buildpack:
-      bp_repo: http://git.terminus.io/buildpacks/dice-bpack-termjava.git
-      bp_ver: master
-      bp_args:
-        - USE_AGENT=true
+    deployments:
+      replicas: 1
+    health_check:
+      exec:
+        cmd: echo 1
+        duration: 120
+
+  equipment-web:
+    ports:
+    - 12300
+    resources:
+      cpu: 0.1
+      max_cpu: 0.1
+      mem: 512
+    deployments:
+      replicas: 1
+    depends_on:
+    - equipment-authority-provider
+    - equipment-equipment-provider
+    - equipment-syslog-provider
+    expose:
+      - 80
+      - 443
+    health_check:
+      exec:
+        cmd: echo 1
+        duration: 120
 
 addons:
-  mysql:
-    plan: mysql:small
-    options:
-      version: 5.7.23
-#      create_dbs: db_test
   yk-equipment-zk:
     plan: zookeeper:small
-  redis:
-    plan: redis:small
-    as: REDIS
-
-global_env:
-  MYSQL_PORT: 3306
-  MYSQL_DATABASE: yankuang_equipment_test
-  MYSQL_USERNAME: root
-  MYSQL_PASSWORD: uAiqwVwjJ8-i
-  MYSQL_HOST: 47.94.211.172
-  REDIS_HOST: 47.94.211.172
-  REDIS_PORT: 6379
-  REDIS_PASSWORD: 738788
-
