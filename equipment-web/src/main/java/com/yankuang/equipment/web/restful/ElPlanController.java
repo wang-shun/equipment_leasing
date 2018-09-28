@@ -13,6 +13,8 @@ import com.yankuang.equipment.equipment.model.SbPosition;
 import com.yankuang.equipment.equipment.service.ElPlanUseService;
 import com.yankuang.equipment.equipment.service.ElUseService;
 import com.yankuang.equipment.web.dto.ElPlanDTO;
+import com.yankuang.equipment.web.dto.UserDTO;
+import com.yankuang.equipment.web.util.UserFromRedis;
 import org.apache.log4j.Logger;
 import org.springframework.util.StringUtils;
 import com.yankuang.equipment.equipment.model.ElPlan;
@@ -51,6 +53,9 @@ public class ElPlanController {
     @RpcConsumer
     DeptService deptService;
 
+    @Autowired
+    UserFromRedis userFromRedis;
+
     /**
      * 创建通用设备月度租赁计划
      * @param elPlan
@@ -69,12 +74,12 @@ public class ElPlanController {
             if (StringUtils.isEmpty(equipmentType) || StringUtils.isEmpty(planType)) {
                 return CommonResponse.errorMsg("设备租赁计划url有误");
             }
-            if (StringUtils.isEmpty(elPlan.getPlanCreatorId())) {
-                return CommonResponse.errorMsg("计划提出人ID不得为空");
-            }
-            if (StringUtils.isEmpty(elPlan.getPlanCreatorName())) {
-                return CommonResponse.errorMsg("计划提出人姓名不得为空");
-            }
+//            if (StringUtils.isEmpty(elPlan.getPlanCreatorId())) {
+//                return CommonResponse.errorMsg("计划提出人ID不得为空");
+//            }
+//            if (StringUtils.isEmpty(elPlan.getPlanCreatorName())) {
+//                return CommonResponse.errorMsg("计划提出人姓名不得为空");
+//            }
             if (StringUtils.isEmpty(elPlan.getPlanYear())) {
                 return CommonResponse.errorMsg("需求年度不得为空");
             }
@@ -126,6 +131,13 @@ public class ElPlanController {
                     && !Constants.PLANTYPE_URGENT.equals(elPlan.getPlanType())) {
                 return CommonResponse.errorMsg("设备租赁计划url有误");
             }
+            UserDTO userDTO = userFromRedis.findByToken();
+            if (userDTO != null) {
+                elPlan.setPlanCreatorId(userDTO.getId()+"");
+                elPlan.setPlanUpdatorId(userDTO.getId()+"");
+                elPlan.setPlanCreatorName(userDTO.getName());
+                elPlan.setPlanUpdatorName(userDTO.getName());
+            }
 
             // 存储数据
             res = elPlanService.create(elPlan);
@@ -153,12 +165,12 @@ public class ElPlanController {
             if (elPlan == null || StringUtils.isEmpty(elPlan.getPlanId())) {
                 return CommonResponse.errorMsg("通用设备租赁计划ID不得为空");
             }
-            if (StringUtils.isEmpty(elPlan.getPlanUpdatorName())) {
-                return CommonResponse.errorMsg("编辑修改人姓名不得为空");
-            }
-            if (StringUtils.isEmpty(elPlan.getPlanUpdatorId())) {
-                return CommonResponse.errorMsg("编辑修改人ID不得为空");
-            }
+//            if (StringUtils.isEmpty(elPlan.getPlanUpdatorName())) {
+//                return CommonResponse.errorMsg("编辑修改人姓名不得为空");
+//            }
+//            if (StringUtils.isEmpty(elPlan.getPlanUpdatorId())) {
+//                return CommonResponse.errorMsg("编辑修改人ID不得为空");
+//            }
             ElPlan plan = elPlanService.findElPlanById(elPlan.getPlanId());
             if (plan == null) {
                 return CommonResponse.errorMsg("该条租赁计划已过期");
@@ -169,6 +181,11 @@ public class ElPlanController {
             if (Constants.PLANSTATUS_FAILED.equals(plan.getPlanStatus())
                     || Constants.PLANSTATUS_PASSED.equals(plan.getPlanStatus())) {
                 return CommonResponse.errorMsg("该条租赁计划已审核，不能编辑修改");
+            }
+            UserDTO userDTO = userFromRedis.findByToken();
+            if (userDTO != null) {
+                elPlan.setPlanUpdatorId(userDTO.getId()+"");
+                elPlan.setPlanUpdatorName(userDTO.getName());
             }
             res = elPlanService.update(elPlan);
             if (!res) {
@@ -360,6 +377,7 @@ public class ElPlanController {
             }
             elPlan.setPlanType(plan.getPlanType());
             elPlan.setPlanEquipmentType(plan.getPlanEquipmentType());
+            UserDTO userDTO = userFromRedis.findByToken();
             if (plan.getElPlanItemList() != null && plan.getElPlanItemList().size() > 0) {
                 elPlan.setElPlanItemList(plan.getElPlanItemList());
             } else {
@@ -371,23 +389,27 @@ public class ElPlanController {
                         || Constants.PLANSTATUS_FAILED.equals(plan.getPlanStatus())) {
                     return CommonResponse.errorMsg("该条租赁计划已提交,不能重复提交");
                 }
-                if (StringUtils.isEmpty(elPlan.getPlanUpdatorName())) {
-                    return CommonResponse.errorMsg("编辑修改人姓名不得为空");
-                }
-                if (StringUtils.isEmpty(elPlan.getPlanUpdatorId())) {
-                    return CommonResponse.errorMsg("编辑修改人ID不得为空");
-                }
+//                if (StringUtils.isEmpty(elPlan.getPlanUpdatorName())) {
+//                    return CommonResponse.errorMsg("编辑修改人姓名不得为空");
+//                }
+//                if (StringUtils.isEmpty(elPlan.getPlanUpdatorId())) {
+//                    return CommonResponse.errorMsg("编辑修改人ID不得为空");
+//                }
+                elPlan.setPlanUpdatorId(userDTO == null ? "" : userDTO.getId()+"");
+                elPlan.setPlanUpdatorName(userDTO == null ? "" : userDTO.getName());
                 elPlan.setPlanStatus(Constants.PLANSTATUS_COMMITED);
                 elPlan.setPlanUpdateTime(new Date().getTime());
             }
             if ("passed".equals(approvalType)) {
                 elPlan.setPlanStatus(Constants.PLANSTATUS_PASSED);
-                if (StringUtils.isEmpty(elPlan.getPlanApproverId())) {
-                    return CommonResponse.errorMsg("请补充审批人ID");
-                }
-                if (StringUtils.isEmpty(elPlan.getPlanApproverName())) {
-                    return CommonResponse.errorMsg("请补充审批人姓名");
-                }
+//                if (StringUtils.isEmpty(elPlan.getPlanApproverId())) {
+//                    return CommonResponse.errorMsg("请补充审批人ID");
+//                }
+//                if (StringUtils.isEmpty(elPlan.getPlanApproverName())) {
+//                    return CommonResponse.errorMsg("请补充审批人姓名");
+//                }
+                elPlan.setPlanApproverId(userDTO == null ? "" : userDTO.getId()+"");
+                elPlan.setPlanApproverName(userDTO == null ? "" : userDTO.getName());
                 if (Constants.PLANSTATUS_UNCOMMITED.equals(plan.getPlanStatus())) {
                     return CommonResponse.errorMsg("该条租赁计划未提交，不能审核");
                 }
@@ -399,12 +421,14 @@ public class ElPlanController {
             }
             if ("failed".equals(approvalType)) {
                 elPlan.setPlanStatus(Constants.PLANSTATUS_FAILED);
-                if (StringUtils.isEmpty(elPlan.getPlanApproverId())) {
-                    return CommonResponse.errorMsg("请补充审批人ID");
-                }
-                if (StringUtils.isEmpty(elPlan.getPlanApproverName())) {
-                    return CommonResponse.errorMsg("请补充审批人姓名");
-                }
+//                if (StringUtils.isEmpty(elPlan.getPlanApproverId())) {
+//                    return CommonResponse.errorMsg("请补充审批人ID");
+//                }
+//                if (StringUtils.isEmpty(elPlan.getPlanApproverName())) {
+//                    return CommonResponse.errorMsg("请补充审批人姓名");
+//                }
+                elPlan.setPlanApproverId(userDTO == null ? "" : userDTO.getId()+"");
+                elPlan.setPlanApproverName(userDTO == null ? "" : userDTO.getName());
                 if (Constants.PLANSTATUS_UNCOMMITED.equals(plan.getPlanStatus())) {
                     return CommonResponse.errorMsg("该条租赁计划未提交，不能审核");
                 }
@@ -537,7 +561,7 @@ public class ElPlanController {
     public CommonResponse find(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                      @RequestParam(value = "size", defaultValue = "20") Integer size,
                                      @RequestParam Byte type,
-                               @RequestParam String pCode) {
+                               @RequestParam(defaultValue = "") String pCode) {
         Map map = new HashMap();
         map.put("type", type);
         map.put("pcode",pCode);

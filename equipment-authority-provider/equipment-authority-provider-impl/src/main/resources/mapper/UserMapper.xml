@@ -71,8 +71,21 @@
     </sql>
 
     <insert id="create" parameterType="com.yankuang.equipment.authority.model.User">
-        INSERT INTO el_user
-        (<include refid="cols_all"/>)
+        INSERT INTO el_user (
+        password,
+        code,
+        name,
+        sex,
+        telephone,
+        mail,
+        status,
+        remark,
+        sorting,
+        version,
+        update_by,
+        create_by,
+        account,
+        project_code)
         VALUES
         (<include refid="vals"/>)
     </insert>
@@ -130,8 +143,6 @@
         where
             u.code = #{code}
             and u.status != 99
-            and du.status != 99
-            and d.status != 99
     </select>
 
     <select id="findByName" parameterType="String" resultMap="UserMap">
@@ -157,8 +168,6 @@
         where
             u.account = #{account}
             and u.status != 99
-            and du.status != 99
-            and d.status != 99
     </select>
 
     <select id="list" parameterType="java.util.HashMap" resultMap="UserMap">
