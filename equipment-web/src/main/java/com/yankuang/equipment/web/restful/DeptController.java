@@ -10,7 +10,9 @@ import com.yankuang.equipment.web.dto.CodesDTO;
 import com.yankuang.equipment.web.dto.DeptTreeDTO;
 import com.yankuang.equipment.web.util.CodeUtil;
 import com.yankuang.equipment.web.util.DeptTreeUtils;
+import com.yankuang.equipment.web.util.UserFromRedis;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +29,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/v1/depts")
 public class DeptController {
+
+    @Autowired
+    UserFromRedis userFromRedis;
 
     @RpcConsumer
     DeptService deptService;
@@ -81,8 +86,9 @@ public class DeptController {
             return CommonResponse.ok("部门已存在，请勿重复添加");
         }
         dept.setCode(getCode());
-        dept.setCreateBy("admin");
-        dept.setUpdateBy("admin");
+        String loginerName = userFromRedis.findByToken().getName();
+        dept.setCreateBy(loginerName);
+        dept.setUpdateBy(loginerName);
         dept.setProjectCode("sb001");
         Boolean b = deptService.create(dept);
         if (!b) {
@@ -125,7 +131,8 @@ public class DeptController {
         if (StringUtils.isEmpty(dept.getCode())) {
             return CommonResponse.errorMsg("部门code不能为空");
         }
-        dept.setUpdateBy("admin");
+        String loginerName = userFromRedis.findByToken().getName();
+        dept.setUpdateBy(loginerName);
         Boolean b = deptService.update(dept);
         if (b) {
             return CommonResponse.build(200, "更新成功", null);

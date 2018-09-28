@@ -14,6 +14,8 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
@@ -230,9 +232,10 @@ public class UserController {
         }
         user.setCode(getCode(deptCode));
         user.setPassword("123456");
-        //TODO 从redis中获取登陆人姓名项目code
-        user.setUpdateBy("admin");
-        user.setCreateBy("admin");
+        //从redis中获取登陆人姓名项目code
+        String nameFromRedis = getLoginerName();
+        user.setUpdateBy(nameFromRedis);
+        user.setCreateBy(nameFromRedis);
         user.setProjectCode("sb001");
         Boolean b = userService.create(user);
         if (!b == true) {
@@ -259,6 +262,22 @@ public class UserController {
         }
 
         return CommonResponse.ok("用户添加成功");
+    }
+
+    private String getLoginerName() {
+        HttpServletRequest request =
+                ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        String token = request.getHeader("token");
+        if (StringUtils.isEmpty(token)) {
+            return "";
+        }
+        String userRedis = (String) redis.get(token);
+        if (StringUtils.isEmpty(userRedis)) {
+            return "";
+        }
+        UserDTO userFromRedis = JsonUtils.jsonToPojo(userRedis, UserDTO.class);
+        String loginName = userFromRedis.getName();
+        return loginName;
     }
 
     /**
@@ -327,7 +346,8 @@ public class UserController {
                 roleUserService.create(roleUser);
             }
         }
-        user.setUpdateBy("登陆人");
+        String nameFromRedis = getLoginerName();
+        user.setUpdateBy(nameFromRedis);
         Boolean b = userService.update(user);
         if (!b) {
             return CommonResponse.errorTokenMsg("更新失败");
