@@ -117,6 +117,7 @@ public class ZEquipmentReportController {
             Double costA1Fee = dtkListLY.getCostA1() * dtkListLY.getEquipmentNum() * day;
             sum += costA1Fee;
             dtkListLY.setCostA1Fee(costA1Fee);
+            dtkListLY.setSum(costA1Fee);
             dtkListLY.setDay(day);
             dtkList.setUseAt(dtkListLY.getUseAt());
         }
