@@ -6,6 +6,7 @@ import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.common.util.ResponseMeta;
 import com.yankuang.equipment.equipment.model.SbEquipmentT;
 import com.yankuang.equipment.equipment.service.SbEquipmentTService;
+import com.yankuang.equipment.web.util.UserFromRedis;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
@@ -37,7 +38,7 @@ public class SbEquipmentTController {
             if(equipmentT!=null){
                 return responseMeta.setMeta(Constants.RESPONSE_ERROR,"设备识别码已存在!");
             }
-
+            sbEquipmentT.setCreateBy(new UserFromRedis().findByToken().getCode());
             sbEquipmentTService.create(sbEquipmentT);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"创建通用设备成功");
         }catch (Exception e){
@@ -55,6 +56,7 @@ public class SbEquipmentTController {
             if (bindingResult.hasErrors()){
                 return responseMeta.setMeta(Constants.RESPONSE_ERROR,bindingResult.getAllErrors().get(0).getDefaultMessage());
             }
+            sbEquipmentT.setUpdateBy(new UserFromRedis().findByToken().getCode());
             sbEquipmentTService.update(sbEquipmentT);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"更新通用设备成功");
         }catch (Exception e){

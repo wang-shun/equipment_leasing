@@ -6,6 +6,7 @@ import com.yankuang.equipment.equipment.model.SbType;
 import com.yankuang.equipment.equipment.model.SbTypeInfo;
 import com.yankuang.equipment.equipment.service.SbTypeService;
 import com.yankuang.equipment.web.dto.SbTypeDTO;
+import com.yankuang.equipment.web.util.UserFromRedis;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -58,6 +59,8 @@ public class SbTypeController {
             BeanUtils.copyProperties(sbType,sbTypeDTO);
             SbTypeInfo sbTypeInfo = new SbTypeInfo();
             BeanUtils.copyProperties(sbTypeInfo,sbTypeDTO);
+            sbType.setCreateBy(new UserFromRedis().findByToken().getCode());
+            sbTypeInfo.setCreateBy(new UserFromRedis().findByToken().getCode());
             sbTypeService.create(sbType,sbTypeInfo);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"创建设备类型及信息成功");
         }catch (Exception e){
