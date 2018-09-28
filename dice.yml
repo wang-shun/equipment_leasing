@@ -65,6 +65,9 @@ services:
     - equipment-authority-provider
     - equipment-equipment-provider
     - equipment-syslog-provider
+    expose:
+      - 80
+      - 443
     health_check:
       exec:
         cmd: echo 1
