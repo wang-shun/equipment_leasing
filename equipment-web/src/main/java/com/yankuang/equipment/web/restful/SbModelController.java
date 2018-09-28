@@ -6,6 +6,7 @@ import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.common.util.ResponseMeta;
 import com.yankuang.equipment.equipment.model.SbModel;
 import com.yankuang.equipment.equipment.service.SbModelService;
+import com.yankuang.equipment.web.util.UserFromRedis;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
@@ -33,6 +34,7 @@ public class SbModelController {
             if (bindingResult.hasErrors()){
                 return responseMeta.setMeta(Constants.RESPONSE_ERROR,bindingResult.getAllErrors().get(0).getDefaultMessage());
             }
+            sbModel.setCreateBy(new UserFromRedis().findByToken().getCode());
             sbModelService.create(sbModel);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"创建设备规格型号成功");
         }catch (Exception e){
@@ -50,6 +52,7 @@ public class SbModelController {
             if (bindingResult.hasErrors()){
                 return responseMeta.setMeta(Constants.RESPONSE_ERROR,bindingResult.getAllErrors().get(0).getDefaultMessage());
             }
+            sbModel.setUpdateBy(new UserFromRedis().findByToken().getCode());
             sbModelService.update(sbModel);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"更新设备规格型号成功");
         }catch (Exception e){

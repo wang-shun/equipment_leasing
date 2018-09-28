@@ -66,7 +66,7 @@ public class SbEquipmentZ implements Serializable {
 
     private String contranct;
 
-    @Range(min = 0,max = 9999999,message = "购置价值必须在0~9999999之间!")
+    @Range(min = 0,max = 999999999,message = "购置价值必须在0~999999999之间!")
     private BigDecimal buyPrice;
 
     private Byte isNew;
