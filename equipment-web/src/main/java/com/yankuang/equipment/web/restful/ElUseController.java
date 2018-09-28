@@ -9,8 +9,11 @@ import com.yankuang.equipment.common.util.StringUtils;
 import com.yankuang.equipment.equipment.model.*;
 import com.yankuang.equipment.equipment.service.*;
 import com.yankuang.equipment.web.dto.CodesDTO;
+import com.yankuang.equipment.web.dto.UserDTO;
 import com.yankuang.equipment.web.util.DateConverterConfig;
+import com.yankuang.equipment.web.util.UserFromRedis;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,6 +47,10 @@ public class ElUseController {
 
     @RpcConsumer
     UserService userService;
+
+    //从redis中读取信息
+    @Autowired
+    UserFromRedis userFromRedis;
 
     /**
      * @method 领用申请添加功能
@@ -82,7 +89,9 @@ public class ElUseController {
                 item.setCostA1(costA1);
             }
         }
-
+        UserDTO userDTO = userFromRedis.findByToken();
+        elUse.setCreateBy(userDTO.getCode());
+        elUse.setUpdateBy(userDTO.getCode());
         if (elUseService.create(elUse) == false){
             return CommonResponse.build(500,"创建失败",null);
         }
@@ -108,6 +117,8 @@ public class ElUseController {
             return CommonResponse.errorMsg("id不能为空");
         }
         elUse.setUpdateAt(new Date());
+        UserDTO userDTO = userFromRedis.findByToken();
+        elUse.setUpdateBy(userDTO.getCode());
         if (elUseService.update(elUse) == false){
             return CommonResponse.build(500,"更新失败",null);
         }
@@ -355,7 +366,9 @@ public class ElUseController {
         if (!"2".equals(chooseElUse.getStatus())){
             return CommonResponse.errorMsg("该数据未处于审核状态");
         }
-        elUse.setApproveBy(1L);//TODO 待redis开发完，先写死
+        //
+        UserDTO userDTO = userFromRedis.findByToken();
+        elUse.setApproveBy(userDTO.getId());
         elUse.setApproveAt(new Date());
         elUse.setUpdateAt(new Date());
         elUse.setStatus("4");
@@ -363,10 +376,10 @@ public class ElUseController {
         ElPlanUse elPlanUse = new ElPlanUse();
         //由于同意租用所以将租用的设备状态更改成在租状态
         for (ElUseItem elUseItem:elUseItems){
-            elPlanUse.setUpdateBy(1L);//TODO 待redis开发完，先写死
             elPlanUse.setUpdateAt(new Date());
             elPlanUse.setId(elUseItem.getPlanUseId());
             elPlanUse.setStatus("2");//更改设备状态
+            elPlanUse.setUpdateBy(userDTO.getId());
             if(elPlanUseService.update(elPlanUse)==null){
                 return CommonResponse.build(500,"更新失败",null);
             }
@@ -402,7 +415,8 @@ public class ElUseController {
         if (!"2".equals(chooseElUse.getStatus())){
             return CommonResponse.errorMsg("该数据未处于审核状态");
         }
-        elUse.setApproveBy(1L);//TODO 待redis开发完，先写死
+        UserDTO userDTO = userFromRedis.findByToken();
+        elUse.setApproveBy(userDTO.getId());//TODO 待redis开发完，先写死
         elUse.setApproveAt(new Date());
         elUse.setUpdateAt(new Date());
         elUse.setStatus("3");
@@ -434,6 +448,9 @@ public class ElUseController {
             Date date = dateConverterConfig.convert(elUse.getDateTime());
             elUse.setUseAt(date);
         }
+        UserDTO userDTO = userFromRedis.findByToken();
+        elUse.setUpdateBy(userDTO.getCode());
+        elUse.setCreateBy(userDTO.getCode());
         if (elUseService.createTz(elUse) == false){
             return CommonResponse.build(500,"创建失败",null);
         }
@@ -517,7 +534,8 @@ public class ElUseController {
         if (!"2".equals(chooseElUse.getStatus())){
             return CommonResponse.errorMsg("该数据未处于审核状态");
         }
-        elUse.setApproveBy(1L);//TODO 待redis开发完，先写死
+        UserDTO userDTO = userFromRedis.findByToken();
+        elUse.setApproveBy(userDTO.getId());
         elUse.setApproveAt(new Date());
         elUse.setUpdateAt(new Date());
         elUse.setStatus("4");
@@ -526,7 +544,7 @@ public class ElUseController {
         ElUseItem elUseItemSign = new ElUseItem();
         //由于同意退租所以将租用的设备状态更改成备用状态
         for (ElUseItem elUseItem:elUseItems){
-            elPlanUse.setUpdateBy(1L);//TODO 待redis开发完，先写死
+            elPlanUse.setUpdateBy(userDTO.getId());
             elPlanUse.setUpdateAt(new Date());
             elPlanUse.setId(elUseItem.getPlanUseId());
             elPlanUse.setStatus("1");//更改设备状态
