@@ -5,6 +5,7 @@ import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.equipment.model.ReportEquipmentZMonth;
 import com.yankuang.equipment.equipment.model.ReportEquipmentZMonthItem;
 import com.yankuang.equipment.equipment.service.ReportEquipmentZMonthService;
+import com.yankuang.equipment.web.util.UserFromRedis;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.apache.ibatis.annotations.Param;
 import org.apache.log4j.Logger;
@@ -54,6 +55,7 @@ public class ReportEquipmentZMonthController {
         }
         try{
             ReportEquipmentZMonth reportEquipmentZMonth = JsonUtils.jsonToPojo(jsonString,ReportEquipmentZMonth.class);
+            reportEquipmentZMonth.setUpdateBy(new UserFromRedis().findByToken().getCode());
             return CommonResponse.ok(reportEquipmentZMonthService.updateRemarkById(reportEquipmentZMonth));
         }catch (Exception e){
             return CommonResponse.errorException("更新综机折旧修理费月报的备注失败!");
