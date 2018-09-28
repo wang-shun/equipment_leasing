@@ -34,7 +34,7 @@ public class ReportEquipmentTTask {
     @Autowired
     ReportTPlusService reportTPlusService;
 
-    @Scheduled(cron = "0 59 13 26 * ?")
+    @Scheduled(cron = "0 0 0 21 * ?")
     public void calReportEquipmentZMonth(){
         logger.info("......................当月的通用设备租赁费明细和中类汇总开始......................");
         try{

@@ -537,7 +537,7 @@ public class ElPlanController {
     public CommonResponse find(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                      @RequestParam(value = "size", defaultValue = "20") Integer size,
                                      @RequestParam Byte type,
-                               @RequestParam String pCode) {
+                               @RequestParam(defaultValue = "") String pCode) {
         Map map = new HashMap();
         map.put("type", type);
         map.put("pcode",pCode);

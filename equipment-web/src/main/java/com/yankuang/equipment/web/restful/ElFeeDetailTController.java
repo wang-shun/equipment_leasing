@@ -1,14 +1,10 @@
 package com.yankuang.equipment.web.restful;
 
 import com.alibaba.fastjson.JSON;
-import com.yankuang.equipment.authority.service.DeptService;
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.equipment.model.ElFeeDetailT;
 import com.yankuang.equipment.equipment.service.ElFeeDetailTService;
-import com.yankuang.equipment.equipment.service.ElPlanUseService;
-import com.yankuang.equipment.equipment.service.ElUseItemService;
-import com.yankuang.equipment.equipment.service.SbElFeeService;
 import com.yankuang.equipment.web.service.ReportTPlusService;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
