@@ -114,8 +114,6 @@
         left join el_user u
         on u.code = ua.user_code
         WHERE a.status != 99
-        and a.type = 1
-        and ua.status != 99
         and u.code = #{code}
         ORDER BY a.create_at DESC
     </select>
