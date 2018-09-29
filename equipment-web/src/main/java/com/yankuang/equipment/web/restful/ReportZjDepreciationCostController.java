@@ -77,7 +77,6 @@ public class ReportZjDepreciationCostController {
             int day = cale.get(Calendar.DATE);
             Integer count = zjDepreciationCostReportService.findCostRepairList(zjDepreciationCostReport.getYearTime(),zjDepreciationCostReport.getMonthTime(),zjDepreciationCostReport.getAssetComp());
             if((day>21 && day<31)){
-                zjDepreciationCostReport.setMonthTime(String.valueOf(month));
                 return CommonResponse.ok(zjDepreciationCostReportService.listzjxl(zjDepreciationCostReport));//连表查询
             }
             if(count>0){
