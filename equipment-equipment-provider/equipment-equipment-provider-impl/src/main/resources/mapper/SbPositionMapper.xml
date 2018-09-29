@@ -11,6 +11,7 @@
     <result column="type_name" property="typeName" jdbcType="VARCHAR" />
     <result column="org" property="org" jdbcType="VARCHAR" />
     <result column="position" property="position" jdbcType="VARCHAR" />
+    <result column="position_name" property="positionName" jdbcType="VARCHAR" />
     <result column="isuse" property="isuse" jdbcType="TINYINT" />
     <result column="isrfid" property="isrfid" jdbcType="TINYINT" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
@@ -76,10 +77,11 @@
   </update>
 
   <select id="list" resultMap="BaseResultMap">
-    select t.*,t1.name as state_name,t2.name as type_name
+    select t.*,t1.name as state_name,t2.name as type_name,p.name position_name
     from sb_position t
     left join sys_config t1 on t.state=t1.code and t1.type='sb_position_status' and t1.status = '1'
     left join sys_config t2 on t.state=t2.code and t2.type='sb_position_type' and t2.status = '1'
+    left join el_department p on t.position = p.id
     <where>
       1=1 and t.status = '1'
       <if test="code!=null and code!=''">

@@ -25,6 +25,7 @@ public class SbPosition implements Serializable {
     private String org;
 
     private String position;
+    private String positionName;
 
     private Byte isuse;
 
@@ -114,6 +115,14 @@ public class SbPosition implements Serializable {
 
     public void setPosition(String position) {
         this.position = position == null ? null : position.trim();
+    }
+
+    public String getPositionName() {
+        return positionName;
+    }
+
+    public void setPositionName(String positionName) {
+        this.positionName = positionName;
     }
 
     public Byte getIsuse() {
