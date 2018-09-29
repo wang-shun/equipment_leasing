@@ -77,6 +77,7 @@ public class ReportEquipmentZMonthImpl implements ReportEquipmentZMonthService {
         ReportEquipmentZMonthSum reportEquipmentZMonthSum = new ReportEquipmentZMonthSum();
         if(reportEquipmentZMonth != null){
             //汇总报表表头及备注
+            reportEquipmentZMonthSum.setId(reportEquipmentZMonth.getId());
             reportEquipmentZMonthSum.setReportName(reportEquipmentZMonth.getReportName());
             reportEquipmentZMonthSum.setRemark(reportEquipmentZMonth.getRemark());
             reportEquipmentZMonthSum.setYear(reportEquipmentZMonth.getYear());

@@ -11,7 +11,9 @@ import com.yankuang.equipment.web.dto.AuthorityTreeDTO;
 import com.yankuang.equipment.web.dto.CodesDTO;
 import com.yankuang.equipment.web.util.AuthorityTreeUtils;
 import com.yankuang.equipment.web.util.CodeUtil;
+import com.yankuang.equipment.web.util.UserFromRedis;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +27,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/v1/acls")
 public class AuthorityController {
+
+    @Autowired
+    UserFromRedis userFromRedis;
 
     @RpcConsumer
     AuthorityService authorityService;
@@ -83,8 +88,9 @@ public class AuthorityController {
         if (StringUtils.isEmpty(au)) {
             authority.setCode(getCode());
             // todo redis中获得
-            authority.setCreateBy("admin");
-            authority.setUpdateBy("admin");
+            String loginerName = userFromRedis.findByToken().getName();
+            authority.setCreateBy(loginerName);
+            authority.setUpdateBy(loginerName);
             authority.setProjectCode("sb001");
             //添加权限
             Boolean b = authorityService.create(authority);
@@ -134,7 +140,8 @@ public class AuthorityController {
         if (StringUtils.isEmpty(authority.getCode())) {
             return CommonResponse.errorTokenMsg("权限code不能为空");
         }
-        authority.setUpdateBy("admin");
+        String loginerName = userFromRedis.findByToken().getName();
+        authority.setUpdateBy(loginerName);
         Boolean b = authorityService.update(authority);
         if (b) {
             return CommonResponse.build(200, "更新成功", null);

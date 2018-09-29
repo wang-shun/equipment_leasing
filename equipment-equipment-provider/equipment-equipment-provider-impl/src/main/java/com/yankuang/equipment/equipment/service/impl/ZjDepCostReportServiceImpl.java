@@ -10,6 +10,7 @@ import com.yankuang.equipment.equipment.service.ZjDepreciationCostReportService;
 import io.terminus.boot.rpc.common.annotation.RpcProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -42,6 +43,7 @@ public class ZjDepCostReportServiceImpl implements ZjDepreciationCostReportServi
      * @param zjDepreciationCostReport
      * @return
      */
+    @Transactional
     public Boolean create(ZjDepreciationCostReport zjDepreciationCostReport){
 
         List<ZjDepreciationCostReportItem> zjDepreciationCostReportItemHome = zjDepreciationCostReport.getZjDepreciationCostReportItemsHome();

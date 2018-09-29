@@ -1,6 +1,5 @@
 package com.yankuang.equipment.equipment.model;
 
-import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
@@ -49,4 +48,6 @@ public class ListZReport implements Serializable {
     private String zc;
 
     private Byte status;//状态值0.表示该数据是旧数据1.表示该数据是新数据
+
+    private Double feeSum;//合计
 }
