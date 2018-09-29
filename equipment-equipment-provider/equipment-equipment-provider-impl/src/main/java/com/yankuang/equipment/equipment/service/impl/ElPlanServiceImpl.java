@@ -102,14 +102,8 @@ public class ElPlanServiceImpl implements ElPlanService {
             ElPlan elPlan = elPlanMapper.findById(planId);
             List<ElPlanItem> list = elPlanItemMapper.findByPlanId(planId);
             if (list != null && elPlan != null) {
-                for (ElPlanItem itemi: list) {
-                    if (itemi == null) continue;
-                    ObjDTO position = new ObjDTO(itemi.getPositionId(), itemi.getIpName());
-                    itemi.setPosition(position);
-                }
                 elPlan.setElPlanItemList(list);
             }
-
             return elPlan;
         } catch (Exception e) {
             e.printStackTrace();
