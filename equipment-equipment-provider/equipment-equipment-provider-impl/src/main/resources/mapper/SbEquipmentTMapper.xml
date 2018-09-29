@@ -207,8 +207,11 @@
       <if test="mainPara != null and mainPara != ''" >
         AND t.main_para = #{mainPara}
       </if>
-      <if test="isLease != null and isLease != ''" >
-        AND t.is_lease = #{isLease}
+      <if test="isLease != null and isLease == 1" >
+        AND t.is_lease = 1
+      </if>
+      <if test="isLease != null and isLease != 1" >
+        AND t.is_lease != 1
       </if>
       <if test="comp != null and comp != ''" >
         AND t.comp = #{comp}
