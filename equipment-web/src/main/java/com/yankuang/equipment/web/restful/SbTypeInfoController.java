@@ -4,9 +4,11 @@ import com.yankuang.equipment.common.util.Constants;
 import com.yankuang.equipment.common.util.ResponseMeta;
 import com.yankuang.equipment.equipment.model.SbTypeInfo;
 import com.yankuang.equipment.equipment.service.SbTypeInfoService;
+import com.yankuang.equipment.web.util.UserFromRedis;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +23,9 @@ public class SbTypeInfoController {
 
     @RpcConsumer
     SbTypeInfoService sbTypeInfoService;
+
+    @Autowired
+    UserFromRedis userFromRedis;
 
     @RequestMapping(value = "/find/{id}",method = RequestMethod.GET)
     public ResponseMeta findById(@PathVariable("id") Long id){
@@ -44,6 +49,7 @@ public class SbTypeInfoController {
             if (bindingResult.hasErrors()){
                 return responseMeta.setMeta(Constants.RESPONSE_ERROR,bindingResult.getAllErrors().get(0).getDefaultMessage());
             }
+            sbTypeInfo.setCreateBy(userFromRedis.findByToken().getCode());
             sbTypeInfoService.create(sbTypeInfo);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"创建设备类型信息成功");
         }catch (Exception e){
@@ -61,6 +67,7 @@ public class SbTypeInfoController {
             if (bindingResult.hasErrors()){
                 return responseMeta.setMeta(Constants.RESPONSE_ERROR,bindingResult.getAllErrors().get(0).getDefaultMessage());
             }
+            sbTypeInfo.setUpdateBy(userFromRedis.findByToken().getCode());
             sbTypeInfoService.update(sbTypeInfo);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"更新设备类型信息成功");
         }catch (Exception e){

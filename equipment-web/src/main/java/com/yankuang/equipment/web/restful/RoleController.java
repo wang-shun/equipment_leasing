@@ -8,7 +8,9 @@ import com.yankuang.equipment.authority.service.RoleService;
 import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.web.dto.CodesDTO;
 import com.yankuang.equipment.web.util.CodeUtil;
+import com.yankuang.equipment.web.util.UserFromRedis;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +25,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/v1/roles")
 public class RoleController {
+
+    @Autowired
+    UserFromRedis userFromRedis;
 
     @RpcConsumer
     RoleService roleService;
@@ -74,8 +79,9 @@ public class RoleController {
             role.setCode(roleCode);
             role.setProjectCode("sb001");
             role.setSorting((long) 1);
-            role.setCreateBy("admin");
-            role.setUpdateBy("admin");
+            String loginerName = userFromRedis.findByToken().getName();
+            role.setCreateBy(loginerName);
+            role.setUpdateBy(loginerName);
             Boolean b = roleService.create(role);
             if (b) {
                 //角色添加成功，添加部门关联
@@ -173,6 +179,8 @@ public class RoleController {
                 return CommonResponse.errorTokenMsg("添加新的关联关系失败");
             }
         }
+        String loginerName = userFromRedis.findByToken().getName();
+        role.setUpdateBy(loginerName);
         b = roleService.update(role);
         if (!b) {
             return CommonResponse.errorTokenMsg("更新失败");
