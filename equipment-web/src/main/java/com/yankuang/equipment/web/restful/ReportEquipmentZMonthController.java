@@ -9,6 +9,7 @@ import com.yankuang.equipment.web.util.UserFromRedis;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.apache.ibatis.annotations.Param;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,9 @@ public class ReportEquipmentZMonthController {
 
     @RpcConsumer
     ReportEquipmentZMonthService reportEquipmentZMonthService;
+
+    @Autowired
+    UserFromRedis userFromRedis;
 
     @RequestMapping(value = "/findByYear/{year}",method = RequestMethod.GET)
     public CommonResponse findByYear(@PathVariable("year") String year){
@@ -55,7 +59,7 @@ public class ReportEquipmentZMonthController {
         }
         try{
             ReportEquipmentZMonth reportEquipmentZMonth = JsonUtils.jsonToPojo(jsonString,ReportEquipmentZMonth.class);
-            reportEquipmentZMonth.setUpdateBy(new UserFromRedis().findByToken().getCode());
+            reportEquipmentZMonth.setUpdateBy(userFromRedis.findByToken().getCode());
             return CommonResponse.ok(reportEquipmentZMonthService.updateRemarkById(reportEquipmentZMonth));
         }catch (Exception e){
             return CommonResponse.errorException("更新综机折旧修理费月报的备注失败!");
