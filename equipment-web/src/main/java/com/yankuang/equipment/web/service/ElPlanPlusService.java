@@ -380,6 +380,7 @@ public class ElPlanPlusService {
         }
         SbPosition sbPosition = new SbPosition();
         sbPosition.setPosition(dept.getId().toString());
+        sbPosition.setType("01");
         List<SbPosition> list = sbPositionService.list(sbPosition, 1, 1000).getList();
         if (list == null || list.size() <= 0) {
             return null;
