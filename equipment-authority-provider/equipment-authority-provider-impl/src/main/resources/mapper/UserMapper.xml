@@ -168,6 +168,7 @@
         where
             u.account = #{account}
             and u.status != 99
+            and du.status != 99
     </select>
 
     <select id="list" parameterType="java.util.HashMap" resultMap="UserMap">
