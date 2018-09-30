@@ -47,7 +47,7 @@ public class ElFeePositionTController {
                 return CommonResponse.errorMsg("矿状态不得为空");
             }
             List<ElFeePositionT> historyList = reportTPlusService.getElFeePositionTSHistory(elFeePositionT, reportYear, reportMonth);
-            if (historyList != null && historyList.size() > 0) {
+            if (historyList != null || historyList.size() > 0) {
                 return CommonResponse.ok(historyList);
             }
 
