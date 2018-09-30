@@ -62,9 +62,6 @@
             <if test="sorting != null and sorting != '' " >
                 sorting = #{sorting},
             </if>
-            <if test="remark != null and remark != '' " >
-                remark = #{remark},
-            </if>
             <if test="updateBy != null and updateBy != '' " >
                 update_by = #{updateBy},
             </if>
@@ -77,6 +74,7 @@
             <if test="address != null and address != '' " >
                 type = #{address},
             </if>
+            remark = #{remark},
             update_at = CURRENT_TIMESTAMP
         </set>
         where code = #{code}

@@ -109,9 +109,9 @@
             <if test="password != null and password != ''">password = #{password},</if>
             <if test="telephone != null and telephone != ''">telephone = #{telephone},</if>
             <if test="mail != null and mail != ''">mail = #{mail},</if>
-            <if test="remark != null and remark != ''">remark = #{remark},</if>
             <if test="sorting != null and sorting != ''">sorting = #{sorting},</if>
             <if test="version != null and version != ''">version = #{version},</if>
+            remark = #{remark},
             update_at = CURRENT_TIMESTAMP()
         </set>
         WHERE code = #{code}
