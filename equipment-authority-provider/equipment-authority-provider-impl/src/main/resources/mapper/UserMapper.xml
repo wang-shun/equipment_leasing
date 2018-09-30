@@ -158,13 +158,21 @@
         u.id,u.password,u.code,u.account,u.name,u.sex,u.telephone,u.mail,u.status,u.remark,u.version,u.sorting,
         u.update_by,u.update_at,
         u.create_by,u.create_at,
-        u.project_code,
-        d.id as deptId,d.code as deptCode,d.name as deptName
+        u.project_code
         from el_user u
+        where
+            u.account = #{account}
+            and u.status != 99
+    </select>
+
+    <select id="findDeptByAccount" parameterType="String" resultMap="UserMap">
+        SELECT
+        d.id as deptId,d.code as deptCode,d.name as deptName
+        from el_department d
         left join el_department_user_mapping du
-        on du.user_code = u.code
-        left join el_department d
         on d.code = du.dept_code
+        left join el_user u
+        on du.user_code = u.code
         where
             u.account = #{account}
             and u.status != 99

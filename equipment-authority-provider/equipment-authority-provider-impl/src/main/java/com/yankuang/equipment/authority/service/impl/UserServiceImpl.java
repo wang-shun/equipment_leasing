@@ -36,7 +36,14 @@ public class UserServiceImpl implements UserService {
     }
 
     public User findByAccount(String name) {
-        return userMapper.findByAccount(name);
+        User user = userMapper.findByAccount(name);
+        User user1 = userMapper.findDeptByAccount(name);
+        if (user1 != null) {
+            user.setDeptId(user1.getDeptId());
+            user.setDeptName(user1.getDeptName());
+            user.setDeptCode(user1.getDeptCode());
+        }
+        return user;
     }
 
     public User findByCode(String code) {

@@ -19,6 +19,8 @@ public interface UserMapper {
 
     User findByAccount(String account);
 
+    User findDeptByAccount(String account);
+
     User findByCode(String code);
 
     List<User> list(Map map);
