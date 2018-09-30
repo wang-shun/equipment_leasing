@@ -17,8 +17,6 @@ public class ElPlanItem implements Serializable {
 
     private Long positionId;
 
-    private ObjDTO position;
-
     private String equipmentName;
 
     @NotNull(message = "设备数量不得为空")
@@ -28,23 +26,13 @@ public class ElPlanItem implements Serializable {
 
     private String itemEffect;
 
-    private ObjDTO effect;
-
     private String equipmentBigType;
-
-    private ObjDTO bigType;
 
     private String equipmentMiddleType;
 
-    private ObjDTO middleType;
-
     private String equipmentSmallType;
 
-    private ObjDTO smallType;
-
     private String equipmentSpecification;
-
-    private ObjDTO specification;
 
     @NotNull(message = "主要技术参数名称不得为空")
     private String equipmentParamName;

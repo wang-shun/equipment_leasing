@@ -54,7 +54,7 @@ public class ElFeePositionTController {
             // 联表查询
             List<ElFeePositionT> positionTs = reportTPlusService.getElFeePositionTS(elFeePositionT, reportYear, reportMonth);
 
-            if (positionTs == null && positionTs.size() <= 0) {
+            if (positionTs == null || positionTs.size() <= 0) {
                 return CommonResponse.build(200, "查询结果为空", null);
             }
 
