@@ -228,39 +228,39 @@
                     <skip>true</skip>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>com.github.kongchen</groupId>
-                <artifactId>swagger-maven-plugin</artifactId>
-                <version>3.1.5</version>
-                <!--<configuration>-->
-                    <!--<apiSources>-->
-                        <!--<apiSource>-->
-                            <!--<springmvc>true</springmvc>-->
-                            <!--<locations>-->
-                                <!--<location>io.terminus.pampas.showcase.restful</location>-->
-                            <!--</locations>-->
-                            <!--<info>-->
-                                <!--<title>Pampas showcase API Docs</title>-->
-                                <!--<version>v1</version>-->
-                                <!--<description>-->
-                                    <!--This is Pampas showcase API Docs.-->
-                                <!--</description>-->
-                            <!--</info>-->
-                            <!--<swaggerDirectory>${build.outputDirectory}/swagger</swaggerDirectory>-->
-                            <!--<swaggerFileName>api</swaggerFileName>-->
-                            <!--<attachSwaggerArtifact>true</attachSwaggerArtifact>-->
-                        <!--</apiSource>-->
-                    <!--</apiSources>-->
-                <!--</configuration>-->
-                <executions>
-                    <execution>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+            <!--<plugin>-->
+                <!--<groupId>com.github.kongchen</groupId>-->
+                <!--<artifactId>swagger-maven-plugin</artifactId>-->
+                <!--<version>3.1.5</version>-->
+                <!--&lt;!&ndash;<configuration>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<apiSources>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<apiSource>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<springmvc>true</springmvc>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<locations>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<location>io.terminus.pampas.showcase.restful</location>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</locations>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<info>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<title>Pampas showcase API Docs</title>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<version>v1</version>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<description>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;This is Pampas showcase API Docs.&ndash;&gt;-->
+                                <!--&lt;!&ndash;</description>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</info>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<swaggerDirectory>${build.outputDirectory}/swagger</swaggerDirectory>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<swaggerFileName>api</swaggerFileName>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<attachSwaggerArtifact>true</attachSwaggerArtifact>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</apiSource>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</apiSources>&ndash;&gt;-->
+                <!--&lt;!&ndash;</configuration>&ndash;&gt;-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<phase>compile</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>generate</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
