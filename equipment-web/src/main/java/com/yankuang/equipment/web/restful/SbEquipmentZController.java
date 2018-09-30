@@ -1,8 +1,8 @@
 package com.yankuang.equipment.web.restful;
 
 import com.github.pagehelper.PageInfo;
+import com.google.common.primitives.Longs;
 import com.yankuang.equipment.common.util.Constants;
-import com.yankuang.equipment.common.util.JsonUtils;
 import com.yankuang.equipment.common.util.ResponseMeta;
 import com.yankuang.equipment.equipment.model.SbEquipmentZ;
 import com.yankuang.equipment.equipment.service.SbEquipmentZService;
@@ -11,7 +11,6 @@ import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -115,14 +114,10 @@ public class SbEquipmentZController {
         return responseMeta;
     }
 
-    @RequestMapping(value = "/deletes",method = RequestMethod.DELETE)
-    public ResponseMeta deletes(@RequestBody String jsonString){
+    @RequestMapping(value = "/deletes/{id}",method = RequestMethod.DELETE)
+    public ResponseMeta deletes(@PathVariable("id") long[] id){
         ResponseMeta responseMeta = new ResponseMeta();
-        if(StringUtils.isEmpty(jsonString)){
-            responseMeta.setMeta(Constants.RESPONSE_ERROR,"参数不能为空!");
-            return responseMeta;
-        }
-        List<Long> ids = JsonUtils.jsonToList(jsonString,Long.class);
+        List<Long> ids = Longs.asList(id);
         try{
             sbEquipmentZService.deletes(ids);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"删除综机设备信息成功");
