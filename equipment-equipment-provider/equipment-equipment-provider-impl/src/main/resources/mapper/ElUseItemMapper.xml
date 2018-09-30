@@ -256,6 +256,8 @@
         and t2.equipment_type = 2
         and depart.pcode = #{deptCode}
         and t1.equipment_effect = #{equipmentEffect}
+        and year(t1.use_at) = #{useYear}
+        and month(t1.use_at) = #{useMonth}
     </select>
 
     <select id="findKB" parameterType="DtkList" resultType="INTEGER">
