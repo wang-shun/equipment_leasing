@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yankuang.equipment.equipment.mapper.ElEquipmentGroupMapper" >
+  <resultMap id="BaseResultMap" type="com.yankuang.equipment.equipment.model.ElEquipmentGroup" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="plan_id" property="planId" jdbcType="BIGINT" />
+    <result column="plan_code" property="planCode" jdbcType="BIGINT" />
+    <result column="surface_code" property="surfaceCode" jdbcType="VARCHAR" />
+    <result column="surface_id" property="surfaceId" jdbcType="BIGINT" />
+    <result column="sb_type_code" property="sbTypeCode" jdbcType="VARCHAR" />
+    <result column="sb_model_code" property="sbModelCode" jdbcType="VARCHAR" />
+    <result column="param_name" property="paramName" jdbcType="VARCHAR" />
+    <result column="param_value" property="paramValue" jdbcType="VARCHAR" />
+    <result column="sb_num" property="sbNum" jdbcType="BIGINT" />
+    <result column="sb_unit" property="sbUnit" jdbcType="VARCHAR" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="BIGINT" />
+    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+    <result column="sorting" property="sorting" jdbcType="BIGINT" />
+    <result column="version" property="version" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, code, status, plan_id, plan_code, surface_code, surface_id, sb_type_code, sb_model_code, 
+    param_name, param_value, sb_num, sb_unit, remarks, create_by, create_at, update_by, 
+    update_at, sorting, version
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from el_equipment_group
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from el_equipment_group
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yankuang.equipment.equipment.model.ElEquipmentGroup" >
+    insert into el_equipment_group (id, code, status, 
+      plan_id, plan_code, surface_code, 
+      surface_id, sb_type_code, sb_model_code, 
+      param_name, param_value, sb_num, 
+      sb_unit, remarks, create_by, 
+      create_at, update_by, update_at, 
+      sorting, version)
+    values (#{id,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
+      #{planId,jdbcType=BIGINT}, #{planCode,jdbcType=BIGINT}, #{surfaceCode,jdbcType=VARCHAR}, 
+      #{surfaceId,jdbcType=BIGINT}, #{sbTypeCode,jdbcType=VARCHAR}, #{sbModelCode,jdbcType=VARCHAR}, 
+      #{paramName,jdbcType=VARCHAR}, #{paramValue,jdbcType=VARCHAR}, #{sbNum,jdbcType=BIGINT}, 
+      #{sbUnit,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, 
+      #{createAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=BIGINT}, #{updateAt,jdbcType=TIMESTAMP}, 
+      #{sorting,jdbcType=BIGINT}, #{version,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yankuang.equipment.equipment.model.ElEquipmentGroup" >
+    insert into el_equipment_group
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="planId != null" >
+        plan_id,
+      </if>
+      <if test="planCode != null" >
+        plan_code,
+      </if>
+      <if test="surfaceCode != null" >
+        surface_code,
+      </if>
+      <if test="surfaceId != null" >
+        surface_id,
+      </if>
+      <if test="sbTypeCode != null" >
+        sb_type_code,
+      </if>
+      <if test="sbModelCode != null" >
+        sb_model_code,
+      </if>
+      <if test="paramName != null" >
+        param_name,
+      </if>
+      <if test="paramValue != null" >
+        param_value,
+      </if>
+      <if test="sbNum != null" >
+        sb_num,
+      </if>
+      <if test="sbUnit != null" >
+        sb_unit,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createAt != null" >
+        create_at,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateAt != null" >
+        update_at,
+      </if>
+      <if test="sorting != null" >
+        sorting,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="planId != null" >
+        #{planId,jdbcType=BIGINT},
+      </if>
+      <if test="planCode != null" >
+        #{planCode,jdbcType=BIGINT},
+      </if>
+      <if test="surfaceCode != null" >
+        #{surfaceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="surfaceId != null" >
+        #{surfaceId,jdbcType=BIGINT},
+      </if>
+      <if test="sbTypeCode != null" >
+        #{sbTypeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="sbModelCode != null" >
+        #{sbModelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="paramName != null" >
+        #{paramName,jdbcType=VARCHAR},
+      </if>
+      <if test="paramValue != null" >
+        #{paramValue,jdbcType=VARCHAR},
+      </if>
+      <if test="sbNum != null" >
+        #{sbNum,jdbcType=BIGINT},
+      </if>
+      <if test="sbUnit != null" >
+        #{sbUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createAt != null" >
+        #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=BIGINT},
+      </if>
+      <if test="updateAt != null" >
+        #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sorting != null" >
+        #{sorting,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yankuang.equipment.equipment.model.ElEquipmentGroup" >
+    update el_equipment_group
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="planId != null" >
+        plan_id = #{planId,jdbcType=BIGINT},
+      </if>
+      <if test="planCode != null" >
+        plan_code = #{planCode,jdbcType=BIGINT},
+      </if>
+      <if test="surfaceCode != null" >
+        surface_code = #{surfaceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="surfaceId != null" >
+        surface_id = #{surfaceId,jdbcType=BIGINT},
+      </if>
+      <if test="sbTypeCode != null" >
+        sb_type_code = #{sbTypeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="sbModelCode != null" >
+        sb_model_code = #{sbModelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="paramName != null" >
+        param_name = #{paramName,jdbcType=VARCHAR},
+      </if>
+      <if test="paramValue != null" >
+        param_value = #{paramValue,jdbcType=VARCHAR},
+      </if>
+      <if test="sbNum != null" >
+        sb_num = #{sbNum,jdbcType=BIGINT},
+      </if>
+      <if test="sbUnit != null" >
+        sb_unit = #{sbUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createAt != null" >
+        create_at = #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=BIGINT},
+      </if>
+      <if test="updateAt != null" >
+        update_at = #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sorting != null" >
+        sorting = #{sorting,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yankuang.equipment.equipment.model.ElEquipmentGroup" >
+    update el_equipment_group
+    set code = #{code,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      plan_id = #{planId,jdbcType=BIGINT},
+      plan_code = #{planCode,jdbcType=BIGINT},
+      surface_code = #{surfaceCode,jdbcType=VARCHAR},
+      surface_id = #{surfaceId,jdbcType=BIGINT},
+      sb_type_code = #{sbTypeCode,jdbcType=VARCHAR},
+      sb_model_code = #{sbModelCode,jdbcType=VARCHAR},
+      param_name = #{paramName,jdbcType=VARCHAR},
+      param_value = #{paramValue,jdbcType=VARCHAR},
+      sb_num = #{sbNum,jdbcType=BIGINT},
+      sb_unit = #{sbUnit,jdbcType=VARCHAR},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=BIGINT},
+      update_at = #{updateAt,jdbcType=TIMESTAMP},
+      sorting = #{sorting,jdbcType=BIGINT},
+      version = #{version,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
