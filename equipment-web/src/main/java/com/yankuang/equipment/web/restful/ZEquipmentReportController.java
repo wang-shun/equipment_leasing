@@ -194,21 +194,16 @@ public class ZEquipmentReportController {
                                         Integer size,
                                         ZEquipmentDTO zEquipmentDTO) {
 
-        //传入查询条件
-        Map listZReportMap = new HashMap();
-        //将DTO转化成对应的map
-        BeanUtils.copyProperties(zEquipmentDTO,listZReportMap);
+        DtkList dtkList = new DtkList();
 
         String useAtString = zEquipmentDTO.getUseAtString();
         if (useAtString != null && !"".equals(useAtString)){
             DateConverterConfig dateConverterConfig = new DateConverterConfig();
             Date date = dateConverterConfig.convert(useAtString);
-            listZReportMap.put("useAt",date);
-        }else {
-            listZReportMap.put("useAt",zEquipmentDTO.getUseAt());
+            zEquipmentDTO.setUseAt(date);
         }
-
-        return zEquipmentReportService.findByPage(page,size,listZReportMap);
+        BeanUtils.copyProperties(zEquipmentDTO,dtkList);
+        return zEquipmentReportService.findByPage(page,size,dtkList);
     }
 
 }
