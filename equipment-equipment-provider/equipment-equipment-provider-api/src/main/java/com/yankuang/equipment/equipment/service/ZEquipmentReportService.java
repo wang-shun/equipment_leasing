@@ -21,10 +21,10 @@ public interface ZEquipmentReportService {
      * 分页查询列表
      * @param page
      * @param size
-     * @param listZReportMap
+     * @param dtkList
      * @return
      */
-    Map findByPage(Integer page, Integer size, Map listZReportMap);
+    Map findByPage(Integer page, Integer size, DtkList dtkList);
 
     /**
      * 查询是否是历史报表记录
