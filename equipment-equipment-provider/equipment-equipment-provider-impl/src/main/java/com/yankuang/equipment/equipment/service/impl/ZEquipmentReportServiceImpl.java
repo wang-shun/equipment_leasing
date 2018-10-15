@@ -53,18 +53,16 @@ public class ZEquipmentReportServiceImpl implements ZEquipmentReportService {
     }
 
     @Transactional
-    public Map findByPage(Integer page, Integer size, Map listZReportMap) {
+    public Map findByPage(Integer page, Integer size, DtkList dtkList) {
 
-        ListZReport listZReport = new ListZReport();
-        DtkList dtkList = new DtkList();
         List<ListZReportItem> listZReportItems = new ArrayList<ListZReportItem>();
+        ListZReport listZReport = new ListZReport();
 
         PageHelper.startPage(page, size);
-        //将map中数据传到实体类中
-        BeanUtils.copyProperties(listZReportMap,listZReport);
+        BeanUtils.copyProperties(dtkList,listZReport);
         List<ListZReport> listZReports = zEquipmentListReportMapper.list(listZReport);
 
-        ListZReportItem listZReportItem = (ListZReportItem)listZReportMap.get("listZReportItems");
+        ListZReportItem listZReportItem = dtkList.getListZReportItem();
         if (listZReportItem == null){
             listZReportItem = new ListZReportItem();
         }
@@ -76,6 +74,7 @@ public class ZEquipmentReportServiceImpl implements ZEquipmentReportService {
             dtkList.setCenterMonth(Integer.parseInt(listZReport1.getUseMonth()));
             dtkList.setCenterYear(Integer.parseInt(listZReport1.getUseYear()));
             dtkList.setKb(listZReport1.getType());
+            dtkList.setSum(listZReport1.getSum());
             listZReportItem.setReportId(listZReport1.getId());
             List<ListZReportItem> listZReportItemList = zEquipmentListReportItemMapper.list(listZReportItem);
             for (ListZReportItem listZReportItem1:listZReportItemList){

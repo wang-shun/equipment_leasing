@@ -10,10 +10,14 @@ import com.yankuang.equipment.equipment.model.ListZReportItem;
 import com.yankuang.equipment.equipment.service.ElUseItemService;
 import com.yankuang.equipment.equipment.service.SbElFeeService;
 import com.yankuang.equipment.equipment.service.ZEquipmentReportService;
+import com.yankuang.equipment.web.dto.UserDTO;
 import com.yankuang.equipment.web.dto.ZEquipmentDTO;
 import com.yankuang.equipment.web.util.DateConverterConfig;
+import com.yankuang.equipment.web.util.UserFromRedis;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
@@ -33,6 +37,9 @@ public class ZEquipmentReportController {
 
     @RpcConsumer
     SbElFeeService sbElFeeService;
+
+    @Autowired
+    UserFromRedis userFromRedis;
 
     /**
      * @method 查询报表列表
@@ -194,21 +201,16 @@ public class ZEquipmentReportController {
                                         Integer size,
                                         ZEquipmentDTO zEquipmentDTO) {
 
-        //传入查询条件
-        Map listZReportMap = new HashMap();
-        //将DTO转化成对应的map
-        BeanUtils.copyProperties(zEquipmentDTO,listZReportMap);
+        DtkList dtkList = new DtkList();
 
         String useAtString = zEquipmentDTO.getUseAtString();
         if (useAtString != null && !"".equals(useAtString)){
             DateConverterConfig dateConverterConfig = new DateConverterConfig();
             Date date = dateConverterConfig.convert(useAtString);
-            listZReportMap.put("useAt",date);
-        }else {
-            listZReportMap.put("useAt",zEquipmentDTO.getUseAt());
+            zEquipmentDTO.setUseAt(date);
         }
-
-        return zEquipmentReportService.findByPage(page,size,listZReportMap);
+        BeanUtils.copyProperties(zEquipmentDTO,dtkList);
+        return zEquipmentReportService.findByPage(page,size,dtkList);
     }
 
 }
