@@ -137,6 +137,9 @@
         <if test="endTime != null and endTime != ''" >
             and t1.end_time = #{endTime}
         </if>
+        <if test="planPosition != null and planPosition != ''" >
+            and t1.plan_position = #{planPosition}
+        </if>
         and t1.status = 1
         order by t1.update_at desc
     </select>

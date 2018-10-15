@@ -268,7 +268,7 @@ public class ElProducePlanController {
     public CommonResponse switchSurface(@RequestParam(defaultValue = "") String planYear,
                                         @RequestParam(defaultValue = "") String effectCode) {
         try {
-            if (StringUtils.isEmpty(planYear)) return CommonResponse.errorMsg("配置年度不得为空");
+            if (StringUtils.isEmpty(planYear)) return CommonResponse.errorMsg("计划年度不得为空");
             if (StringUtils.isEmpty(effectCode)) return CommonResponse.errorMsg("工作面不得为空");
             List<ElEquipmentGroup> groups = elProducePlanService.findBySurfaceCode(planYear, effectCode);
             if (groups == null || groups.size() <= 0) return CommonResponse.build(200, "查询结果为空", null);
