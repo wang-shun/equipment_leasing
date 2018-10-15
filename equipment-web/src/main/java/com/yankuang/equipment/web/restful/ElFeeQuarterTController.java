@@ -102,6 +102,7 @@ public class ElFeeQuarterTController {
             if (userDTO != null) {
                 for (ElFeeQuarterT feeQuarterT : list) {
                     feeQuarterT.setCreateBy(userDTO.getId());
+                    feeQuarterT.setUpdateBy(userDTO.getId());
                 }
             }
 

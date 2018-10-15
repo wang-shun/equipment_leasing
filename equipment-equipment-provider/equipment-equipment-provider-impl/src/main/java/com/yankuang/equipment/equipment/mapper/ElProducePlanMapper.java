@@ -3,17 +3,17 @@ package com.yankuang.equipment.equipment.mapper;
 import com.yankuang.equipment.equipment.model.ElProducePlan;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ElProducePlanMapper {
-    int deleteByPrimaryKey(Long id);
+    int delete(Long id);
 
-    int insert(ElProducePlan record);
+    int create(ElProducePlan record);
 
-    int insertSelective(ElProducePlan record);
+    ElProducePlan findById(Long id);
 
-    ElProducePlan selectByPrimaryKey(Long id);
+    int update(ElProducePlan record);
 
-    int updateByPrimaryKeySelective(ElProducePlan record);
-
-    int updateByPrimaryKey(ElProducePlan record);
+    List<ElProducePlan> list(ElProducePlan elProducePlan);
 }

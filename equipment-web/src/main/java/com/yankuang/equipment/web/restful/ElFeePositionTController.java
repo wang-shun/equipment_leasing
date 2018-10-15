@@ -109,6 +109,7 @@ public class ElFeePositionTController {
             if (userDTO != null) {
                 for (ElFeePositionT feePositionT : list) {
                     feePositionT.setCreateBy(userDTO.getId());
+                    feePositionT.setUpdateBy(userDTO.getId());
                 }
             }
 

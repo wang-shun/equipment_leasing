@@ -3,17 +3,19 @@ package com.yankuang.equipment.equipment.mapper;
 import com.yankuang.equipment.equipment.model.ElProduceSurface;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ElProduceSurfaceMapper {
-    int deleteByPrimaryKey(Long id);
+    int delete(Long id);
 
-    int insert(ElProduceSurface record);
+    int create(ElProduceSurface record);
 
-    int insertSelective(ElProduceSurface record);
+    ElProduceSurface findById(Long id);
 
-    ElProduceSurface selectByPrimaryKey(Long id);
+    int update(ElProduceSurface record);
 
-    int updateByPrimaryKeySelective(ElProduceSurface record);
+    List<ElProduceSurface> findByPlanCode(String planCode);
 
-    int updateByPrimaryKey(ElProduceSurface record);
+    List<ElProduceSurface> findByCondition(ElProduceSurface surfaceI);
 }
