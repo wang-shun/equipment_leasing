@@ -97,6 +97,7 @@ public class ElFeeMiddleTController {
             if (userDTO != null) {
                 for (ElFeeMiddleT feeMiddleT : list) {
                     feeMiddleT.setCreateBy(userDTO.getId());
+                    feeMiddleT.setUpdateBy(userDTO.getId());
                 }
             }
 

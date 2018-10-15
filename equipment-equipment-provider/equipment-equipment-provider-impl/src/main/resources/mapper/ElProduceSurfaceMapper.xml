@@ -8,7 +8,9 @@
     <result column="plan_id" property="planId" jdbcType="BIGINT" />
     <result column="plan_code" property="planCode" jdbcType="VARCHAR" />
     <result column="position_code" property="positionCode" jdbcType="VARCHAR" />
+    <result column="partition_name" property="partitionName" jdbcType="VARCHAR" />
     <result column="effect_code" property="effectCode" jdbcType="VARCHAR" />
+    <result column="effect_name" property="effectName" jdbcType="VARCHAR" />
     <result column="ready_time" property="readyTime" jdbcType="VARCHAR" />
     <result column="produce_time" property="produceTime" jdbcType="VARCHAR" />
     <result column="revoke_time" property="revokeTime" jdbcType="VARCHAR" />
@@ -28,160 +30,30 @@
     revoke_time, bank_time, switch_surface_code, sb_source, remarks, version, sorting, 
     create_by, create_at, update_by, update_at
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
     from el_produce_surface
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from el_produce_surface
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
-  <insert id="insert" parameterType="com.yankuang.equipment.equipment.model.ElProduceSurface" >
-    insert into el_produce_surface (id, code, status, 
+  <update id="delete" parameterType="java.lang.Long" >
+    update el_produce_surface set status = 99 where id = #{id,jdbcType=BIGINT}
+  </update>
+  <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="com.yankuang.equipment.equipment.model.ElProduceSurface" >
+    insert into el_produce_surface (code, status,
       plan_id, plan_code, position_code, 
       effect_code, ready_time, produce_time, 
       revoke_time, bank_time, switch_surface_code, 
       sb_source, remarks, version, 
-      sorting, create_by, create_at, 
-      update_by, update_at)
-    values (#{id,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
+      sorting, create_by, update_by)
+    values (#{code,jdbcType=VARCHAR}, 1,
       #{planId,jdbcType=BIGINT}, #{planCode,jdbcType=VARCHAR}, #{positionCode,jdbcType=VARCHAR}, 
       #{effectCode,jdbcType=VARCHAR}, #{readyTime,jdbcType=VARCHAR}, #{produceTime,jdbcType=VARCHAR}, 
       #{revokeTime,jdbcType=VARCHAR}, #{bankTime,jdbcType=VARCHAR}, #{switchSurfaceCode,jdbcType=VARCHAR}, 
-      #{sbSource,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT}, 
-      #{sorting,jdbcType=BIGINT}, #{createBy,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, 
-      #{updateBy,jdbcType=VARCHAR}, #{updateAt,jdbcType=TIMESTAMP})
+      #{sbSource,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, 0,
+      #{sorting,jdbcType=BIGINT}, #{createBy,jdbcType=VARCHAR}, #{updateBy,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.yankuang.equipment.equipment.model.ElProduceSurface" >
-    insert into el_produce_surface
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="code != null" >
-        code,
-      </if>
-      <if test="status != null" >
-        status,
-      </if>
-      <if test="planId != null" >
-        plan_id,
-      </if>
-      <if test="planCode != null" >
-        plan_code,
-      </if>
-      <if test="positionCode != null" >
-        position_code,
-      </if>
-      <if test="effectCode != null" >
-        effect_code,
-      </if>
-      <if test="readyTime != null" >
-        ready_time,
-      </if>
-      <if test="produceTime != null" >
-        produce_time,
-      </if>
-      <if test="revokeTime != null" >
-        revoke_time,
-      </if>
-      <if test="bankTime != null" >
-        bank_time,
-      </if>
-      <if test="switchSurfaceCode != null" >
-        switch_surface_code,
-      </if>
-      <if test="sbSource != null" >
-        sb_source,
-      </if>
-      <if test="remarks != null" >
-        remarks,
-      </if>
-      <if test="version != null" >
-        version,
-      </if>
-      <if test="sorting != null" >
-        sorting,
-      </if>
-      <if test="createBy != null" >
-        create_by,
-      </if>
-      <if test="createAt != null" >
-        create_at,
-      </if>
-      <if test="updateBy != null" >
-        update_by,
-      </if>
-      <if test="updateAt != null" >
-        update_at,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=BIGINT},
-      </if>
-      <if test="code != null" >
-        #{code,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null" >
-        #{status,jdbcType=TINYINT},
-      </if>
-      <if test="planId != null" >
-        #{planId,jdbcType=BIGINT},
-      </if>
-      <if test="planCode != null" >
-        #{planCode,jdbcType=VARCHAR},
-      </if>
-      <if test="positionCode != null" >
-        #{positionCode,jdbcType=VARCHAR},
-      </if>
-      <if test="effectCode != null" >
-        #{effectCode,jdbcType=VARCHAR},
-      </if>
-      <if test="readyTime != null" >
-        #{readyTime,jdbcType=VARCHAR},
-      </if>
-      <if test="produceTime != null" >
-        #{produceTime,jdbcType=VARCHAR},
-      </if>
-      <if test="revokeTime != null" >
-        #{revokeTime,jdbcType=VARCHAR},
-      </if>
-      <if test="bankTime != null" >
-        #{bankTime,jdbcType=VARCHAR},
-      </if>
-      <if test="switchSurfaceCode != null" >
-        #{switchSurfaceCode,jdbcType=VARCHAR},
-      </if>
-      <if test="sbSource != null" >
-        #{sbSource,jdbcType=VARCHAR},
-      </if>
-      <if test="remarks != null" >
-        #{remarks,jdbcType=VARCHAR},
-      </if>
-      <if test="version != null" >
-        #{version,jdbcType=BIGINT},
-      </if>
-      <if test="sorting != null" >
-        #{sorting,jdbcType=BIGINT},
-      </if>
-      <if test="createBy != null" >
-        #{createBy,jdbcType=VARCHAR},
-      </if>
-      <if test="createAt != null" >
-        #{createAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateBy != null" >
-        #{updateBy,jdbcType=VARCHAR},
-      </if>
-      <if test="updateAt != null" >
-        #{updateAt,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.yankuang.equipment.equipment.model.ElProduceSurface" >
+  <update id="update" parameterType="com.yankuang.equipment.equipment.model.ElProduceSurface" >
     update el_produce_surface
     <set >
       <if test="code != null" >
@@ -244,27 +116,70 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.yankuang.equipment.equipment.model.ElProduceSurface" >
-    update el_produce_surface
-    set code = #{code,jdbcType=VARCHAR},
-      status = #{status,jdbcType=TINYINT},
-      plan_id = #{planId,jdbcType=BIGINT},
-      plan_code = #{planCode,jdbcType=VARCHAR},
-      position_code = #{positionCode,jdbcType=VARCHAR},
-      effect_code = #{effectCode,jdbcType=VARCHAR},
-      ready_time = #{readyTime,jdbcType=VARCHAR},
-      produce_time = #{produceTime,jdbcType=VARCHAR},
-      revoke_time = #{revokeTime,jdbcType=VARCHAR},
-      bank_time = #{bankTime,jdbcType=VARCHAR},
-      switch_surface_code = #{switchSurfaceCode,jdbcType=VARCHAR},
-      sb_source = #{sbSource,jdbcType=VARCHAR},
-      remarks = #{remarks,jdbcType=VARCHAR},
-      version = #{version,jdbcType=BIGINT},
-      sorting = #{sorting,jdbcType=BIGINT},
-      create_by = #{createBy,jdbcType=VARCHAR},
-      create_at = #{createAt,jdbcType=TIMESTAMP},
-      update_by = #{updateBy,jdbcType=VARCHAR},
-      update_at = #{updateAt,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
+
+    <select id="findByPlanCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select t1.id,
+        t1.code,
+        t1.status,
+        t1.plan_id,
+        t1.plan_code,
+        t1.position_code,
+        t2.name as partition_name,
+        t1.effect_code,
+        t3.name as effect_name,
+        t1.ready_time,
+        t1.produce_time,
+        t1.revoke_time,
+        t1.bank_time,
+        t1.switch_surface_code,
+        t1.sb_source,
+        t1.remarks,
+        t1.version,
+        t1.sorting,
+        t1.create_by,
+        t1.create_at,
+        t1.update_by,
+        t1.update_at
+        from el_produce_surface t1
+        left join el_department t2 on t2.code = t1.position_code
+        left join sb_position t3 on t3.code = t1.effect_code
+        where t1.plan_code = #{planCode} and t1.status = 1
+    </select>
+
+    <select id="findByCondition" parameterType="com.yankuang.equipment.equipment.model.ElProduceSurface" resultMap="BaseResultMap" >
+        select t1.id,
+        t1.code,
+        t1.status,
+        t1.plan_id,
+        t1.plan_code,
+        t1.position_code,
+        t2.name as partition_name,
+        t1.effect_code,
+        t3.name as effect_name,
+        t1.ready_time,
+        t1.produce_time,
+        t1.revoke_time,
+        t1.bank_time,
+        t1.switch_surface_code,
+        t1.sb_source,
+        t1.remarks,
+        t1.version,
+        t1.sorting,
+        t1.create_by,
+        t1.create_at,
+        t1.update_by,
+        t1.update_at
+        from el_produce_surface t1
+        left join el_department t2 on t2.code = t1.position_code
+        left join sb_position t3 on t3.code = t1.effect_code
+        where 1=1
+        <if test="planCode != null and planCode != ''" >
+            and t1.plan_code = #{planCode}
+        </if>
+        <if test="effectCode != null and effectCode != ''">
+            and t1.effect_code = #{effectCode}
+        </if>
+        and t1.status != 99
+        order by t1.update_at desc
+    </select>
 </mapper>

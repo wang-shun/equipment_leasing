@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yankuang.equipment.equipment.mapper.ElSurfaceParamMapper" >
+  <resultMap id="BaseResultMap" type="com.yankuang.equipment.equipment.model.ElSurfaceParam" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="sb_position_code" property="sbPositionCode" jdbcType="VARCHAR" />
+    <result column="sb_position_name" property="sbPositionName" jdbcType="VARCHAR" />
+    <result column="surface_length" property="surfaceLength" jdbcType="DOUBLE" />
+    <result column="surface_trend" property="surfaceTrend" jdbcType="DOUBLE" />
+    <result column="surface_high" property="surfaceHigh" jdbcType="DOUBLE" />
+    <result column="surface_reserves" property="surfaceReserves" jdbcType="DOUBLE" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="version" property="version" jdbcType="BIGINT" />
+    <result column="sorting" property="sorting" jdbcType="BIGINT" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, code, sb_position_code, surface_length, surface_trend, surface_high, surface_reserves, 
+    status, version, sorting, remarks, create_by, create_at, update_by, update_at
+  </sql>
+  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+        t1.id,
+        t1.code,
+        t1.sb_position_code,
+        t2.name as sb_position_name,
+        t1.surface_length,
+        t1.surface_trend,
+        t1.surface_high,
+        t1.surface_reserves,
+        t1.status,
+        t1.version,
+        t1.sorting,
+        t1.remarks,
+        t1.create_by,
+        t1.create_at,
+        t1.update_by,
+        t1.update_at
+        from el_surface_param t1
+        left join sb_position t2 on t2.code = t1.sb_position_code
+        where t1.id = #{id,jdbcType=BIGINT} and t1.status != 99
+  </select>
+  <update id="delete" parameterType="java.lang.Long" >
+    update el_surface_param set status = 99 where id = #{id,jdbcType=BIGINT}
+  </update>
+  <insert id="create" parameterType="com.yankuang.equipment.equipment.model.ElSurfaceParam" >
+    insert into el_surface_param (code, sb_position_code,
+      surface_length, surface_trend, surface_high, 
+      surface_reserves, status, version, 
+      sorting, remarks, create_by, 
+      update_by
+      )
+    values (#{code,jdbcType=VARCHAR}, #{sbPositionCode,jdbcType=VARCHAR},
+      #{surfaceLength,jdbcType=DOUBLE}, #{surfaceTrend,jdbcType=DOUBLE}, #{surfaceHigh,jdbcType=DOUBLE},
+      #{surfaceReserves,jdbcType=DOUBLE}, 1, 0,
+      #{sorting,jdbcType=BIGINT}, #{remarks,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, 
+      #{updateBy,jdbcType=VARCHAR}
+      )
+  </insert>
+
+  <update id="update" parameterType="com.yankuang.equipment.equipment.model.ElSurfaceParam" >
+    update el_surface_param
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="sbPositionCode != null" >
+        sb_position_code = #{sbPositionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="surfaceLength != null" >
+        surface_length = #{surfaceLength,jdbcType=DOUBLE},
+      </if>
+      <if test="surfaceTrend != null" >
+        surface_trend = #{surfaceTrend,jdbcType=DOUBLE},
+      </if>
+      <if test="surfaceHigh != null" >
+        surface_high = #{surfaceHigh,jdbcType=DOUBLE},
+      </if>
+      <if test="surfaceReserves != null" >
+        surface_reserves = #{surfaceReserves,jdbcType=DOUBLE},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=BIGINT},
+      </if>
+      <if test="sorting != null" >
+        sorting = #{sorting,jdbcType=BIGINT},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createAt != null" >
+        create_at = #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateAt != null" >
+        update_at = #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+    <select id="findByCode" parameterType="java.lang.String" resultMap="BaseResultMap" >
+        select
+        t1.id,
+        t1.code,
+        t1.sb_position_code,
+        t2.name as sb_position_name,
+        t1.surface_length,
+        t1.surface_trend,
+        t1.surface_high,
+        t1.surface_reserves,
+        t1.status,
+        t1.version,
+        t1.sorting,
+        t1.remarks,
+        t1.create_by,
+        t1.create_at,
+        t1.update_by,
+        t1.update_at
+        from el_surface_param t1
+        left join sb_position t2 on t2.code = t1.sb_position_code
+        where t1.code = #{code,jdbcType=BIGINT}
+    </select>
+    <select id="findByPositionCode" parameterType="java.lang.String" resultMap="BaseResultMap" >
+        select
+        t1.id,
+        t1.code,
+        t1.sb_position_code,
+        t2.name as sb_position_name,
+        t1.surface_length,
+        t1.surface_trend,
+        t1.surface_high,
+        t1.surface_reserves,
+        t1.status,
+        t1.version,
+        t1.sorting,
+        t1.remarks,
+        t1.create_by,
+        t1.create_at,
+        t1.update_by,
+        t1.update_at
+        from el_surface_param t1
+        left join sb_position t2 on t2.code = t1.sb_position_code
+        where t1.sb_position_code = #{sbPositionCode,jdbcType=BIGINT}
+    </select>
+
+    <select id="list" parameterType="com.yankuang.equipment.equipment.model.ElSurfaceParam" resultMap="BaseResultMap">
+        select t1.id,
+        t1.code,
+        t1.sb_position_code,
+        t2.name as sb_position_name,
+        t1.surface_length,
+        t1.surface_trend,
+        t1.surface_high,
+        t1.surface_reserves,
+        t1.status,
+        t1.version,
+        t1.sorting,
+        t1.remarks,
+        t1.create_by,
+        t1.create_at,
+        t1.update_by,
+        t1.update_at
+        from el_surface_param t1
+        left join sb_position t2 on t2.code = t1.sb_position_code
+        where 1=1
+        <if test="sbPositionCode != null and sbPositionCode != ''">
+            and t1.sb_position_code = #{sbPositionCode}
+        </if>
+        and t1.status != 99
+        order by update_at desc
+    </select>
+</mapper>

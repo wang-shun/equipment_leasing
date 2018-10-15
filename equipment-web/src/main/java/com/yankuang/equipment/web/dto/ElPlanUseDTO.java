@@ -32,7 +32,7 @@ public class ElPlanUseDTO {
 
     private Integer equipmentNum;
 
-    private String modelCode;
+    private String modelCode; // 功能位置code
 
     private Long equipmentId;
 

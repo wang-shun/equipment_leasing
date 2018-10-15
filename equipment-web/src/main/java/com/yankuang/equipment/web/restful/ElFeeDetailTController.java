@@ -85,6 +85,7 @@ public class ElFeeDetailTController {
             if (userDTO != null) {
                 for (ElFeeDetailT feeDetail : list) {
                     feeDetail.setCreateBy(userDTO.getId());
+                    feeDetail.setUpdateBy(userDTO.getId());
                 }
             }
 

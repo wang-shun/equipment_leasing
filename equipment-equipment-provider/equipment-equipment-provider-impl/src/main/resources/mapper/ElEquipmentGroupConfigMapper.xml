@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yankuang.equipment.equipment.mapper.ElEquipmentGroupConfigMapper" >
+  <resultMap id="BaseResultMap" type="com.yankuang.equipment.equipment.model.ElEquipmentGroupConfig" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="config_year" property="configYear" jdbcType="VARCHAR" />
+    <result column="asset_code" property="assetCode" jdbcType="VARCHAR" />
+    <result column="big_type_code" property="bigTypeCode" jdbcType="VARCHAR" />
+    <result column="big_type_name" property="bigTypeName" jdbcType="VARCHAR" />
+    <result column="middle_type_code" property="middleTypeCode" jdbcType="VARCHAR" />
+    <result column="middle_type_name" property="middleTypeName" jdbcType="VARCHAR" />
+    <result column="small_type_code" property="smallTypeCode" jdbcType="VARCHAR" />
+    <result column="small_type_name" property="smallTypeName" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="version" property="version" jdbcType="BIGINT" />
+    <result column="sorting" property="sorting" jdbcType="BIGINT" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, config_year, asset_code, big_type_code, middle_type_code, small_type_code, code, 
+    status, version, sorting, remarks, create_by, create_at, update_by, update_at
+  </sql>
+  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select t1.id,
+        t1.config_year,
+        t1.asset_code,
+        t1.big_type_code,
+        t4.name as big_type_name,
+        t1.middle_type_code,
+        t3.name as middle_type_name,
+        t1.small_type_code,
+        t2.name as small_type_name,
+        t1.code,
+        t1.status,
+        t1.version,
+        t1.sorting,
+        t1.remarks,
+        t1.create_by,
+        t1.create_at,
+        t1.update_by,
+        t1.update_at
+        from el_equipment_group_config t1
+        left join sb_type t2 on t2.code = t1.small_type_code
+        left join sb_type t3 on t3.code = t1.middle_type_code
+        left join sb_type t4 on t4.code = t1.big_type_code
+        where t1.id = #{id,jdbcType=BIGINT} and t1.status != 99
+  </select>
+  <update id="delete" parameterType="java.lang.Long" >
+    update el_equipment_group_config set status = 99 where id = #{id,jdbcType=BIGINT}
+  </update>
+  <insert id="create" parameterType="com.yankuang.equipment.equipment.model.ElEquipmentGroupConfig" >
+    insert into el_equipment_group_config (config_year, asset_code,
+      big_type_code, middle_type_code, small_type_code, 
+      code, status, version, 
+      sorting, remarks, create_by,update_by
+      )
+    values (#{configYear,jdbcType=VARCHAR}, #{assetCode,jdbcType=VARCHAR},
+      #{bigTypeCode,jdbcType=VARCHAR}, #{middleTypeCode,jdbcType=VARCHAR}, #{smallTypeCode,jdbcType=VARCHAR}, 
+      #{code,jdbcType=VARCHAR}, 1, 0,
+      #{sorting,jdbcType=BIGINT}, #{remarks,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR},#{updateBy,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="createBatch" parameterType="java.util.List" >
+    insert into el_equipment_group_config (config_year, asset_code,
+      big_type_code, middle_type_code, small_type_code,
+      code, status, version, sorting, remarks, create_by,update_by)
+    values
+      <foreach collection="list" item="item" index="index" open="" close="" separator=",">
+    (#{item.configYear,jdbcType=VARCHAR}, #{item.assetCode,jdbcType=VARCHAR}, #{item.bigTypeCode,jdbcType=VARCHAR},
+      #{item.middleTypeCode,jdbcType=VARCHAR}, #{item.smallTypeCode,jdbcType=VARCHAR}, #{item.code,jdbcType=VARCHAR}, 1, 0,
+      #{item.sorting,jdbcType=BIGINT}, #{item.remarks,jdbcType=VARCHAR}, #{item.createBy,jdbcType=VARCHAR},#{item.updateBy,jdbcType=VARCHAR}
+      )
+      </foreach>
+  </insert>
+
+  <update id="update" parameterType="com.yankuang.equipment.equipment.model.ElEquipmentGroupConfig" >
+    update el_equipment_group_config
+    <set >
+      <if test="configYear != null" >
+        config_year = #{configYear,jdbcType=VARCHAR},
+      </if>
+      <if test="assetCode != null" >
+        asset_code = #{assetCode,jdbcType=VARCHAR},
+      </if>
+      <if test="bigTypeCode != null" >
+        big_type_code = #{bigTypeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="middleTypeCode != null" >
+        middle_type_code = #{middleTypeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="smallTypeCode != null" >
+        small_type_code = #{smallTypeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=BIGINT},
+      </if>
+      <if test="sorting != null" >
+        sorting = #{sorting,jdbcType=BIGINT},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createAt != null" >
+        create_at = #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateAt != null" >
+        update_at = #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+    <select id="list" parameterType="com.yankuang.equipment.equipment.model.ElEquipmentGroupConfig" resultMap="BaseResultMap" >
+        select t1.id,
+        t1.config_year,
+        t1.asset_code,
+        t1.big_type_code,
+        t4.name as big_type_name,
+        t1.middle_type_code,
+        t3.name as middle_type_name,
+        t1.small_type_code,
+        t2.name as small_type_name,
+        t1.code,
+        t1.status,
+        t1.version,
+        t1.sorting,
+        t1.remarks,
+        t1.create_by,
+        t1.create_at,
+        t1.update_by,
+        t1.update_at
+        from el_equipment_group_config t1
+        left join sb_type t2 on t2.code = t1.small_type_code
+        left join sb_type t3 on t3.code = t1.middle_type_code
+        left join sb_type t4 on t4.code = t1.big_type_code
+        where 1=1
+        <if test="configYear != null and configYear != ''">
+            and t1.config_year = #{configYear}
+        </if>
+        <if test="assetCode != null and assetCode != ''" >
+            and t1.asset_code = #{assetCode}
+        </if>
+        and t1.status != 99
+        order by t1.update_at desc
+    </select>
+</mapper>

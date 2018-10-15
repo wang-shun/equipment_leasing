@@ -3,17 +3,19 @@ package com.yankuang.equipment.equipment.mapper;
 import com.yankuang.equipment.equipment.model.ElEquipmentGroup;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ElEquipmentGroupMapper {
-    int deleteByPrimaryKey(Long id);
+    int delete(Long id);
 
-    int insert(ElEquipmentGroup record);
+    int create(ElEquipmentGroup record);
 
-    int insertSelective(ElEquipmentGroup record);
+    ElEquipmentGroup findById(Long id);
 
-    ElEquipmentGroup selectByPrimaryKey(Long id);
+    int update(ElEquipmentGroup record);
 
-    int updateByPrimaryKeySelective(ElEquipmentGroup record);
+    List<ElEquipmentGroup> findBySurfaceCode(String surfaceCode);
 
-    int updateByPrimaryKey(ElEquipmentGroup record);
+    List<ElEquipmentGroup> findByCondition(ElEquipmentGroup groupI);
 }

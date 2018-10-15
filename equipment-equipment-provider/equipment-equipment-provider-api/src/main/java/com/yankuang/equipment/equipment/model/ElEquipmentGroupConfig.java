@@ -7,29 +7,32 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
-
 @Data
 @Entity
-@Table(name = "el_produce_plan")
-public class ElProducePlan implements Serializable {
+@Table(name = "el_equipment_group_config")
+public class ElEquipmentGroupConfig implements Serializable {
     private Long id;
 
-    private String planYear;
+    private String configYear;
+
+    private String assetCode;
+
+    private String bigTypeCode;
+    private String bigTypeName;
+
+    private String middleTypeCode;
+    private String middleTypeName;
+
+    private String smallTypeCode;
+    private String smallTypeName;
 
     private String code;
 
     private Byte status;
 
-    private String assetCode;
+    private Long version;
 
-    private String startTime;
-
-    private String endTime;
-
-    private String planPosition;
-
-    private String planPositionName;
+    private Long sorting;
 
     private String remarks;
 
@@ -42,11 +45,5 @@ public class ElProducePlan implements Serializable {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date updateAt;
-
-    private Long sorting;
-
-    private Long version;
-
-    private List<ElProduceSurface> elProduceSurfaces;
 
 }
