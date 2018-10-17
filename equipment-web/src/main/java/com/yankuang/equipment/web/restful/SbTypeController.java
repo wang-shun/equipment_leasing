@@ -10,7 +10,8 @@ import com.yankuang.equipment.web.util.UserFromRedis;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ import java.util.List;
 @RequestMapping("/v1/sbtype")
 public class SbTypeController {
 
-    public static final Logger logger = Logger.getLogger(SbTypeController.class);
+    Logger logger = LoggerFactory.getLogger(SbTypeController.class);
 
     @RpcConsumer
     SbTypeService sbTypeService;

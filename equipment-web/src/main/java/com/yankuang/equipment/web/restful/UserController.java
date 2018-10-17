@@ -10,7 +10,8 @@ import com.yankuang.equipment.web.util.AuthorityTreeUtils;
 import com.yankuang.equipment.web.util.CodeUtil;
 import com.yankuang.equipment.web.util.RedisOperator;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,7 @@ import java.util.*;
 @RequestMapping("/v1/users")
 public class UserController {
 
-    public static final Logger log = Logger.getLogger(UserController.class);
+    Logger log = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     RedisOperator redis;

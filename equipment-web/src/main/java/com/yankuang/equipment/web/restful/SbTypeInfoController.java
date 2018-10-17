@@ -7,7 +7,8 @@ import com.yankuang.equipment.equipment.service.SbTypeInfoService;
 import com.yankuang.equipment.web.util.UserFromRedis;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ import javax.validation.Valid;
 @RequestMapping("/v1/sbtypeinfo")
 public class SbTypeInfoController {
 
-    public static final Logger logger = Logger.getLogger(SbTypeInfoController.class);
+    Logger logger = LoggerFactory.getLogger(SbTypeInfoController.class);
 
     @RpcConsumer
     SbTypeInfoService sbTypeInfoService;

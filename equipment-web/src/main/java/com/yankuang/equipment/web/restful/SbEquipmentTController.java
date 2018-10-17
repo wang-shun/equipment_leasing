@@ -9,7 +9,8 @@ import com.yankuang.equipment.equipment.service.SbEquipmentTService;
 import com.yankuang.equipment.web.util.UserFromRedis;
 import io.terminus.boot.rpc.common.annotation.RpcConsumer;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ import java.util.List;
 @RequestMapping(value = "/v1/sbequipmentt")
 public class SbEquipmentTController {
 
-    public static final Logger logger = Logger.getLogger(SbModelController.class);
+    Logger logger = LoggerFactory.getLogger(SbModelController.class);
 
     @RpcConsumer
     SbEquipmentTService sbEquipmentTService;

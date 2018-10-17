@@ -11,7 +11,8 @@ import com.yankuang.equipment.equipment.model.*;
 import com.yankuang.equipment.equipment.service.ElPlanService;
 import io.terminus.boot.rpc.common.annotation.RpcProvider;
 import io.terminus.common.model.Paging;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +30,7 @@ import java.util.List;
 @Transactional
 public class ElPlanServiceImpl implements ElPlanService {
 
-    public static final Logger logger = Logger.getLogger(ElPlanServiceImpl.class);
+    Logger logger = LoggerFactory.getLogger(ElPlanServiceImpl.class);
 
     @Autowired
     ElPlanMapper elPlanMapper;

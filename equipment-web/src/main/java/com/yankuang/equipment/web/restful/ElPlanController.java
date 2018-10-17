@@ -15,7 +15,8 @@ import com.yankuang.equipment.equipment.service.ElUseService;
 import com.yankuang.equipment.web.dto.ElPlanDTO;
 import com.yankuang.equipment.web.dto.UserDTO;
 import com.yankuang.equipment.web.util.UserFromRedis;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 import com.yankuang.equipment.equipment.model.ElPlan;
 import com.yankuang.equipment.equipment.service.ElPlanService;
@@ -36,7 +37,7 @@ import java.util.*;
 @RequestMapping("/v1/elplan")
 public class ElPlanController {
 
-    public static final Logger logger = Logger.getLogger(ElPlanController.class);
+    Logger logger = LoggerFactory.getLogger(ElPlanController.class);
 
     @RpcConsumer
     ElPlanService elPlanService;
