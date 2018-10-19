@@ -17,3 +17,8 @@ rpc:
     port: 20880
 
 management.security.enabled: false
+
+logback:
+  serviceName: equipment-web
+  logDir: /var/log
+#  logDir: D:/log

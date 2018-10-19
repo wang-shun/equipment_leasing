@@ -79,7 +79,7 @@ public class ElPlanPlusService {
                     String middleType = item.getMiddleTypeCode();
                     String bigType = item.getBigTypeCode();
                     // 获取设备规格号
-                    String sbModelStr = item.getSpecificationCode();
+                    String sbModelCode = item.getSpecificationCode();
                     // 设备主要参数值
                     String paramValue = item.getEquipmentParamValue();
                     if (StringUtils.isEmpty(paramValue)) {
@@ -97,9 +97,10 @@ public class ElPlanPlusService {
                         List<SbPosition> sbPositions = sbPositionService.list(position, 1, 1000).getList();
                         for (SbPosition sbPosition : sbPositions) {
                             SbEquipmentT sbEquipmentT = new SbEquipmentT();
-                            if (!StringUtils.isEmpty(sbPosition.getCode())) {
-                                sbEquipmentT.setWare(sbPosition.getCode());
-                            }
+                            // TODO 设备仓库数据暂时没有关联对应
+//                            if (!StringUtils.isEmpty(sbPosition.getCode())) {
+//                                sbEquipmentT.setWare(sbPosition.getCode());
+//                            }
                             if (!StringUtils.isEmpty(smallType)) {
                                 sbEquipmentT.setSbtypeThree(smallType);
                             }
@@ -109,8 +110,8 @@ public class ElPlanPlusService {
                             if (!StringUtils.isEmpty(bigType)) {
                                 sbEquipmentT.setSbtypeOne(bigType);
                             }
-                            if (!StringUtils.isEmpty(sbModelStr)) {
-                                sbEquipmentT.setSbmodelCode(sbModelStr);
+                            if (!StringUtils.isEmpty(sbModelCode)) {
+                                sbEquipmentT.setSbmodelCode(sbModelCode);
                             }
                             if (!StringUtils.isEmpty(paramValue)) {
                                 sbEquipmentT.setMainPara(paramValue);
@@ -169,9 +170,10 @@ public class ElPlanPlusService {
                         List<SbPosition> sbPositions = sbPositionService.list(position, 1, 1000).getList();
                         for (SbPosition sbPosition : sbPositions) {
                             SbEquipmentZ sbEquipmentZ = new SbEquipmentZ();
-                            if (!StringUtils.isEmpty(sbPosition.getCode())) {
-                                sbEquipmentZ.setWare(sbPosition.getCode());
-                            }
+                            // TODO 设备仓库数据暂时没有关联对应
+//                            if (!StringUtils.isEmpty(sbPosition.getCode())) {
+//                                sbEquipmentZ.setWare(sbPosition.getCode());
+//                            }
                             if (!StringUtils.isEmpty(smallType)) {
                                 sbEquipmentZ.setSbtypeThree(smallType);
                             }
@@ -181,8 +183,8 @@ public class ElPlanPlusService {
                             if (!StringUtils.isEmpty(bigType)) {
                                 sbEquipmentZ.setSbtypeOne(bigType);
                             }
-                            if (!StringUtils.isEmpty(sbModelStr)) {
-                                sbEquipmentZ.setSbmodelCode(sbModelStr);
+                            if (!StringUtils.isEmpty(sbModelCode)) {
+                                sbEquipmentZ.setSbmodelCode(sbModelCode);
                             }
                             if (!StringUtils.isEmpty(paramValue)) {
                                 sbEquipmentZ.setMainPara(paramValue);

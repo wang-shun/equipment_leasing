@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    scan:当此属性设置为true时，配置文件如果发生改变，将会被重新加载，默认值为true。
+    scanPeriod:设置监测配置文件是否有修改的时间间隔，如果没有给出时间单位，默认单位是毫秒。当scan为true时，此属性生效。默认的时间间隔为1分钟。
+    debug:当此属性设置为true时，将打印出logback内部日志信息，实时查看logback运行状态。默认值为false。-->
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <!--application.yml 传递自定义参数，不能使用logback 自带的<property>标签 -->
+    <springProperty scope="context" name="serviceName" source="logback.serviceName"/>
+    <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径 -->
+    <springProperty scope="context" name="logDir" source="logback.logDir"/>
+    <contextName>${serviceName}</contextName>
+
+    <!-- 控制台打印日志的相关配置 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- 日志格式 -->
+        <encoder>
+            <charset>utf-8</charset>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %-6r : %contextName [%t] : %logger{36}.%method:%L %msg %n
+            </pattern>
+        </encoder>
+        <!-- 日志级别过滤器 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!-- 过滤的级别 -->
+            <level>INFO</level>
+            <!-- 匹配时的操作：接收（记录） -->
+            <onMatch>ACCEPT</onMatch>
+            <!-- 不匹配时的操作：拒绝（不记录） -->
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- 每天生成日志文件,文件大小超过50则新生成一个文件，同时将旧文件按${LOG_HOME}/logs/aa.%d{yyyy-MM-dd}.%i.log.zip格式压缩，文件保存30天 -->
+    <appender name="ERROR-OUT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logDir}/equipment.log</file> <!-- 日志名称 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${logDir}/logs/equipment.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>200MB</maxFileSize>  <!-- 日志文件过大会使的编辑器打开非常慢，因此设置日志最大50MB -->
+            <maxHistory>30</maxHistory>  <!-- 保存30天 -->
+            <totalSizeCap>10GB</totalSizeCap>  <!-- 总日志大小 -->
+        </rollingPolicy>
+        <!-- encoder负责两件事，一是把日志信息转换成字节数组，二是把字节数组写入到输出流。 -->
+        <encoder>
+            <pattern>[%date{yyyy-MM-dd HH:mm:ss}] [%-5level] [%logger:%line] --%mdc{client} %msg%n</pattern>
+        </encoder>
+        <!-- 过滤器，可以过滤掉不符合条件的日志，INFO及以上的日志被处理，其它的拒绝 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- 基于dubug处理日志：具体控制台或者文件对日志级别的处理还要看所在appender配置的filter，如果没有配置filter，则使用root配置 -->
+    <root level="debug">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="ERROR-OUT"/>
+    </root>
+
+</configuration>
