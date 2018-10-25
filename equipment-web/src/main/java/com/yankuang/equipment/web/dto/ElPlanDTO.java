@@ -84,6 +84,8 @@ public class ElPlanDTO implements Serializable {
 
     private String equipmentName;
 
+    private String positionId;
+
     public String getPlanId() {
         return planId;
     }
@@ -388,6 +390,14 @@ public class ElPlanDTO implements Serializable {
         this.equipmentName = equipmentName;
     }
 
+    public String getPositionId() {
+        return positionId;
+    }
+
+    public void setPositionId(String positionId) {
+        this.positionId = positionId;
+    }
+
     @Override
     public String toString() {
         return "ElPlanDTO{" +
@@ -429,6 +439,7 @@ public class ElPlanDTO implements Serializable {
                 ", equipmentModel='" + equipmentModel + '\'' +
                 ", equipmentFactory='" + equipmentFactory + '\'' +
                 ", equipmentName='" + equipmentName + '\'' +
+                ", positionId='" + positionId + '\'' +
                 '}';
     }
 }

@@ -504,6 +504,9 @@ public class ElPlanController {
             if (elPlanDTO.getPlanYear() == null){
                 return CommonResponse.errorMsg("计划年度不能为空");
             }
+            if (elPlanDTO.getPositionId() == null){
+                return CommonResponse.build(500,"矿分区id不能为空",null);
+            }
             if (elPlanDTO.getPlanEquipmentType() == null){
                 return CommonResponse.errorMsg("设备类型不能为空");
             }
@@ -530,7 +533,7 @@ public class ElPlanController {
             ElPlanItem elPlanItem = new ElPlanItem();
             for (ElPlan elPlan1 : elPlans) {
                 elPlanItem.setPlanId(elPlan1.getPlanId());
-                elPlanItem.setPositionId(0L);//TODO 此值暂时写死
+                elPlanItem.setPositionId(Long.parseLong(elPlanDTO.getPositionId()));
                 List<ElPlanItem> elPlanItems = elUseService.findByPlanId(elPlanItem);
                 if (elPlanItems.size() <= 0) {
                     continue;
@@ -551,6 +554,7 @@ public class ElPlanController {
             elPlanUseMap.put("equipmentModel",elPlanDTO.getEquipmentModel());
             elPlanUseMap.put("equipmentFactory",elPlanDTO.getEquipmentFactory());
             elPlanUseMap.put("equipmentCode",elPlanDTO.getEquipmentCode());
+            elPlanUseMap.put("positionId",elPlanDTO.getPositionId());
             if(elPlanUseService.list(page,size,elPlanUseMap) == null){
                 return CommonResponse.ok();
             }
