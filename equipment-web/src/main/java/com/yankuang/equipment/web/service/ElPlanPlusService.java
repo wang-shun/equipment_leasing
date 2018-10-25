@@ -91,16 +91,16 @@ public class ElPlanPlusService {
                         equipmentName = null;
                     }
                     if (Constants.PLANEQUIPMENTTYPE_GENERIC.equals(plan.getPlanEquipmentType())) {
-                        SbPosition position = new SbPosition();
-                        position.setPosition(deptId);
-                        position.setType("02");
-                        List<SbPosition> sbPositions = sbPositionService.list(position, 1, 1000).getList();
-                        for (SbPosition sbPosition : sbPositions) {
-                            SbEquipmentT sbEquipmentT = new SbEquipmentT();
-                            // TODO 设备仓库数据暂时没有关联对应
+//                        SbPosition position = new SbPosition();
+//                        position.setPosition(deptId);
+//                        position.setType("02");
+//                        List<SbPosition> sbPositions = sbPositionService.list(position, 1, 1000).getList();
+//                        for (SbPosition sbPosition : sbPositions) {
+//                            // TODO 设备仓库数据暂时没有关联对应
 //                            if (!StringUtils.isEmpty(sbPosition.getCode())) {
 //                                sbEquipmentT.setWare(sbPosition.getCode());
 //                            }
+                            SbEquipmentT sbEquipmentT = new SbEquipmentT();
                             if (!StringUtils.isEmpty(smallType)) {
                                 sbEquipmentT.setSbtypeThree(smallType);
                             }
@@ -125,7 +125,7 @@ public class ElPlanPlusService {
                             if (sbListTI != null && sbListTI.size() > 0) {
                                 sbListT.addAll(sbListTI);
                             }
-                        }
+//                        }
                         int num = item.getEquipmentNum().intValue();
                         List<SbEquipmentT> resultT = sbListT;
                         if (sbListT.size() > num) {
@@ -164,16 +164,16 @@ public class ElPlanPlusService {
                     }
                     if (Constants.PLANEQUIPMENTTYPE_INTEGRATED.equals(plan.getPlanEquipmentType())) {
                         // TODO 设备管理中心编码暂定
-                        SbPosition position = new SbPosition();
-                        position.setPosition("28");
-                        position.setType("02");
-                        List<SbPosition> sbPositions = sbPositionService.list(position, 1, 1000).getList();
-                        for (SbPosition sbPosition : sbPositions) {
-                            SbEquipmentZ sbEquipmentZ = new SbEquipmentZ();
-                            // TODO 设备仓库数据暂时没有关联对应
+//                        SbPosition position = new SbPosition();
+//                        position.setPosition("28");
+//                        position.setType("02");
+//                        List<SbPosition> sbPositions = sbPositionService.list(position, 1, 1000).getList();
+//                        for (SbPosition sbPosition : sbPositions) {
+//                            // TODO 设备仓库数据暂时没有关联对应
 //                            if (!StringUtils.isEmpty(sbPosition.getCode())) {
 //                                sbEquipmentZ.setWare(sbPosition.getCode());
 //                            }
+                            SbEquipmentZ sbEquipmentZ = new SbEquipmentZ();
                             if (!StringUtils.isEmpty(smallType)) {
                                 sbEquipmentZ.setSbtypeThree(smallType);
                             }
@@ -198,7 +198,7 @@ public class ElPlanPlusService {
                             if (sbListZI != null && sbListZI.size() > 0) {
                                 sbListZ.addAll(sbListZI);
                             }
-                        }
+//                        }
                         int num = item.getEquipmentNum().intValue();
                         List<SbEquipmentZ> resultZ = sbListZ;
                         if (sbListZ.size() > num) {

@@ -86,12 +86,12 @@ public class ZEquipmentReportController {
         Date date = new Date();
         Calendar chargingDate = Calendar.getInstance();
         chargingDate.setTime(date);
-        int month = chargingDate.get(Calendar.MONTH);
+        int month = chargingDate.get(Calendar.MONTH)+1;
         int year = chargingDate.get(Calendar.YEAR);
 
         Date endDate = new SimpleDateFormat("yyyy-M-dd").parse( year + "-" + month + "-20" );
         Date startDate = new SimpleDateFormat("yyyy-M-dd").parse(year + "-" + (month -1) + "-21");
-        //循环获取
+        // 循环获取
         for (DtkList dtkListLY:dtkListLYs){
             Double isNew = sbElFeeService.CalDayElFeeA3Z_rate(dtkListLY.getUseId(),dtkListLY.getEquipmentId());
             //判断是否是新设备

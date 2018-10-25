@@ -99,7 +99,8 @@ public class ElUseItemServiceImpl implements ElUseItemService{
 
     public List<DtkList> findReportLY(DtkList dtkList){
 
-        return elUseItemMapper.findReportLY(dtkList);
+        List<DtkList> list = elUseItemMapper.findReportLY(dtkList);
+        return list;
     }
 
     public PageInfo<DtkList> dtkReportPage(Integer page,Integer size,List<DtkList> dtkLists){
