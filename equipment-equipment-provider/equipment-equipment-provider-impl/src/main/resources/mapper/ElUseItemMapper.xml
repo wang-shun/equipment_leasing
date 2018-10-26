@@ -287,4 +287,20 @@
         and t2.equipment_type = 2
         and (depart.name like "%济宁%" or depart.name like "%兖州%")
     </select>
+
+    <select id="findEquipmentLY" resultType="java.lang.Integer" parameterType="java.lang.Long">
+      select count(1) from el_use_item t1 LEFT JOIN el_use t2 ON t2.id = t1.use_id
+        where t1.sign IS NULL
+        and t1.is_use = 1
+        and t2.status = 4
+        and t1.equipment_id = #{equipmentId}
+    </select>
+
+    <select id="findEquipmentTZ" resultType="java.lang.Integer" parameterType="java.lang.Long">
+        select count(1) from el_use_item t1 LEFT JOIN el_use t2 ON t2.id = t1.use_id
+        where t1.sign IS NOT NULL
+        and t1.is_use = 2
+        and t2.status = 4
+        and t1.equipment_id = #{equipmentId}
+    </select>
 </mapper>

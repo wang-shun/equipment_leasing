@@ -35,4 +35,8 @@ public interface ElUseItemMapper {
 
     Integer findKB(DtkList dtkList);
 
+    Integer findEquipmentLY(Long id);
+
+    Integer findEquipmentTZ(Long id);
+
 }

@@ -116,4 +116,18 @@ public class ElUseItemServiceImpl implements ElUseItemService{
 
         return false;
     }
+
+    public Boolean findEquipmentLY(Long id){
+        if (elUseItemMapper.findEquipmentLY(id) > 0){
+            return true;
+        }
+        return false;
+    }
+
+    public Boolean findEquipmentTZ(Long id){
+        if (elUseItemMapper.findEquipmentTZ(id) > 0){
+            return true;
+        }
+        return false;
+    }
 }
