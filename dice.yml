@@ -76,3 +76,27 @@ services:
 addons:
   yk-equipment-zk:
     plan: zookeeper:small
+
+environments:
+  development:
+    envs:
+      APP_NAME: pampas-blog-dev
+    addons:
+      monitor-el-dev:
+        plan: monitor:professional
+
+  test:
+    envs:
+      APP_NAME: pampas-blog-test
+    addons:
+      monitor-el-test:
+        plan: monitor:professional
+
+  staging:
+    envs:
+#      SPRING_PROFILES_ACTIVE: pre
+      APP_NAME: pampas-blog-staging
+
+  production:
+    envs:
+      APP_NAME: pampas-blog-production
