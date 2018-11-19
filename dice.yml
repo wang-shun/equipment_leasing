@@ -80,14 +80,14 @@ addons:
 environments:
   development:
     envs:
-      APP_NAME: pampas-blog-dev
+      APP_NAME: equipment-leasing-dev
     addons:
       monitor-el-dev:
         plan: monitor:professional
 
   test:
     envs:
-      APP_NAME: pampas-blog-test
+      APP_NAME: equipment-leasing-test
     addons:
       monitor-el-test:
         plan: monitor:professional
@@ -95,8 +95,8 @@ environments:
   staging:
     envs:
 #      SPRING_PROFILES_ACTIVE: pre
-      APP_NAME: pampas-blog-staging
+      APP_NAME: equipment-leasing-staging
 
   production:
     envs:
-      APP_NAME: pampas-blog-production
+      APP_NAME: equipment-leasing-production
