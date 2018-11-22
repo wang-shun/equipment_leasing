@@ -14,9 +14,9 @@ rpc:
   dubbo:
     module: equipment-syslog-provider
     registryAddress: ${ZOOKEEPER_HOST:47.94.211.172}:${ZOOKEEPER_PORT:2181}
-    version: test_zyys
-#    port: 20883
-    port: 20880
+    version: test_zhou
+    port: 20883
+#    port: 20880
 
 mybatis:
   mapper-locations: classpath*:mapper/*Mapper.xml

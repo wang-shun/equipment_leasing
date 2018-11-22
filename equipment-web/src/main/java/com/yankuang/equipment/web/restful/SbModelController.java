@@ -126,12 +126,13 @@ public class SbModelController {
         return responseMeta;
     }
 
-    @RequestMapping(value = "/listBySbtypeThree",method = RequestMethod.GET)
-    public ResponseMeta listBySbtypeThree(String sbtypeThree){
+    @GetMapping("/listBySbtypeThree")
+    public ResponseMeta listBySbtypeThree(@RequestParam(defaultValue = "") String sbtypeThree,
+                                          @RequestParam(defaultValue = "") String sbtypeTwo){
         ResponseMeta responseMeta = new ResponseMeta();
 
         try{
-            List<SbModel> list = sbModelService.listBySbtypeThree(sbtypeThree);
+            List<SbModel> list = sbModelService.listBySbtypeThree(sbtypeThree,sbtypeTwo);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"查询设备规格型号列表成功");
             responseMeta.setData(list);
         }catch (Exception e){

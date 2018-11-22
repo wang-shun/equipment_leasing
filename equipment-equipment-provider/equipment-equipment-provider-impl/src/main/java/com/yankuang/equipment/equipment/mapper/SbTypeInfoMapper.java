@@ -2,6 +2,7 @@ package com.yankuang.equipment.equipment.mapper;
 
 
 import com.yankuang.equipment.equipment.model.SbTypeInfo;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -16,5 +17,5 @@ public interface SbTypeInfoMapper {
 
     int update(SbTypeInfo record);
 
-    SbTypeInfo findMainParaBySbtypeThree(String sbtypeThree);
+    SbTypeInfo findMainParaBySbtypeThree(@Param("sbtypeThree") String sbtypeThree);
 }

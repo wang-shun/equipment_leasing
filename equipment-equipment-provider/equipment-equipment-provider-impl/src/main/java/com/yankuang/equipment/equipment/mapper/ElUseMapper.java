@@ -20,7 +20,7 @@ public interface ElUseMapper {
 
     Integer open(Long id);
 
-    Integer noPass(Long id);
-
-    Integer pass(Long id);
+//    Integer noPass(Long id);
+//
+//    Integer pass(Long id);
 }
