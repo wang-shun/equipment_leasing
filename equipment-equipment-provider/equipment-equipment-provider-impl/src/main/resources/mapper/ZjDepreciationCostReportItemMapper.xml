@@ -51,6 +51,20 @@
         </if>
     </select>
 
+    <select id="list" parameterType="map" resultMap="BaseResultMap">
+        SELECT zjdepcost.* FROM  report_zj_depreciation_cost_item zjdepcost
+        <where>
+            1 = 1
+            <if test="reportId != null">
+                and zjdepcost.report_id = #{reportId,jdbcType=VARCHAR}
+            </if>
+            <if test="assetComp != null">
+                and zjdepcost.asset_comp = #{assetComp,jdbcType=VARCHAR}
+            </if>
+            and zjdepcost.status=1
+        </where>
+    </select>
+
 
 
 
