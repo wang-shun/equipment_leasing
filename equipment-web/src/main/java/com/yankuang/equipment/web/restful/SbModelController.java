@@ -2,7 +2,6 @@ package com.yankuang.equipment.web.restful;
 
 import com.github.pagehelper.PageInfo;
 import com.google.common.primitives.Longs;
-import com.yankuang.equipment.common.util.CommonResponse;
 import com.yankuang.equipment.common.util.Constants;
 import com.yankuang.equipment.common.util.ResponseMeta;
 import com.yankuang.equipment.equipment.model.SbModel;
@@ -13,7 +12,6 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -128,9 +126,9 @@ public class SbModelController {
         return responseMeta;
     }
 
-    @RequestMapping(value = "/listBySbtypeThree",method = RequestMethod.GET)
+    @GetMapping("/listBySbtypeThree")
     public ResponseMeta listBySbtypeThree(@RequestParam(defaultValue = "") String sbtypeThree,
-                                          @RequestParam(defaultValue = "") String sbTypeTwo){
+                                          @RequestParam(defaultValue = "") String sbtypeTwo){
         ResponseMeta responseMeta = new ResponseMeta();
 
         try{
