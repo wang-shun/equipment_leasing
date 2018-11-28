@@ -56,7 +56,7 @@ public class SbModelServiceImpl implements SbModelService {
         sbModelMapper.deletes(ids);
     }
 
-    public List<SbModel> listBySbtypeThree(String sbtypeThree){
-        return sbModelMapper.listBySbtypeThree(sbtypeThree);
+    public List<SbModel> listBySbtypeThree(String sbtypeThree,String sbtypeTwo){
+        return sbModelMapper.listBySbtypeThree(sbtypeThree,sbtypeTwo);
     }
 }

@@ -22,6 +22,7 @@ public interface SbModelMapper {
 
     SbModel selectByMaxId(@Param("sbtypeThree") String sbtypeThree);
 
-    List<SbModel> listBySbtypeThree(@Param("sbtypeThree") String sbtypeThree);
+    List<SbModel> listBySbtypeThree(@Param("sbtypeThree") String sbtypeThree,
+                                    @Param("sbtypeTwo") String sbtypeTwo);
 
 }
