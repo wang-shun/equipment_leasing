@@ -76,3 +76,37 @@ services:
 addons:
   yk-equipment-zk:
     plan: zookeeper:small
+
+environments:
+  development:
+    envs:
+      APP_NAME: equipment-leasing-dev
+    addons:
+      monitor-el-dev:
+        plan: monitor:professional
+      yk-equipment-zk:
+          plan: zookeeper:small
+
+  test:
+    envs:
+      APP_NAME: equipment-leasing-test
+    addons:
+      monitor-el-test:
+        plan: monitor:professional
+      yk-equipment-zk:
+          plan: zookeeper:small
+
+  staging:
+    envs:
+#      SPRING_PROFILES_ACTIVE: pre
+      APP_NAME: equipment-leasing-staging
+    addons:
+      yk-equipment-zk:
+          plan: zookeeper:small
+
+  production:
+    envs:
+      APP_NAME: equipment-leasing-production
+    addons:
+      yk-equipment-zk:
+          plan: zookeeper:small
