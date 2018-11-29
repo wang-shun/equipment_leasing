@@ -1,6 +1,6 @@
 version: "2.0"
 envs:
-  MYSQL_DATABASE: yankuang_equipment_pro
+  MYSQL_DATABASE: yankuang_equipment_test
   MYSQL_HOST: 47.94.211.172
   MYSQL_PASSWORD: uAiqwVwjJ8-i
   MYSQL_PORT: "3306"
