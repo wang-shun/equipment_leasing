@@ -40,7 +40,7 @@
           #{shPerson,jdbcType=VARCHAR}, #{centerManager,jdbcType=VARCHAR}, #{sectionChief,jdbcType=VARCHAR},
           #{capital,jdbcType=VARCHAR},#{zjxlYear,jdbcType=VARCHAR },#{zjxlMonth,jdbcType=VARCHAR },#{zjxlDay,jdbcType=VARCHAR},#{kb,jdbcType=TINYINT},#{zc,jdbcType=VARCHAR},1)
       </insert>
-    <select id="list" parameterType="ZjxlReport" resultMap="BaseResultMap">
+    <select id="list" parameterType="com.yankuang.equipment.equipment.model.ZjxlReport" resultMap="BaseResultMap">
         SELECT <include refid="Base_Column_List"/>
         FROM el_zjxl_zReport
         WHERE
