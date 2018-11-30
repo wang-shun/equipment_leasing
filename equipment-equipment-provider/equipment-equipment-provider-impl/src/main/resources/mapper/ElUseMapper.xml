@@ -32,7 +32,7 @@
         version, remarks, is_use
     </sql>
 
-    <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="ElUse" >
+    <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="com.yankuang.equipment.equipment.model.ElUse" >
         INSERT INTO el_use(
         approve_code, code, sorting, is_del, status, use_by, use_at, use_position, use_equipment_type,
         approve_by, approve_at, approve_opinion, create_by, create_at, update_by, update_at,
@@ -48,7 +48,7 @@
         )
     </insert>
     
-    <update id="update" parameterType="ElUse">
+    <update id="update" parameterType="com.yankuang.equipment.equipment.model.ElUse">
         UPDATE el_use
         <set >
             <if test="approveCode != null and approveCode != ''" >
