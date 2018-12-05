@@ -509,7 +509,7 @@
             AND (plan_type = #{planType} OR plan_type = "4")
         </if>
         <if test='planEquipmentType == "2" '>
-            AND plan_type = #{planType}
+            AND (plan_type = #{planType} OR plan_type = "4")
         </if>
         <if test="planCreateTime != null" >
             AND plan_create_time = #{planCreateTime}

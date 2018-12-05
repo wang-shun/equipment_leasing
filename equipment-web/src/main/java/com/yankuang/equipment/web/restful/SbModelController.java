@@ -12,6 +12,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -126,12 +127,18 @@ public class SbModelController {
         return responseMeta;
     }
 
-    @RequestMapping(value = "/listBySbtypeThree",method = RequestMethod.GET)
-    public ResponseMeta listBySbtypeThree(String sbtypeThree){
+    @GetMapping("/listBySbtypeThree")
+    public ResponseMeta listBySbtypeThree(@RequestParam(defaultValue = "") String sbtypeThree,
+                                          @RequestParam(defaultValue = "") String sbtypeTwo){
         ResponseMeta responseMeta = new ResponseMeta();
 
         try{
-            List<SbModel> list = sbModelService.listBySbtypeThree(sbtypeThree);
+            if (StringUtils.isEmpty(sbtypeThree) && StringUtils.isEmpty(sbtypeTwo)) {
+                responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"查询设备规格型号列表为空");
+                responseMeta.setData(null);
+                return responseMeta;
+            }
+            List<SbModel> list = sbModelService.listBySbtypeThree(sbtypeThree,sbtypeTwo);
             responseMeta.setMeta(Constants.RESPONSE_SUCCESS,"查询设备规格型号列表成功");
             responseMeta.setData(list);
         }catch (Exception e){

@@ -1101,11 +1101,12 @@ public class ZjDepCostReportServiceImpl implements ZjDepreciationCostReportServi
         //查询当前年月的各矿的综机租赁费合计
         ZjxlReport zjxlReport = new ZjxlReport();
         zjxlReport.setZjxlYear(String.valueOf(year));
-        zjxlReport.setZjxlMonth("2");
+        zjxlReport.setZjxlMonth(String.valueOf(month));
         List<ZjxlReport> list = zjxlReportMapper.list(zjxlReport);
         Map zjCostRepairMap = new HashMap();
         zjCostRepairMap.put("yearTime",String.valueOf(year));
-        zjCostRepairMap.put("monthTime","2");
+//        zjCostRepairMap.put("monthTime","2");
+        zjCostRepairMap.put("monthTime",String.valueOf(month));
         if(list != null && list.size() > 0){
             ZjDepreciationCostReport zjCostRepairReport = zjDepreciationCostReportMapper.list(zjCostRepairMap);
             if(zjCostRepairReport != null){
@@ -1116,7 +1117,7 @@ public class ZjDepCostReportServiceImpl implements ZjDepreciationCostReportServi
 //                    record.setDeptCode("1001");//需要传过来
                     Map zjCostRepairItemMap = new HashMap();
                     zjCostRepairItemMap.put("reportId",zjCostRepairReport.getId());
-                    zjCostRepairItemMap.put("reportId","1100");
+                    zjCostRepairItemMap.put("assetComp","1100");
 
                     List<ZjDepreciationCostReportItem> items = zjDepCReportItemMapper.list(zjCostRepairItemMap);
                     //判断汇总的明细是否存在,存在则更新,不存在则添加

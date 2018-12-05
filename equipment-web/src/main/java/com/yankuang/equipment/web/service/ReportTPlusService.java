@@ -69,6 +69,9 @@ public class ReportTPlusService {
                     days = sbElFeeService.CalEquipmentElDays(uItem.getUseId(), uItemT.getUseId(), uItem.getEquipmentId(), startDate, endDate);
                 }
             }
+            if (days <= 0l) {
+                continue;
+            }
             ElFeeDetailT detailT = new ElFeeDetailT();
             Dept de = deptService.findByCode(positionCode);
             if (de == null) {

@@ -97,6 +97,12 @@
     select
     <include refid="Base_Column_List" />
     from sb_model
-    where status = '1' and sbtype_three = #{sbtypeThree,jdbcType=VARCHAR}
+    where status = '1'
+      <if test="sbtypeThree != null and sbtypeThree != ''">
+          and sbtype_three = #{sbtypeThree,jdbcType=VARCHAR}
+      </if>
+      <if test="sbtypeTwo != null and sbtypeTwo != ''">
+          and sbtype_two = #{sbtypeTwo,jdbcType=VARCHAR}
+      </if>
   </select>
 </mapper>

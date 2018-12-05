@@ -75,12 +75,6 @@ public class ElPlanController {
             if (StringUtils.isEmpty(equipmentType) || StringUtils.isEmpty(planType)) {
                 return CommonResponse.errorMsg("设备租赁计划url有误");
             }
-//            if (StringUtils.isEmpty(elPlan.getPlanCreatorId())) {
-//                return CommonResponse.errorMsg("计划提出人ID不得为空");
-//            }
-//            if (StringUtils.isEmpty(elPlan.getPlanCreatorName())) {
-//                return CommonResponse.errorMsg("计划提出人姓名不得为空");
-//            }
             if (StringUtils.isEmpty(elPlan.getPlanYear())) {
                 return CommonResponse.errorMsg("需求年度不得为空");
             }
@@ -166,12 +160,6 @@ public class ElPlanController {
             if (elPlan == null || StringUtils.isEmpty(elPlan.getPlanId())) {
                 return CommonResponse.errorMsg("通用设备租赁计划ID不得为空");
             }
-//            if (StringUtils.isEmpty(elPlan.getPlanUpdatorName())) {
-//                return CommonResponse.errorMsg("编辑修改人姓名不得为空");
-//            }
-//            if (StringUtils.isEmpty(elPlan.getPlanUpdatorId())) {
-//                return CommonResponse.errorMsg("编辑修改人ID不得为空");
-//            }
             ElPlan plan = elPlanService.findElPlanById(elPlan.getPlanId());
             if (plan == null) {
                 return CommonResponse.errorMsg("该条租赁计划已过期");
@@ -390,12 +378,7 @@ public class ElPlanController {
                         || Constants.PLANSTATUS_FAILED.equals(plan.getPlanStatus())) {
                     return CommonResponse.errorMsg("该条租赁计划已提交,不能重复提交");
                 }
-//                if (StringUtils.isEmpty(elPlan.getPlanUpdatorName())) {
-//                    return CommonResponse.errorMsg("编辑修改人姓名不得为空");
-//                }
-//                if (StringUtils.isEmpty(elPlan.getPlanUpdatorId())) {
-//                    return CommonResponse.errorMsg("编辑修改人ID不得为空");
-//                }
+
                 elPlan.setPlanUpdatorId(userDTO == null ? "" : userDTO.getId()+"");
                 elPlan.setPlanUpdatorName(userDTO == null ? "" : userDTO.getName());
                 elPlan.setPlanStatus(Constants.PLANSTATUS_COMMITED);
@@ -403,12 +386,7 @@ public class ElPlanController {
             }
             if ("passed".equals(approvalType)) {
                 elPlan.setPlanStatus(Constants.PLANSTATUS_PASSED);
-//                if (StringUtils.isEmpty(elPlan.getPlanApproverId())) {
-//                    return CommonResponse.errorMsg("请补充审批人ID");
-//                }
-//                if (StringUtils.isEmpty(elPlan.getPlanApproverName())) {
-//                    return CommonResponse.errorMsg("请补充审批人姓名");
-//                }
+
                 elPlan.setPlanApproverId(userDTO == null ? "" : userDTO.getId()+"");
                 elPlan.setPlanApproverName(userDTO == null ? "" : userDTO.getName());
                 if (Constants.PLANSTATUS_UNCOMMITED.equals(plan.getPlanStatus())) {
@@ -422,12 +400,7 @@ public class ElPlanController {
             }
             if ("failed".equals(approvalType)) {
                 elPlan.setPlanStatus(Constants.PLANSTATUS_FAILED);
-//                if (StringUtils.isEmpty(elPlan.getPlanApproverId())) {
-//                    return CommonResponse.errorMsg("请补充审批人ID");
-//                }
-//                if (StringUtils.isEmpty(elPlan.getPlanApproverName())) {
-//                    return CommonResponse.errorMsg("请补充审批人姓名");
-//                }
+
                 elPlan.setPlanApproverId(userDTO == null ? "" : userDTO.getId()+"");
                 elPlan.setPlanApproverName(userDTO == null ? "" : userDTO.getName());
                 if (Constants.PLANSTATUS_UNCOMMITED.equals(plan.getPlanStatus())) {
@@ -504,6 +477,9 @@ public class ElPlanController {
             if (elPlanDTO.getPlanYear() == null){
                 return CommonResponse.errorMsg("计划年度不能为空");
             }
+            if (elPlanDTO.getPositionId() == null){
+                return CommonResponse.build(500,"矿分区id不能为空",null);
+            }
             if (elPlanDTO.getPlanEquipmentType() == null){
                 return CommonResponse.errorMsg("设备类型不能为空");
             }
@@ -530,7 +506,7 @@ public class ElPlanController {
             ElPlanItem elPlanItem = new ElPlanItem();
             for (ElPlan elPlan1 : elPlans) {
                 elPlanItem.setPlanId(elPlan1.getPlanId());
-                elPlanItem.setPositionId(0L);//TODO 此值暂时写死
+                elPlanItem.setPositionId(Long.parseLong(elPlanDTO.getPositionId()));
                 List<ElPlanItem> elPlanItems = elUseService.findByPlanId(elPlanItem);
                 if (elPlanItems.size() <= 0) {
                     continue;
@@ -551,6 +527,7 @@ public class ElPlanController {
             elPlanUseMap.put("equipmentModel",elPlanDTO.getEquipmentModel());
             elPlanUseMap.put("equipmentFactory",elPlanDTO.getEquipmentFactory());
             elPlanUseMap.put("equipmentCode",elPlanDTO.getEquipmentCode());
+            elPlanUseMap.put("positionId",elPlanDTO.getPositionId());
             if(elPlanUseService.list(page,size,elPlanUseMap) == null){
                 return CommonResponse.ok();
             }

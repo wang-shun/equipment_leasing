@@ -28,7 +28,7 @@ public class ElEquipmentGroupConfigServiceImpl implements ElEquipmentGroupConfig
     public boolean createBatch(List<ElEquipmentGroupConfig> elEquipmentGroupConfigs) {
         return elEquipmentGroupConfigMapper.createBatch(elEquipmentGroupConfigs) > 0;
     }
-
+    
     public List<Map<String, Object>> findByCondition(ElEquipmentGroupConfig elEquipmentGroupConfig) {
 
         List<ElEquipmentGroupConfig> groupConfigs = elEquipmentGroupConfigMapper.list(elEquipmentGroupConfig);

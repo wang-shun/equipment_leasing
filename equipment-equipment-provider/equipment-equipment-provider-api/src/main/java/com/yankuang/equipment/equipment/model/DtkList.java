@@ -90,6 +90,8 @@ public class DtkList implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date startDate;
 
+    private String pcode;
+
     private List<ListZReportItem> listZReportItems;
 
     private ListZReportItem listZReportItem;

@@ -99,7 +99,8 @@ public class ElUseItemServiceImpl implements ElUseItemService{
 
     public List<DtkList> findReportLY(DtkList dtkList){
 
-        return elUseItemMapper.findReportLY(dtkList);
+        List<DtkList> list = elUseItemMapper.findReportLY(dtkList);
+        return list;
     }
 
     public PageInfo<DtkList> dtkReportPage(Integer page,Integer size,List<DtkList> dtkLists){
@@ -113,6 +114,20 @@ public class ElUseItemServiceImpl implements ElUseItemService{
             return true;
         }
 
+        return false;
+    }
+
+    public Boolean findEquipmentLY(Long id){
+        if (elUseItemMapper.findEquipmentLY(id) > 0){
+            return true;
+        }
+        return false;
+    }
+
+    public Boolean findEquipmentTZ(Long id){
+        if (elUseItemMapper.findEquipmentTZ(id) > 0){
+            return true;
+        }
         return false;
     }
 }

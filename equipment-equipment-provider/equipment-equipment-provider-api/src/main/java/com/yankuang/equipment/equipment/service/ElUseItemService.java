@@ -111,4 +111,18 @@ public interface ElUseItemService {
      * @return
      */
     Boolean findKB(DtkList dtkList);
+
+    /**
+     * 判断设备是否被审核领用
+     * @param id
+     * @return
+     */
+    Boolean findEquipmentLY(Long id);
+
+    /**
+     * 判断设备是否被审核退租
+     * @param id
+     * @return
+     */
+    Boolean findEquipmentTZ(Long id);
 }

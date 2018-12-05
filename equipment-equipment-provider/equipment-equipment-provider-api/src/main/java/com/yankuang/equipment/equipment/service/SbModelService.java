@@ -53,5 +53,5 @@ public interface SbModelService {
      * @param sbtypeThree
      * @return
      */
-    public List<SbModel> listBySbtypeThree(String sbtypeThree);
+    public List<SbModel> listBySbtypeThree(String sbtypeThree,String sbtypeTwo);
 }

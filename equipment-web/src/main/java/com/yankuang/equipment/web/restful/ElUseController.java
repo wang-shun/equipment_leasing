@@ -366,6 +366,18 @@ public class ElUseController {
         if (!"2".equals(chooseElUse.getStatus())){
             return CommonResponse.errorMsg("该数据未处于审核状态");
         }
+
+        //判断该设备是否被其他用户领用
+        List<ElUseItem>  elUseItemList = elUseItemService.findByUseId(elUse.getId());
+
+        //循环获取设备id
+        if (elUseItemList != null && elUseItemList.size() > 0){
+            for (ElUseItem elUseItem:elUseItemList){
+                if (elUseItemService.findEquipmentLY(elUseItem.getEquipmentId())){
+                    return CommonResponse.build(500,"该设备已经被其他用户领用，请申请其他设备！",null);
+                }
+            }
+        }
         //
         UserDTO userDTO = userFromRedis.findByToken();
         elUse.setApproveBy(userDTO.getId());
@@ -533,6 +545,18 @@ public class ElUseController {
         }
         if (!"2".equals(chooseElUse.getStatus())){
             return CommonResponse.errorMsg("该数据未处于审核状态");
+        }
+
+        //判断该设备是否被其他用户退租
+        List<ElUseItem>  elUseItemList = elUseItemService.findByUseId(elUse.getId());
+
+        //循环获取设备id
+        if (elUseItemList != null && elUseItemList.size() > 0){
+            for (ElUseItem elUseItem:elUseItemList){
+                if (elUseItemService.findEquipmentTZ(elUseItem.getEquipmentId())){
+                    return CommonResponse.build(500,"该设备已经被其他用户退租，请重新申请查看！",null);
+                }
+            }
         }
         UserDTO userDTO = userFromRedis.findByToken();
         elUse.setApproveBy(userDTO.getId());

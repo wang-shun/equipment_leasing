@@ -218,7 +218,7 @@
         and u1.status != 99
     </select>
 
-    <update id="updateByEquipmentId" parameterType="ElUseItem">
+    <update id="updateByEquipmentId" parameterType="com.yankuang.equipment.equipment.model.ElUseItem">
         UPDATE el_use_item
         SET sign = #{sign}
         WHERE equipment_id = #{equipmentId}
@@ -228,7 +228,7 @@
     </update>
 
     <!--东滩矿综掘面综机设备使用清单-->
-    <select id="dtkReport" parameterType="DtkList" resultMap="dtkListMap">
+    <select id="dtkReport" parameterType="com.yankuang.equipment.equipment.model.DtkList" resultMap="dtkListMap">
         select sb.asset_comp AS assetComp,sb.asset_unit AS assetUnit,sb.name AS sbName,t1.equipment_num,t2.equipment_model AS equipmentModel,t1.cost_a1,t1.use_at,t1.remarks,t1.equipment_id,t1.sign,t1.use_id from el_use_item t1
         left join sb_equipment_z sb on t1.equipment_id = sb.id
         left join el_plan_use t2 on t1.plan_use_id = t2.id
@@ -244,8 +244,18 @@
         and t1.use_at > #{startDate}
     </select>
 
-    <select id="findReportLY" parameterType="DtkList" resultMap="dtkListMap">
-        select sb.asset_comp AS assetComp,sb.asset_unit AS assetUnit,sb.name AS sbName,t1.equipment_num,t2.equipment_model AS equipmentModel,t1.cost_a1,t1.use_at,t1.remarks,t1.equipment_id,t1.sign,t1.use_id,sb.code from el_use_item t1
+    <select id="findReportLY" parameterType="com.yankuang.equipment.equipment.model.DtkList" resultMap="dtkListMap">
+        select sb.asset_comp AS assetComp,
+        sb.asset_unit AS assetUnit,
+        sb.name AS sbName,
+        t1.equipment_num,
+        t2.equipment_model AS equipmentModel,
+        t1.cost_a1,t1.use_at,t1.remarks,
+        t1.equipment_id,t1.sign,
+        t1.use_id,sb.code ,
+        depart.code as deptCode,
+        t1.equipment_effect as equipmentEffect
+        from el_use_item t1
         left join sb_equipment_z sb on t1.equipment_id = sb.id
         left join el_plan_use t2 on t1.plan_use_id = t2.id
         left join el_department depart on t1.equipment_position = depart.id
@@ -260,7 +270,7 @@
         and month(t1.use_at) = #{useMonth}
     </select>
 
-    <select id="findKB" parameterType="DtkList" resultType="INTEGER">
+    <select id="findKB" parameterType="com.yankuang.equipment.equipment.model.DtkList" resultType="java.lang.Integer">
         select count(1) from el_use_item t1
         left join sb_equipment_z sb on t1.equipment_id = sb.id
         left join el_plan_use t2 on t1.plan_use_id = t2.id
@@ -276,5 +286,21 @@
         and t2.center_year = #{centerYear}
         and t2.equipment_type = 2
         and (depart.name like "%济宁%" or depart.name like "%兖州%")
+    </select>
+
+    <select id="findEquipmentLY" resultType="java.lang.Integer" parameterType="java.lang.Long">
+      select count(1) from el_use_item t1 LEFT JOIN el_use t2 ON t2.id = t1.use_id
+        where t1.sign IS NULL
+        and t1.is_use = 1
+        and t2.status = 4
+        and t1.equipment_id = #{equipmentId}
+    </select>
+
+    <select id="findEquipmentTZ" resultType="java.lang.Integer" parameterType="java.lang.Long">
+        select count(1) from el_use_item t1 LEFT JOIN el_use t2 ON t2.id = t1.use_id
+        where t1.sign IS NOT NULL
+        and t1.is_use = 2
+        and t2.status = 4
+        and t1.equipment_id = #{equipmentId}
     </select>
 </mapper>
