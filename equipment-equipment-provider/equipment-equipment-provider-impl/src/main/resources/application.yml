@@ -12,7 +12,7 @@ rpc:
   dubbo:
     module: equipment-equipment-provider
     registryAddress: ${ZOOKEEPER_HOST:47.94.211.172}:${ZOOKEEPER_PORT:2181}
-    version: test
+    version: equipment_dev
 #    port: 20881
     port: 20880
 

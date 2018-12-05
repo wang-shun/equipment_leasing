@@ -74,5 +74,5 @@ services:
         duration: 120
 
 addons:
-  yk-equipment-zk:
-    plan: zookeeper:small
+  yk-zk:
+    plan: zookeeper:basic
