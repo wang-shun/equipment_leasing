@@ -74,8 +74,8 @@ services:
         duration: 120
 
 addons:
-  yk-equipment-zk:
-    plan: zookeeper:small
+  yk-zk:
+    plan: zookeeper:basic
 
 environments:
   development:
@@ -84,8 +84,8 @@ environments:
     addons:
       monitor-el-dev:
         plan: monitor:professional
-      yk-equipment-zk:
-          plan: zookeeper:small
+      yk-zk:
+        plan: zookeeper:basic
 
   test:
     envs:
@@ -93,20 +93,20 @@ environments:
     addons:
       monitor-el-test:
         plan: monitor:professional
-      yk-equipment-zk:
-          plan: zookeeper:small
+      yk-zk:
+        plan: zookeeper:basic
 
   staging:
     envs:
 #      SPRING_PROFILES_ACTIVE: pre
       APP_NAME: equipment-leasing-staging
     addons:
-      yk-equipment-zk:
-          plan: zookeeper:small
+      yk-zk:
+        plan: zookeeper:basic
 
   production:
     envs:
       APP_NAME: equipment-leasing-production
     addons:
-      yk-equipment-zk:
-          plan: zookeeper:small
+      yk-zk:
+        plan: zookeeper:basic

@@ -148,8 +148,8 @@ public class ElPlanPlusService {
                             elPlanUse.setEquipmentType(Constants.PLANEQUIPMENTTYPE_GENERIC);
                             elPlanUse.setStatus("1");
                             elPlanUse.setUpdateAt(new Date());
-                            elPlanUse.setCreateBy(0L);
-                            elPlanUse.setUpdateBy(0L);
+                            elPlanUse.setCreateBy(Long.valueOf(elPlan.getPlanApproverId()));
+                            elPlanUse.setUpdateBy(Long.valueOf(elPlan.getPlanApproverId()));
                             elPlanUse.setRemarks("");
                             elPlanUse.setBigTypeCode(sbT.getSbtypeOne());
                             elPlanUse.setMiddleTypeCode(sbT.getSbtypeTwo());
@@ -214,8 +214,8 @@ public class ElPlanPlusService {
                             elPlanUse.setPlanItemId(item.getItemId());
                             elPlanUse.setCreateAt(new Date());
                             elPlanUse.setUpdateAt(new Date());
-                            elPlanUse.setCreateBy(0L);
-                            elPlanUse.setUpdateBy(0L);
+                            elPlanUse.setCreateBy(Long.valueOf(elPlan.getPlanApproverId()));
+                            elPlanUse.setUpdateBy(Long.valueOf(elPlan.getPlanApproverId()));
                             elPlanUse.setRemarks("");
                             elPlanUse.setIsDel((byte) 1);
                             elPlanUse.setVersion(0l);
