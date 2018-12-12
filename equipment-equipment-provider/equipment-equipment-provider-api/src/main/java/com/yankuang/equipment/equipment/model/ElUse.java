@@ -27,8 +27,10 @@ public class ElUse implements Serializable{
 
     private String useBy;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date useAt;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date useAt; // 计费开始时间
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date rentAt; // 领用时间
 
     private Long usePosition;
 
@@ -56,8 +58,6 @@ public class ElUse implements Serializable{
     private String remarks;
 
     private Byte isUse;
-
-    private String backup2;
 
     private String backup3;
 

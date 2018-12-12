@@ -302,6 +302,30 @@
             <if test="planType != null and planType != '' " >
                 AND e1.plan_type = #{planType}
             </if>
+          <if test="planYears != null and planYears.size > 0">
+              and e1.plan_year in
+              <foreach collection="planYears"  item="item_year" index="index" open="(" separator="," close=")">
+                  #{item_year}
+              </foreach>
+          </if>
+          <if test="planMonths != null and planMonths.size > 0">
+              and e1.plan_month in
+              <foreach collection="planMonths" item="item_month" index="index" open="(" separator="," close=")">
+                  #{item_month}
+              </foreach>
+          </if>
+          <if test="planStatusS != null and planStatusS.size > 0">
+              and e1.plan_status in
+              <foreach collection="planStatusS" item="item_status" index="index" open="(" separator="," close=")">
+                  #{item_status}
+              </foreach>
+          </if>
+          <if test="planPositions != null and planPositions.size > 0">
+              and e1.plan_position in
+              <foreach collection="planPositions" item="item_position" index="index" open="(" separator="," close=")">
+                  #{item_position}
+              </foreach>
+          </if>
         </where>
         ORDER BY e1.plan_update_time DESC
     </select>
