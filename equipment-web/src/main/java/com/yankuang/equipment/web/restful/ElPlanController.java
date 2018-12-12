@@ -1,6 +1,5 @@
 package com.yankuang.equipment.web.restful;
 
-import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageInfo;
 import com.yankuang.equipment.authority.model.Dept;
 import com.yankuang.equipment.authority.service.DeptService;
@@ -85,6 +84,42 @@ public class ElPlanController {
                 return CommonResponse.errorMsg("设备列表记录不得为空");
             }
 
+            if (Constants.PLANEQUIPMENTTYPE_GENERIC_VALUE.equals(equipmentType) && Constants.PLANTYPE_MONTH_VALUE.equals(planType)) {
+                ElPlan plan = new ElPlan();
+                plan.setPlanEquipmentType(Constants.PLANEQUIPMENTTYPE_GENERIC);
+                plan.setPlanType(Constants.PLANTYPE_MONTH);
+                plan.setPlanYear(elPlan.getPlanYear());
+                plan.setPlanMonth(elPlan.getPlanMonth());
+                plan.setPlanPosition(elPlan.getPlanPosition());
+                Paging<ElPlan> planPage = elPlanService.findElPlanByCondition(plan,10,1);
+                if (planPage != null && planPage.getData() != null && planPage.getData().size() > 0) {
+                    return CommonResponse.errorMsg("该单位已提报"+elPlan.getPlanMonth()+"月的通用设备月度租赁计划");
+                }
+            }
+            if (Constants.PLANEQUIPMENTTYPE_GENERIC_VALUE.equals(equipmentType) && Constants.PLANTYPE_YEAR_VALUE.equals(planType)) {
+                ElPlan plan = new ElPlan();
+                plan.setPlanEquipmentType(Constants.PLANEQUIPMENTTYPE_GENERIC);
+                plan.setPlanType(Constants.PLANTYPE_YEAR);
+                plan.setPlanYear(elPlan.getPlanYear());
+                plan.setPlanPosition(elPlan.getPlanPosition());
+                Paging<ElPlan> planPage = elPlanService.findElPlanByCondition(plan,10,1);
+                if (planPage != null && planPage.getData() != null && planPage.getData().size() > 0) {
+                    return CommonResponse.errorMsg("该单位已提报"+elPlan.getPlanYear()+"年的通用设备年度租赁计划");
+                }
+            }
+
+            if (Constants.PLANEQUIPMENTTYPE_INTEGRATED_VALUE.equals(equipmentType) && Constants.PLANTYPE_YEAR_VALUE.equals(planType)) {
+                ElPlan plan = new ElPlan();
+                plan.setPlanType(Constants.PLANTYPE_YEAR);
+                plan.setPlanEquipmentType(Constants.PLANEQUIPMENTTYPE_INTEGRATED);
+                plan.setPlanYear(elPlan.getPlanYear());
+                plan.setPlanPosition(elPlan.getPlanPosition());
+                Paging<ElPlan> planPage = elPlanService.findElPlanByCondition(plan,10,1);
+                if (planPage != null && planPage.getData() != null && planPage.getData().size() > 0) {
+                    return CommonResponse.errorMsg("该单位已提报"+elPlan.getPlanYear()+"年的综机设备年度租赁计划");
+                }
+            }
+
             // 获取租赁计划设备类型
             if (!StringUtils.isEmpty(equipmentType) && Constants.PLANEQUIPMENTTYPE_GENERIC_VALUE.equals(equipmentType)) {
                 elPlan.setPlanEquipmentType(Constants.PLANEQUIPMENTTYPE_GENERIC);
@@ -164,12 +199,12 @@ public class ElPlanController {
             if (plan == null) {
                 return CommonResponse.errorMsg("该条租赁计划已过期");
             }
-            if (Constants.PLANSTATUS_COMMITED.equals(plan.getPlanStatus())) {
-                return CommonResponse.errorMsg("该条租赁计划已提交，不能编辑修改");
-            }
             if (Constants.PLANSTATUS_FAILED.equals(plan.getPlanStatus())
                     || Constants.PLANSTATUS_PASSED.equals(plan.getPlanStatus())) {
                 return CommonResponse.errorMsg("该条租赁计划已审核，不能编辑修改");
+            }
+            if (Constants.PLANSTATUS_COMMITED.equals(plan.getPlanStatus())) {
+                return CommonResponse.errorMsg("该条租赁计划已提交，不能编辑修改");
             }
             UserDTO userDTO = userFromRedis.findByToken();
             if (userDTO != null) {
@@ -267,7 +302,6 @@ public class ElPlanController {
             if (elPlan == null) {
                 return CommonResponse.build(201, "设备租赁计划查询为空", null);
             }
-            logger.info("getELPlan date: " + new Date() + " data:" + JSON.toJSONString(elPlan));
             return CommonResponse.ok(elPlan);
         } catch (NumberFormatException e) {
             e.printStackTrace();
@@ -382,13 +416,13 @@ public class ElPlanController {
                 elPlan.setPlanUpdatorId(userDTO == null ? "" : userDTO.getId()+"");
                 elPlan.setPlanUpdatorName(userDTO == null ? "" : userDTO.getName());
                 elPlan.setPlanStatus(Constants.PLANSTATUS_COMMITED);
-                elPlan.setPlanUpdateTime(new Date().getTime());
+                elPlan.setPlanUpdateTime(System.currentTimeMillis());
             }
             if ("passed".equals(approvalType)) {
                 elPlan.setPlanStatus(Constants.PLANSTATUS_PASSED);
 
-                elPlan.setPlanApproverId(userDTO == null ? "" : userDTO.getId()+"");
                 elPlan.setPlanApproverName(userDTO == null ? "" : userDTO.getName());
+                elPlan.setPlanApproverId(userDTO == null ? "" : userDTO.getId()+"");
                 if (Constants.PLANSTATUS_UNCOMMITED.equals(plan.getPlanStatus())) {
                     return CommonResponse.errorMsg("该条租赁计划未提交，不能审核");
                 }
@@ -396,7 +430,7 @@ public class ElPlanController {
                         || Constants.PLANSTATUS_PASSED.equals(plan.getPlanStatus())) {
                     return CommonResponse.errorMsg("该条租赁计划已审核，不能重复审核");
                 }
-                elPlan.setPlanApproveTime(new Date().getTime());
+                elPlan.setPlanApproveTime(System.currentTimeMillis());
             }
             if ("failed".equals(approvalType)) {
                 elPlan.setPlanStatus(Constants.PLANSTATUS_FAILED);
@@ -410,7 +444,7 @@ public class ElPlanController {
                         || Constants.PLANSTATUS_PASSED.equals(plan.getPlanStatus())) {
                     return CommonResponse.errorMsg("该条租赁计划已审核，不能重复审核");
                 }
-                elPlan.setPlanApproveTime(new Date().getTime());
+                elPlan.setPlanApproveTime(System.currentTimeMillis());
             }
 
             // 保存数据
@@ -535,6 +569,14 @@ public class ElPlanController {
         return CommonResponse.ok(elPlanUseService.list(page, size, elPlanUseMap));
     }
 
+    /**
+     * 部门单位下拉表查询
+     * @param page
+     * @param size
+     * @param type
+     * @param pCode
+     * @return
+     */
     @GetMapping
     public CommonResponse find(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                      @RequestParam(value = "size", defaultValue = "20") Integer size,

@@ -10,6 +10,7 @@
         <result column="status" property="status" jdbcType="VARCHAR" />
         <result column="use_by" property="useBy" jdbcType="VARCHAR" />
         <result column="use_at" property="useAt" jdbcType="TIMESTAMP" />
+        <result column="rent_at" property="rentAt" jdbcType="TIMESTAMP"/>
         <result column="use_position" property="usePosition" jdbcType="BIGINT" />
         <result column="use_equipment_type" property="useEquipmentType" jdbcType="VARCHAR" />
         <result column="approve_by" property="approveBy" jdbcType="BIGINT" />
@@ -29,18 +30,18 @@
     <sql id="Base_Column_List" >
         id,approve_code, code, sorting, is_del, status, use_by, use_at, use_position, use_equipment_type,
         approve_by, approve_at, approve_opinion, create_by, create_at, update_by, update_at,
-        version, remarks, is_use
+        version, remarks, is_use, rent_at
     </sql>
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="com.yankuang.equipment.equipment.model.ElUse" >
         INSERT INTO el_use(
-        approve_code, code, sorting, is_del, status, use_by, use_at, use_position, use_equipment_type,
+        approve_code, code, sorting, is_del, status, use_by, use_at, rent_at, use_position, use_equipment_type,
         approve_by, approve_at, approve_opinion, create_by, create_at, update_by, update_at,
         version, remarks, is_use
         ) VALUES (
         #{approveCode,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR},
         #{sorting,jdbcType=VARCHAR}, 1, #{status,jdbcType=VARCHAR},
-        #{useBy,jdbcType=VARCHAR}, #{useAt,jdbcType=TIMESTAMP}, #{usePosition,jdbcType=BIGINT},
+        #{useBy,jdbcType=VARCHAR}, #{useAt,jdbcType=TIMESTAMP}, #{rentAt,jdbcType=TIMESTAMP}, #{usePosition,jdbcType=BIGINT},
         #{useEquipmentType,jdbcType=VARCHAR}, #{approveBy,jdbcType=BIGINT}, #{approveAt,jdbcType=TIMESTAMP},
         #{approveOpinion,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP},
         #{updateBy,jdbcType=VARCHAR}, #{updateAt,jdbcType=TIMESTAMP}, #{version,jdbcType=VARCHAR},
@@ -71,6 +72,9 @@
             </if>
             <if test="useAt != null" >
                 use_at = #{useAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="rentAt != null" >
+                rent_at = #{rentAt,jdbcType=TIMESTAMP},
             </if>
             <if test="usePosition != null " >
                 use_position = #{usePosition,jdbcType=BIGINT},
@@ -113,7 +117,7 @@
     </update>
 
     <select id="select" parameterType="Long" resultMap="BaseResultMap">
-        SELECT t1.id, t1.approve_code, t1.code, t1.sorting, t1.is_del, t1.status, t1.use_by, DATE_FORMAT(t1.use_at,'%Y-%m-%d %H:%i:%s') as use_at, t1.use_position, t1.use_equipment_type,
+        SELECT t1.id, t1.approve_code, t1.code, t1.sorting, t1.is_del, t1.status, t1.use_by, DATE_FORMAT(t1.use_at,'%Y-%m-%d %H:%i:%s') as use_at, DATE_FORMAT(t1.rent_at,'%Y-%m-%d %H:%i:%s') as rent_at, t1.use_position, t1.use_equipment_type,
         t1.approve_by, DATE_FORMAT(t1.approve_at,'%Y-%m-%d %H:%i:%s') as approve_at, t1.approve_opinion, t1.create_by, DATE_FORMAT(t1.create_at,'%Y-%m-%d %H:%i:%s') as create_at, t1.update_by, DATE_FORMAT(t1.update_at,'%Y-%m-%d %H:%i:%s') as update_at,
         t1.version, t1.remarks, t1.is_use,dept.name AS name,user.name AS userName
         FROM el_use t1
@@ -132,7 +136,7 @@
     </update>
 
     <select id="list" parameterType="map" resultMap="BaseResultMap">
-        SELECT t1.id, t1.approve_code, t1.code, t1.sorting, t1.is_del, t1.status, t1.use_by, DATE_FORMAT(t1.use_at,'%Y-%m-%d %H:%i:%s') as use_at, t1.use_position, t1.use_equipment_type,
+        SELECT t1.id, t1.approve_code, t1.code, t1.sorting, t1.is_del, t1.status, t1.use_by, DATE_FORMAT(t1.use_at,'%Y-%m-%d %H:%i:%s') as use_at, DATE_FORMAT(t1.rent_at,'%Y-%m-%d %H:%i:%s') as rent_at, t1.use_position, t1.use_equipment_type,
         t1.approve_by, DATE_FORMAT(t1.approve_at,'%Y-%m-%d %H:%i:%s') as approve_at, t1.approve_opinion, t1.create_by, DATE_FORMAT(t1.create_at,'%Y-%m-%d %H:%i:%s') as create_at, t1.update_by, DATE_FORMAT(t1.update_at,'%Y-%m-%d %H:%i:%s') as update_at,
         t1.version, t1.remarks, t1.is_use,dept.name AS name,user.name AS userName
         FROM el_use t1

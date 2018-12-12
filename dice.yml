@@ -74,6 +74,10 @@ services:
         duration: 120
 
 addons:
+  mysql:
+    plan: mysql:basic
+  redis:
+    plan: redis:basic
   yk-zk:
     plan: zookeeper:basic
 
@@ -84,6 +88,10 @@ environments:
     addons:
       monitor-el-dev:
         plan: monitor:professional
+      mysql:
+        plan: mysql:basic
+      redis:
+        plan: redis:basic
       yk-zk:
         plan: zookeeper:basic
 
@@ -93,6 +101,10 @@ environments:
     addons:
       monitor-el-test:
         plan: monitor:professional
+      mysql:
+        plan: mysql:basic
+      redis:
+        plan: redis:basic
       yk-zk:
         plan: zookeeper:basic
 
@@ -101,6 +113,10 @@ environments:
 #      SPRING_PROFILES_ACTIVE: pre
       APP_NAME: equipment-leasing-staging
     addons:
+      mysql:
+        plan: mysql:basic
+      redis:
+        plan: redis:basic
       yk-zk:
         plan: zookeeper:basic
 

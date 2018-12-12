@@ -1,6 +1,5 @@
 package com.yankuang.equipment.web.restful;
 
-import com.github.pagehelper.PageInfo;
 import com.yankuang.equipment.authority.model.User;
 import com.yankuang.equipment.authority.service.UserService;
 import com.yankuang.equipment.common.util.CommonResponse;

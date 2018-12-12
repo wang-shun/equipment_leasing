@@ -17,12 +17,18 @@ public class ElPlan implements Serializable {
     @NotNull(message = "需求年度不得为空")
     private String planYear;
 
+    private List<String> planYears;
+
     private String planMonth;
+
+    private List<String> planMonths;
 
     private String planQuarter;
 
     @NotNull(message = "提出单位不得为空")
     private String planPosition;
+
+    private List<String> planPositions;
 
     private String planPositionName;
 
@@ -34,6 +40,8 @@ public class ElPlan implements Serializable {
     private String planCreatorId;
 
     private String planStatus;
+
+    private List<String> planStatusS;
 
     private Long planApproveTime;
     private String approveTimeStr;
