@@ -78,7 +78,7 @@ public class ElFeeDetailTController {
                 return CommonResponse.errorMsg("参数不得为空");
             }
             List<ElFeeDetailT> list = JsonUtils.jsonToList(jsonString, ElFeeDetailT.class);
-            if (list == null && list.size() == 0) {
+            if (list == null || list.size() == 0) {
                 return CommonResponse.errorMsg("参数不得为空");
             }
             UserDTO userDTO = userFromRedis.findByToken();

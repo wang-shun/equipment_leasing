@@ -52,9 +52,9 @@ public class SbElFeeShowTestController {
             map.put("设备名称:",sbEquipmentT.getName());
             map.put("购买价格:",sbEquipmentT.getBuyPrice());
             map.put("设备折旧年限:",sbEquipmentT.getCostYears());
-            map.put("设备基本使用费(A1):",new BigDecimal(A1*days).setScale(2, RoundingMode.UP).doubleValue());
+            map.put("设备基本使用费(A1):",BigDecimal.valueOf(A1*days).setScale(2, RoundingMode.UP).doubleValue());
             map.put("设备租赁天数:",days);
-            map.put("设备新度系数调节费(A3):",new BigDecimal(A1*A3_rate*days).setScale(2, RoundingMode.UP).doubleValue());
+            map.put("设备新度系数调节费(A3):",BigDecimal.valueOf(A1*A3_rate*days).setScale(2, RoundingMode.UP).doubleValue());
             map.put("2018年：","一类设备增值税率:"+sbElFeeConfig.getOneIncreRate()
                     +",一类设备融资租赁利率:"+sbElFeeConfig.getOneElRate()
                     +",一类设备修理费率:"+sbElFeeConfig.getOneRepairRate()

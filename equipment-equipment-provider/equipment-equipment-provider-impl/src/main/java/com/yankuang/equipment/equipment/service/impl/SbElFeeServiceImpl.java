@@ -57,12 +57,12 @@ public class SbElFeeServiceImpl implements SbElFeeService {
                         + sbEquipmentT.getBuyPrice().doubleValue()*sbElFeeConfig.getOneIncreRate()*sbElFeeConfig.getOneElRate())*sbElFeeConfig.getOneUseRate()
                         + sbEquipmentT.getBuyPrice().doubleValue()*sbElFeeConfig.getOneRepairRate()
                         + sbEquipmentT.getBuyPrice().doubleValue()*sbElFeeConfig.getOneManageRate();
-            dayElFeeA1 = new BigDecimal(ElFee/365).setScale(2, RoundingMode.UP).doubleValue();
+            dayElFeeA1 = BigDecimal.valueOf(ElFee/365).setScale(2, RoundingMode.UP).doubleValue();
         }else{
             double ElFee = sbEquipmentT.getBuyPrice().doubleValue()/sbEquipmentT.getCostYears().doubleValue()
                         + sbEquipmentT.getBuyPrice().doubleValue()*sbElFeeConfig.getTwoRepairRate()
                         + sbEquipmentT.getBuyPrice().doubleValue()*sbElFeeConfig.getTwoManageRate();
-            dayElFeeA1 = new BigDecimal(ElFee/365).setScale(2, RoundingMode.UP).doubleValue();
+            dayElFeeA1 = BigDecimal.valueOf(ElFee/365).setScale(2, RoundingMode.UP).doubleValue();
         }
 
         return dayElFeeA1;
@@ -87,7 +87,7 @@ public class SbElFeeServiceImpl implements SbElFeeService {
                 + sbEquipmentZ.getBuyPrice().doubleValue()*sbElFeeConfig.getOneIncreRate()*sbElFeeConfig.getOneElRate())*sbElFeeConfig.getOneUseRate()
                 + sbEquipmentZ.getBuyPrice().doubleValue()*sbElFeeConfig.getOneRepairRate()
                 + sbEquipmentZ.getBuyPrice().doubleValue()*sbElFeeConfig.getOneManageRate();
-        dayElFeeA1 = new BigDecimal(ElFee/365).setScale(2, RoundingMode.UP).doubleValue();
+        dayElFeeA1 = BigDecimal.valueOf(ElFee/365).setScale(2, RoundingMode.UP).doubleValue();
 
         return dayElFeeA1;
     }

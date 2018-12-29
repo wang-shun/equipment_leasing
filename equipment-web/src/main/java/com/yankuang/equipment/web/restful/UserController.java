@@ -108,7 +108,8 @@ public class UserController {
             return CommonResponse.errorTokenMsg("账号不存在");
         }
         Byte status = loginUser.getStatus();
-        if (status.equals(2) || 2 == status) {
+//        if (status.equals(2) || 2 == status) {
+        if (2 == status) {
             return CommonResponse.errorTokenMsg("账号已经被停用");
         }
         if (!password.equals(loginUser.getPassword())) {

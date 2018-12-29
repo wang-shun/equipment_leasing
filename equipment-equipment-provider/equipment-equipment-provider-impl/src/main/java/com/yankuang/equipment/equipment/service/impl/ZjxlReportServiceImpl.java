@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -39,6 +40,7 @@ public class ZjxlReportServiceImpl implements ZjxlReportService {
         if (zjxlReports != null && zjxlReports.size() > 0 ){
             return  zjxlReports;
         }
+        zjxlReports = new ArrayList<ZjxlReport>();
         ListZReport listZReport = new ListZReport();
         listZReport.setUseYear(zjxlReport.getZjxlYear());
         listZReport.setUseMonth(zjxlReport.getZjxlMonth());

@@ -346,7 +346,7 @@ public class ElUseController {
      */
     @PutMapping("/successStatus")
     @Transactional
-    CommonResponse successStatus(@RequestBody String jsonString){
+    public CommonResponse successStatus(@RequestBody String jsonString){
         if (StringUtils.isEmpty(jsonString)){
             return CommonResponse.errorMsg("参数不能为空");
         }
@@ -526,7 +526,7 @@ public class ElUseController {
      */
     @PutMapping("/successStatusTz")
     @Transactional
-    CommonResponse successStatusTz(@RequestBody String jsonString){
+    public CommonResponse successStatusTz(@RequestBody String jsonString){
         if (StringUtils.isEmpty(jsonString)){
             return CommonResponse.errorMsg("参数不能为空");
         }
@@ -539,7 +539,7 @@ public class ElUseController {
             return CommonResponse.errorMsg("id不能为空");
         }
         ElUse chooseElUse = elUseService.select(elUse.getId());
-        if (elUse == null){
+        if (chooseElUse == null){
             return CommonResponse.build(500,"该审核对象不存在",null);
         }
         if (!"2".equals(chooseElUse.getStatus())){
